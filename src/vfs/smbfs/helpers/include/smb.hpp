@@ -1707,7 +1707,7 @@ struct nmb_name
     unsigned int name_type;
 };
 
-#include "client.h"
+#include "client.hpp"
 
 /*
  * Size of new password account encoding string. DO NOT CHANGE.

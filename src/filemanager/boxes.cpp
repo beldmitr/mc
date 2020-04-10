@@ -47,7 +47,7 @@
 
 #include "lib/vfs/vfs.hpp"
 #ifdef ENABLE_VFS_FTP
-#include "src/vfs/ftpfs/ftpfs.h"
+#include "src/vfs/ftpfs/ftpfs.hpp"
 #endif /* ENABLE_VFS_FTP */
 #ifdef ENABLE_VFS_SMB
 #include "src/vfs/smbfs/smbfs.h"

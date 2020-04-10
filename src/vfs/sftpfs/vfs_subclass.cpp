@@ -24,16 +24,15 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>             /* memset() */
 
-#include "lib/global.h"
-#include "lib/widget.h"
-#include "lib/vfs/utilvfs.h"
+#include "lib/global.hpp"
+#include "lib/widget.hpp"
+#include "lib/vfs/utilvfs.hpp"
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -114,7 +113,7 @@ sftpfs_cb_open_connection (struct vfs_s_super *super,
     if (vpath_element->host == NULL || *vpath_element->host == '\0')
     {
         vfs_print_message ("%s", _("sftp: Invalid host name."));
-        vpath_element->class->verrno = EPERM;
+        vpath_element->Class->verrno = EPERM;
         return -1;
     }
 
@@ -124,13 +123,13 @@ sftpfs_cb_open_connection (struct vfs_s_super *super,
     sftpfs_fill_connection_data_from_config (super, &mcerror);
     if (mc_error_message (&mcerror, &ret_value))
     {
-        vpath_element->class->verrno = ret_value;
+        vpath_element->Class->verrno = ret_value;
         return -1;
     }
 
     super->root =
-        vfs_s_new_inode (vpath_element->class, super,
-                         vfs_s_default_stat (vpath_element->class, S_IFDIR | 0755));
+        vfs_s_new_inode (vpath_element->Class, super,
+                         vfs_s_default_stat (vpath_element->Class, S_IFDIR | 0755));
 
     ret_value = sftpfs_open_connection (super, &mcerror);
     mc_error_message (&mcerror, NULL);

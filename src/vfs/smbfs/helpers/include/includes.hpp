@@ -7,10 +7,10 @@
  */
 
 #ifndef NO_CONFIG_H             /* for some tests */
-#include "config.h"
+#include "config.h"     // FIXME TO be removed
 #endif
 
-#include "local.h"
+#include "local.hpp"
 
 #ifdef AIX
 #define DEFAULT_PRINTING PRINT_AIX
@@ -429,23 +429,23 @@
 #endif
 
 
-#include "version.h"
-#include "smb.h"
-#include "nameserv.h"
+#include "version.hpp"
+#include "smb.hpp"
+#include "nameserv.hpp"
 
-#include "byteorder.h"
+#include "byteorder.hpp"
 
-#include "kanji.h"
-#include "charset.h"
+#include "kanji.hpp"
+#include "charset.hpp"
 
-#include "nterr.h"
+#include "nterr.hpp"
 
 #ifndef MAXCODEPAGELINES
 #define MAXCODEPAGELINES 256
 #endif
 
 /***** automatically generated prototypes *****/
-#include "proto.h"
+#include "proto.hpp"
 
 #ifdef sprintf
 #undef sprintf

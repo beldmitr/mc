@@ -24,13 +24,11 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "lib/global.hpp"
+#include "lib/vfs/netutil.hpp"
 
-#include "lib/global.h"
-#include "lib/vfs/netutil.h"
-
-#include "init.h"
-#include "internal.h"
+#include "init.hpp"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

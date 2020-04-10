@@ -24,7 +24,6 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
 #include <errno.h>
 
 #ifdef HAVE_SYS_SELECT_H
@@ -35,10 +34,10 @@
 #include <unistd.h>
 #endif
 
-#include "lib/global.h"
-#include "lib/util.h"
+#include "lib/global.hpp"
+#include "lib/util.hpp"
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

@@ -1228,7 +1228,7 @@ ftpfs_setup_active (struct vfs_class *me, struct vfs_s_super *super,
         return 0;
     }
 
-    addr = g_try_malloc (NI_MAXHOST);
+    addr = static_cast<char*>(g_try_malloc (NI_MAXHOST));
     if (addr == NULL)
         ERRNOR (ENOMEM, -1);
 
@@ -2425,9 +2425,9 @@ ftpfs_netrc_next (void)
     if (*buffer == '\0')
         return NETRC_NONE;
 
-    for (i = NETRC_DEFAULT; keywords[i - 1] != NULL; i++)
+    for (int i = NETRC_DEFAULT; keywords[i - 1] != NULL; i++)
         if (strcmp (keywords[i - 1], buffer) == 0)
-            return i;
+            return static_cast<keyword_t>(i);
 
     return NETRC_UNKNOWN;
 }

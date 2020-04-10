@@ -24,15 +24,14 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
 #include <errno.h>
 
-#include "lib/global.h"
-#include "lib/widget.h"
-#include "lib/vfs/gc.h"
-#include "lib/tty/tty.h"        /* tty_enable_interrupt_key () */
+#include "lib/global.hpp"
+#include "lib/widget.hpp"
+#include "lib/vfs/gc.hpp"
+#include "lib/tty/tty.hpp"        /* tty_enable_interrupt_key () */
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -107,10 +106,10 @@ sftpfs_cb_open (const vfs_path_t * vpath, int flags, mode_t mode)
     if (path_super == NULL)
         return NULL;
 
-    path_inode = vfs_s_find_inode (path_element->class, super, path_super, LINK_FOLLOW, FL_NONE);
+    path_inode = vfs_s_find_inode (path_element->Class, super, path_super, LINK_FOLLOW, FL_NONE);
     if (path_inode != NULL && ((flags & (O_CREAT | O_EXCL)) == (O_CREAT | O_EXCL)))
     {
-        path_element->class->verrno = EEXIST;
+        path_element->Class->verrno = EEXIST;
         return NULL;
     }
 
@@ -122,16 +121,16 @@ sftpfs_cb_open (const vfs_path_t * vpath, int flags, mode_t mode)
 
         dirname = g_path_get_dirname (path_super);
         name = g_path_get_basename (path_super);
-        dir = vfs_s_find_inode (path_element->class, super, dirname, LINK_FOLLOW, FL_DIR);
+        dir = vfs_s_find_inode (path_element->Class, super, dirname, LINK_FOLLOW, FL_DIR);
         if (dir == NULL)
         {
             g_free (dirname);
             g_free (name);
             return NULL;
         }
-        ent = vfs_s_generate_entry (path_element->class, name, dir, 0755);
+        ent = vfs_s_generate_entry (path_element->Class, name, dir, 0755);
         path_inode = ent->ino;
-        vfs_s_insert_entry (path_element->class, dir, ent);
+        vfs_s_insert_entry (path_element->Class, dir, ent);
         g_free (dirname);
         g_free (name);
         is_changed = TRUE;
@@ -139,7 +138,7 @@ sftpfs_cb_open (const vfs_path_t * vpath, int flags, mode_t mode)
 
     if (S_ISDIR (path_inode->st.st_mode))
     {
-        path_element->class->verrno = EISDIR;
+        path_element->Class->verrno = EISDIR;
         return NULL;
     }
 
@@ -152,7 +151,7 @@ sftpfs_cb_open (const vfs_path_t * vpath, int flags, mode_t mode)
         return NULL;
     }
 
-    vfs_rmstamp (path_element->class, (vfsid) super);
+    vfs_rmstamp (path_element->Class, (vfsid) super);
     super->fd_usage++;
     fh->ino->st.st_nlink++;
     return fh;
@@ -200,7 +199,7 @@ sftpfs_cb_readdir (void *data)
         return NULL;
     }
 
-    sftpfs_dirent = sftpfs_readdir (data, &mcerror);
+    sftpfs_dirent = static_cast<union vfs_dirent*>(sftpfs_readdir (data, &mcerror));
     if (!mc_error_message (&mcerror, NULL))
     {
         if (sftpfs_dirent != NULL)

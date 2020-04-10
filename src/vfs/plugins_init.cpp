@@ -49,7 +49,7 @@
 #endif
 
 #ifdef ENABLE_VFS_FTP
-#include "ftpfs/ftpfs.h"
+#include "ftpfs/ftpfs.hpp"
 #endif
 
 #ifdef ENABLE_VFS_SFTP

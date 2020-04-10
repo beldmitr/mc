@@ -83,7 +83,7 @@
  * -------------------------------------------------------------------------- **
  */
 
-#include "includes.h"
+#include "includes.hpp"
 const char *unix_error_string (int error_num);
 
 /* -------------------------------------------------------------------------- **
@@ -226,7 +226,7 @@ Section (FILE * InFile, BOOL (*sfunc) (const char *))
         if (i > (bSize - 2))
         {
             bSize += BUFR_INC;
-            bufr = Realloc (bufr, bSize);
+            bufr = static_cast<char*>(Realloc (bufr, bSize));
             if (NULL == bufr)
             {
                 DEBUG (0, ("%s Memory re-allocation failure.", func));
@@ -320,7 +320,7 @@ Parameter (FILE * InFile, BOOL (*pfunc) (const char *, const char *), int c)
         if (i > (bSize - 2))    /* Ensure there's space for next char.    */
         {
             bSize += BUFR_INC;
-            bufr = Realloc (bufr, bSize);
+            bufr = static_cast<char*>(Realloc (bufr, bSize));
             if (NULL == bufr)
             {
                 DEBUG (0, ("%s Memory re-allocation failure.", func));
@@ -385,7 +385,7 @@ Parameter (FILE * InFile, BOOL (*pfunc) (const char *, const char *), int c)
         if (i > (bSize - 2))    /* Make sure there's enough room. */
         {
             bSize += BUFR_INC;
-            bufr = Realloc (bufr, bSize);
+            bufr = static_cast<char*>(Realloc (bufr, bSize));
             if (NULL == bufr)
             {
                 DEBUG (0, ("%s Memory re-allocation failure.", func));

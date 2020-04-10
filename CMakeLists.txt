@@ -94,7 +94,6 @@ target_link_libraries(${PROJECT_NAME} ${GLIB2_LIBRARIES})
 
 # DEFINITIONS
 add_compile_definitions(VERSION="0.0")
-
 add_compile_definitions(HAVE_SLANG)
 add_compile_definitions(ENABLE_BACKGROUND)
 add_compile_definitions(HAVE_SYS_IOCTL_H)
@@ -110,6 +109,13 @@ add_compile_definitions(STAT_STATVFS)   # vs STAT_STATVFS64 ???
 add_compile_definitions(HAVE_UTIME_H) # TODO ?? HAVE_UTIME_H vs. HAVE_UTIMENSAT
 add_compile_definitions(ENABLE_VFS_NET)
 add_compile_definitions(HAVE_SOCKLEN_T)
+add_compile_definitions(HAVE_ARPA_INET_H)
+add_compile_definitions(HAVE_SYS_PARAM_H)
+add_compile_definitions(HAVE_SYS_SELECT_H)
+add_compile_definitions(ENABLE_VFS_FTP)
+add_compile_definitions(NO_CONFIG_H)
+add_compile_definitions(HAVE_STDARG_H)
+
 
 # SIG_ATOMIC_VOLATILE
 # Some systems declare sig_atomic_t as volatile, some others -- no.

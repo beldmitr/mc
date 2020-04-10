@@ -52,7 +52,7 @@
  *
  */
 
-#include "includes.h"
+#include "includes.hpp"
 
 /* Set default coding system for KANJI if none specified in Makefile. */
 /* 

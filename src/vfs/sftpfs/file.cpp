@@ -24,16 +24,14 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <libssh2.h>
 #include <libssh2_sftp.h>
 
-#include "lib/global.h"
-#include "lib/util.h"
+#include "lib/global.hpp"
+#include "lib/util.hpp"
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 
