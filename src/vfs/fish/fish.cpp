@@ -50,7 +50,6 @@
 
 /* Define this if your ssh can take -I option */
 
-#include <config.h>
 #include <errno.h>
 #include <pwd.h>
 #include <grp.h>
@@ -59,24 +58,24 @@
 #include <string.h>
 #include <inttypes.h>           /* uintmax_t */
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"        /* enable/disable interrupt key */
-#include "lib/strescape.h"
-#include "lib/unixcompat.h"
-#include "lib/fileloc.h"
-#include "lib/util.h"           /* my_exit() */
-#include "lib/mcconfig.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"        /* enable/disable interrupt key */
+#include "lib/strescape.hpp"
+#include "lib/unixcompat.hpp"
+#include "lib/fileloc.hpp"
+#include "lib/util.hpp"           /* my_exit() */
+#include "lib/mcconfig.hpp"
 
-#include "src/execute.h"        /* pre_exec, post_exec */
+#include "src/execute.hpp"        /* pre_exec, post_exec */
 
-#include "lib/vfs/vfs.h"
-#include "lib/vfs/utilvfs.h"
-#include "lib/vfs/netutil.h"
-#include "lib/vfs/xdirentry.h"
-#include "lib/vfs/gc.h"         /* vfs_stamp_create */
+#include "lib/vfs/vfs.hpp"
+#include "lib/vfs/utilvfs.hpp"
+#include "lib/vfs/netutil.hpp"
+#include "lib/vfs/xdirentry.hpp"
+#include "lib/vfs/gc.hpp"         /* vfs_stamp_create */
 
-#include "fish.h"
-#include "fishdef.h"
+#include "fish.hpp"
+#include "fishdef.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -716,7 +715,7 @@ fish_open_archive (struct vfs_s_super *super,
         fish_load_script_from_file (super->path_element->host, FISH_INFO_FILE,
                                     FISH_INFO_DEF_CONTENT);
 
-    return fish_open_archive_int (vpath_element->class, super);
+    return fish_open_archive_int (vpath_element->Class, super);
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -1246,7 +1245,7 @@ fish_rename (const vfs_path_t * vpath1, const vfs_path_t * vpath2)
     rpath2 = strutils_shell_escape (crpath2);
 
     ret =
-        fish_send_command (path_element->class, super2, OPT_FLUSH, FISH_SUPER (super)->scr_mv,
+        fish_send_command (path_element->Class, super2, OPT_FLUSH, FISH_SUPER (super)->scr_mv,
                            "FISH_FILEFROM=%s FISH_FILETO=%s;\n", rpath1, rpath2);
 
     g_free (rpath1);
@@ -1280,7 +1279,7 @@ fish_link (const vfs_path_t * vpath1, const vfs_path_t * vpath2)
     rpath2 = strutils_shell_escape (crpath2);
 
     ret =
-        fish_send_command (path_element->class, super2, OPT_FLUSH, FISH_SUPER (super)->scr_hardlink,
+        fish_send_command (path_element->Class, super2, OPT_FLUSH, FISH_SUPER (super)->scr_hardlink,
                            "FISH_FILEFROM=%s FISH_FILETO=%s;\n", rpath1, rpath2);
 
     g_free (rpath1);
@@ -1311,7 +1310,7 @@ fish_symlink (const vfs_path_t * vpath1, const vfs_path_t * vpath2)
     qsetto = strutils_shell_escape (vfs_path_get_by_index (vpath1, -1)->path);
 
     ret =
-        fish_send_command (path_element->class, super, OPT_FLUSH, FISH_SUPER (super)->scr_ln,
+        fish_send_command (path_element->Class, super, OPT_FLUSH, FISH_SUPER (super)->scr_ln,
                            "FISH_FILEFROM=%s FISH_FILETO=%s;\n", qsetto, rpath);
 
     g_free (qsetto);
@@ -1376,7 +1375,7 @@ fish_chmod (const vfs_path_t * vpath, mode_t mode)
     rpath = strutils_shell_escape (crpath);
 
     ret =
-        fish_send_command (path_element->class, super, OPT_FLUSH, FISH_SUPER (super)->scr_chmod,
+        fish_send_command (path_element->Class, super, OPT_FLUSH, FISH_SUPER (super)->scr_chmod,
                            "FISH_FILENAME=%s FISH_FILEMODE=%4.4o;\n", rpath,
                            (unsigned int) (mode & 07777));
 
@@ -1420,7 +1419,7 @@ fish_chown (const vfs_path_t * vpath, uid_t owner, gid_t group)
 
     /* FIXME: what should we report if chgrp succeeds but chown fails? */
     ret =
-        fish_send_command (path_element->class, super, OPT_FLUSH, FISH_SUPER (super)->scr_chown,
+        fish_send_command (path_element->Class, super, OPT_FLUSH, FISH_SUPER (super)->scr_chown,
                            "FISH_FILENAME=%s FISH_FILEOWNER=%s FISH_FILEGROUP=%s;\n", rpath, sowner,
                            sgroup);
 
@@ -1499,7 +1498,7 @@ fish_utime (const vfs_path_t * vpath, mc_timesbuf_t * times)
                 gmt->tm_year + 1900, gmt->tm_mon + 1, gmt->tm_mday,
                 gmt->tm_hour, gmt->tm_min, gmt->tm_sec, mtime_nsec);
 
-    ret = fish_send_command (path_element->class, super, OPT_FLUSH, FISH_SUPER (super)->scr_utime,
+    ret = fish_send_command (path_element->Class, super, OPT_FLUSH, FISH_SUPER (super)->scr_utime,
                              "FISH_FILENAME=%s FISH_FILEATIME=%ld FISH_FILEMTIME=%ld "
                              "FISH_TOUCHATIME=%s FISH_TOUCHMTIME=%s FISH_TOUCHATIME_W_NSEC=\"%s\" "
                              "FISH_TOUCHMTIME_W_NSEC=\"%s\";\n", rpath, (long) atime, (long) mtime,
@@ -1530,7 +1529,7 @@ fish_unlink (const vfs_path_t * vpath)
     rpath = strutils_shell_escape (crpath);
 
     ret =
-        fish_send_command (path_element->class, super, OPT_FLUSH, FISH_SUPER (super)->scr_unlink,
+        fish_send_command (path_element->Class, super, OPT_FLUSH, FISH_SUPER (super)->scr_unlink,
                            "FISH_FILENAME=%s;\n", rpath);
 
     g_free (rpath);
@@ -1558,7 +1557,7 @@ fish_exists (const vfs_path_t * vpath)
     rpath = strutils_shell_escape (crpath);
 
     ret =
-        fish_send_command (path_element->class, super, OPT_FLUSH, FISH_SUPER (super)->scr_exists,
+        fish_send_command (path_element->Class, super, OPT_FLUSH, FISH_SUPER (super)->scr_exists,
                            "FISH_FILENAME=%s;\n", rpath);
 
     g_free (rpath);
@@ -1588,7 +1587,7 @@ fish_mkdir (const vfs_path_t * vpath, mode_t mode)
     rpath = strutils_shell_escape (crpath);
 
     ret =
-        fish_send_command (path_element->class, super, OPT_FLUSH, FISH_SUPER (super)->scr_mkdir,
+        fish_send_command (path_element->Class, super, OPT_FLUSH, FISH_SUPER (super)->scr_mkdir,
                            "FISH_FILENAME=%s;\n", rpath);
     g_free (rpath);
 
@@ -1597,7 +1596,7 @@ fish_mkdir (const vfs_path_t * vpath, mode_t mode)
 
     if (fish_exists (vpath) == 0)
     {
-        path_element->class->verrno = EACCES;
+        path_element->Class->verrno = EACCES;
         return -1;
     }
     return 0;
@@ -1623,7 +1622,7 @@ fish_rmdir (const vfs_path_t * vpath)
     rpath = strutils_shell_escape (crpath);
 
     ret =
-        fish_send_command (path_element->class, super, OPT_FLUSH, FISH_SUPER (super)->scr_rmdir,
+        fish_send_command (path_element->Class, super, OPT_FLUSH, FISH_SUPER (super)->scr_rmdir,
                            "FISH_FILENAME=%s;\n", rpath);
 
     g_free (rpath);

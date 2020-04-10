@@ -26,8 +26,6 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include <config.h>
 #include <ctype.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -35,35 +33,35 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/tty/color.h"
-#include "lib/tty/key.h"
-#include "lib/skin.h"           /* EDITOR_NORMAL_COLOR */
-#include "lib/vfs/vfs.h"        /* mc_opendir, mc_readdir, mc_closedir, */
-#include "lib/util.h"
-#include "lib/widget.h"
-#include "lib/strutil.h"
-#include "lib/strescape.h"      /* strutils_glob_escape() */
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/color.hpp"
+#include "lib/tty/key.hpp"
+#include "lib/skin.hpp"           /* EDITOR_NORMAL_COLOR */
+#include "lib/vfs/vfs.hpp"        /* mc_opendir, mc_readdir, mc_closedir, */
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
+#include "lib/strutil.hpp"
+#include "lib/strescape.hpp"      /* strutils_glob_escape() */
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
-#include "lib/event.h"          /* mc_event_raise() */
+#include "lib/event.hpp"          /* mc_event_raise() */
 
-#include "src/filemanager/cmd.h"        /* edit_file_at_line() */
-#include "src/filemanager/panel.h"
-#include "src/filemanager/layout.h"     /* Needed for get_current_index and get_other_panel */
+#include "src/filemanager/cmd.hpp"        /* edit_file_at_line() */
+#include "src/filemanager/panel.hpp"
+#include "src/filemanager/layout.hpp"     /* Needed for get_current_index and get_other_panel */
 
-#include "src/execute.h"        /* toggle_subshell() */
-#include "src/keybind-defaults.h"
-#include "src/setup.h"
-#include "src/history.h"
+#include "src/execute.hpp"        /* toggle_subshell() */
+#include "src/keybind-defaults.hpp"
+#include "src/setup.hpp"
+#include "src/history.hpp"
 #ifdef HAVE_CHARSET
-#include "src/selcodepage.h"
+#include "src/selcodepage.hpp"
 #endif
 
-#include "ydiff.h"
-#include "internal.h"
+#include "ydiff.hpp"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -198,7 +196,7 @@ f_dopen (int fd)
     if (fd < 0)
         return NULL;
 
-    fs = g_try_malloc (sizeof (FBUF));
+    fs = static_cast<FBUF*>(g_try_malloc (sizeof (FBUF)));
     if (fs == NULL)
         return NULL;
 

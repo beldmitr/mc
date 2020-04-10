@@ -23,18 +23,16 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <stdio.h>              /* file functions */
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/fileloc.h"        /* MC_FILEPOS_FILE */
-#include "lib/mcconfig.h"       /* mc_config_get_full_path() */
-#include "lib/strutil.h"        /* str_term_width1() */
-#include "lib/util.h"           /* backup functions */
+#include "lib/fileloc.hpp"        /* MC_FILEPOS_FILE */
+#include "lib/mcconfig.hpp"       /* mc_config_get_full_path() */
+#include "lib/strutil.hpp"        /* str_term_width1() */
+#include "lib/util.hpp"           /* backup functions */
 
-#include "file_history.h"
+#include "file_history.hpp"
 
 /*** global variables ****************************************************************************/
 

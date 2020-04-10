@@ -7,7 +7,7 @@
 #ifndef MC__CMD_H
 #define MC__CMD_H
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

@@ -37,26 +37,25 @@
  * Namespace: exports vfs_sfs_ops
  */
 
-#include <config.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 
-#include "lib/global.h"
-#include "lib/util.h"
-#include "lib/widget.h"         /* D_ERROR, D_NORMAL */
+#include "lib/global.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"         /* D_ERROR, D_NORMAL */
 
-#include "src/execute.h"        /* EXECUTE_AS_SHELL */
+#include "src/execute.hpp"        /* EXECUTE_AS_SHELL */
 
-#include "lib/vfs/vfs.h"
-#include "lib/vfs/utilvfs.h"
-#include "lib/vfs/xdirentry.h"
-#include "src/vfs/local/local.h"
-#include "lib/vfs/gc.h"         /* vfs_stamp_create */
+#include "lib/vfs/vfs.hpp"
+#include "lib/vfs/utilvfs.hpp"
+#include "lib/vfs/xdirentry.hpp"
+#include "src/vfs/local/local.hpp"
+#include "lib/vfs/gc.hpp"         /* vfs_stamp_create */
 
-#include "sfs.h"
+#include "sfs.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -145,7 +144,7 @@ sfs_vfmake (const vfs_path_t * vpath, vfs_path_t * cache_vpath)
     pname = vfs_path_clone (vpath);
     vfs_path_remove_element_by_index (pname, -1);
 
-    w = path_element->class->which (path_element->class, path_element->vfs_prefix);
+    w = path_element->Class->which (path_element->Class, path_element->vfs_prefix);
     if (w == -1)
         vfs_die ("This cannot happen... Hopefully.\n");
 

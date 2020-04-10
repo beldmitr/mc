@@ -24,23 +24,21 @@
  *  \brief Source: setup loading/saving
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"
-#include "lib/mcconfig.h"       /* num_history_items_recorded */
-#include "lib/fileloc.h"
-#include "lib/timefmt.h"
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"
+#include "lib/mcconfig.hpp"       /* num_history_items_recorded */
+#include "lib/fileloc.hpp"
+#include "lib/timefmt.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 
 #ifdef ENABLE_VFS_FTP
 #include "src/vfs/ftpfs/ftpfs.h"
@@ -50,33 +48,33 @@
 #endif
 
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
-#include "filemanager/dir.h"
-#include "filemanager/midnight.h"
-#include "filemanager/tree.h"   /* xtree_mode */
-#include "filemanager/hotlist.h"        /* load/save/done hotlist */
-#include "filemanager/panelize.h"       /* load/save/done panelize */
-#include "filemanager/layout.h"
-#include "filemanager/cmd.h"
+#include "filemanager/dir.hpp"
+#include "filemanager/midnight.hpp"
+#include "filemanager/tree.hpp"   /* xtree_mode */
+#include "filemanager/hotlist.hpp"        /* load/save/done hotlist */
+#include "filemanager/panelize.hpp"       /* load/save/done panelize */
+#include "filemanager/layout.hpp"
+#include "filemanager/cmd.hpp"
 
-#include "args.h"
-#include "execute.h"            /* pause_after_run */
-#include "clipboard.h"
-#include "keybind-defaults.h"   /* keybind_lookup_action */
+#include "args.hpp"
+#include "execute.hpp"            /* pause_after_run */
+#include "clipboard.hpp"
+#include "keybind-defaults.hpp"   /* keybind_lookup_action */
 
 #ifdef HAVE_CHARSET
-#include "selcodepage.h"
+#include "selcodepage.hpp"
 #endif
 
 #ifdef USE_INTERNAL_EDIT
-#include "src/editor/edit.h"
+#include "src/editor/edit.hpp"
 #endif
 
-#include "src/viewer/mcviewer.h"        /* For the externs */
+#include "src/viewer/mcviewer.hpp"        /* For the externs */
 
-#include "setup.h"
+#include "setup.hpp"
 
 /*** global variables ****************************************************************************/
 

@@ -6,7 +6,7 @@
 #ifndef MC__VFS_GC_H
 #define MC__VFS_GC_H
 
-#include "vfs.h"
+#include "vfs.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

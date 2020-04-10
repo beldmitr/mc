@@ -6,7 +6,7 @@
 #ifndef MC__COLOR_SLANG_H
 #define MC__COLOR_SLANG_H
 
-#include "tty-slang.h"          /* S-Lang headers */
+#include "tty-slang.hpp"          /* S-Lang headers */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

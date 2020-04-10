@@ -25,19 +25,18 @@
  * \brief Source: local FS
  */
 
-#include <config.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/vfs/xdirentry.h"  /* vfs_s_subclass */
-#include "lib/vfs/utilvfs.h"
+#include "lib/vfs/xdirentry.hpp"  /* vfs_s_subclass */
+#include "lib/vfs/utilvfs.hpp"
 
-#include "local.h"
+#include "local.hpp"
 
 /*** global variables ****************************************************************************/
 

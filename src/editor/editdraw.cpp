@@ -31,7 +31,6 @@
  *  \date 1996, 1997
  */
 
-#include <config.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -42,21 +41,21 @@
 #include <errno.h>
 #include <sys/stat.h>
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"        /* tty_printf() */
-#include "lib/tty/key.h"        /* is_idle() */
-#include "lib/skin.h"
-#include "lib/strutil.h"        /* utf string functions */
-#include "lib/util.h"           /* is_printable() */
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"        /* tty_printf() */
+#include "lib/tty/key.hpp"        /* is_idle() */
+#include "lib/skin.hpp"
+#include "lib/strutil.hpp"        /* utf string functions */
+#include "lib/util.hpp"           /* is_printable() */
+#include "lib/widget.hpp"
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
-#include "src/setup.h"          /* edit_tab_spacing */
+#include "src/setup.hpp"          /* edit_tab_spacing */
 
-#include "edit-impl.h"
-#include "editwidget.h"
+#include "edit-impl.hpp"
+#include "editwidget.hpp"
 
 /*** global variables ****************************************************************************/
 

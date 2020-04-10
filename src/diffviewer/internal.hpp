@@ -1,11 +1,11 @@
 #ifndef MC__DIFFVIEW_INTERNAL_H
 #define MC__DIFFVIEW_INTERNAL_H
 
-#include "lib/global.h"
-#include "lib/mcconfig.h"
-#include "lib/search.h"
-#include "lib/tty/color.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/search.hpp"
+#include "lib/tty/color.hpp"
+#include "lib/widget.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

@@ -29,8 +29,6 @@
  *  \brief Source: Find file command
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,28 +36,28 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"
-#include "lib/skin.h"
-#include "lib/search.h"
-#include "lib/mcconfig.h"
-#include "lib/vfs/vfs.h"
-#include "lib/strutil.h"
-#include "lib/widget.h"
-#include "lib/util.h"           /* canonicalize_pathname() */
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"
+#include "lib/skin.hpp"
+#include "lib/search.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/strutil.hpp"
+#include "lib/widget.hpp"
+#include "lib/util.hpp"           /* canonicalize_pathname() */
 
-#include "src/setup.h"          /* verbose */
-#include "src/history.h"        /* MC_HISTORY_SHARED_SEARCH */
+#include "src/setup.hpp"          /* verbose */
+#include "src/history.hpp"        /* MC_HISTORY_SHARED_SEARCH */
 
-#include "dir.h"
-#include "cmd.h"                /* view_file_at_line() */
-#include "midnight.h"           /* current_panel */
-#include "boxes.h"
-#include "panelize.h"
+#include "dir.hpp"
+#include "cmd.hpp"                /* view_file_at_line() */
+#include "midnight.hpp"           /* current_panel */
+#include "boxes.hpp"
+#include "panelize.hpp"
 
-#include "find.h"
+#include "find.hpp"
 
 /*** global variables ****************************************************************************/
 

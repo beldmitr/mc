@@ -29,8 +29,6 @@
  *  \brief Source: extension dependent execution
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -38,33 +36,33 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/search.h"
-#include "lib/fileloc.h"
-#include "lib/mcconfig.h"
-#include "lib/util.h"
-#include "lib/vfs/vfs.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/search.hpp"
+#include "lib/fileloc.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/util.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/widget.hpp"
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"       /* get_codepage_index */
+#include "lib/charsets.hpp"       /* get_codepage_index */
 #endif
 
-#include "src/setup.h"          /* use_file_to_check_type */
-#include "src/execute.h"
-#include "src/history.h"
-#include "src/usermenu.h"
+#include "src/setup.hpp"          /* use_file_to_check_type */
+#include "src/execute.hpp"
+#include "src/history.hpp"
+#include "src/usermenu.hpp"
 
-#include "src/consaver/cons.saver.h"
-#include "src/viewer/mcviewer.h"
+#include "src/consaver/cons.saver.hpp"
+#include "src/viewer/mcviewer.hpp"
 
 #ifdef HAVE_CHARSET
-#include "src/selcodepage.h"    /* do_set_codepage */
+#include "src/selcodepage.hpp"    /* do_set_codepage */
 #endif
 
-#include "panel.h"              /* do_cd */
+#include "panel.hpp"              /* do_cd */
 
-#include "ext.h"
+#include "ext.hpp"
 
 /*** global variables ****************************************************************************/
 

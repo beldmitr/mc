@@ -24,19 +24,17 @@
  *  \brief Source: prints features specific for this build
  */
 
-#include <config.h>
-
 #include <limits.h>
 #include <stdio.h>
 #include <sys/types.h>
 
-#include "lib/global.h"
-#include "lib/fileloc.h"
-#include "lib/mcconfig.h"
-#include "lib/util.h"           /* mc_get_profile_root() */
-#include "lib/tty/tty.h"        /* S-Lang or ncurses version */
+#include "lib/global.hpp"
+#include "lib/fileloc.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/util.hpp"           /* mc_get_profile_root() */
+#include "lib/tty/tty.hpp"        /* S-Lang or ncurses version */
 
-#include "src/textconf.h"
+#include "src/textconf.hpp"
 
 /*** global variables ****************************************************************************/
 

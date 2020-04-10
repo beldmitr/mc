@@ -74,7 +74,6 @@ What to do with this?
 
 /* \todo Fix: Namespace pollution: horrible */
 
-#include <config.h>
 #include <stdio.h>              /* sscanf() */
 #include <stdlib.h>             /* atoi() */
 #include <sys/types.h>          /* POSIX-required by sys/socket.h and netdb.h */
@@ -94,24 +93,24 @@ What to do with this?
 #include <sys/time.h>           /* gettimeofday() */
 #include <inttypes.h>           /* uintmax_t */
 
-#include "lib/global.h"
-#include "lib/util.h"
-#include "lib/strutil.h"        /* str_move() */
-#include "lib/mcconfig.h"
+#include "lib/global.hpp"
+#include "lib/util.hpp"
+#include "lib/strutil.hpp"        /* str_move() */
+#include "lib/mcconfig.hpp"
 
-#include "lib/tty/tty.h"        /* enable/disable interrupt key */
-#include "lib/widget.h"         /* message() */
+#include "lib/tty/tty.hpp"        /* enable/disable interrupt key */
+#include "lib/widget.hpp"         /* message() */
 
-#include "src/history.h"
-#include "src/setup.h"          /* for load_anon_passwd */
+#include "src/history.hpp"
+#include "src/setup.hpp"          /* for load_anon_passwd */
 
-#include "lib/vfs/vfs.h"
-#include "lib/vfs/utilvfs.h"
-#include "lib/vfs/netutil.h"
-#include "lib/vfs/xdirentry.h"
-#include "lib/vfs/gc.h"         /* vfs_stamp_create */
+#include "lib/vfs/vfs.hpp"
+#include "lib/vfs/utilvfs.hpp"
+#include "lib/vfs/netutil.hpp"
+#include "lib/vfs/xdirentry.hpp"
+#include "lib/vfs/gc.hpp"         /* vfs_stamp_create */
 
-#include "ftpfs.h"
+#include "ftpfs.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -1023,9 +1022,9 @@ ftpfs_open_archive (struct vfs_s_super *super,
     if (ftpfs_check_proxy (super->path_element->host))
         FTP_SUPER (super)->proxy = ftpfs_proxy_host;
     super->root =
-        vfs_s_new_inode (vpath_element->class, super, ftpfs_default_stat (vpath_element->class));
+        vfs_s_new_inode (vpath_element->Class, super, ftpfs_default_stat (vpath_element->Class));
 
-    return ftpfs_open_archive_int (vpath_element->class, super);
+    return ftpfs_open_archive_int (vpath_element->Class, super);
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -2072,19 +2071,19 @@ ftpfs_send_command (const vfs_path_t * vpath, const char *cmd, int flags)
     if (rpath == NULL)
         return (-1);
 
-    p = ftpfs_translate_path (path_element->class, super, rpath);
-    r = ftpfs_command (path_element->class, super, WAIT_REPLY, cmd, p);
+    p = ftpfs_translate_path (path_element->Class, super, rpath);
+    r = ftpfs_command (path_element->Class, super, WAIT_REPLY, cmd, p);
     g_free (p);
     vfs_stamp_create (vfs_ftpfs_ops, super);
     if ((flags & OPT_IGNORE_ERROR) != 0)
         r = COMPLETE;
     if (r != COMPLETE)
     {
-        path_element->class->verrno = EPERM;
+        path_element->Class->verrno = EPERM;
         return (-1);
     }
     if (flush_directory_cache)
-        vfs_s_invalidate (path_element->class, super);
+        vfs_s_invalidate (path_element->Class, super);
     return 0;
 }
 

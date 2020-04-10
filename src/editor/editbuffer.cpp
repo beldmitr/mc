@@ -29,18 +29,16 @@
  *  \date 2013
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/vfs/vfs.h"
+#include "lib/vfs/vfs.hpp"
 
-#include "edit-impl.h"
-#include "editbuffer.h"
+#include "edit-impl.hpp"
+#include "editbuffer.hpp"
 
 /* --------------------------------------------------------------------------------------------- */
 /*-

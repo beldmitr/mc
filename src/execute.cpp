@@ -27,33 +27,31 @@
  *  \brief Source: execution routines
  */
 
-#include <config.h>
-
 #include <signal.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"
-#include "lib/tty/win.h"
-#include "lib/vfs/vfs.h"
-#include "lib/mcconfig.h"
-#include "lib/util.h"
-#include "lib/strutil.h"        /* str_replace_all_substrings() */
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"
+#include "lib/tty/win.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/util.hpp"
+#include "lib/strutil.hpp"        /* str_replace_all_substrings() */
+#include "lib/widget.hpp"
 
-#include "filemanager/midnight.h"
-#include "filemanager/layout.h" /* use_dash() */
-#include "consaver/cons.saver.h"
+#include "filemanager/midnight.hpp"
+#include "filemanager/layout.hpp" /* use_dash() */
+#include "consaver/cons.saver.hpp"
 #ifdef ENABLE_SUBSHELL
-#include "subshell/subshell.h"
+#include "subshell/subshell.hpp"
 #endif
-#include "setup.h"              /* clear_before_exec */
+#include "setup.hpp"              /* clear_before_exec */
 
-#include "execute.h"
+#include "execute.hpp"
 
 /*** global variables ****************************************************************************/
 

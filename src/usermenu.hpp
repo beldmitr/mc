@@ -5,9 +5,9 @@
 #ifndef MC__USERMENU_H
 #define MC__USERMENU_H
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "src/editor/edit.h"    /* WEdit */
+#include "src/editor/edit.hpp"    /* WEdit */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

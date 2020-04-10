@@ -32,16 +32,14 @@
  *  \date 2005, 2006
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <string.h>             /* strcmp() */
 
-#include "lib/global.h"
-#include "lib/widget.h"         /* Listbox */
+#include "lib/global.hpp"
+#include "lib/widget.hpp"         /* Listbox */
 
-#include "edit-impl.h"
-#include "editwidget.h"
+#include "edit-impl.hpp"
+#include "editwidget.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -81,7 +79,7 @@ exec_edit_syntax_dialog (const GPtrArray * names, const char *current_syntax)
     {
         const char *name;
 
-        name = g_ptr_array_index (names, i);
+        name = static_cast<const char*>(g_ptr_array_index (names, i));
         LISTBOX_APPEND_TEXT (syntaxlist, 0, name, NULL, FALSE);
         if (current_syntax != NULL && strcmp (name, current_syntax) == 0)
             listbox_select_entry (syntaxlist->list, i + N_DFLT_ENTRIES);

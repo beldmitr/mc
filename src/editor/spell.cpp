@@ -23,22 +23,20 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <string.h>
 #include <gmodule.h>
 #include <aspell.h>
 
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
-#include "lib/strutil.h"
+#include "lib/strutil.hpp"
 
-#include "src/setup.h"
+#include "src/setup.hpp"
 
-#include "edit-impl.h"
-#include "spell.h"
+#include "edit-impl.hpp"
+#include "spell.hpp"
 
 /*** global variables ****************************************************************************/
 

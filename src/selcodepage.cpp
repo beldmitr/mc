@@ -29,18 +29,16 @@
  *  \brief Source: user %interface for charset %selection
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "lib/global.h"
-#include "lib/widget.h"
-#include "lib/charsets.h"
+#include "lib/global.hpp"
+#include "lib/widget.hpp"
+#include "lib/charsets.hpp"
 
-#include "setup.h"
+#include "setup.hpp"
 
-#include "selcodepage.h"
+#include "selcodepage.hpp"
 
 /*** global variables ****************************************************************************/
 

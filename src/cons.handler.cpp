@@ -24,8 +24,6 @@
  *  \brief Source: client %interface for General purpose Linux console save/restore server
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <signal.h>
@@ -38,15 +36,15 @@
 #endif
 #endif
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/unixcompat.h"
-#include "lib/tty/tty.h"
-#include "lib/tty/color.h"      /* tty_set_normal_attrs */
-#include "lib/tty/win.h"
-#include "lib/util.h"           /* mc_build_filename() */
+#include "lib/unixcompat.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/color.hpp"      /* tty_set_normal_attrs */
+#include "lib/tty/win.hpp"
+#include "lib/util.hpp"           /* mc_build_filename() */
 
-#include "consaver/cons.saver.h"
+#include "consaver/cons.saver.hpp"
 
 /*** global variables ****************************************************************************/
 

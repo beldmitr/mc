@@ -212,7 +212,7 @@ cb_ret_t widget_draw (Widget * w);
 void widget_erase (Widget * w);
 gboolean widget_is_active (const void *w);
 gboolean widget_overlapped (const Widget * a, const Widget * b);
-void widget_replace (Widget * old, Widget * new);
+void widget_replace (Widget * old, Widget * New);
 void widget_select (Widget * w);
 void widget_set_bottom (Widget * w);
 

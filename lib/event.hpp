@@ -1,7 +1,7 @@
 #ifndef MC__EVENT_H
 #define MC__EVENT_H
 
-#include "event-types.h"
+#include "event-types.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

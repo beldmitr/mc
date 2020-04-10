@@ -46,27 +46,24 @@
  *  to the appropriate routine.
  */
 
-
-#include <config.h>
-
 #include <errno.h>
 #include <limits.h>             /* MB_LEN_MAX */
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/skin.h"
-#include "lib/strutil.h"
-#include "lib/fileloc.h"
-#include "lib/util.h"
-#include "lib/widget.h"
-#include "lib/event-types.h"
+#include "lib/tty/tty.hpp"
+#include "lib/skin.hpp"
+#include "lib/strutil.hpp"
+#include "lib/fileloc.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
+#include "lib/event-types.hpp"
 
-#include "keybind-defaults.h"
-#include "help.h"
+#include "keybind-defaults.hpp"
+#include "help.hpp"
 
 /*** global variables ****************************************************************************/
 

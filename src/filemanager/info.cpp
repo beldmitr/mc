@@ -28,29 +28,27 @@
  *  \brief Source: panel managing
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <inttypes.h>           /* PRIuMAX */
 
-#include "lib/global.h"
-#include "lib/unixcompat.h"
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"        /* is_idle() */
-#include "lib/skin.h"
-#include "lib/strutil.h"
-#include "lib/timefmt.h"        /* file_date() */
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/unixcompat.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"        /* is_idle() */
+#include "lib/skin.hpp"
+#include "lib/strutil.hpp"
+#include "lib/timefmt.hpp"        /* file_date() */
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 
-#include "src/setup.h"          /* panels_options */
+#include "src/setup.hpp"          /* panels_options */
 
-#include "midnight.h"           /* the_menubar */
-#include "layout.h"
-#include "mountlist.h"
-#include "info.h"
+#include "midnight.hpp"           /* the_menubar */
+#include "layout.hpp"
+#include "mountlist.hpp"
+#include "info.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -188,7 +186,7 @@ info_show_info (WInfo * info)
     case 14:
         widget_gotoyx (w, 14, 3);
         tty_printf (_("Type:       %s"),
-                    myfs_stats.typename ? myfs_stats.typename : _("non-local vfs"));
+                    myfs_stats.Typename ? myfs_stats.Typename : _("non-local vfs"));
         if (myfs_stats.type != 0xffff && myfs_stats.type != -1)
             tty_printf (" (%Xh)", (unsigned int) myfs_stats.type);
         MC_FALLTHROUGH;

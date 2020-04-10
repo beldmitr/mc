@@ -51,8 +51,6 @@
  *  \brief Source: concurrent shell support
  */
 
-#include <config.h>
-
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE 1
 #endif
@@ -63,6 +61,7 @@
 #include <errno.h>
 #include <string.h>
 #include <signal.h>
+#include <grp.h>    /* getgrnam */
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
 #else
@@ -94,19 +93,19 @@
 #endif
 #endif /* HAVE_OPENPTY */
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/unixcompat.h"
-#include "lib/tty/tty.h"        /* LINES */
-#include "lib/tty/key.h"        /* XCTRL */
-#include "lib/vfs/vfs.h"
-#include "lib/strutil.h"
-#include "lib/mcconfig.h"
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/unixcompat.hpp"
+#include "lib/tty/tty.hpp"        /* LINES */
+#include "lib/tty/key.hpp"        /* XCTRL */
+#include "lib/vfs/vfs.hpp"
+#include "lib/strutil.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 
-#include "subshell.h"
-#include "internal.h"
+#include "subshell.hpp"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

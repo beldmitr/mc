@@ -31,8 +31,6 @@
  *  \brief Source: panel layout module
  */
 
-#include <config.h>
-
 #include <pwd.h>                /* for username in xterm title */
 #include <stdlib.h>
 #include <stdio.h>
@@ -40,32 +38,32 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/skin.h"
-#include "lib/tty/key.h"
-#include "lib/tty/mouse.h"
-#include "lib/mcconfig.h"
-#include "lib/vfs/vfs.h"        /* For _vfs_get_cwd () */
-#include "lib/strutil.h"
-#include "lib/widget.h"
-#include "lib/event.h"
-#include "lib/util.h"           /* mc_time_elapsed() */
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/skin.hpp"
+#include "lib/tty/key.hpp"
+#include "lib/tty/mouse.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/vfs/vfs.hpp"        /* For _vfs_get_cwd () */
+#include "lib/strutil.hpp"
+#include "lib/widget.hpp"
+#include "lib/event.hpp"
+#include "lib/util.hpp"           /* mc_time_elapsed() */
 
-#include "src/consaver/cons.saver.h"
-#include "src/viewer/mcviewer.h"        /* The view widget */
-#include "src/setup.h"
+#include "src/consaver/cons.saver.hpp"
+#include "src/viewer/mcviewer.hpp"        /* The view widget */
+#include "src/setup.hpp"
 #ifdef ENABLE_SUBSHELL
-#include "src/subshell/subshell.h"
+#include "src/subshell/subshell.hpp"
 #endif
 
-#include "command.h"
-#include "midnight.h"
-#include "tree.h"
+#include "command.hpp"
+#include "midnight.hpp"
+#include "tree.hpp"
 /* Needed for the extern declarations of integer parameters */
-#include "dir.h"
-#include "layout.h"
-#include "info.h"               /* The Info widget */
+#include "dir.hpp"
+#include "layout.hpp"
+#include "info.hpp"               /* The Info widget */
 
 /*** global variables ****************************************************************************/
 

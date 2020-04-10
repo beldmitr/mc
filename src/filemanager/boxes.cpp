@@ -29,8 +29,6 @@
  *  \brief Source: Some misc dialog boxes for the program
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <signal.h>
 #include <stdio.h>
@@ -39,15 +37,15 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"        /* XCTRL and ALT macros  */
-#include "lib/skin.h"           /* INPUT_COLOR */
-#include "lib/mcconfig.h"       /* Load/save user formats */
-#include "lib/strutil.h"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"        /* XCTRL and ALT macros  */
+#include "lib/skin.hpp"           /* INPUT_COLOR */
+#include "lib/mcconfig.hpp"       /* Load/save user formats */
+#include "lib/strutil.hpp"
 
-#include "lib/vfs/vfs.h"
+#include "lib/vfs/vfs.hpp"
 #ifdef ENABLE_VFS_FTP
 #include "src/vfs/ftpfs/ftpfs.h"
 #endif /* ENABLE_VFS_FTP */
@@ -55,29 +53,29 @@
 #include "src/vfs/smbfs/smbfs.h"
 #endif /* ENABLE_VFS_SMB */
 
-#include "lib/util.h"           /* Q_() */
-#include "lib/widget.h"
+#include "lib/util.hpp"           /* Q_() */
+#include "lib/widget.hpp"
 
-#include "src/setup.h"
-#include "src/history.h"        /* MC_HISTORY_ESC_TIMEOUT */
-#include "src/execute.h"        /* pause_after_run */
+#include "src/setup.hpp"
+#include "src/history.hpp"        /* MC_HISTORY_ESC_TIMEOUT */
+#include "src/execute.hpp"        /* pause_after_run */
 #ifdef ENABLE_BACKGROUND
-#include "src/background.h"     /* task_list */
+#include "src/background.hpp"     /* task_list */
 #endif
 
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
-#include "src/selcodepage.h"
+#include "lib/charsets.hpp"
+#include "src/selcodepage.hpp"
 #endif
 
-#include "command.h"            /* For cmdline */
-#include "dir.h"
-#include "panel.h"              /* LIST_FORMATS */
-#include "tree.h"
-#include "layout.h"             /* for get_nth_panel_name proto */
-#include "midnight.h"           /* current_panel */
+#include "command.hpp"            /* For cmdline */
+#include "dir.hpp"
+#include "panel.hpp"              /* LIST_FORMATS */
+#include "tree.hpp"
+#include "layout.hpp"             /* for get_nth_panel_name proto */
+#include "midnight.hpp"           /* current_panel */
 
-#include "boxes.h"
+#include "boxes.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -239,7 +237,7 @@ sel_skin_button (WButton * button, int action)
 
     for (i = 0; i < skin_names->len; i++)
     {
-        skin_name = g_ptr_array_index (skin_names, i);
+        skin_name = static_cast<const gchar *>(g_ptr_array_index (skin_names, i));
         if (strcmp (skin_name, "default") != 0)
         {
             listbox_add_item (skin_list, LISTBOX_APPEND_AT_END, 0, skin_name_to_label (skin_name),

@@ -24,18 +24,17 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
 #include <errno.h>
 #include <stddef.h>
 #include <stdlib.h>             /* atoi() */
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/search.h"
-#include "lib/util.h"           /* tilde_expand() */
-#include "lib/vfs/utilvfs.h"
+#include "lib/search.hpp"
+#include "lib/util.hpp"           /* tilde_expand() */
+#include "lib/vfs/utilvfs.hpp"
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

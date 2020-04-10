@@ -11,8 +11,8 @@
 #include <stdio.h>
 #include <sys/types.h>
 
-#include "lib/global.h"         /* GList */
-#include "lib/vfs/path.h"       /* vfs_path_t */
+#include "lib/global.hpp"         /* GList */
+#include "lib/vfs/path.hpp"       /* vfs_path_t */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

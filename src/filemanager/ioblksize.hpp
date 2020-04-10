@@ -17,7 +17,7 @@
 /* Include this file _after_ system headers if possible.  */
 
 /* sys/stat.h will already have been included by system.h. */
-#include "lib/stat-size.h"
+#include "lib/stat-size.hpp"
 
 /* *INDENT-OFF* */
 

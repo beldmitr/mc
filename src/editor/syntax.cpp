@@ -41,8 +41,6 @@
  *  below this limit of 1024 words in a context.
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <sys/types.h>
@@ -53,16 +51,16 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 
-#include "lib/global.h"
-#include "lib/search.h"         /* search engine */
-#include "lib/skin.h"
-#include "lib/fileloc.h"        /* EDIT_DIR, EDIT_SYNTAX_FILE */
-#include "lib/strutil.h"        /* utf string functions */
-#include "lib/util.h"
-#include "lib/widget.h"         /* message() */
+#include "lib/global.hpp"
+#include "lib/search.hpp"         /* search engine */
+#include "lib/skin.hpp"
+#include "lib/fileloc.hpp"        /* EDIT_DIR, EDIT_SYNTAX_FILE */
+#include "lib/strutil.hpp"        /* utf string functions */
+#include "lib/util.hpp"
+#include "lib/widget.hpp"         /* message() */
 
-#include "edit-impl.h"
-#include "editwidget.h"
+#include "edit-impl.hpp"
+#include "editwidget.hpp"
 
 /*** global variables ****************************************************************************/
 

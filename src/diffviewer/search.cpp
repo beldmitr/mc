@@ -24,21 +24,19 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <stdio.h>
 
-#include "lib/global.h"
-#include "lib/strutil.h"
-#include "lib/tty/key.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"
+#include "lib/tty/key.hpp"
+#include "lib/widget.hpp"
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
-#include "src/history.h"
+#include "src/history.hpp"
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

@@ -29,8 +29,6 @@
  *  \date 1996, 1997
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <errno.h>
 #include <stdarg.h>
@@ -42,10 +40,10 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "lib/global.h"
-#include "lib/util.h"           /* MAX_SAVED_BOOKMARKS */
+#include "lib/global.hpp"
+#include "lib/util.hpp"           /* MAX_SAVED_BOOKMARKS */
 
-#include "editwidget.h"
+#include "editwidget.hpp"
 
 /*** global variables ****************************************************************************/
 

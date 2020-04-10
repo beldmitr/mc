@@ -31,15 +31,13 @@
  *  \author Miguel de Icaza <miguel@nuclecu.unam.mx>
  */
 
-#include <config.h>
-
 #include <unistd.h>
 
-#include "lib/global.h"
-#include "fileopctx.h"
-#include "filegui.h"
-#include "lib/search.h"
-#include "lib/vfs/vfs.h"
+#include "lib/global.hpp"
+#include "fileopctx.hpp"
+#include "filegui.hpp"
+#include "lib/search.hpp"
+#include "lib/vfs/vfs.hpp"
 
 /*** global variables ****************************************************************************/
 

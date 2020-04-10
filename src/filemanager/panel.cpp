@@ -30,54 +30,52 @@
  *  \brief Source: panel managin module
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"        /* XCTRL and ALT macros  */
-#include "lib/skin.h"
-#include "lib/strescape.h"
-#include "lib/mcconfig.h"
-#include "lib/vfs/vfs.h"
-#include "lib/unixcompat.h"
-#include "lib/search.h"
-#include "lib/timefmt.h"        /* file_date() */
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"        /* XCTRL and ALT macros  */
+#include "lib/skin.hpp"
+#include "lib/strescape.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/unixcompat.hpp"
+#include "lib/search.hpp"
+#include "lib/timefmt.hpp"        /* file_date() */
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"       /* get_codepage_id () */
+#include "lib/charsets.hpp"       /* get_codepage_id () */
 #endif
-#include "lib/event.h"
+#include "lib/event.hpp"
 
-#include "src/setup.h"          /* For loading/saving panel options */
-#include "src/execute.h"
+#include "src/setup.hpp"          /* For loading/saving panel options */
+#include "src/execute.hpp"
 #ifdef HAVE_CHARSET
-#include "src/selcodepage.h"    /* select_charset (), SELECT_CHARSET_NO_TRANSLATE */
+#include "src/selcodepage.hpp"    /* select_charset (), SELECT_CHARSET_NO_TRANSLATE */
 #endif
-#include "src/keybind-defaults.h"       /* global_keymap_t */
+#include "src/keybind-defaults.hpp"       /* global_keymap_t */
 #ifdef ENABLE_SUBSHELL
-#include "src/subshell/subshell.h"      /* do_subshell_chdir() */
+#include "src/subshell/subshell.hpp"      /* do_subshell_chdir() */
 #endif
 
-#include "src/usermenu.h"
+#include "src/usermenu.hpp"
 
-#include "dir.h"
-#include "boxes.h"
-#include "tree.h"
-#include "ext.h"                /* regexp_command */
-#include "layout.h"             /* Most layout variables are here */
-#include "cmd.h"
-#include "command.h"            /* cmdline */
-#include "midnight.h"
-#include "mountlist.h"          /* my_statfs */
+#include "dir.hpp"
+#include "boxes.hpp"
+#include "tree.hpp"
+#include "ext.hpp"                /* regexp_command */
+#include "layout.hpp"             /* Most layout variables are here */
+#include "cmd.hpp"
+#include "command.hpp"            /* cmdline */
+#include "midnight.hpp"
+#include "mountlist.hpp"          /* my_statfs */
 
-#include "panel.h"
+#include "panel.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -1192,9 +1190,9 @@ panel_correct_path_to_show (const WPanel * panel)
     /* get last path element */
     path_element = vfs_path_element_clone (vfs_path_get_by_index (panel->cwd_vpath, -1));
 
-    if (elements_count > 1 && (strcmp (path_element->class->name, "cpiofs") == 0 ||
-                               strcmp (path_element->class->name, "extfs") == 0 ||
-                               strcmp (path_element->class->name, "tarfs") == 0))
+    if (elements_count > 1 && (strcmp (path_element->Class->name, "cpiofs") == 0 ||
+                               strcmp (path_element->Class->name, "extfs") == 0 ||
+                               strcmp (path_element->Class->name, "tarfs") == 0))
     {
         const char *archive_name;
         const vfs_path_element_t *prev_path_element;

@@ -34,17 +34,15 @@
  *  structure.
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <string.h>
 
-#include "lib/global.h"
-#include "lib/fs.h"
-#include "lib/util.h"
-#include "lib/vfs/vfs.h"
+#include "lib/global.hpp"
+#include "lib/fs.hpp"
+#include "lib/util.hpp"
+#include "lib/vfs/vfs.hpp"
 
-#include "filenot.h"
+#include "filenot.hpp"
 
 /*** global variables ****************************************************************************/
 

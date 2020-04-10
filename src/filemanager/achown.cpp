@@ -24,8 +24,6 @@
  *  \brief Source: Contains functions for advanced chowning
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
@@ -35,19 +33,19 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"        /* XCTRL and ALT macros */
-#include "lib/skin.h"
-#include "lib/vfs/vfs.h"
-#include "lib/strutil.h"
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"        /* XCTRL and ALT macros */
+#include "lib/skin.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 
-#include "midnight.h"           /* current_panel */
+#include "midnight.hpp"           /* current_panel */
 
-#include "achown.h"
+#include "achown.hpp"
 
 /*** global variables ****************************************************************************/
 

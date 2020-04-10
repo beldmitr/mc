@@ -1,9 +1,7 @@
 #ifndef MC__SEARCH_H
 #define MC__SEARCH_H
 
-#include <config.h>
-
-#include "lib/global.h"         /* <glib.h> */
+#include "lib/global.hpp"         /* <glib.h> */
 
 #include <sys/types.h>
 
@@ -12,6 +10,8 @@
 #endif
 
 /*** typedefs(not structures) and defined constants **********************************************/
+
+enum mc_search_cbret_t : int; // workaround: forward declaration for enum
 
 typedef enum mc_search_cbret_t mc_search_cbret_t;
 
@@ -49,7 +49,7 @@ typedef enum
     MC_SEARCH_T_GLOB
 } mc_search_type_t;
 
-enum mc_search_cbret_t
+enum mc_search_cbret_t : int
 {
     MC_SEARCH_CB_OK = 0,
     MC_SEARCH_CB_INVALID = -1,

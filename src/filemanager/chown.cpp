@@ -24,8 +24,6 @@
  *  \brief Source: chown command
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
@@ -35,19 +33,19 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/skin.h"
-#include "lib/vfs/vfs.h"
-#include "lib/strutil.h"
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"
+#include "lib/skin.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 
-#include "src/setup.h"          /* panels_options */
-#include "midnight.h"           /* current_panel */
+#include "src/setup.hpp"          /* panels_options */
+#include "midnight.hpp"           /* current_panel */
 
-#include "chown.h"
+#include "chown.hpp"
 
 /*** global variables ****************************************************************************/
 

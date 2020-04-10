@@ -24,7 +24,6 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
 #include <errno.h>
 
 #include <netdb.h>              /* struct hostent */
@@ -37,13 +36,13 @@
 #include <libssh2.h>
 #include <libssh2_sftp.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/util.h"
-#include "lib/tty/tty.h"        /* tty_enable_interrupt_key () */
-#include "lib/vfs/utilvfs.h"
+#include "lib/util.hpp"
+#include "lib/tty/tty.hpp"        /* tty_enable_interrupt_key () */
+#include "lib/vfs/utilvfs.hpp"
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

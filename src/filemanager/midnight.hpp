@@ -5,10 +5,10 @@
 #ifndef MC__MIDNIGHT_H
 #define MC__MIDNIGHT_H
 
-#include "lib/widget.h"
+#include "lib/widget.hpp"
 
-#include "panel.h"
-#include "layout.h"
+#include "panel.hpp"
+#include "layout.hpp"
 
 /* TODO: merge content of layout.h here */
 

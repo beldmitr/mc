@@ -5,11 +5,11 @@
 #ifndef MC__EDIT_WIDGET_H
 #define MC__EDIT_WIDGET_H
 
-#include "lib/search.h"         /* mc_search_t */
-#include "lib/widget.h"         /* Widget */
+#include "lib/search.hpp"         /* mc_search_t */
+#include "lib/widget.hpp"         /* Widget */
 
-#include "edit-impl.h"
-#include "editbuffer.h"
+#include "edit-impl.hpp"
+#include "editbuffer.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

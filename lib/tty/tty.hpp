@@ -14,7 +14,7 @@
 #include "lib/global.hpp"         /* include <glib.h> */
 
 #ifdef HAVE_SLANG
-#include "tty-slang.h"
+#include "tty-slang.hpp"
 #else
 #include "tty-ncurses.hpp"
 #endif

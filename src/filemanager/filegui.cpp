@@ -50,8 +50,6 @@
 
 /* {{{ Include files */
 
-#include <config.h>
-
 #if ((defined STAT_STATVFS || defined STAT_STATVFS64)                                       \
      && (defined HAVE_STRUCT_STATVFS_F_BASETYPE || defined HAVE_STRUCT_STATVFS_F_FSTYPENAME \
          || (! defined HAVE_STRUCT_STATFS_F_FSTYPENAME)))
@@ -141,24 +139,24 @@ statfs (char const *filename, struct fs_info *buf)
 
 #include <unistd.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/key.h"        /* tty_get_event */
-#include "lib/mcconfig.h"
-#include "lib/search.h"
-#include "lib/vfs/vfs.h"
-#include "lib/strescape.h"
-#include "lib/strutil.h"
-#include "lib/timefmt.h"        /* file_date() */
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/tty/key.hpp"        /* tty_get_event */
+#include "lib/mcconfig.hpp"
+#include "lib/search.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/strescape.hpp"
+#include "lib/strutil.hpp"
+#include "lib/timefmt.hpp"        /* file_date() */
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 
-#include "src/setup.h"          /* verbose, safe_overwrite */
+#include "src/setup.hpp"          /* verbose, safe_overwrite */
 
-#include "midnight.h"
-#include "fileopctx.h"          /* FILE_CONT */
+#include "midnight.hpp"
+#include "fileopctx.hpp"          /* FILE_CONT */
 
-#include "filegui.h"
+#include "filegui.hpp"
 
 /* }}} */
 

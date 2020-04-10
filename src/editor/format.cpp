@@ -34,8 +34,6 @@
  *  \date 2013, 2014
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <sys/types.h>
@@ -47,12 +45,12 @@
 
 #include <stdlib.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "src/setup.h"          /* option_tab_spacing */
+#include "src/setup.hpp"          /* option_tab_spacing */
 
-#include "edit-impl.h"
-#include "editwidget.h"
+#include "edit-impl.hpp"
+#include "editwidget.hpp"
 
 /*** global variables ****************************************************************************/
 

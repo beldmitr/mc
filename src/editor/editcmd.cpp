@@ -33,8 +33,6 @@
 
 /* #define PIPE_BLOCKS_SO_READ_BYTE_BY_BYTE */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -45,39 +43,39 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"        /* XCTRL */
-#include "lib/mcconfig.h"
-#include "lib/skin.h"
-#include "lib/strutil.h"        /* utf string functions */
-#include "lib/fileloc.h"
-#include "lib/lock.h"
-#include "lib/util.h"           /* tilde_expand() */
-#include "lib/vfs/vfs.h"
-#include "lib/widget.h"
-#include "lib/event.h"          /* mc_event_raise() */
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"        /* XCTRL */
+#include "lib/mcconfig.hpp"
+#include "lib/skin.hpp"
+#include "lib/strutil.hpp"        /* utf string functions */
+#include "lib/fileloc.hpp"
+#include "lib/lock.hpp"
+#include "lib/util.hpp"           /* tilde_expand() */
+#include "lib/vfs/vfs.hpp"
+#include "lib/widget.hpp"
+#include "lib/event.hpp"          /* mc_event_raise() */
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
-#include "src/history.h"
-#include "src/file_history.h"   /* show_file_history() */
-#include "src/setup.h"          /* option_tab_spacing */
+#include "src/history.hpp"
+#include "src/file_history.hpp"   /* show_file_history() */
+#include "src/setup.hpp"          /* option_tab_spacing */
 #ifdef HAVE_CHARSET
-#include "src/selcodepage.h"
+#include "src/selcodepage.hpp"
 #endif
-#include "src/keybind-defaults.h"
-#include "src/util.h"           /* check_for_default() */
+#include "src/keybind-defaults.hpp"
+#include "src/util.hpp"           /* check_for_default() */
 
-#include "edit-impl.h"
-#include "editwidget.h"
-#include "editcmd_dialogs.h"
+#include "edit-impl.hpp"
+#include "editwidget.hpp"
+#include "editcmd_dialogs.hpp"
 #ifdef HAVE_ASPELL
-#include "spell.h"
-#include "spell_dialogs.h"
+#include "spell.hpp"
+#include "spell_dialogs.hpp"
 #endif
-#include "etags.h"
+#include "etags.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -1045,7 +1043,7 @@ edit_get_block (WEdit * edit, off_t start, off_t finish, off_t * l)
 {
     unsigned char *s, *r;
 
-    r = s = g_malloc0 (finish - start + 1);
+    r = s = static_cast<unsigned char*>(g_malloc0 (finish - start + 1));
     if (edit->column_highlight)
     {
         *l = 0;
@@ -1207,7 +1205,7 @@ edit_collect_completions_get_current_word (edit_search_status_msg_t * esm, mc_se
 
 static gsize
 edit_collect_completions (WEdit * edit, off_t word_start, gsize word_len,
-                          char *match_expr, GString ** compl, gsize * num)
+                          char *match_expr, GString ** Compl, gsize * num)
 {
     gsize len = 0;
     gsize max_len = 0;
@@ -1281,13 +1279,13 @@ edit_collect_completions (WEdit * edit, off_t word_start, gsize word_len,
         for (i = 0; i < *num; i++)
         {
             if (strncmp
-                ((char *) &compl[i]->str[word_len],
-                 (char *) &temp->str[word_len], MAX (len, compl[i]->len) - word_len) == 0)
+                ((char *) &Compl[i]->str[word_len],
+                 (char *) &temp->str[word_len], MAX (len, Compl[i]->len) - word_len) == 0)
             {
-                GString *this = compl[i];
+                GString *This = Compl[i];
                 for (++i; i < *num; i++)
-                    compl[i - 1] = compl[i];
-                compl[*num - 1] = this;
+                    Compl[i - 1] = Compl[i];
+                Compl[*num - 1] = This;
                 skip = 1;
                 break;          /* skip it, already added */
             }
@@ -1297,9 +1295,9 @@ edit_collect_completions (WEdit * edit, off_t word_start, gsize word_len,
 
         if (*num == MAX_WORD_COMPLETIONS)
         {
-            g_string_free (compl[0], TRUE);
+            g_string_free (Compl[0], TRUE);
             for (i = 1; i < *num; i++)
-                compl[i - 1] = compl[i];
+                Compl[i - 1] = Compl[i];
             (*num)--;
         }
 #ifdef HAVE_CHARSET
@@ -1313,7 +1311,7 @@ edit_collect_completions (WEdit * edit, off_t word_start, gsize word_len,
             g_string_free (recoded, TRUE);
         }
 #endif
-        compl[(*num)++] = g_string_new_len (temp->str, temp->len);
+        Compl[(*num)++] = g_string_new_len (temp->str, temp->len);
         start += len;
 
         /* note the maximal length needed for the completion dialog */
@@ -3333,7 +3331,7 @@ edit_complete_word_cmd (WEdit * edit)
     gsize i, max_len, word_len = 0, num_compl = 0;
     off_t word_start = 0;
     GString *match_expr;
-    GString *compl[MAX_WORD_COMPLETIONS];       /* completions */
+    GString *Compl[MAX_WORD_COMPLETIONS];       /* completions */
 
     /* search start of word to be completed */
     if (!edit_find_word_start (&edit->buffer, &word_start, &word_len))
@@ -3350,14 +3348,14 @@ edit_complete_word_cmd (WEdit * edit)
     /* collect the possible completions              */
     /* start search from begin to end of file */
     max_len =
-        edit_collect_completions (edit, word_start, word_len, match_expr->str, (GString **) & compl,
+        edit_collect_completions (edit, word_start, word_len, match_expr->str, (GString **) & Compl,
                                   &num_compl);
 
     if (num_compl > 0)
     {
         /* insert completed word if there is only one match */
         if (num_compl == 1)
-            edit_complete_word_insert_recoded_completion (edit, compl[0]->str, word_len);
+            edit_complete_word_insert_recoded_completion (edit, Compl[0]->str, word_len);
         /* more than one possible completion => ask the user */
         else
         {
@@ -3370,7 +3368,7 @@ edit_complete_word_cmd (WEdit * edit)
 
             /* let the user select the preferred completion */
             curr_compl = editcmd_dialog_completion_show (edit, max_len,
-                                                         (GString **) & compl, num_compl);
+                                                         (GString **) & Compl, num_compl);
 
             if (curr_compl != NULL)
             {
@@ -3383,7 +3381,7 @@ edit_complete_word_cmd (WEdit * edit)
     g_string_free (match_expr, TRUE);
     /* release memory before return */
     for (i = 0; i < num_compl; i++)
-        g_string_free (compl[i], TRUE);
+        g_string_free (Compl[i], TRUE);
 }
 
 /* --------------------------------------------------------------------------------------------- */

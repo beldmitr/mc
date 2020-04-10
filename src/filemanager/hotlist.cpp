@@ -35,8 +35,6 @@
  *  \brief Source: directory hotlist
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
@@ -44,25 +42,25 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"        /* COLS */
-#include "lib/tty/key.h"        /* KEY_M_CTRL */
-#include "lib/skin.h"           /* colors */
-#include "lib/mcconfig.h"       /* Load/save directories hotlist */
-#include "lib/fileloc.h"
-#include "lib/strutil.h"
-#include "lib/vfs/vfs.h"
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"        /* COLS */
+#include "lib/tty/key.hpp"        /* KEY_M_CTRL */
+#include "lib/skin.hpp"           /* colors */
+#include "lib/mcconfig.hpp"       /* Load/save directories hotlist */
+#include "lib/fileloc.hpp"
+#include "lib/strutil.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 
-#include "src/setup.h"          /* For profile_bname */
-#include "src/history.h"
+#include "src/setup.hpp"          /* For profile_bname */
+#include "src/history.hpp"
 
-#include "midnight.h"           /* current_panel */
-#include "command.h"            /* cmdline */
+#include "midnight.hpp"           /* current_panel */
+#include "command.hpp"            /* cmdline */
 
-#include "hotlist.h"
+#include "hotlist.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -911,7 +909,7 @@ find_group_section (struct hotlist *grp)
 static struct hotlist *
 add2hotlist (char *label, char *directory, enum HotListType type, listbox_append_t pos)
 {
-    struct hotlist *new;
+    struct hotlist *New;
     struct hotlist *current = NULL;
 
     /*
@@ -927,35 +925,35 @@ add2hotlist (char *label, char *directory, enum HotListType type, listbox_append
     if ((current != NULL) && (current->type == HL_TYPE_DOTDOT))
         pos = LISTBOX_APPEND_AFTER;
 
-    new = g_new0 (struct hotlist, 1);
+    New = g_new0 (struct hotlist, 1);
 
-    new->type = type;
-    new->label = label;
-    new->directory = directory;
-    new->up = current_group;
+    New->type = type;
+    New->label = label;
+    New->directory = directory;
+    New->up = current_group;
 
     if (type == HL_TYPE_GROUP)
     {
-        current_group = new;
+        current_group = New;
         add_dotdot_to_list ();
-        current_group = new->up;
+        current_group = New->up;
     }
 
     if (current_group->head == NULL)
     {
         /* first element in group */
-        current_group->head = new;
+        current_group->head = New;
     }
     else if (pos == LISTBOX_APPEND_AFTER)
     {
-        new->next = current->next;
-        current->next = new;
+        New->next = current->next;
+        current->next = New;
     }
     else if (pos == LISTBOX_APPEND_BEFORE && current == current_group->head)
     {
         /* should be inserted before first item */
-        new->next = current;
-        current_group->head = new;
+        New->next = current;
+        current_group->head = New;
     }
     else if (pos == LISTBOX_APPEND_BEFORE)
     {
@@ -964,8 +962,8 @@ add2hotlist (char *label, char *directory, enum HotListType type, listbox_append
         while (p->next != current)
             p = p->next;
 
-        new->next = current;
-        p->next = new;
+        New->next = current;
+        p->next = New;
     }
     else
     {                           /* append at the end */
@@ -974,7 +972,7 @@ add2hotlist (char *label, char *directory, enum HotListType type, listbox_append
         while (p->next != NULL)
             p = p->next;
 
-        p->next = new;
+        p->next = New;
     }
 
     if (hotlist_state.running && type != HL_TYPE_COMMENT && type != HL_TYPE_DOTDOT)
@@ -983,16 +981,16 @@ add2hotlist (char *label, char *directory, enum HotListType type, listbox_append
         {
             char *lbl;
 
-            lbl = g_strconcat ("->", new->label, (char *) NULL);
-            listbox_add_item (l_hotlist, pos, 0, lbl, new, FALSE);
+            lbl = g_strconcat ("->", New->label, (char *) NULL);
+            listbox_add_item (l_hotlist, pos, 0, lbl, New, FALSE);
             g_free (lbl);
         }
         else
-            listbox_add_item (l_hotlist, pos, 0, new->label, new, FALSE);
+            listbox_add_item (l_hotlist, pos, 0, New->label, New, FALSE);
         listbox_select_entry (l_hotlist, l_hotlist->pos);
     }
 
-    return new;
+    return New;
 }
 
 /* --------------------------------------------------------------------------------------------- */

@@ -5,10 +5,10 @@
 #ifndef MC__LAYOUT_H
 #define MC__LAYOUT_H
 
-#include "lib/global.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/widget.hpp"
 
-#include "panel.h"
+#include "panel.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

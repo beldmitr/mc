@@ -24,23 +24,21 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 
-#include "lib/global.h"
-#include "lib/fileloc.h"
-#include "lib/mcconfig.h"
-#include "lib/util.h"
-#include "lib/event.h"
+#include "lib/global.hpp"
+#include "lib/fileloc.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/util.hpp"
+#include "lib/event.hpp"
 
-#include "lib/vfs/vfs.h"
+#include "lib/vfs/vfs.hpp"
 
-#include "src/execute.h"
+#include "src/execute.hpp"
 
-#include "clipboard.h"
+#include "clipboard.hpp"
 
 /*** global variables ****************************************************************************/
 

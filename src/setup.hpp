@@ -5,12 +5,10 @@
 #ifndef MC__SETUP_H
 #define MC__SETUP_H
 
-#include <config.h>
+#include "lib/global.hpp"         /* GError */
 
-#include "lib/global.h"         /* GError */
-
-#include "filemanager/layout.h" /* panel_view_mode_t */
-#include "filemanager/panel.h"  /* WPanel */
+#include "filemanager/layout.hpp" /* panel_view_mode_t */
+#include "filemanager/panel.hpp"  /* WPanel */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

@@ -29,8 +29,6 @@
  *  \brief Source: this is a main module
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <errno.h>
 #include <locale.h>
@@ -43,42 +41,42 @@
 #include <signal.h>
 #include <unistd.h>             /* getsid() */
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/event.h"
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"        /* For init_key() */
-#include "lib/tty/mouse.h"      /* init_mouse() */
-#include "lib/timer.h"
-#include "lib/skin.h"
-#include "lib/filehighlight.h"
-#include "lib/fileloc.h"
-#include "lib/strutil.h"
-#include "lib/util.h"
-#include "lib/vfs/vfs.h"        /* vfs_init(), vfs_shut() */
+#include "lib/event.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"        /* For init_key() */
+#include "lib/tty/mouse.hpp"      /* init_mouse() */
+#include "lib/timer.hpp"
+#include "lib/skin.hpp"
+#include "lib/filehighlight.hpp"
+#include "lib/fileloc.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
+#include "lib/vfs/vfs.hpp"        /* vfs_init(), vfs_shut() */
 
-#include "filemanager/midnight.h"       /* current_panel */
-#include "filemanager/treestore.h"      /* tree_store_save */
-#include "filemanager/layout.h"
-#include "filemanager/ext.h"    /* flush_extension_file() */
-#include "filemanager/command.h"        /* cmdline */
-#include "filemanager/panel.h"  /* panalized_panel */
+#include "filemanager/midnight.hpp"       /* current_panel */
+#include "filemanager/treestore.hpp"      /* tree_store_save */
+#include "filemanager/layout.hpp"
+#include "filemanager/ext.hpp"    /* flush_extension_file() */
+#include "filemanager/command.hpp"        /* cmdline */
+#include "filemanager/panel.hpp"  /* panalized_panel */
 
-#include "vfs/plugins_init.h"
+#include "vfs/plugins_init.hpp"
 
-#include "events_init.h"
-#include "args.h"
+#include "events_init.hpp"
+#include "args.hpp"
 #ifdef ENABLE_SUBSHELL
-#include "subshell/subshell.h"
+#include "subshell/subshell.hpp"
 #endif
-#include "setup.h"              /* load_setup() */
+#include "setup.hpp"              /* load_setup() */
 
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
-#include "selcodepage.h"
+#include "lib/charsets.hpp"
+#include "selcodepage.hpp"
 #endif /* HAVE_CHARSET */
 
-#include "consaver/cons.saver.h"        /* cons_saver_pid */
+#include "consaver/cons.saver.hpp"        /* cons_saver_pid */
 
 /*** global variables ****************************************************************************/
 

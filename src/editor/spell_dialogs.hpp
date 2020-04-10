@@ -1,7 +1,7 @@
 #ifndef MC__EDIT_ASPELL_DIALOGS_H
 #define MC__EDIT_ASPELL_DIALOGS_H
 
-#include "lib/global.h"         /* include <glib.h> */
+#include "lib/global.hpp"         /* include <glib.h> */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

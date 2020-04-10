@@ -24,17 +24,15 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"        /* str_term_width1 */
+#include "lib/widget.hpp"
+#include "lib/tty/tty.hpp"        /* COLS, LINES */
 
-#include "lib/global.h"
-#include "lib/strutil.h"        /* str_term_width1 */
-#include "lib/widget.h"
-#include "lib/tty/tty.h"        /* COLS, LINES */
+#include "editwidget.hpp"
 
-#include "editwidget.h"
-
-#include "spell.h"
-#include "spell_dialogs.h"
+#include "spell.hpp"
+#include "spell_dialogs.hpp"
 
 /*** global variables ****************************************************************************/
 

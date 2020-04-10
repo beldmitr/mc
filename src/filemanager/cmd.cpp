@@ -30,8 +30,6 @@
  *  They normally operate on the current panel.
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
@@ -49,51 +47,51 @@
 #include <pwd.h>
 #include <grp.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"        /* LINES, tty_touch_screen() */
-#include "lib/tty/key.h"        /* ALT() macro */
-#include "lib/mcconfig.h"
-#include "lib/filehighlight.h"  /* MC_FHL_INI_FILE */
-#include "lib/vfs/vfs.h"
-#include "lib/fileloc.h"
-#include "lib/strutil.h"
-#include "lib/util.h"
-#include "lib/widget.h"
-#include "lib/keybind.h"        /* CK_Down, CK_History */
-#include "lib/event.h"          /* mc_event_raise() */
+#include "lib/tty/tty.hpp"        /* LINES, tty_touch_screen() */
+#include "lib/tty/key.hpp"        /* ALT() macro */
+#include "lib/mcconfig.hpp"
+#include "lib/filehighlight.hpp"  /* MC_FHL_INI_FILE */
+#include "lib/vfs/vfs.hpp"
+#include "lib/fileloc.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
+#include "lib/keybind.hpp"        /* CK_Down, CK_History */
+#include "lib/event.hpp"          /* mc_event_raise() */
 
-#include "src/setup.h"
-#include "src/execute.h"        /* toggle_panels() */
-#include "src/history.h"
-#include "src/usermenu.h"       /* MC_GLOBAL_MENU */
-#include "src/util.h"           /* check_for_default() */
+#include "src/setup.hpp"
+#include "src/execute.hpp"        /* toggle_panels() */
+#include "src/history.hpp"
+#include "src/usermenu.hpp"       /* MC_GLOBAL_MENU */
+#include "src/util.hpp"           /* check_for_default() */
 
-#include "src/viewer/mcviewer.h"
+#include "src/viewer/mcviewer.hpp"
 
 #ifdef USE_INTERNAL_EDIT
-#include "src/editor/edit.h"
+#include "src/editor/edit.hpp"
 #endif
 
 #ifdef USE_DIFF_VIEW
-#include "src/diffviewer/ydiff.h"
+#include "src/diffviewer/ydiff.hpp"
 #endif
 
-#include "fileopctx.h"
-#include "file.h"               /* file operation routines */
-#include "find.h"               /* find_file() */
-#include "filenot.h"
-#include "hotlist.h"            /* hotlist_show() */
-#include "panel.h"              /* WPanel */
-#include "tree.h"               /* tree_chdir() */
-#include "midnight.h"           /* change_panel() */
-#include "command.h"            /* cmdline */
-#include "layout.h"             /* get_current_type() */
-#include "ext.h"                /* regex_command() */
-#include "boxes.h"              /* cd_box() */
-#include "dir.h"
+#include "fileopctx.hpp"
+#include "file.hpp"               /* file operation routines */
+#include "find.hpp"               /* find_file() */
+#include "filenot.hpp"
+#include "hotlist.hpp"            /* hotlist_show() */
+#include "panel.hpp"              /* WPanel */
+#include "tree.hpp"               /* tree_chdir() */
+#include "midnight.hpp"           /* change_panel() */
+#include "command.hpp"            /* cmdline */
+#include "layout.hpp"             /* get_current_type() */
+#include "ext.hpp"                /* regex_command() */
+#include "boxes.hpp"              /* cd_box() */
+#include "dir.hpp"
 
-#include "cmd.h"                /* Our definitions */
+#include "cmd.hpp"                /* Our definitions */
 
 /*** global variables ****************************************************************************/
 

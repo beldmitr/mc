@@ -31,8 +31,6 @@
  *  \brief Source: main dialog (file panels) of the Midnight Commander
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <errno.h>
 #include <locale.h>
@@ -44,53 +42,53 @@
 #include <sys/wait.h>
 #include <pwd.h>                /* for username in xterm title */
 
-#include "lib/global.h"
-#include "lib/fileloc.h"        /* MC_HINT */
+#include "lib/global.hpp"
+#include "lib/fileloc.hpp"        /* MC_HINT */
 
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"        /* KEY_M_* masks */
-#include "lib/skin.h"
-#include "lib/util.h"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"        /* KEY_M_* masks */
+#include "lib/skin.hpp"
+#include "lib/util.hpp"
 
-#include "lib/vfs/vfs.h"
+#include "lib/vfs/vfs.hpp"
 
-#include "src/args.h"
+#include "src/args.hpp"
 #ifdef ENABLE_SUBSHELL
-#include "src/subshell/subshell.h"
+#include "src/subshell/subshell.hpp"
 #endif
-#include "src/execute.h"        /* toggle_subshell */
-#include "src/setup.h"          /* variables */
-#include "src/learn.h"          /* learn_keys() */
-#include "src/keybind-defaults.h"
-#include "lib/fileloc.h"        /* MC_FILEPOS_FILE */
-#include "lib/keybind.h"
-#include "lib/event.h"
+#include "src/execute.hpp"        /* toggle_subshell */
+#include "src/setup.hpp"          /* variables */
+#include "src/learn.hpp"          /* learn_keys() */
+#include "src/keybind-defaults.hpp"
+#include "lib/fileloc.hpp"        /* MC_FILEPOS_FILE */
+#include "lib/keybind.hpp"
+#include "lib/event.hpp"
 
-#include "tree.h"
-#include "boxes.h"              /* sort_box(), tree_box() */
-#include "layout.h"
-#include "cmd.h"                /* commands */
-#include "hotlist.h"
-#include "panelize.h"
-#include "command.h"            /* cmdline */
-#include "dir.h"                /* dir_list_clean() */
+#include "tree.hpp"
+#include "boxes.hpp"              /* sort_box(), tree_box() */
+#include "layout.hpp"
+#include "cmd.hpp"                /* commands */
+#include "hotlist.hpp"
+#include "panelize.hpp"
+#include "command.hpp"            /* cmdline */
+#include "dir.hpp"                /* dir_list_clean() */
 
-#include "chmod.h"
-#include "chown.h"
-#include "achown.h"
+#include "chmod.hpp"
+#include "chown.hpp"
+#include "achown.hpp"
 
 #ifdef USE_INTERNAL_EDIT
-#include "src/editor/edit.h"
+#include "src/editor/edit.hpp"
 #endif
 
 #ifdef USE_DIFF_VIEW
-#include "src/diffviewer/ydiff.h"
+#include "src/diffviewer/ydiff.hpp"
 #endif
 
-#include "src/consaver/cons.saver.h"    /* show_console_contents */
-#include "src/file_history.h"   /* show_file_history() */
+#include "src/consaver/cons.saver.hpp"    /* show_console_contents */
+#include "src/file_history.hpp"   /* show_file_history() */
 
-#include "midnight.h"
+#include "midnight.hpp"
 
 /*** global variables ****************************************************************************/
 

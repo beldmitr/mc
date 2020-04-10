@@ -24,8 +24,6 @@
  *  \brief Source: list of mounted filesystems
  */
 
-#include <config.h>
-
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -175,10 +173,10 @@
 #include <sys/statvfs.h>
 #endif
 
-#include "lib/global.h"
-#include "lib/strutil.h"        /* str_verscmp() */
-#include "lib/unixcompat.h"     /* makedev */
-#include "mountlist.h"
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"        /* str_verscmp() */
+#include "lib/unixcompat.hpp"     /* makedev */
+#include "mountlist.hpp"
 
 /*** global variables ****************************************************************************/
 

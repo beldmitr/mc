@@ -5,7 +5,7 @@
 #ifndef MC__VIEWER_H
 #define MC__VIEWER_H
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

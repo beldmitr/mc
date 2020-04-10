@@ -28,8 +28,6 @@
  *  \brief Source: directory panel listing format editor
  */
 
-#include <config.h>
-
 #ifdef LISTMODE_EDITOR
 
 #include <stdio.h>

@@ -5,8 +5,8 @@
 #ifndef MC__BOXES_H
 #define MC__BOXES_H
 
-#include "dir.h"
-#include "panel.h"
+#include "dir.hpp"
+#include "panel.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

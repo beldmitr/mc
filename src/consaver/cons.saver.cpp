@@ -49,7 +49,6 @@
  *  root is even worse.
  */
 
-#include <config.h>
 
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
@@ -69,10 +68,10 @@
 #endif
 #include <termios.h>
 
-#include "lib/unixcompat.h"     /* STDERR_FILENO */
+#include "lib/unixcompat.hpp"     /* STDERR_FILENO */
 
 #define LINUX_CONS_SAVER_C
-#include "cons.saver.h"
+#include "cons.saver.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -237,7 +236,7 @@ main (int argc, char **argv)
         die ();
 
     buffer_size = 4 + 2 * winsz.ws_col * winsz.ws_row;
-    buffer = calloc (buffer_size, 1);
+    buffer = static_cast<char*>(calloc (buffer_size, 1));
     if (buffer == NULL)
         die ();
 

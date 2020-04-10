@@ -1,9 +1,7 @@
 #ifndef MC__STRUTILS_ESCAPE_H
 #define MC__STRUTILS_ESCAPE_H
 
-#include <config.h>
-
-#include "lib/global.h"         /* <glib.h> */
+#include "lib/global.hpp"         /* <glib.h> */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

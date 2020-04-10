@@ -30,16 +30,14 @@
  *  \date 1996, 1997
  */
 
-#include <config.h>
-
 #include <stdlib.h>             /* atoi(), NULL */
 
-#include "lib/global.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/widget.hpp"
 
-#include "editwidget.h"
-#include "edit-impl.h"
-#include "src/setup.h"          /* option_tab_spacing */
+#include "editwidget.hpp"
+#include "edit-impl.hpp"
+#include "src/setup.hpp"          /* option_tab_spacing */
 
 /*** global variables ****************************************************************************/
 

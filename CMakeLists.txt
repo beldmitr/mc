@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.15)
 
 project(mcpp)
 
+
+set(CMAKE_CXX_FLAGS -fpermissive)   # FIXME remove it after code compiling !!!
+
 file(GLOB SRC
         "src/*.cpp"
         "src/consaver/*.cpp"
@@ -58,7 +61,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         "src/vfs/sfs"
         "src/vfs/sftpfs"
         "src/vfs/smbfs"
-        "src/vfs/smbfs/helpers/include"
+        "src/vfs/smbfs/helpers/include/"
         "src/vfs/tar"
         "src/vfs/undelfs"
         "src/viewer"
@@ -87,3 +90,40 @@ pkg_check_modules(GLIB2 REQUIRED IMPORTED_TARGET glib-2.0)
 target_include_directories(${PROJECT_NAME} PUBLIC ${GLIB2_INCLUDE_DIRS})
 link_directories(${GLIB_LIBRARY_DIRS})
 target_link_libraries(${PROJECT_NAME} ${GLIB2_LIBRARIES})
+
+
+# DEFINITIONS
+add_compile_definitions(VERSION="0.0")
+
+add_compile_definitions(HAVE_SLANG)
+add_compile_definitions(ENABLE_BACKGROUND)
+add_compile_definitions(HAVE_SYS_IOCTL_H)
+add_compile_definitions(HAVE_FCNTL_H)
+add_compile_definitions(SEARCH_TYPE_PCRE)
+add_compile_definitions(USE_DIFF_VIEW)
+add_compile_definitions(USE_INTERNAL_EDIT)
+add_compile_definitions(HAVE_CHARSET)
+add_compile_definitions(HAVE_ASPELL)
+add_compile_definitions(ENABLE_SUBSHELL)
+add_compile_definitions(USE_STATVFS=1)
+add_compile_definitions(STAT_STATVFS)   # vs STAT_STATVFS64 ???
+add_compile_definitions(HAVE_UTIME_H) # TODO ?? HAVE_UTIME_H vs. HAVE_UTIMENSAT
+add_compile_definitions(ENABLE_VFS_NET)
+add_compile_definitions(HAVE_SOCKLEN_T)
+
+# SIG_ATOMIC_VOLATILE
+# Some systems declare sig_atomic_t as volatile, some others -- no.
+# TODO Choose correct
+add_compile_definitions(SIG_ATOMIC_VOLATILE_T=sig_atomic_t)
+#add_compile_definitions(SIG_ATOMIC_VOLATILE_T=volatile sig_atomic_t)
+
+add_compile_definitions(HAVE_SYS_UCRED_H)
+
+
+add_compile_definitions(SAVERDIR="/usr/local/libexec/mc/")
+add_compile_definitions(SYSCONFDIR="/usr/local/etc/mc/")
+add_compile_definitions(DATADIR="/usr/local/share/mc/")
+add_compile_definitions(EXTHELPERSDIR="/usr/local/libexec/mc/ext.d/")
+add_compile_definitions(LIBEXECDIR="/usr/local/libexec/mc/")
+
+

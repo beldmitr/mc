@@ -28,36 +28,34 @@
  *  \brief Source: user menu implementation
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
-#include "lib/global.h"
-#include "lib/fileloc.h"
-#include "lib/tty/tty.h"
-#include "lib/skin.h"
-#include "lib/search.h"
-#include "lib/vfs/vfs.h"
-#include "lib/strutil.h"
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/fileloc.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/skin.hpp"
+#include "lib/search.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 
-#include "src/editor/edit.h"    /* WEdit, BLOCK_FILE */
-#include "src/viewer/mcviewer.h"        /* for default_* externs */
+#include "src/editor/edit.hpp"    /* WEdit, BLOCK_FILE */
+#include "src/viewer/mcviewer.hpp"        /* for default_* externs */
 
-#include "src/execute.h"
-#include "src/setup.h"
-#include "src/history.h"
+#include "src/execute.hpp"
+#include "src/setup.hpp"
+#include "src/history.hpp"
 
-#include "src/filemanager/dir.h"
-#include "src/filemanager/midnight.h"
-#include "src/filemanager/layout.h"
+#include "src/filemanager/dir.hpp"
+#include "src/filemanager/midnight.hpp"
+#include "src/filemanager/layout.hpp"
 
-#include "usermenu.h"
+#include "usermenu.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -358,7 +356,7 @@ debug_out (char *start, char *end, gboolean condition)
 static char *
 test_line (const WEdit * edit_widget, char *p, gboolean * result)
 {
-    char operator;
+    char Operator;
 
     /* Repeat till end of line */
     while (*p != '\0' && *p != '\n')
@@ -371,7 +369,7 @@ test_line (const WEdit * edit_widget, char *p, gboolean * result)
             p++;
         if (*p == '\0' || *p == '\n')
             break;
-        operator = *p++;
+        Operator = *p++;
         if (*p == '?')
         {
             debug_flag = TRUE;
@@ -389,7 +387,7 @@ test_line (const WEdit * edit_widget, char *p, gboolean * result)
         /* Add one debug statement */
         debug_out (debug_start, debug_end, condition);
 
-        switch (operator)
+        switch (Operator)
         {
         case '+':
         case '=':
@@ -407,7 +405,7 @@ test_line (const WEdit * edit_widget, char *p, gboolean * result)
             break;
         }                       /* switch */
         /* Add one debug statement */
-        debug_out (&operator, NULL, *result);
+        debug_out (&Operator, NULL, *result);
 
     }                           /* while (*p != '\n') */
     /* Report debug message */

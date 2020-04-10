@@ -23,20 +23,18 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "lib/global.hpp"
 
-#include "lib/global.h"
-
-#include "lib/event.h"
+#include "lib/event.hpp"
 
 #ifdef ENABLE_BACKGROUND
-#include "background.h"         /* (background_parent_call), background_parent_call_string() */
+#include "background.hpp"         /* (background_parent_call), background_parent_call_string() */
 #endif /* ENABLE_BACKGROUND */
-#include "clipboard.h"          /* clipboard events */
-#include "execute.h"            /* execute_suspend() */
-#include "help.h"               /* help_interactive_display() */
+#include "clipboard.hpp"          /* clipboard events */
+#include "execute.hpp"            /* execute_suspend() */
+#include "help.hpp"               /* help_interactive_display() */
 
-#include "events_init.h"
+#include "events_init.hpp"
 
 /*** global variables ****************************************************************************/
 

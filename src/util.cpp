@@ -24,15 +24,13 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "lib/global.hpp"
+#include "lib/util.hpp"
 
-#include "lib/global.h"
-#include "lib/util.h"
+#include "src/filemanager/file.hpp"
+#include "src/filemanager/filegui.hpp"
 
-#include "src/filemanager/file.h"
-#include "src/filemanager/filegui.h"
-
-#include "util.h"
+#include "util.hpp"
 
 /*** global variables ****************************************************************************/
 

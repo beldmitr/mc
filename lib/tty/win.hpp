@@ -5,7 +5,7 @@
 #ifndef MC__WIN_H
 #define MC__WIN_H
 
-#include "lib/global.h"         /* <glib.h> */
+#include "lib/global.hpp"         /* <glib.h> */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

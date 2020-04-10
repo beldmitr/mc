@@ -30,8 +30,6 @@
  *  \date 1996, 1997
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -39,33 +37,33 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"        /* LINES, COLS */
-#include "lib/tty/key.h"        /* is_idle() */
-#include "lib/tty/color.h"      /* tty_setcolor() */
-#include "lib/skin.h"
-#include "lib/fileloc.h"        /* EDIT_DIR */
-#include "lib/strutil.h"        /* str_term_trim() */
-#include "lib/util.h"           /* mc_build_filename() */
-#include "lib/widget.h"
-#include "lib/mcconfig.h"
-#include "lib/event.h"          /* mc_event_raise() */
+#include "lib/tty/tty.hpp"        /* LINES, COLS */
+#include "lib/tty/key.hpp"        /* is_idle() */
+#include "lib/tty/color.hpp"      /* tty_setcolor() */
+#include "lib/skin.hpp"
+#include "lib/fileloc.hpp"        /* EDIT_DIR */
+#include "lib/strutil.hpp"        /* str_term_trim() */
+#include "lib/util.hpp"           /* mc_build_filename() */
+#include "lib/widget.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/event.hpp"          /* mc_event_raise() */
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
-#include "src/keybind-defaults.h"       /* keybind_lookup_keymap_command() */
-#include "src/setup.h"          /* home_dir */
-#include "src/execute.h"        /* toggle_subshell()  */
-#include "src/filemanager/cmd.h"        /* save_setup_cmd()  */
-#include "src/learn.h"          /* learn_keys() */
-#include "src/args.h"           /* mcedit_arg_t */
+#include "src/keybind-defaults.hpp"       /* keybind_lookup_keymap_command() */
+#include "src/setup.hpp"          /* home_dir */
+#include "src/execute.hpp"        /* toggle_subshell()  */
+#include "src/filemanager/cmd.hpp"        /* save_setup_cmd()  */
+#include "src/learn.hpp"          /* learn_keys() */
+#include "src/args.hpp"           /* mcedit_arg_t */
 
-#include "edit-impl.h"
-#include "editwidget.h"
+#include "edit-impl.hpp"
+#include "editwidget.hpp"
 #ifdef HAVE_ASPELL
-#include "spell.h"
+#include "spell.hpp"
 #endif
 
 /*** global variables ****************************************************************************/

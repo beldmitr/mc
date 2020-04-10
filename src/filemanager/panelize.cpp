@@ -28,8 +28,6 @@
  *  \brief Source: External panelization module
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
@@ -37,24 +35,24 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/skin.h"
-#include "lib/vfs/vfs.h"
-#include "lib/mcconfig.h"       /* Load/save directories panelize */
-#include "lib/strutil.h"
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/skin.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/mcconfig.hpp"       /* Load/save directories panelize */
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 
-#include "src/setup.h"          /* For profile_bname */
-#include "src/history.h"
+#include "src/setup.hpp"          /* For profile_bname */
+#include "src/history.hpp"
 
-#include "dir.h"
-#include "midnight.h"           /* current_panel */
-#include "layout.h"             /* rotate_dash() */
-#include "panel.h"              /* WPanel */
+#include "dir.hpp"
+#include "midnight.hpp"           /* current_panel */
+#include "layout.hpp"             /* rotate_dash() */
+#include "panel.hpp"              /* WPanel */
 
-#include "panelize.h"
+#include "panelize.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -245,13 +243,13 @@ add2panelize (char *label, char *command)
     }
     else
     {
-        struct panelize *new;
+        struct panelize *New;
 
-        new = g_new (struct panelize, 1);
-        new->label = label;
-        new->command = command;
-        old->next = new;
-        new->next = current;
+        New = g_new (struct panelize, 1);
+        New->label = label;
+        New->command = command;
+        old->next = New;
+        New->next = current;
     }
 }
 

@@ -28,26 +28,24 @@
  *  \brief Source: directory routines
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/search.h"
-#include "lib/vfs/vfs.h"
-#include "lib/fs.h"
-#include "lib/strutil.h"
-#include "lib/util.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/search.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/fs.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
 
-#include "src/setup.h"          /* panels_options */
+#include "src/setup.hpp"          /* panels_options */
 
-#include "treestore.h"
-#include "file.h"               /* file_is_symlink_to_dir() */
-#include "dir.h"
+#include "treestore.hpp"
+#include "file.hpp"               /* file_is_symlink_to_dir() */
+#include "dir.hpp"
 
 /*** global variables ****************************************************************************/
 

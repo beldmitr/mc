@@ -30,8 +30,6 @@
  *  \date 1996, 1997
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <sys/types.h>
@@ -42,17 +40,17 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"        /* KEY_F */
-#include "lib/tty/key.h"        /* XCTRL */
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"        /* KEY_F */
+#include "lib/tty/key.hpp"        /* XCTRL */
+#include "lib/widget.hpp"
 
-#include "src/setup.h"          /* drop_menus */
-#include "src/keybind-defaults.h"
+#include "src/setup.hpp"          /* drop_menus */
+#include "src/keybind-defaults.hpp"
 
-#include "edit-impl.h"
-#include "editwidget.h"
+#include "edit-impl.hpp"
+#include "editwidget.hpp"
 
 /*** global variables ****************************************************************************/
 

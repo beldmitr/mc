@@ -1,7 +1,7 @@
 #ifndef MC__FILE_HISTORY_H
 #define MC__FILE_HISTORY_H
 
-#include "lib/widget.h"
+#include "lib/widget.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

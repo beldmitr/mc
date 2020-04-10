@@ -1,7 +1,7 @@
 #ifndef MC__EDITCMD_DIALOGS_H
 #define MC__EDITCMD_DIALOGS_H
 
-#include "src/editor/edit.h"
+#include "src/editor/edit.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -25,7 +25,7 @@ gboolean editcmd_dialog_search_show (WEdit * edit);
 
 int editcmd_dialog_raw_key_query (const char *heading, const char *query, gboolean cancel);
 
-char *editcmd_dialog_completion_show (const WEdit * edit, int max_len, GString ** compl,
+char *editcmd_dialog_completion_show (const WEdit * edit, int max_len, GString ** Compl,
                                       int num_compl);
 
 void editcmd_dialog_select_definition_show (WEdit *, char *, int, int, struct etags_hash_struct *,

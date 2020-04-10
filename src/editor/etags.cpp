@@ -29,18 +29,16 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>
 #include <string.h>
 #include <ctype.h>
 
-#include "lib/global.h"
-#include "lib/util.h"           /* canonicalize_pathname() */
+#include "lib/global.hpp"
+#include "lib/util.hpp"           /* canonicalize_pathname() */
 
-#include "etags.h"
+#include "etags.hpp"
 
 /*** global variables ****************************************************************************/
 

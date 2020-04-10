@@ -11,10 +11,10 @@
 #ifndef MC__COLOR_H
 #define MC__COLOR_H
 
-#include "lib/global.h"         /* glib.h */
+#include "lib/global.hpp"         /* glib.h */
 
 #ifdef HAVE_SLANG
-#include "color-slang.h"
+#include "color-slang.hpp"
 #else
 #include "tty-ncurses.h"
 #endif

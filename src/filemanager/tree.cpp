@@ -36,38 +36,36 @@
  *  \brief Source: directory tree browser
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"
-#include "lib/skin.h"
-#include "lib/vfs/vfs.h"
-#include "lib/fileloc.h"
-#include "lib/strutil.h"
-#include "lib/util.h"
-#include "lib/widget.h"
-#include "lib/event.h"          /* mc_event_raise() */
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"
+#include "lib/skin.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/fileloc.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
+#include "lib/event.hpp"          /* mc_event_raise() */
 
-#include "src/setup.h"          /* confirm_delete, panels_options */
-#include "src/keybind-defaults.h"
-#include "src/history.h"
+#include "src/setup.hpp"          /* confirm_delete, panels_options */
+#include "src/keybind-defaults.hpp"
+#include "src/history.hpp"
 
-#include "dir.h"
-#include "midnight.h"           /* the_menubar */
-#include "file.h"               /* copy_dir_dir(), move_dir_dir(), erase_dir() */
-#include "layout.h"             /* command_prompt */
-#include "treestore.h"
-#include "cmd.h"
-#include "filegui.h"
+#include "dir.hpp"
+#include "midnight.hpp"           /* the_menubar */
+#include "file.hpp"               /* copy_dir_dir(), move_dir_dir(), erase_dir() */
+#include "layout.hpp"             /* command_prompt */
+#include "treestore.hpp"
+#include "cmd.hpp"
+#include "filegui.hpp"
 
-#include "tree.h"
+#include "tree.hpp"
 
 /*** global variables ****************************************************************************/
 

@@ -9,8 +9,8 @@
 #include <libssh2.h>
 #include <libssh2_sftp.h>
 
-#include "lib/vfs/vfs.h"
-#include "lib/vfs/xdirentry.h"
+#include "lib/vfs/vfs.hpp"
+#include "lib/vfs/xdirentry.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

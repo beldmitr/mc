@@ -5,7 +5,7 @@
 #ifndef MC__FILENOT_H
 #define MC__FILENOT_H
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

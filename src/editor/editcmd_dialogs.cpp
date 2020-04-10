@@ -24,27 +24,25 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/skin.h"           /* INPUT_COLOR */
-#include "lib/tty/key.h"
-#include "lib/search.h"
-#include "lib/strutil.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/skin.hpp"           /* INPUT_COLOR */
+#include "lib/tty/key.hpp"
+#include "lib/search.hpp"
+#include "lib/strutil.hpp"
+#include "lib/widget.hpp"
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
-#include "src/history.h"
+#include "src/history.hpp"
 
-#include "src/editor/editwidget.h"
-#include "src/editor/etags.h"
-#include "src/editor/editcmd_dialogs.h"
+#include "src/editor/editwidget.hpp"
+#include "src/editor/etags.hpp"
+#include "src/editor/editcmd_dialogs.hpp"
 
 #ifdef HAVE_ASPELL
-#include "src/editor/spell.h"
+#include "src/editor/spell.hpp"
 #endif
 
 /*** global variables ****************************************************************************/
@@ -345,7 +343,7 @@ editcmd_dialog_raw_key_query (const char *heading, const char *query, gboolean c
 /* let the user select its preferred completion */
 
 char *
-editcmd_dialog_completion_show (const WEdit * edit, int max_len, GString ** compl, int num_compl)
+editcmd_dialog_completion_show (const WEdit * edit, int max_len, GString ** Compl, int num_compl)
 {
     const Widget *we = CONST_WIDGET (edit);
     int start_x, start_y, offset, i;
@@ -391,7 +389,7 @@ editcmd_dialog_completion_show (const WEdit * edit, int max_len, GString ** comp
 
     /* fill the listbox with the completions */
     for (i = num_compl - 1; i >= 0; i--)        /* reverse order */
-        listbox_add_item (compl_list, LISTBOX_APPEND_AT_END, 0, (char *) compl[i]->str, NULL,
+        listbox_add_item (compl_list, LISTBOX_APPEND_AT_END, 0, (char *) Compl[i]->str, NULL,
                           FALSE);
 
     /* pop up the dialog and apply the chosen completion */

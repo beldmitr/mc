@@ -84,16 +84,16 @@ static int background_attention (int fd, void *closure);
 static void
 register_task_running (file_op_context_t * ctx, pid_t pid, int fd, int to_child, char *info)
 {
-    TaskList *new;
+    TaskList *New;
 
-    new = g_new (TaskList, 1);
-    new->pid = pid;
-    new->info = info;
-    new->state = Task_Running;
-    new->next = task_list;
-    new->fd = fd;
-    new->to_child_fd = to_child;
-    task_list = new;
+    New = g_new (TaskList, 1);
+    New->pid = pid;
+    New->info = info;
+    New->state = Task_Running;
+    New->next = task_list;
+    New->fd = fd;
+    New->to_child_fd = to_child;
+    task_list = New;
 
     add_select_channel (fd, background_attention, ctx);
 }
@@ -216,7 +216,7 @@ background_attention (int fd, void *closure)
     enum ReturnType type;
     const char *background_process_error = _("Background process error");
 
-    ctx = closure;
+    ctx = static_cast<file_op_context_t*>(closure); // Smelly, but should be enough for now
 
     bytes = read (fd, &routine.pointer, sizeof (routine));
     if (bytes == -1 || (size_t) bytes < (sizeof (routine)))
@@ -260,7 +260,7 @@ background_attention (int fd, void *closure)
         if (read (fd, &size, sizeof (size)) != sizeof (size))
             return reading_failed (i - 1, data);
 
-        data[i] = g_malloc (size + 1);
+        data[i] = static_cast<char*>(g_malloc (size + 1));
 
         if (read (fd, data[i], size) != size)
             return reading_failed (i, data);
@@ -470,7 +470,7 @@ parent_va_call_string (void *routine, int argc, va_list ap)
     if (read (from_parent_fd, &i, sizeof (i)) != sizeof (i) || i == 0)
         return NULL;
 
-    str = g_malloc (i + 1);
+    str = static_cast<char*>(g_malloc (i + 1));
     if (read (from_parent_fd, str, i) != i)
     {
         g_free (str);

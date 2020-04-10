@@ -7,10 +7,10 @@
 
 #include <inttypes.h>           /* off_t, uintmax_t */
 
-#include "lib/global.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/widget.hpp"
 
-#include "fileopctx.h"
+#include "fileopctx.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

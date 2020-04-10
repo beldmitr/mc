@@ -1,9 +1,9 @@
 #ifndef MC__KEYBIND_DEFAULTS_H
 #define MC__KEYBIND_DEFAULTS_H
 
-#include "lib/global.h"
-#include "lib/keybind.h"        /* global_keymap_t */
-#include "lib/mcconfig.h"       /* mc_config_t */
+#include "lib/global.hpp"
+#include "lib/keybind.hpp"        /* global_keymap_t */
+#include "lib/mcconfig.hpp"       /* mc_config_t */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

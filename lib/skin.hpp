@@ -1,11 +1,11 @@
 #ifndef MC_SKIN_H
 #define MC_SKIN_H
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/mcconfig.h"
+#include "lib/mcconfig.hpp"
 
-#include "lib/tty/color.h"
+#include "lib/tty/color.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

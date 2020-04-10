@@ -8,13 +8,13 @@
 #include <inttypes.h>           /* uintmax_t */
 #include <limits.h>             /* MB_LEN_MAX */
 
-#include "lib/global.h"         /* gboolean */
-#include "lib/fs.h"             /* MC_MAXPATHLEN */
-#include "lib/strutil.h"
-#include "lib/widget.h"         /* Widget */
-#include "lib/filehighlight.h"
+#include "lib/global.hpp"         /* gboolean */
+#include "lib/fs.hpp"             /* MC_MAXPATHLEN */
+#include "lib/strutil.hpp"
+#include "lib/widget.hpp"         /* Widget */
+#include "lib/filehighlight.hpp"
 
-#include "dir.h"                /* dir_list */
+#include "dir.hpp"                /* dir_list */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

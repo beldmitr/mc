@@ -2,7 +2,7 @@
 #define MC__EDIT_ETAGS_H 1
 
 #include <sys/types.h>          /* size_t */
-#include "lib/global.h"         /* include <glib.h> */
+#include "lib/global.hpp"         /* include <glib.h> */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

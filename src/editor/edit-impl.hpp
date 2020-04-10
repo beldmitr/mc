@@ -13,11 +13,11 @@
 
 #include <stdio.h>
 
-#include "lib/search.h"         /* mc_search_type_t */
-#include "lib/widget.h"         /* cb_ret_t */
-#include "lib/vfs/vfs.h"        /* vfs_path_t */
+#include "lib/search.hpp"         /* mc_search_type_t */
+#include "lib/widget.hpp"         /* cb_ret_t */
+#include "lib/vfs/vfs.hpp"        /* vfs_path_t */
 
-#include "edit.h"
+#include "edit.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

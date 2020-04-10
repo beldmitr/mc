@@ -30,21 +30,19 @@
  *  \date 2000
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "lib/global.h"
-#include "lib/unixcompat.h"
-#include "lib/util.h"
-#include "lib/widget.h"         /* message() */
+#include "lib/global.hpp"
+#include "lib/unixcompat.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"         /* message() */
 
-#include "lib/vfs/vfs.h"
-#include "lib/vfs/utilvfs.h"
-#include "lib/vfs/xdirentry.h"
-#include "lib/vfs/gc.h"         /* vfs_rmstamp */
+#include "lib/vfs/vfs.hpp"
+#include "lib/vfs/utilvfs.hpp"
+#include "lib/vfs/xdirentry.hpp"
+#include "lib/vfs/gc.hpp"         /* vfs_rmstamp */
 
 #include "cpio.h"
 
@@ -774,14 +772,14 @@ cpio_open_archive (struct vfs_s_super *super, const vfs_path_t * vpath,
 {
     (void) vpath_element;
 
-    if (cpio_open_cpio_file (vpath_element->class, super, vpath) == -1)
+    if (cpio_open_cpio_file (vpath_element->Class, super, vpath) == -1)
         return -1;
 
     while (TRUE)
     {
         ssize_t status;
 
-        status = cpio_read_head (vpath_element->class, super);
+        status = cpio_read_head (vpath_element->Class, super);
         if (status < 0)
             return (-1);
 
@@ -825,7 +823,7 @@ static int
 cpio_super_same (const vfs_path_element_t * vpath_element, struct vfs_s_super *parc,
                  const vfs_path_t * vpath, void *cookie)
 {
-    struct stat *archive_stat = cookie; /* stat of main archive */
+    struct stat *archive_stat = static_cast<struct stat *>(cookie); /* stat of main archive */
 
     (void) vpath_element;
 

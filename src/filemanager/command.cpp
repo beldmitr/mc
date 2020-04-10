@@ -30,32 +30,30 @@
  *  \brief Source: command line widget
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
 
-#include "lib/global.h"         /* home_dir */
-#include "lib/tty/tty.h"
-#include "lib/vfs/vfs.h"
-#include "lib/strescape.h"
-#include "lib/skin.h"           /* DEFAULT_COLOR */
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"         /* home_dir */
+#include "lib/tty/tty.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/strescape.hpp"
+#include "lib/skin.hpp"           /* DEFAULT_COLOR */
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 
-#include "src/setup.h"          /* quit */
+#include "src/setup.hpp"          /* quit */
 #ifdef ENABLE_SUBSHELL
-#include "src/subshell/subshell.h"
+#include "src/subshell/subshell.hpp"
 #endif
-#include "src/execute.h"        /* shell_execute */
-#include "src/usermenu.h"       /* expand_format */
+#include "src/execute.hpp"        /* shell_execute */
+#include "src/usermenu.hpp"       /* expand_format */
 
-#include "midnight.h"           /* current_panel */
-#include "layout.h"             /* command_prompt */
-#include "tree.h"               /* sync_tree() */
+#include "midnight.hpp"           /* current_panel */
+#include "layout.hpp"             /* command_prompt */
+#include "tree.hpp"               /* sync_tree() */
 
-#include "command.h"
+#include "command.hpp"
 
 /*** global variables ****************************************************************************/
 

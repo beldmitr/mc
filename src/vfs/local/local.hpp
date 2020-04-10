@@ -6,7 +6,7 @@
 #ifndef MC__VFS_LOCAL_H
 #define MC__VFS_LOCAL_H
 
-#include "lib/vfs/vfs.h"
+#include "lib/vfs/vfs.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

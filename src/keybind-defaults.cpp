@@ -25,12 +25,10 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "lib/global.hpp"
+#include "lib/widget.hpp"         /* dialog_map, input_map, listbox_map, menu_map */
 
-#include "lib/global.h"
-#include "lib/widget.h"         /* dialog_map, input_map, listbox_map, menu_map */
-
-#include "keybind-defaults.h"
+#include "keybind-defaults.hpp"
 
 /*** global variables ****************************************************************************/
 

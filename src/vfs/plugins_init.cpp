@@ -32,11 +32,9 @@
  *  Detailed description.
  */
 
-#include <config.h>
+#include "lib/global.hpp"
 
-#include "lib/global.h"
-
-#include "local/local.h"
+#include "local/local.hpp"
 
 #ifdef ENABLE_VFS_CPIO
 #include "cpio/cpio.h"
@@ -74,7 +72,7 @@
 #include "undelfs/undelfs.h"
 #endif
 
-#include "plugins_init.h"
+#include "plugins_init.hpp"
 
 /*** global variables ****************************************************************************/
 

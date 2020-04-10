@@ -23,21 +23,19 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <signal.h>             /* kill() */
 #include <sys/types.h>
 #include <sys/wait.h>           /* waitpid() */
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/vfs/vfs.h"        /* vfs_get_raw_current_dir() */
+#include "lib/vfs/vfs.hpp"        /* vfs_get_raw_current_dir() */
 
-#include "src/setup.h"          /* quit */
-#include "src/filemanager/midnight.h"   /* current_panel */
-#include "src/consaver/cons.saver.h"    /* handle_console() */
+#include "src/setup.hpp"          /* quit */
+#include "src/filemanager/midnight.hpp"   /* current_panel */
+#include "src/consaver/cons.saver.hpp"    /* handle_console() */
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

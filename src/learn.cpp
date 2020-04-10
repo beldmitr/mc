@@ -28,22 +28,20 @@
  *  \brief Source: learn keys module
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"
-#include "lib/mcconfig.h"
-#include "lib/strescape.h"
-#include "lib/strutil.h"
-#include "lib/util.h"           /* convert_controls() */
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/strescape.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"           /* convert_controls() */
+#include "lib/widget.hpp"
 
-#include "setup.h"
-#include "learn.h"
+#include "setup.hpp"
+#include "learn.hpp"
 
 /*** global variables ****************************************************************************/
 

@@ -31,7 +31,6 @@
  *  \date 1996, 1997
  */
 
-#include <config.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <sys/types.h>
@@ -43,33 +42,33 @@
 #include <stdint.h>             /* UINTMAX_MAX */
 #include <stdlib.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/color.h"
-#include "lib/tty/tty.h"        /* attrset() */
-#include "lib/tty/key.h"        /* is_idle() */
-#include "lib/skin.h"           /* EDITOR_NORMAL_COLOR */
-#include "lib/fileloc.h"        /* EDIT_BLOCK_FILE */
-#include "lib/vfs/vfs.h"
-#include "lib/strutil.h"        /* utf string functions */
-#include "lib/util.h"           /* load_file_position(), save_file_position() */
-#include "lib/timefmt.h"        /* time formatting */
-#include "lib/lock.h"
-#include "lib/widget.h"
+#include "lib/tty/color.hpp"
+#include "lib/tty/tty.hpp"        /* attrset() */
+#include "lib/tty/key.hpp"        /* is_idle() */
+#include "lib/skin.hpp"           /* EDITOR_NORMAL_COLOR */
+#include "lib/fileloc.hpp"        /* EDIT_BLOCK_FILE */
+#include "lib/vfs/vfs.hpp"
+#include "lib/strutil.hpp"        /* utf string functions */
+#include "lib/util.hpp"           /* load_file_position(), save_file_position() */
+#include "lib/timefmt.hpp"        /* time formatting */
+#include "lib/lock.hpp"
+#include "lib/widget.hpp"
 
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"       /* get_codepage_id */
+#include "lib/charsets.hpp"       /* get_codepage_id */
 #endif
 
-#include "src/usermenu.h"       /* user_menu_cmd() */
+#include "src/usermenu.hpp"       /* user_menu_cmd() */
 
-#include "src/setup.h"          /* option_tab_spacing */
-#include "src/keybind-defaults.h"
+#include "src/setup.hpp"          /* option_tab_spacing */
+#include "src/keybind-defaults.hpp"
 
-#include "edit-impl.h"
-#include "editwidget.h"
+#include "edit-impl.hpp"
+#include "editwidget.hpp"
 #ifdef HAVE_ASPELL
-#include "spell.h"
+#include "spell.hpp"
 #endif
 
 /*** global variables ****************************************************************************/

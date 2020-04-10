@@ -49,8 +49,6 @@
 
 /* {{{ Include files */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -60,31 +58,31 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"
-#include "lib/search.h"
-#include "lib/strescape.h"
-#include "lib/strutil.h"
-#include "lib/util.h"
-#include "lib/vfs/vfs.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"
+#include "lib/search.hpp"
+#include "lib/strescape.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/widget.hpp"
 
-#include "src/setup.h"
+#include "src/setup.hpp"
 #ifdef ENABLE_BACKGROUND
-#include "src/background.h"     /* do_background() */
+#include "src/background.hpp"     /* do_background() */
 #endif
 
 /* Needed for current_panel, other_panel and WTree */
-#include "dir.h"
-#include "filegui.h"
-#include "filenot.h"
-#include "tree.h"
-#include "midnight.h"           /* current_panel */
-#include "layout.h"             /* rotate_dash() */
-#include "ioblksize.h"          /* io_blksize() */
+#include "dir.hpp"
+#include "filegui.hpp"
+#include "filenot.hpp"
+#include "tree.hpp"
+#include "midnight.hpp"           /* current_panel */
+#include "layout.hpp"            /* rotate_dash() */
+#include "ioblksize.hpp"          /* io_blksize() */
 
-#include "file.h"
+#include "file.hpp"
 
 /* }}} */
 
@@ -318,17 +316,17 @@ free_linklist (GSList * lp)
 static const struct link *
 is_in_linklist (const GSList * lp, const vfs_path_t * vpath, const struct stat *sb)
 {
-    const struct vfs_class *class;
+    const struct vfs_class *Class;
     ino_t ino = sb->st_ino;
     dev_t dev = sb->st_dev;
 
-    class = vfs_path_get_last_path_vfs (vpath);
+    Class = vfs_path_get_last_path_vfs (vpath);
 
     for (; lp != NULL; lp = (const GSList *) g_slist_next (lp))
     {
         const struct link *lnk = (const struct link *) lp->data;
 
-        if (lnk->vfs == class && lnk->ino == ino && lnk->dev == dev)
+        if (lnk->vfs == Class && lnk->ino == ino && lnk->dev == dev)
             return lnk;
     }
 
@@ -2857,7 +2855,7 @@ copy_dir_dir (file_op_total_context_t * tctx, file_op_context_t * ctx, const cha
     }
 
     lp = g_new0 (struct link, 1);
-    lp->vfs = vfs_path_get_by_index (src_vpath, -1)->class;
+    lp->vfs = vfs_path_get_by_index (src_vpath, -1)->Class;
     lp->ino = src_stat.st_ino;
     lp->dev = src_stat.st_dev;
     parent_dirs = g_slist_prepend (parent_dirs, lp);
@@ -2933,7 +2931,7 @@ copy_dir_dir (file_op_total_context_t * tctx, file_op_context_t * ctx, const cha
 
         lp = g_new0 (struct link, 1);
         mc_stat (dst_vpath, &dst_stat);
-        lp->vfs = vfs_path_get_by_index (dst_vpath, -1)->class;
+        lp->vfs = vfs_path_get_by_index (dst_vpath, -1)->Class;
         lp->ino = dst_stat.st_ino;
         lp->dev = dst_stat.st_dev;
         dest_dirs = g_slist_prepend (dest_dirs, lp);

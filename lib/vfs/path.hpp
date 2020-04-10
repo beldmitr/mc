@@ -38,7 +38,7 @@ typedef struct
     gboolean ipv6;
     int port;
     char *path;
-    struct vfs_class *class;
+    struct vfs_class *Class;
 #ifdef HAVE_CHARSET
     char *encoding;
 #endif
@@ -102,7 +102,7 @@ vfs_path_t *vfs_path_to_absolute (const vfs_path_t * vpath);
 static inline gboolean
 vfs_path_element_valid (const vfs_path_element_t * element)
 {
-    return (element != NULL && element->class != NULL);
+    return (element != NULL && element->Class != NULL);
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -126,7 +126,7 @@ vfs_path_get_last_path_vfs (const vfs_path_t * vpath)
     if (vpath == NULL)
         return NULL;
     element = vfs_path_get_by_index (vpath, -1);
-    return (element != NULL) ? element->class : NULL;
+    return (element != NULL) ? element->Class : NULL;
 }
 
 /* --------------------------------------------------------------------------------------------- */

@@ -40,8 +40,6 @@
  *  Contains a storage of the file system tree representation.
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,17 +48,17 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "lib/global.h"
-#include "lib/mcconfig.h"
-#include "lib/vfs/vfs.h"
-#include "lib/fileloc.h"
-#include "lib/strescape.h"
-#include "lib/hook.h"
-#include "lib/util.h"
+#include "lib/global.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/fileloc.hpp"
+#include "lib/strescape.hpp"
+#include "lib/hook.hpp"
+#include "lib/util.hpp"
 
-#include "src/setup.h"          /* setup_init() */
+#include "src/setup.hpp"          /* setup_init() */
 
-#include "treestore.h"
+#include "treestore.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -386,7 +384,7 @@ tree_store_add_entry (const vfs_path_t * name)
     int flag = -1;
     tree_entry *current;
     tree_entry *old = NULL;
-    tree_entry *new;
+    tree_entry *New;
     int submask = 0;
 
     if (ts.tree_last != NULL && ts.tree_last->next != NULL)
@@ -401,74 +399,75 @@ tree_store_add_entry (const vfs_path_t * name)
         return current;         /* Already in the list */
 
     /* Not in the list -> add it */
-    new = g_new0 (tree_entry, 1);
+    New = g_new0 (tree_entry, 1);
     if (current == NULL)
     {
         /* Append to the end of the list */
         if (ts.tree_first == NULL)
         {
             /* Empty list */
-            ts.tree_first = new;
-            new->prev = NULL;
+            ts.tree_first = New;
+            New->prev = NULL;
         }
         else
         {
             if (old != NULL)
-                old->next = new;
-            new->prev = old;
+                old->next = New;
+            New->prev = old;
         }
-        new->next = NULL;
-        ts.tree_last = new;
+        New->next = NULL;
+        ts.tree_last = New;
     }
     else
     {
         /* Insert in to the middle of the list */
-        new->prev = old;
+        New->prev = old;
         if (old != NULL)
         {
             /* Yes, in the middle */
-            new->next = old->next;
-            old->next = new;
+            New->next = old->next;
+            old->next = New;
         }
         else
         {
             /* Nope, in the beginning of the list */
-            new->next = ts.tree_first;
-            ts.tree_first = new;
+            New->next = ts.tree_first;
+            ts.tree_first = New;
         }
-        new->next->prev = new;
+        New->next->prev = New;
     }
 
     /* Calculate attributes */
-    new->name = vfs_path_clone (name);
-    new->sublevel = vfs_path_tokens_count (new->name);
+    New->name = vfs_path_clone (name);
+    New->sublevel = vfs_path_tokens_count (New->name);
 
     {
         const char *new_name;
 
-        new_name = vfs_path_get_last_path_str (new->name);
-        new->subname = strrchr (new_name, PATH_SEP);
-        if (new->subname == NULL)
-            new->subname = new_name;
+        new_name = vfs_path_get_last_path_str (New->name);
+        New->subname = strrchr (new_name, PATH_SEP);
+        if (New->subname == NULL)
+            New->subname = new_name;
         else
-            new->subname++;
+            New->subname++;
     }
 
-    if (new->next != NULL)
-        submask = new->next->submask;
+    if (New->next != NULL)
+        submask = New->next->submask;
 
-    submask |= 1 << new->sublevel;
-    submask &= (2 << new->sublevel) - 1;
-    new->submask = submask;
-    new->mark = FALSE;
+    submask |= 1 << New->sublevel;
+    submask &= (2 << New->sublevel) - 1;
+    New->submask = submask;
+    New->mark = FALSE;
 
     /* Correct the submasks of the previous entries */
-    for (current = new->prev;
-         current != NULL && current->sublevel > new->sublevel; current = current->prev)
-        current->submask |= 1 << new->sublevel;
+
+    for (current = New->prev;
+         current != NULL && current->sublevel > New->sublevel; current = current->prev)
+        current->submask |= 1 << New->sublevel;
 
     tree_store_dirty (TRUE);
-    return new;
+    return New;
 }
 
 /* --------------------------------------------------------------------------------------------- */

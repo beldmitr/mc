@@ -37,8 +37,6 @@
 
 /* Namespace: init_extfs */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -50,20 +48,20 @@
 #include <errno.h>
 #include <sys/wait.h>
 
-#include "lib/global.h"
-#include "lib/fileloc.h"
-#include "lib/mcconfig.h"
-#include "lib/util.h"
-#include "lib/widget.h"         /* message() */
+#include "lib/global.hpp"
+#include "lib/fileloc.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"         /* message() */
 
-#include "src/execute.h"        /* For shell_execute */
+#include "src/execute.hpp"        /* For shell_execute */
 
-#include "lib/vfs/vfs.h"
-#include "lib/vfs/utilvfs.h"
-#include "lib/vfs/xdirentry.h"
-#include "lib/vfs/gc.h"         /* vfs_rmstamp */
+#include "lib/vfs/vfs.hpp"
+#include "lib/vfs/utilvfs.hpp"
+#include "lib/vfs/xdirentry.hpp"
+#include "lib/vfs/gc.hpp"         /* vfs_rmstamp */
 
-#include "extfs.h"
+#include "extfs.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -471,7 +469,7 @@ extfs_read_archive (FILE * extfsd, struct extfs_super_t *current_archive)
     char *buffer;
     struct vfs_s_super *super = VFS_SUPER (current_archive);
 
-    buffer = g_malloc (BUF_4K);
+    buffer = static_cast<char*>(g_malloc (BUF_4K));
 
     while (fgets (buffer, BUF_4K, extfsd) != NULL)
     {
@@ -662,7 +660,7 @@ extfs_get_path (const vfs_path_t * vpath, struct extfs_super_t **archive, int fl
 
     path_element = vfs_path_get_by_index (vpath, -1);
 
-    fstype = extfs_which (path_element->class, path_element->vfs_prefix);
+    fstype = extfs_which (path_element->Class, path_element->vfs_prefix);
     if (fstype == -1)
         return NULL;
 
@@ -685,7 +683,7 @@ extfs_get_path (const vfs_path_t * vpath, struct extfs_super_t **archive, int fl
 
         if (result == -1)
         {
-            path_element->class->verrno = EIO;
+            path_element->Class->verrno = EIO;
             return NULL;
         }
     }
@@ -1142,7 +1140,7 @@ extfs_readlink (const vfs_path_t * vpath, char *buf, size_t size)
         const vfs_path_element_t *path_element;
 
         path_element = vfs_path_get_by_index (vpath, -1);
-        path_element->class->verrno = EINVAL;
+        path_element->Class->verrno = EINVAL;
         goto cleanup;
     }
     len = strlen (entry->ino->linkname);
@@ -1211,7 +1209,7 @@ extfs_unlink (const vfs_path_t * vpath)
         const vfs_path_element_t *path_element;
 
         path_element = vfs_path_get_by_index (vpath, -1);
-        path_element->class->verrno = EISDIR;
+        path_element->Class->verrno = EISDIR;
         goto cleanup;
     }
     if (extfs_cmd (" rm ", archive, entry, ""))
@@ -1245,7 +1243,7 @@ extfs_mkdir (const vfs_path_t * vpath, mode_t mode)
     entry = extfs_find_entry (VFS_SUPER (archive)->root, q, FL_NONE);
     if (entry != NULL)
     {
-        path_element->class->verrno = EEXIST;
+        path_element->Class->verrno = EEXIST;
         goto cleanup;
     }
     entry = extfs_find_entry (VFS_SUPER (archive)->root, q, FL_MKDIR);
@@ -1256,7 +1254,7 @@ extfs_mkdir (const vfs_path_t * vpath, mode_t mode)
         goto cleanup;
     if (!S_ISDIR (entry->ino->st.st_mode))
     {
-        path_element->class->verrno = ENOTDIR;
+        path_element->Class->verrno = ENOTDIR;
         goto cleanup;
     }
 
@@ -1295,7 +1293,7 @@ extfs_rmdir (const vfs_path_t * vpath)
         const vfs_path_element_t *path_element;
 
         path_element = vfs_path_get_by_index (vpath, -1);
-        path_element->class->verrno = ENOTDIR;
+        path_element->Class->verrno = ENOTDIR;
         goto cleanup;
     }
 

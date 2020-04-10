@@ -25,15 +25,13 @@
  * \brief Source: Virtual File System: Network utilities
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <signal.h>
 #include <string.h>             /* memset() */
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "netutil.h"
+#include "netutil.hpp"
 
 /*** global variables ****************************************************************************/
 

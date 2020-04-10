@@ -5,8 +5,8 @@
 #ifndef MC__FILEGUI_H
 #define MC__FILEGUI_H
 
-#include "lib/global.h"
-#include "fileopctx.h"
+#include "lib/global.hpp"
+#include "fileopctx.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

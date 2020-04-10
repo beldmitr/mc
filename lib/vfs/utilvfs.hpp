@@ -11,8 +11,8 @@
 
 #include <sys/stat.h>
 
-#include "lib/global.h"
-#include "path.h"
+#include "lib/global.hpp"
+#include "path.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

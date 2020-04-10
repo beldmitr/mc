@@ -5,8 +5,8 @@
 #ifndef MC__EXECUTE_H
 #define MC__EXECUTE_H
 
-#include "lib/utilunix.h"
-#include "lib/vfs/vfs.h"
+#include "lib/utilunix.hpp"
+#include "lib/vfs/vfs.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
