@@ -30,8 +30,6 @@
  *  \brief Source: Background support
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <errno.h>
 #include <signal.h>
@@ -43,16 +41,16 @@
 #include <sys/stat.h>
 #include <sys/wait.h>           /* waitpid() */
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/unixcompat.h"
-#include "lib/tty/key.h"        /* add_select_channel(), delete_select_channel() */
-#include "lib/widget.h"         /* message() */
-#include "lib/event-types.h"
+#include "lib/unixcompat.hpp"
+#include "lib/tty/key.hpp"        /* add_select_channel(), delete_select_channel() */
+#include "lib/widget.hpp"         /* message() */
+#include "lib/event-types.hpp"
 
-#include "filemanager/fileopctx.h"      /* file_op_context_t */
+#include "filemanager/fileopctx.hpp"      /* file_op_context_t */
 
-#include "background.h"
+#include "background.hpp"
 
 /*** global variables ****************************************************************************/
 

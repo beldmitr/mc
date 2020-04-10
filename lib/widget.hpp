@@ -4,7 +4,7 @@
 #ifndef MC__WIDGET_H
 #define MC__WIDGET_H
 
-#include "lib/global.h"         /* GLib */
+#include "lib/global.hpp"         /* GLib */
 
 /* main forward declarations */
 struct Widget;
@@ -15,28 +15,28 @@ typedef struct WGroup WGroup;
 /* Please note that the first element in all the widgets is a     */
 /* widget variable of type Widget.  We abuse this fact everywhere */
 
-#include "lib/widget/rect.h"
-#include "lib/widget/widget-common.h"
-#include "lib/widget/group.h"
-#include "lib/widget/background.h"
-#include "lib/widget/frame.h"
-#include "lib/widget/dialog.h"
-#include "lib/widget/history.h"
-#include "lib/widget/button.h"
-#include "lib/widget/buttonbar.h"
-#include "lib/widget/check.h"
-#include "lib/widget/hline.h"
-#include "lib/widget/gauge.h"
-#include "lib/widget/groupbox.h"
-#include "lib/widget/label.h"
-#include "lib/widget/listbox.h"
-#include "lib/widget/menu.h"
-#include "lib/widget/radio.h"
-#include "lib/widget/input.h"
-#include "lib/widget/listbox-window.h"
-#include "lib/widget/quick.h"
-#include "lib/widget/wtools.h"
-#include "lib/widget/dialog-switch.h"
+#include "lib/widget/rect.hpp"
+#include "lib/widget/widget-common.hpp"
+#include "lib/widget/group.hpp"
+#include "lib/widget/background.hpp"
+#include "lib/widget/frame.hpp"
+#include "lib/widget/dialog.hpp"
+#include "lib/widget/history.hpp"
+#include "lib/widget/button.hpp"
+#include "lib/widget/buttonbar.hpp"
+#include "lib/widget/check.hpp"
+#include "lib/widget/hline.hpp"
+#include "lib/widget/gauge.hpp"
+#include "lib/widget/groupbox.hpp"
+#include "lib/widget/label.hpp"
+#include "lib/widget/listbox.hpp"
+#include "lib/widget/menu.hpp"
+#include "lib/widget/radio.hpp"
+#include "lib/widget/input.hpp"
+#include "lib/widget/listbox-window.hpp"
+#include "lib/widget/quick.hpp"
+#include "lib/widget/wtools.hpp"
+#include "lib/widget/dialog-switch.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

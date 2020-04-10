@@ -5,7 +5,7 @@
 #ifndef MC__QUICK_H
 #define MC__QUICK_H
 
-#include "lib/tty/mouse.h"
+#include "lib/tty/mouse.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

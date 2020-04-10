@@ -11,8 +11,8 @@
 
 #include <sys/types.h>          /* size_t */
 
-#include "lib/global.h"
-#include "lib/hook.h"           /* hook_t */
+#include "lib/global.hpp"
+#include "lib/hook.hpp"           /* hook_t */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

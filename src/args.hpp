@@ -1,8 +1,8 @@
 #ifndef MC__ARGS_H
 #define MC__ARGS_H
 
-#include "lib/global.h"         /* gboolean */
-#include "lib/vfs/vfs.h"        /* vfs_path_t */
+#include "lib/global.hpp"         /* gboolean */
+#include "lib/vfs/vfs.hpp"        /* vfs_path_t */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

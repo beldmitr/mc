@@ -1,7 +1,7 @@
 #ifndef MC_STRUTIL_H
 #define MC_STRUTIL_H
 
-#include "lib/global.h"         /* include glib.h */
+#include "lib/global.hpp"         /* include glib.h */
 
 #include <sys/types.h>
 #include <inttypes.h>

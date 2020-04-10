@@ -6,7 +6,7 @@
 #define MC__BACKGROUND_H
 
 #include <sys/types.h>          /* pid_t */
-#include "filemanager/fileopctx.h"
+#include "filemanager/fileopctx.hpp"
 /*** typedefs(not structures) and defined constants **********************************************/
 
 enum TaskState

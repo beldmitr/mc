@@ -24,23 +24,22 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/strutil.h"
-#include "lib/vfs/vfs.h"
-#include "lib/util.h"           /* x_basename() */
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/strutil.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/util.hpp"           /* x_basename() */
 
 #ifdef ENABLE_VFS_SMB
 #include "src/vfs/smbfs/smbfs.h"        /* smbfs_set_debugf()  */
 #endif
 
-#include "src/textconf.h"
+#include "src/textconf.hpp"
 
-#include "src/args.h"
+#include "src/args.hpp"
 
 /*** external variables **************************************************************************/
 

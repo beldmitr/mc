@@ -5,7 +5,7 @@
 #ifndef MC__WTOOLS_H
 #define MC__WTOOLS_H
 
-#include "lib/timer.h"
+#include "lib/timer.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

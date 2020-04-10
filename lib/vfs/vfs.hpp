@@ -19,10 +19,10 @@
 #include <unistd.h>
 #include <stddef.h>
 
-#include "lib/global.h"
-#include "lib/fs.h"             /* MC_MAXPATHLEN */
+#include "lib/global.hpp"
+#include "lib/fs.hpp"             /* MC_MAXPATHLEN */
 
-#include "path.h"
+#include "path.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

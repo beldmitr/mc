@@ -5,7 +5,7 @@
 #ifndef MC_HOOK_H
 #define MC_HOOK_H
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

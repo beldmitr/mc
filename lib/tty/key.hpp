@@ -5,8 +5,8 @@
 #ifndef MC__KEY_H
 #define MC__KEY_H
 
-#include "lib/global.h"         /* <glib.h> */
-#include "tty.h"                /* KEY_F macro */
+#include "lib/global.hpp"         /* <glib.h> */
+#include "tty.hpp"                /* KEY_F macro */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

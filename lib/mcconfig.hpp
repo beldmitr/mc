@@ -1,7 +1,7 @@
 #ifndef MC__CONFIG_H
 #define MC__CONFIG_H
 
-#include "lib/vfs/vfs.h"        /* vfs_path_t */
+#include "lib/vfs/vfs.hpp"        /* vfs_path_t */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

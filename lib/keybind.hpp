@@ -4,7 +4,7 @@
 #include <sys/types.h>
 #include <sys/time.h>           /* time_t */
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

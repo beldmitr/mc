@@ -64,7 +64,7 @@
 #endif
 
 #include <glib.h>
-#include "glibcompat.h"
+#include "glibcompat.hpp"
 
 /* For SMB VFS only */
 #ifndef __GNUC__
@@ -95,9 +95,9 @@
 #define N_(String) (String)
 #endif /* !ENABLE_NLS */
 
-#include "fs.h"
-#include "shell.h"
-#include "mcconfig.h"
+#include "fs.hpp"
+#include "shell.hpp"
+#include "mcconfig.hpp"
 
 #ifdef USE_MAINTAINER_MODE
 #include "lib/logging.h"
@@ -148,7 +148,7 @@
 
 #define DEFAULT_CHARSET "ASCII"
 
-#include "lib/timer.h"          /* mc_timer_t */
+#include "lib/timer.hpp"          /* mc_timer_t */
 
 /*** enums ***************************************************************************************/
 

@@ -13,8 +13,8 @@
 #include <sys/time.h>
 #include <inttypes.h>           /* uintmax_t */
 
-#include "lib/global.h"
-#include "lib/vfs/vfs.h"
+#include "lib/global.hpp"
+#include "lib/vfs/vfs.hpp"
 
 
 /*** typedefs(not structures) and defined constants **********************************************/

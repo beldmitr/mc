@@ -10,9 +10,9 @@
 #include <inttypes.h>           /* uintmax_t */
 #include <unistd.h>
 
-#include "lib/global.h"         /* include <glib.h> */
+#include "lib/global.hpp"         /* include <glib.h> */
 
-#include "lib/vfs/vfs.h"
+#include "lib/vfs/vfs.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
