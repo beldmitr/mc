@@ -41,3 +41,49 @@ file(GLOB LIB
         )
 
 add_executable(${PROJECT_NAME} ${SRC} ${LIB})
+
+target_include_directories(${PROJECT_NAME} PUBLIC
+        "src/"
+        "src/consaver"
+        "src/diffviewer"
+        "src/editor"
+        "src/filemanager"
+        "src/subshell"
+        "src/vfs"
+        "src/vfs/cpio"
+        "src/vfs/extfs"
+        "src/vfs/fish"
+        "src/vfs/ftpfs"
+        "src/vfs/local"
+        "src/vfs/sfs"
+        "src/vfs/sftpfs"
+        "src/vfs/smbfs"
+        "src/vfs/smbfs/helpers/include"
+        "src/vfs/tar"
+        "src/vfs/undelfs"
+        "src/viewer"
+
+        "./"
+#        "lib/"  # in code there arereferences lib/*.h, so it ain't need to include lib dir
+        "lib/event"
+        "lib/filehighlight"
+#        "lib/mcconfig" # no headers here
+        "lib/search"
+        "lib/skin"
+#        "lib/strutil" # no headers here
+        "lib/tty"
+        "lib/vfs"
+        "lib/widget"
+        )
+
+# maint && tests are missing
+
+# PKG-CONFIG
+include(FindPkgConfig)
+find_package(PkgConfig REQUIRED)
+
+# GLIB 2.0
+pkg_check_modules(GLIB2 REQUIRED IMPORTED_TARGET glib-2.0)
+target_include_directories(${PROJECT_NAME} PUBLIC ${GLIB2_INCLUDE_DIRS})
+link_directories(${GLIB_LIBRARY_DIRS})
+target_link_libraries(${PROJECT_NAME} ${GLIB2_LIBRARIES})
