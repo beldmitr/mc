@@ -60,10 +60,10 @@
 /*** global variables ****************************************************************************/
 
 /* Toggles statusbar draw style */
-gboolean simple_statusbar = FALSE;
+bool simple_statusbar = FALSE;
 
-gboolean visible_tws = TRUE;
-gboolean visible_tabs = TRUE;
+bool visible_tws = TRUE;
+bool visible_tabs = TRUE;
 
 /*** file scope macro definitions ****************************************************************/
 
@@ -1023,8 +1023,7 @@ edit_render (WEdit * edit, int page, int row_start, int col_start, int row_end, 
 /*** public functions ****************************************************************************/
 /* --------------------------------------------------------------------------------------------- */
 
-void
-edit_status (WEdit * edit, gboolean active)
+void edit_status (WEdit * edit, bool active)
 {
     int color;
 

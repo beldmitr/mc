@@ -47,10 +47,10 @@
 typedef struct mcdiffview_search_options_struct
 {
     mc_search_type_t type;
-    gboolean case_sens;
-    gboolean backwards;
-    gboolean whole_words;
-    gboolean all_codepages;
+    bool case_sens;
+    bool backwards;
+    bool whole_words;
+    bool all_codepages;
 } mcdiffview_search_options_t;
 
 /*** file scope variables ************************************************************************/

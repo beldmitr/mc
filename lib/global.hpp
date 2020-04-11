@@ -200,9 +200,9 @@ typedef struct
     gboolean utf8_display;
 
     /* Set if the nice message (hint) bar is visible */
-    gboolean message_visible;
+    bool message_visible;
     /* Set if the nice and useful keybar is visible */
-    gboolean keybar_visible;
+    bool keybar_visible;
 
 #ifdef ENABLE_BACKGROUND
     /* If true, this is a background process */
@@ -212,10 +212,10 @@ typedef struct
     struct
     {
         /* Asks for confirmation before clean up of history */
-        gboolean confirm_history_cleanup;
+        bool confirm_history_cleanup;
 
         /* Set if you want the possible completions dialog for the first time */
-        gboolean show_all_if_ambiguous;
+        bool show_all_if_ambiguous;
 
         /* Ugly hack in order to distinguish between left and right panel in menubar */
         /* Set if the command is being run from the "Right" menu */
@@ -270,16 +270,16 @@ typedef struct
 
         /* If true, use + and \ keys normally and select/unselect do if M-+ / M-\.
            and M-- and keypad + / - */
-        gboolean alternate_plus_minus;
+        bool alternate_plus_minus;
     } tty;
 
     struct
     {
         /* Set when cd symlink following is desirable (bash mode) */
-        gboolean cd_symlinks;
+        bool cd_symlinks;
 
         /* Preallocate space before file copying */
-        gboolean preallocate_space;
+        bool preallocate_space;
 
     } vfs;
 } mc_global_t;

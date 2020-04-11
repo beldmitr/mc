@@ -4,10 +4,6 @@
 
 #pragma once
 
-/*** typedefs(not structures) and defined constants **********************************************/
-
-/* history section names */
-
 #define MC_HISTORY_EDIT_SAVE_AS       "mc.edit.save-as"
 #define MC_HISTORY_EDIT_LOAD          "mc.edit.load"
 #define MC_HISTORY_EDIT_SAVE_BLOCK    "mc.edit.save-block"
@@ -45,13 +41,4 @@
 
 #define MC_HISTORY_YDIFF_GOTO_LINE    "mc.ydiff.goto-line"
 
-/*** enums ***************************************************************************************/
-
-/*** structures declarations (and typedefs of structures)*****************************************/
-
-/*** global variables defined in .c file *********************************************************/
-
-/*** declarations of public functions ************************************************************/
-
-/*** inline functions ****************************************************************************/
 

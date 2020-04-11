@@ -59,7 +59,7 @@ typedef struct
 {
     Widget *button;
     Widget *label;
-    gboolean ok;
+    bool ok;
     char *sequence;
 } learnkey_t;
 
@@ -71,7 +71,7 @@ static const char *learn_title = N_("Learn keys");
 static learnkey_t *learnkeys = NULL;
 static int learn_total;
 static int learnok;
-static gboolean learnchanged = FALSE;
+static bool learnchanged = FALSE;
 
 /*** file scope functions ************************************************************************/
 /* --------------------------------------------------------------------------------------------- */
@@ -101,7 +101,7 @@ learn_button (WButton * button, int action)
         /* Esc hides the dialog and do not allow definitions of
          * regular characters
          */
-        gboolean seq_ok = FALSE;
+        bool seq_ok = FALSE;
 
         if (*seq != '\0' && strcmp (seq, "\\e") != 0 && strcmp (seq, "\\e\\e") != 0
             && strcmp (seq, "^m") != 0 && strcmp (seq, "^i") != 0
@@ -129,8 +129,7 @@ learn_button (WButton * button, int action)
 
 /* --------------------------------------------------------------------------------------------- */
 
-static gboolean
-learn_move (gboolean right)
+static bool learn_move (bool right)
 {
     int i, totalcols;
 
@@ -163,8 +162,7 @@ learn_move (gboolean right)
 
 /* --------------------------------------------------------------------------------------------- */
 
-static gboolean
-learn_check_key (int c)
+static bool learn_check_key (int c)
 {
     int i;
 
@@ -260,7 +258,7 @@ init_learn (void)
     const key_code_name_t *key;
 
 #ifdef ENABLE_NLS
-    static gboolean i18n_flag = FALSE;
+    static bool i18n_flag = FALSE;
     if (!i18n_flag)
     {
         learn_title = _(learn_title);
@@ -347,12 +345,11 @@ learn_done (void)
 
 /* --------------------------------------------------------------------------------------------- */
 
-static void
-learn_save (void)
+static void learn_save()
 {
     int i;
     char *section;
-    gboolean profile_changed = FALSE;
+    bool profile_changed = FALSE;
 
     section = g_strconcat ("terminal:", std::getenv ("TERM"), (char *) NULL);
 
@@ -385,11 +382,10 @@ learn_save (void)
 /*** public functions ****************************************************************************/
 /* --------------------------------------------------------------------------------------------- */
 
-void
-learn_keys (void)
+void learn_keys()
 {
-    gboolean save_old_esc_mode = old_esc_mode;
-    gboolean save_alternate_plus_minus = mc_global.tty.alternate_plus_minus;
+    bool save_old_esc_mode = old_esc_mode;
+    bool save_alternate_plus_minus = mc_global.tty.alternate_plus_minus;
     int result;
 
     /* old_esc_mode cannot work in learn keys dialog */

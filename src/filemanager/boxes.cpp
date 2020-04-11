@@ -625,13 +625,9 @@ appearance_box (void)
 
 /* --------------------------------------------------------------------------------------------- */
 
-void
-panel_options_box (void)
+void panel_options_box()
 {
-    gboolean simple_swap;
-
-    simple_swap = mc_config_get_bool (mc_global.main_config, CONFIG_PANELS_SECTION,
-                                      "simple_swap", FALSE);
+    bool simple_swap = mc_config_get_bool (mc_global.main_config, CONFIG_PANELS_SECTION, "simple_swap", FALSE);
     {
         const char *qsearch_options[] = {
             N_("Case &insensitive"),
@@ -723,7 +719,7 @@ panel_listing_box (WPanel * panel, int num, char **userp, char **minip, gboolean
     }
 
     {
-        gboolean mini_user_status;
+        bool mini_user_status;
         char panel_brief_cols_in[BUF_TINY];
         char *panel_brief_cols_out = NULL;
         char *panel_user_format = NULL;
@@ -813,7 +809,7 @@ panel_listing_box (WPanel * panel, int num, char **userp, char **minip, gboolean
     return result;
 }
 
-/* --------------------------------------------------------------------------------------------- */
+/* ----------------------------gboolean----------------------------------------------------------------- */
 
 const panel_field_t *
 sort_box (dir_sort_options_t * op, const panel_field_t * sort_field)
@@ -964,7 +960,7 @@ display_bits_box (void)
         : ((codepage_desc *) g_ptr_array_index (codepages, new_display_codepage))->name;
 
     {
-        gboolean new_meta;
+        bool new_meta;
 
         quick_widget_t quick_widgets[] = {
             /* *INDENT-OFF* */

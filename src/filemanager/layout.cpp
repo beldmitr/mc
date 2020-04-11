@@ -81,22 +81,22 @@ panels_layout_t panels_layout = {
 };
 
 /* Controls the display of the rotating dash on the verbose mode */
-gboolean nice_rotating_dash = TRUE;
+bool nice_rotating_dash = TRUE;
 
 /* The number of output lines shown (if available) */
 int output_lines = 0;
 
 /* Set if the command prompt is to be displayed */
-gboolean command_prompt = TRUE;
+bool command_prompt = TRUE;
 
 /* Set if the main menu is visible */
-gboolean menubar_visible = TRUE;
+bool menubar_visible = TRUE;
 
 /* Set to show current working dir in xterm window title */
-gboolean xterm_title = TRUE;
+bool xterm_title = TRUE;
 
 /* Set to show free space on device assigned to current directory */
-gboolean free_space = TRUE;
+bool free_space = TRUE;
 
 /* The starting line for the output of the subprogram */
 int output_start_y = 0;
@@ -153,7 +153,7 @@ static struct
 static layout_t old_layout;
 static panels_layout_t old_panels_layout;
 
-static gboolean equal_split;
+static bool equal_split;
 static int _output_lines;
 
 static int height;
@@ -163,7 +163,7 @@ static WRadio *radio_widget;
 static struct
 {
     const char *text;
-    gboolean *variable;
+    bool *variable;
     WCheck *widget;
 } check_options[] =
 {

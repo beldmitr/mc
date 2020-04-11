@@ -123,11 +123,11 @@ typedef struct WDiff
     struct
     {
         int quality;
-        gboolean strip_trailing_cr;
-        gboolean ignore_tab_expansion;
-        gboolean ignore_space_change;
-        gboolean ignore_all_space;
-        gboolean ignore_case;
+        bool strip_trailing_cr;
+        bool ignore_tab_expansion;
+        bool ignore_space_change;
+        bool ignore_all_space;
+        bool ignore_case;
     } opt;
 
     /* Search variables */

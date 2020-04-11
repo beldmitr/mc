@@ -81,43 +81,43 @@
 char *global_profile_name;      /* mc.lib */
 
 /* Only used at program boot */
-gboolean boot_current_is_left = TRUE;
+bool boot_current_is_left = TRUE;
 
 /* If on, default for "No" in delete operations */
-gboolean safe_delete = FALSE;
+bool safe_delete = FALSE;
 /* If on, default for "No" in overwrite files */
-gboolean safe_overwrite = FALSE;
+bool safe_overwrite = FALSE;
 
 /* Controls screen clearing before an exec */
-gboolean clear_before_exec = TRUE;
+bool clear_before_exec = TRUE;
 
 /* Asks for confirmation before deleting a file */
-gboolean confirm_delete = TRUE;
+bool confirm_delete = TRUE;
 /* Asks for confirmation before deleting a hotlist entry */
-gboolean confirm_directory_hotlist_delete = FALSE;
+bool confirm_directory_hotlist_delete = FALSE;
 /* Asks for confirmation before overwriting a file */
-gboolean confirm_overwrite = TRUE;
+bool confirm_overwrite = TRUE;
 /* Asks for confirmation before executing a program by pressing enter */
-gboolean confirm_execute = FALSE;
+bool confirm_execute = FALSE;
 /* Asks for confirmation before leaving the program */
-gboolean confirm_exit = FALSE;
+bool confirm_exit = FALSE;
 
 /* If true, at startup the user-menu is invoked */
-gboolean auto_menu = FALSE;
+bool auto_menu = FALSE;
 /* This flag indicates if the pull down menus by default drop down */
-gboolean drop_menus = FALSE;
+bool drop_menus = FALSE;
 
 /* Asks for confirmation when using F3 to view a directory and there
    are tagged files */
-gboolean confirm_view_dir = FALSE;
+bool confirm_view_dir = FALSE;
 
 /* Ask file name before start the editor */
-gboolean editor_ask_filename_before_edit = FALSE;
+bool editor_ask_filename_before_edit = FALSE;
 
 panel_view_mode_t startup_left_mode;
 panel_view_mode_t startup_right_mode;
 
-gboolean copymove_persistent_attr = TRUE;
+bool copymove_persistent_attr = TRUE;
 
 /* Tab size */
 int option_tab_spacing = DEFAULT_TAB_SPACING;
@@ -148,44 +148,44 @@ panels_options_t panels_options = {
     .select_flags = static_cast<panel_select_flags_t>(SELECT_MATCH_CASE | SELECT_SHELL_PATTERNS)
 };
 
-gboolean easy_patterns = TRUE;
+bool easy_patterns = TRUE;
 
 /* It true saves the setup when quitting */
-gboolean auto_save_setup = TRUE;
+bool auto_save_setup = TRUE;
 
 /* If true, then the +, - and \ keys have their special meaning only if the
  * command line is empty, otherwise they behave like regular letters
  */
-gboolean only_leading_plus_minus = TRUE;
+bool only_leading_plus_minus = TRUE;
 
 /* Automatically fills name with current selected item name on mkdir */
-gboolean auto_fill_mkdir_name = TRUE;
+bool auto_fill_mkdir_name = TRUE;
 
 /* If set and you don't have subshell support, then C-o will give you a shell */
-gboolean output_starts_shell = FALSE;
+bool output_starts_shell = FALSE;
 
 /* If set, we execute the file command to check the file type */
-gboolean use_file_to_check_type = TRUE;
+bool use_file_to_check_type = TRUE;
 
-gboolean verbose = TRUE;
+bool verbose = TRUE;
 
 /*
  * Whether the Midnight Commander tries to provide more
  * information about copy/move sizes and bytes transferred
  * at the expense of some speed
  */
-gboolean file_op_compute_totals = TRUE;
+bool file_op_compute_totals = TRUE;
 
 /* If true use the internal viewer */
-gboolean use_internal_view = TRUE;
+bool use_internal_view = TRUE;
 /* If set, use the builtin editor */
-gboolean use_internal_edit = TRUE;
+bool use_internal_edit = TRUE;
 
 #ifdef HAVE_CHARSET
 /* Numbers of (file I/O) and (input/display) codepages. -1 if not selected */
 int default_source_codepage = -1;
 char *autodetect_codeset = NULL;
-gboolean is_autodetect_codeset_enabled = FALSE;
+bool is_autodetect_codeset_enabled = FALSE;
 #endif /* !HAVE_CHARSET */
 
 #ifdef HAVE_ASPELL
@@ -202,7 +202,7 @@ char *last_wd_string = NULL;
 int quit = 0;
 
 /* Set to TRUE to suppress printing the last directory */
-int print_last_revert = FALSE;
+bool print_last_revert = FALSE;
 
 #ifdef USE_INTERNAL_EDIT
 /* index to record_macro_buf[], -1 if not recording a macro */
@@ -266,7 +266,7 @@ static const struct
 static const struct
 {
     const char *opt_name;
-    gboolean *opt_addr;
+    bool *opt_addr;
 } layout_bool_options [] = {
     { "message_visible", &mc_global.message_visible },
     { "keybar_visible", &mc_global.keybar_visible },
@@ -283,7 +283,7 @@ static const struct
 static const struct
 {
     const char *opt_name;
-    gboolean *opt_addr;
+    bool *opt_addr;
 } bool_options [] = {
     { "verbose", &verbose },
     { "shell_patterns", &easy_patterns },
@@ -412,7 +412,7 @@ static const struct
 static const struct
 {
     const char *opt_name;
-    gboolean *opt_addr;
+    bool *opt_addr;
 } panels_ini_options[] = {
     { "show_mini_info", &panels_options.show_mini_info },
     { "kilobyte_si", &panels_options.kilobyte_si },
@@ -589,7 +589,7 @@ setup__move_panels_config_into_separate_file (const char *profile)
 */
 
 static void
-load_setup_init_config_from_file (mc_config_t ** config, const char *fname, gboolean read_only)
+load_setup_init_config_from_file (mc_config_t ** config, const char *fname, bool read_only)
 {
     /*
        TODO: IMHO, in future, this function shall be placed in mcconfig module.
@@ -799,7 +799,7 @@ load_keymap_from_section (const char *section_name, GArray * keymap, mc_config_t
 /* --------------------------------------------------------------------------------------------- */
 
 static mc_config_t *
-load_setup_get_keymap_profile_config (gboolean load_from_file)
+load_setup_get_keymap_profile_config (bool load_from_file)
 {
     /*
        TODO: IMHO, in future, this function shall be placed in mcconfig module.
@@ -1176,10 +1176,10 @@ load_setup (void)
 
 /* --------------------------------------------------------------------------------------------- */
 
-gboolean
-save_setup (gboolean save_options, gboolean save_panel_options)
+bool
+save_setup (bool save_options, bool save_panel_options)
 {
-    gboolean ret = TRUE;
+    bool ret = TRUE;
 
     saving_setup = 1;
 
@@ -1333,7 +1333,7 @@ load_anon_passwd (void)
 /* --------------------------------------------------------------------------------------------- */
 
 void
-load_keymap_defs (gboolean load_from_file)
+load_keymap_defs (bool load_from_file)
 {
     /*
      * Load keymap from GLOBAL_KEYMAP_FILE before ${XDG_CONFIG_HOME}/mc/mc.keymap, so that the user

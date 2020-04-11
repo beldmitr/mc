@@ -146,8 +146,7 @@ book_mark_find (WEdit * edit, long line)
  * @return TRUE if bookmark exists at this line of color c, FALSE otherwise
  */
 
-gboolean
-book_mark_query_color (WEdit * edit, long line, int c)
+bool book_mark_query_color (WEdit * edit, long line, int c)
 {
     if (edit->book_mark != NULL)
     {
@@ -210,8 +209,7 @@ book_mark_insert (WEdit * edit, long line, int c)
  * @return FALSE if not found, TRUE otherwise
  */
 
-gboolean
-book_mark_clear (WEdit * edit, long line, int c)
+bool book_mark_clear (WEdit * edit, long line, int c)
 {
     edit_book_mark_t *p, *q;
     gboolean r = FALSE;

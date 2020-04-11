@@ -62,10 +62,10 @@ hook_t *idle_hook = NULL;
 
 /* If set then dialogs just clean the screen when refreshing, else */
 /* they do a complete refresh, refreshing all the parts of the program */
-gboolean fast_refresh = FALSE;
+bool fast_refresh = FALSE;
 
 /* left click outside of dialog closes it */
-gboolean mouse_close_dialog = FALSE;
+bool mouse_close_dialog = FALSE;
 
 const global_keymap_t *dialog_map = NULL;
 

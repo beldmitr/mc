@@ -97,7 +97,7 @@ typedef struct
      * to preserve file attributs when moving files across filesystem boundaries
      * (we want to keep the value of the checkbox between copy operations).
      */
-    gboolean op_preserve;
+    bool op_preserve;
 
     /* Result from the recursive query */
     FileCopyMode recursive_result;
@@ -109,13 +109,13 @@ typedef struct
     gboolean do_append;
 
     /* Whether to stat or lstat */
-    gboolean follow_links;
+    bool follow_links;
 
     /* Pointer to the stat function we will use */
     mc_stat_fn stat_func;
 
     /* Whether to recompute symlinks */
-    gboolean stable_symlinks;
+    bool stable_symlinks;
 
     /* Preserve the original files' owner, group, permissions, and
      * timestamps (owner, group only as root).
@@ -137,7 +137,7 @@ typedef struct
     struct mc_search_struct *search_handle;
 
     /* Whether to dive into subdirectories for recursive operations */
-    gboolean dive_into_subdirs;
+    bool dive_into_subdirs;
 
     /* When moving directories cross filesystem boundaries delete the
      * successfully copied files when all files below the directory and its

@@ -471,8 +471,7 @@ test_indent (const WEdit * edit, off_t p, off_t q)
 /*** public functions ****************************************************************************/
 /* --------------------------------------------------------------------------------------------- */
 
-void
-format_paragraph (WEdit * edit, gboolean force)
+void format_paragraph (WEdit * edit, bool force)
 {
     off_t p, q;
     long lines;
@@ -480,7 +479,7 @@ format_paragraph (WEdit * edit, gboolean force)
     GString *t;
     long indent;
     unsigned char *t2;
-    gboolean utf8 = FALSE;
+    bool utf8 = FALSE;
 
     if (option_word_wrap_line_length < 2)
         return;

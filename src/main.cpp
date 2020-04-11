@@ -217,8 +217,7 @@ init_sigchld (void)
  * @return TRUE if no parent mc in our session was found, FALSE otherwise.
  */
 
-static gboolean
-check_sid (void)
+static bool check_sid()
 {
     pid_t my_sid, old_sid;
     const char *sid_str;
@@ -243,11 +242,10 @@ check_sid (void)
 /*** public functions ****************************************************************************/
 /* --------------------------------------------------------------------------------------------- */
 
-int
-main (int argc, char *argv[])
+int main (int argc, char *argv[])
 {
     GError *mcerror = NULL;
-    gboolean config_migrated = FALSE;
+    bool config_migrated = FALSE;
     char *config_migrate_msg = NULL;
     int exit_code = EXIT_FAILURE;
 

@@ -1059,8 +1059,7 @@ mousedispatch_new (int y, int x, int yl, int xl)
 /* --------------------------------------------------------------------------------------------- */
 
 /* event callback */
-gboolean
-help_interactive_display (const gchar * event_group_name, const gchar * event_name,
+bool help_interactive_display (const gchar * event_group_name, const gchar * event_name,
                           gpointer init_data, gpointer data)
 {
     const dlg_colors_t help_colors = {

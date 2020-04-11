@@ -1184,8 +1184,7 @@ edit_mouse_callback (Widget * w, mouse_msg_t msg, mouse_event_t * event)
  * @return TRUE if no errors was occurred, FALSE otherwise
  */
 
-gboolean
-edit_file (const vfs_path_t * file_vpath, long line)
+bool edit_file (const vfs_path_t * file_vpath, long line)
 {
     mcedit_arg_t arg = { (vfs_path_t *) file_vpath, line };
     GList *files;
@@ -1200,8 +1199,7 @@ edit_file (const vfs_path_t * file_vpath, long line)
 
 /* --------------------------------------------------------------------------------------------- */
 
-gboolean
-edit_files (const GList * files)
+bool edit_files (const GList * files)
 {
     static gboolean made_directory = FALSE;
     WDialog *edit_dlg;
@@ -1303,16 +1301,14 @@ find_editor (const WDialog * h)
  * @return TRUE if widget is an WEdit class, FALSE otherwise
  */
 
-gboolean
-edit_widget_is_editor (const Widget * w)
+bool edit_widget_is_editor (const Widget * w)
 {
     return (w != NULL && w->callback == edit_callback);
 }
 
 /* --------------------------------------------------------------------------------------------- */
 
-void
-edit_update_screen (WEdit * e)
+void edit_update_screen (WEdit * e)
 {
     edit_scroll_screen_over_cursor (e);
     edit_update_curs_col (e);
@@ -1361,8 +1357,7 @@ edit_save_size (WEdit * edit)
  *         FALSE otherwise
  */
 
-gboolean
-edit_add_window (WDialog * h, int y, int x, int lines, int cols, const vfs_path_t * f, long fline)
+bool edit_add_window (WDialog * h, int y, int x, int lines, int cols, const vfs_path_t * f, long fline)
 {
     WEdit *edit;
     Widget *w;
@@ -1391,8 +1386,7 @@ edit_add_window (WDialog * h, int y, int x, int lines, int cols, const vfs_path_
  * @return TRUE if the action was handled, FALSE otherwise
  */
 
-gboolean
-edit_handle_move_resize (WEdit * edit, long command)
+bool edit_handle_move_resize (WEdit * edit, long command)
 {
     Widget *w = WIDGET (edit);
     gboolean ret = FALSE;

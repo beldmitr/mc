@@ -579,7 +579,7 @@ char *str_replace_all (const char *haystack, const char *needle, const char *rep
 
 strtol_error_t xstrtoumax (const char *s, char **ptr, int base, uintmax_t * val,
                            const char *valid_suffixes);
-uintmax_t parse_integer (const char *str, gboolean * invalid);
+uintmax_t parse_integer (const char *str, bool * invalid);
 
 /* --------------------------------------------------------------------------------------------- */
 /*** inline functions ****************************************************************************/

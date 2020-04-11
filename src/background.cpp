@@ -608,8 +608,7 @@ parent_call_string (void *routine, int argc, ...)
 /* --------------------------------------------------------------------------------------------- */
 
 /* event callback */
-gboolean
-background_parent_call (const gchar * event_group_name, const gchar * event_name,
+bool background_parent_call (const gchar * event_group_name, const gchar * event_name,
                         gpointer init_data, gpointer data)
 {
     ev_background_parent_call_t *event_data = (ev_background_parent_call_t *) data;
@@ -627,8 +626,7 @@ background_parent_call (const gchar * event_group_name, const gchar * event_name
 /* --------------------------------------------------------------------------------------------- */
 
 /* event callback */
-gboolean
-background_parent_call_string (const gchar * event_group_name, const gchar * event_name,
+bool background_parent_call_string (const gchar * event_group_name, const gchar * event_name,
                                gpointer init_data, gpointer data)
 {
     ev_background_parent_call_t *event_data = (ev_background_parent_call_t *) data;

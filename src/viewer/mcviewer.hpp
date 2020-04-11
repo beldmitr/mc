@@ -17,7 +17,7 @@ typedef struct WView WView;
 
 typedef struct
 {
-    gboolean wrap;              /* Wrap text lines to fit them on the screen */
+    bool wrap;              /* Wrap text lines to fit them on the screen */
     gboolean hex;               /* Plainview or hexview */
     gboolean magic;             /* Preprocess the file using external programs */
     gboolean nroff;             /* Nroff-style highlighting */
@@ -28,10 +28,10 @@ typedef struct
 extern mcview_mode_flags_t mcview_global_flags;
 extern mcview_mode_flags_t mcview_altered_flags;
 
-extern gboolean mcview_remember_file_position;
+extern bool mcview_remember_file_position;
 extern int mcview_max_dirt_limit;
 
-extern gboolean mcview_mouse_move_pages;
+extern bool mcview_mouse_move_pages;
 extern char *mcview_show_eof;
 
 /*** declarations of public functions ************************************************************/

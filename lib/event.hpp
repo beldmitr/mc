@@ -4,7 +4,7 @@
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
-typedef gboolean (*mc_event_callback_func_t) (const gchar *, const gchar *, gpointer, gpointer);
+typedef bool (*mc_event_callback_func_t) (const gchar *, const gchar *, gpointer, gpointer);
 
 /*** enums ***************************************************************************************/
 

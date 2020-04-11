@@ -17,7 +17,7 @@ typedef struct WTree WTree;
 /*** global variables defined in .c file *********************************************************/
 
 extern WTree *the_tree;
-extern gboolean xtree_mode;
+extern bool xtree_mode;
 
 /*** declarations of public functions ************************************************************/
 

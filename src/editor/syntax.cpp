@@ -64,8 +64,8 @@
 
 /*** global variables ****************************************************************************/
 
-gboolean option_syntax_highlighting = TRUE;
-gboolean option_auto_syntax = TRUE;
+bool option_syntax_highlighting = TRUE;
+bool option_auto_syntax = TRUE;
 
 /*** file scope macro definitions ****************************************************************/
 

@@ -162,7 +162,7 @@ statfs (char const *filename, struct fs_info *buf)
 
 /*** global variables ****************************************************************************/
 
-gboolean classic_progressbar = TRUE;
+bool classic_progressbar = TRUE;
 
 /*** file scope macro definitions ****************************************************************/
 
@@ -1281,7 +1281,7 @@ file_mask_dialog (file_op_context_t * ctx, FileOperation operation,
 {
     size_t fmd_xlen;
     vfs_path_t *vpath;
-    gboolean source_easy_patterns = easy_patterns;
+    bool source_easy_patterns = easy_patterns;
     char fmd_buf[BUF_MEDIUM];
     char *dest_dir, *tmp;
     char *def_text_secure;

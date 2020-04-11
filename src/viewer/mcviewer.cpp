@@ -63,13 +63,13 @@ mcview_mode_flags_t mcview_altered_flags = {
     .nroff = FALSE
 };
 
-gboolean mcview_remember_file_position = FALSE;
+bool mcview_remember_file_position = FALSE;
 
 /* Maxlimit for skipping updates */
 int mcview_max_dirt_limit = 10;
 
 /* Scrolling is done in pages or line increments */
-gboolean mcview_mouse_move_pages = TRUE;
+bool mcview_mouse_move_pages = TRUE;
 
 /* end of file will be showen from mcview_show_eof */
 char *mcview_show_eof = NULL;

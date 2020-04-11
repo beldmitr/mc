@@ -527,8 +527,7 @@ check_other_panel_timestamp (const gchar * event_group_name, const gchar * event
 /* --------------------------------------------------------------------------------------------- */
 
 /* event callback */
-static gboolean
-print_vfs_message (const gchar * event_group_name, const gchar * event_name,
+static bool print_vfs_message (const gchar * event_group_name, const gchar * event_name,
                    gpointer init_data, gpointer data)
 {
     ev_vfs_print_message_t *event_data = (ev_vfs_print_message_t *) data;

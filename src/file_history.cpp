@@ -94,12 +94,11 @@ file_history_list_read (void)
 
 /* --------------------------------------------------------------------------------------------- */
 
-static void
-file_history_list_write (const GList * file_list)
+static void file_history_list_write (const GList * file_list)
 {
     char *fn;
     FILE *f;
-    gboolean write_error = FALSE;
+    bool write_error = FALSE;
 
     fn = mc_config_get_full_path (MC_FILEPOS_FILE);
     if (fn == NULL)

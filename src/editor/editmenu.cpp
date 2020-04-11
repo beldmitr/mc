@@ -306,8 +306,7 @@ edit_menu_cmd (WDialog * h)
 
 /* --------------------------------------------------------------------------------------------- */
 
-gboolean
-edit_drop_hotkey_menu (WDialog * h, int key)
+bool edit_drop_hotkey_menu (WDialog * h, int key)
 {
     int m = 0;
     switch (key)

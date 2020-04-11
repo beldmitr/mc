@@ -645,7 +645,7 @@ edit_buffer_get_backward_offset (const edit_buffer_t * buf, off_t current, long 
 
 off_t
 edit_buffer_read_file (edit_buffer_t * buf, int fd, off_t size,
-                       edit_buffer_read_file_status_msg_t * sm, gboolean * aborted)
+                       edit_buffer_read_file_status_msg_t * sm, bool * aborted)
 {
     off_t ret = 0;
     off_t i, j;

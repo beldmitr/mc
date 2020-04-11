@@ -1418,8 +1418,7 @@ directory_history_add (WPanel * panel, const vfs_path_t * vpath)
 /* --------------------------------------------------------------------------------------------- */
 
 /* "history_load" event handler */
-static gboolean
-panel_load_history (const gchar * event_group_name, const gchar * event_name,
+static bool panel_load_history (const gchar * event_group_name, const gchar * event_name,
                     gpointer init_data, gpointer data)
 {
     WPanel *p = PANEL (init_data);
@@ -1444,8 +1443,7 @@ panel_load_history (const gchar * event_group_name, const gchar * event_name,
 /* --------------------------------------------------------------------------------------------- */
 
 /* "history_save" event handler */
-static gboolean
-panel_save_history (const gchar * event_group_name, const gchar * event_name,
+static bool panel_save_history (const gchar * event_group_name, const gchar * event_name,
                     gpointer init_data, gpointer data)
 {
     WPanel *p = PANEL (init_data);
@@ -2518,9 +2516,9 @@ static void
 panel_select_unselect_files (WPanel * panel, const char *title, const char *history_name,
                              gboolean do_select)
 {
-    gboolean files_only = (panels_options.select_flags & SELECT_FILES_ONLY) != 0;
-    gboolean case_sens = (panels_options.select_flags & SELECT_MATCH_CASE) != 0;
-    gboolean shell_patterns = (panels_options.select_flags & SELECT_SHELL_PATTERNS) != 0;
+    bool files_only = (panels_options.select_flags & SELECT_FILES_ONLY) != 0;
+    bool case_sens = (panels_options.select_flags & SELECT_MATCH_CASE) != 0;
+    bool shell_patterns = (panels_options.select_flags & SELECT_SHELL_PATTERNS) != 0;
 
     char *reg_exp;
     mc_search_t *search;
@@ -4096,8 +4094,7 @@ do_try_to_select (WPanel * panel, const char *name)
 /* --------------------------------------------------------------------------------------------- */
 
 /* event callback */
-static gboolean
-event_update_panels (const gchar * event_group_name, const gchar * event_name,
+static bool event_update_panels (const gchar * event_group_name, const gchar * event_name,
                      gpointer init_data, gpointer data)
 {
     (void) event_group_name;
@@ -4113,8 +4110,7 @@ event_update_panels (const gchar * event_group_name, const gchar * event_name,
 /* --------------------------------------------------------------------------------------------- */
 
 /* event callback */
-static gboolean
-panel_save_current_file_to_clip_file (const gchar * event_group_name, const gchar * event_name,
+static bool panel_save_current_file_to_clip_file (const gchar * event_group_name, const gchar * event_name,
                                       gpointer init_data, gpointer data)
 {
     (void) event_group_name;

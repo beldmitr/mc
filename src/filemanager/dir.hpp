@@ -45,9 +45,9 @@ typedef struct
  */
 typedef struct dir_sort_options_struct
 {
-    gboolean reverse;           /**< sort is reverse */
-    gboolean case_sensitive;    /**< sort is case sensitive */
-    gboolean exec_first;        /**< executables are at top of list */
+    bool reverse;           /**< sort is reverse */
+    bool case_sensitive;    /**< sort is case sensitive */
+    bool exec_first;        /**< executables are at top of list */
 } dir_sort_options_t;
 
 /*** global variables defined in .c file *********************************************************/

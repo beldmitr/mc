@@ -833,8 +833,7 @@ input_execute_cmd (WInput * in, long command)
 /* --------------------------------------------------------------------------------------------- */
 
 /* "history_load" event handler */
-static gboolean
-input_load_history (const gchar * event_group_name, const gchar * event_name,
+static bool input_load_history (const gchar * event_group_name, const gchar * event_name,
                     gpointer init_data, gpointer data)
 {
     WInput *in = INPUT (init_data);
@@ -862,8 +861,7 @@ input_load_history (const gchar * event_group_name, const gchar * event_name,
 /* --------------------------------------------------------------------------------------------- */
 
 /* "history_save" event handler */
-static gboolean
-input_save_history (const gchar * event_group_name, const gchar * event_name,
+static bool input_save_history (const gchar * event_group_name, const gchar * event_name,
                     gpointer init_data, gpointer data)
 {
     WInput *in = INPUT (init_data);

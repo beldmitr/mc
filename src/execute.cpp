@@ -73,8 +73,7 @@ char *execute_get_external_cmd_opts_from_config (const char *command,
 
 /* --------------------------------------------------------------------------------------------- */
 
-static void
-edition_post_exec (void)
+static void edition_post_exec()
 {
     tty_enter_ca_mode ();
 
@@ -93,8 +92,7 @@ edition_post_exec (void)
 
 /* --------------------------------------------------------------------------------------------- */
 
-static void
-edition_pre_exec (void)
+static void edition_pre_exec (void)
 {
     if (clear_before_exec)
         clr_scr ();
@@ -140,10 +138,9 @@ do_possible_cd (const vfs_path_t * new_dir_vpath)
 
 /* --------------------------------------------------------------------------------------------- */
 
-static void
-do_suspend_cmd (void)
+static void do_suspend_cmd ()
 {
-    pre_exec ();
+    pre_exec();
 
     if (mc_global.tty.console_flag != '\0' && !mc_global.tty.use_subshell)
         handle_console (CONSOLE_RESTORE);
@@ -395,8 +392,7 @@ do_execute (const char *shell, const char *command, int flags)
 
 /** Set up the terminal before executing a program */
 
-void
-pre_exec (void)
+void pre_exec()
 {
     use_dash (FALSE);
     edition_pre_exec ();
@@ -443,8 +439,7 @@ shell_execute (const char *command, int flags)
 
 /* --------------------------------------------------------------------------------------------- */
 
-void
-toggle_subshell (void)
+void toggle_subshell ()
 {
     static gboolean message_flag = TRUE;
 
@@ -575,8 +570,7 @@ toggle_subshell (void)
 /* --------------------------------------------------------------------------------------------- */
 
 /* event callback */
-gboolean
-execute_suspend (const gchar * event_group_name, const gchar * event_name,
+bool execute_suspend (const gchar * event_group_name, const gchar * event_name,
                  gpointer init_data, gpointer data)
 {
     (void) event_group_name;

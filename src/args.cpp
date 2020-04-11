@@ -46,15 +46,15 @@
 /*** global variables ****************************************************************************/
 
 /* If true, assume we are running on an xterm terminal */
-gboolean mc_args__force_xterm = FALSE;
+bool mc_args__force_xterm = false;
 
-gboolean mc_args__nomouse = FALSE;
+bool mc_args__nomouse = false;
 
 /* Force colors, only used by Slang */
-gboolean mc_args__force_colors = FALSE;
+bool mc_args__force_colors = false;
 
 /* Don't load keymap from file and use default one */
-gboolean mc_args__nokeymap = FALSE;
+bool mc_args__nokeymap = false;
 
 char *mc_args__last_wd_file = NULL;
 
@@ -658,8 +658,7 @@ mc_setup_run_mode (char **argv)
 #endif /* USE_DIFF_VIEW */
 }
 
-gboolean
-mc_args_parse (int *argc, char ***argv, const char *translation_domain, GError ** mcerror)
+bool mc_args_parse (int *argc, char ***argv, const char *translation_domain, GError ** mcerror)
 {
     const gchar *_system_codepage;
     gboolean ok = TRUE;
@@ -740,8 +739,7 @@ mc_args_parse (int *argc, char ***argv, const char *translation_domain, GError *
 
 /* --------------------------------------------------------------------------------------------- */
 
-gboolean
-mc_args_show_info (void)
+bool mc_args_show_info ()
 {
     if (mc_args__show_version)
     {
@@ -774,8 +772,7 @@ mc_args_show_info (void)
 
 /* --------------------------------------------------------------------------------------------- */
 
-gboolean
-mc_setup_by_args (int argc, char **argv, GError ** mcerror)
+bool mc_setup_by_args (int argc, char **argv, GError ** mcerror)
 {
     char *tmp;
 

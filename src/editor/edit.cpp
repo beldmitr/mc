@@ -74,26 +74,26 @@
 /*** global variables ****************************************************************************/
 
 int option_word_wrap_line_length = DEFAULT_WRAP_LINE_LENGTH;
-gboolean option_typewriter_wrap = FALSE;
-gboolean option_auto_para_formatting = FALSE;
-gboolean option_fill_tabs_with_spaces = FALSE;
-gboolean option_return_does_auto_indent = TRUE;
-gboolean option_backspace_through_tabs = FALSE;
-gboolean option_fake_half_tabs = TRUE;
+bool option_typewriter_wrap = FALSE;
+bool option_auto_para_formatting = FALSE;
+bool option_fill_tabs_with_spaces = FALSE;
+bool option_return_does_auto_indent = TRUE;
+bool option_backspace_through_tabs = FALSE;
+bool option_fake_half_tabs = TRUE;
 int option_save_mode = EDIT_QUICK_SAVE;
-gboolean option_save_position = TRUE;
+bool option_save_position = TRUE;
 int option_max_undo = 32768;
-gboolean option_persistent_selections = TRUE;
-gboolean option_cursor_beyond_eol = FALSE;
-gboolean option_line_state = FALSE;
+bool option_persistent_selections = TRUE;
+bool option_cursor_beyond_eol = FALSE;
+bool option_line_state = FALSE;
 int option_line_state_width = 0;
-gboolean option_cursor_after_inserted_block = FALSE;
-gboolean option_state_full_filename = FALSE;
+bool option_cursor_after_inserted_block = FALSE;
+bool option_state_full_filename = FALSE;
 
-gboolean enable_show_tabs_tws = TRUE;
-gboolean option_check_nl_at_eof = FALSE;
-gboolean option_group_undo = FALSE;
-gboolean show_right_margin = FALSE;
+bool enable_show_tabs_tws = TRUE;
+bool option_check_nl_at_eof = FALSE;
+bool option_group_undo = FALSE;
+bool show_right_margin = FALSE;
 
 char *option_backup_ext = NULL;
 char *option_filesize_threshold = NULL;
@@ -174,13 +174,12 @@ edit_load_status_update_cb (status_msg_t * sm)
  * @return FALSE on error.
  */
 
-static gboolean
-edit_load_file_fast (edit_buffer_t * buf, const vfs_path_t * filename_vpath)
+static bool edit_load_file_fast (edit_buffer_t * buf, const vfs_path_t * filename_vpath)
 {
     int file;
-    gboolean ret;
+    bool ret;
     edit_buffer_read_file_status_msg_t rsm;
-    gboolean aborted;
+    bool aborted;
 
     file = mc_open (filename_vpath, O_RDONLY | O_BINARY);
     if (file < 0)
@@ -286,13 +285,12 @@ edit_insert_stream (WEdit * edit, FILE * f)
   * @return TRUE for success, FALSE for error.
   */
 
-static gboolean
-check_file_access (WEdit * edit, const vfs_path_t * filename_vpath, struct stat *st)
+static bool check_file_access (WEdit * edit, const vfs_path_t * filename_vpath, struct stat *st)
 {
     static uintmax_t threshold = UINTMAX_MAX;
     int file;
     gchar *errmsg = NULL;
-    gboolean ret = TRUE;
+    bool ret = TRUE;
 
     /* Try opening an existing file */
     file = mc_open (filename_vpath, O_NONBLOCK | O_RDONLY | O_BINARY, 0666);
@@ -334,7 +332,7 @@ check_file_access (WEdit * edit, const vfs_path_t * filename_vpath, struct stat 
     /* get file size threshold for alarm */
     if (threshold == UINTMAX_MAX)
     {
-        gboolean err = FALSE;
+        bool err = FALSE;
 
         threshold = parse_integer (option_filesize_threshold, &err);
         if (err)
@@ -388,10 +386,9 @@ check_file_access (WEdit * edit, const vfs_path_t * filename_vpath, struct stat 
  * @param edit editor object
  * @return TRUE if file was successfully opened and loaded to buffers, FALSE otherwise
  */
-static gboolean
-edit_load_file (WEdit * edit)
+static bool edit_load_file (WEdit * edit)
 {
-    gboolean fast_load = TRUE;
+    bool fast_load = TRUE;
 
     /* Cannot do fast load if a filter is used */
     if (edit_find_filter (edit->filename_vpath) >= 0)
@@ -463,7 +460,7 @@ edit_load_file (WEdit * edit)
  */
 
 static void
-edit_load_position (WEdit * edit, gboolean load_position)
+edit_load_position (WEdit * edit, bool load_position)
 {
     long line, column;
     off_t offset;
@@ -615,8 +612,7 @@ get_prev_undo_action (WEdit * edit)
 /* --------------------------------------------------------------------------------------------- */
 /** is called whenever a modification is made by one of the four routines below */
 
-static void
-edit_modification (WEdit * edit)
+static void edit_modification (WEdit * edit)
 {
     edit->caches_valid = FALSE;
 
@@ -636,8 +632,7 @@ edit_modification (WEdit * edit)
  * @return TRUE if cursor is in indent, FALSE otherwise
  */
 
-static gboolean
-is_in_indent (const edit_buffer_t * buf)
+static bool is_in_indent (const edit_buffer_t * buf)
 {
     off_t p;
 
@@ -657,7 +652,7 @@ is_in_indent (const edit_buffer_t * buf)
  * @return TRUE if line in blank, FALSE otherwise
  */
 
-static gboolean
+static bool
 is_blank (const edit_buffer_t * buf, off_t offset)
 {
     off_t s, f;
@@ -734,7 +729,7 @@ edit_find_line (WEdit * edit, long line)
    before a non-blank line is reached */
 
 static void
-edit_move_up_paragraph (WEdit * edit, gboolean do_scroll)
+edit_move_up_paragraph (WEdit * edit, bool do_scroll)
 {
     long i = 0;
 
@@ -771,7 +766,7 @@ edit_move_up_paragraph (WEdit * edit, gboolean do_scroll)
    before a non-blank line is reached */
 
 static void
-edit_move_down_paragraph (WEdit * edit, gboolean do_scroll)
+edit_move_down_paragraph (WEdit * edit, bool do_scroll)
 {
     long i;
 
@@ -1052,7 +1047,7 @@ edit_left_char_move_cmd (WEdit * edit)
 */
 
 static void
-edit_move_updown (WEdit * edit, long lines, gboolean do_scroll, gboolean direction)
+edit_move_updown (WEdit * edit, long lines, bool do_scroll, bool direction)
 {
     long p;
     long l = direction ? edit->buffer.curs_line : edit->buffer.lines - edit->buffer.curs_line;
@@ -1343,7 +1338,7 @@ edit_delete_to_line_begin (WEdit * edit)
 
 /* --------------------------------------------------------------------------------------------- */
 
-static gboolean
+static bool
 is_aligned_on_a_tab (WEdit * edit)
 {
     long curs_col;
@@ -1355,7 +1350,7 @@ is_aligned_on_a_tab (WEdit * edit)
 
 /* --------------------------------------------------------------------------------------------- */
 
-static gboolean
+static bool
 right_of_four_spaces (WEdit * edit)
 {
     int i, ch = 0;
@@ -1368,7 +1363,7 @@ right_of_four_spaces (WEdit * edit)
 
 /* --------------------------------------------------------------------------------------------- */
 
-static gboolean
+static bool
 left_of_four_spaces (WEdit * edit)
 {
     int i, ch = 0;
@@ -1417,7 +1412,7 @@ edit_double_newline (WEdit * edit)
 /* --------------------------------------------------------------------------------------------- */
 
 static void
-insert_spaces_tab (WEdit * edit, gboolean half)
+insert_spaces_tab (WEdit * edit, bool half)
 {
     long i;
 
@@ -1509,7 +1504,7 @@ check_and_wrap_line (WEdit * edit)
  */
 
 static off_t
-edit_get_bracket (WEdit * edit, gboolean in_screen, unsigned long furthest_bracket_search)
+edit_get_bracket (WEdit * edit, bool in_screen, unsigned long furthest_bracket_search)
 {
     const char *const b = "{}{[][()(", *p;
     int i = 1, inc = -1, c, d, n = 0;
@@ -1762,7 +1757,7 @@ void
 user_menu (WEdit * edit, const char *menu_file, int selected_entry)
 {
     char *block_file;
-    gboolean nomark;
+    bool nomark;
     off_t curs;
     off_t start_mark, end_mark;
     struct stat status;
@@ -1934,7 +1929,7 @@ edit_write_stream (WEdit * edit, FILE * f)
 
 /* --------------------------------------------------------------------------------------------- */
 
-gboolean
+bool
 is_break_char (char c)
 {
     return (isspace (c) || strchr ("{}[]()<>=|/\\!?~-+`'\",.;:#$%^&*", c));
@@ -2076,14 +2071,14 @@ WEdit *
 edit_init (WEdit * edit, int y, int x, int lines, int cols, const vfs_path_t * filename_vpath,
            long line)
 {
-    gboolean to_free = FALSE;
+    bool to_free = FALSE;
 
     option_auto_syntax = TRUE;  /* Resetting to auto on every invokation */
     option_line_state_width = option_line_state ? LINE_STATE_WIDTH : 0;
 
     if (edit != NULL)
     {
-        gboolean fullscreen;
+        bool fullscreen;
         WRect loc_prev;
 
         /* save some widget parameters */
@@ -2174,7 +2169,7 @@ edit_init (WEdit * edit, int y, int x, int lines, int cols, const vfs_path_t * f
 /* --------------------------------------------------------------------------------------------- */
 
 /** Clear the edit struct, freeing everything in it.  Return TRUE on success */
-gboolean
+bool
 edit_clean (WEdit * edit)
 {
     if (edit == NULL)
@@ -2225,7 +2220,7 @@ edit_clean (WEdit * edit)
  *
  * @return TRUE on success, FALSE on failure.
  */
-gboolean
+bool
 edit_reload_line (WEdit * edit, const vfs_path_t * filename_vpath, long line)
 {
     Widget *w = WIDGET (edit);
@@ -2584,7 +2579,7 @@ edit_insert_over (WEdit * edit)
 /* --------------------------------------------------------------------------------------------- */
 
 int
-edit_delete (WEdit * edit, gboolean byte_delete)
+edit_delete (WEdit * edit, bool byte_delete)
 {
     int p = 0;
     int char_length = 1;
@@ -2645,7 +2640,7 @@ edit_delete (WEdit * edit, gboolean byte_delete)
 /* --------------------------------------------------------------------------------------------- */
 
 int
-edit_backspace (WEdit * edit, gboolean byte_delete)
+edit_backspace (WEdit * edit, bool byte_delete)
 {
     int p = 0;
     int char_length = 1;
@@ -3001,7 +2996,7 @@ edit_move_to_prev_col (WEdit * edit, off_t p)
  * @return TRUE if line in blank, FALSE otherwise
  */
 
-gboolean
+bool
 edit_line_is_blank (WEdit * edit, long line)
 {
     return is_blank (&edit->buffer, edit_find_line (edit, line));
@@ -3059,7 +3054,7 @@ edit_set_markers (WEdit * edit, off_t m1, off_t m2, long c1, long c2)
 /** highlight marker toggle */
 
 void
-edit_mark_cmd (WEdit * edit, gboolean unmark)
+edit_mark_cmd (WEdit * edit, bool unmark)
 {
     edit_push_markers (edit);
     if (unmark)
@@ -4029,7 +4024,7 @@ edit_stack_free (void)
 /** move i lines */
 
 void
-edit_move_up (WEdit * edit, long i, gboolean do_scroll)
+edit_move_up (WEdit * edit, long i, bool do_scroll)
 {
     edit_move_updown (edit, i, do_scroll, TRUE);
 }
@@ -4038,7 +4033,7 @@ edit_move_up (WEdit * edit, long i, gboolean do_scroll)
 /** move i lines */
 
 void
-edit_move_down (WEdit * edit, long i, gboolean do_scroll)
+edit_move_down (WEdit * edit, long i, bool do_scroll)
 {
     edit_move_updown (edit, i, do_scroll, FALSE);
 }

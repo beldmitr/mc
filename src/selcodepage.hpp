@@ -29,9 +29,9 @@
 
 /*** declarations of public functions ************************************************************/
 
-int select_charset (int center_y, int center_x, int current_charset, gboolean seldisplay);
-gboolean do_set_codepage (int);
-gboolean do_select_codepage (void);
+int select_charset (int center_y, int center_x, int current_charset, bool seldisplay);
+bool do_set_codepage (int);
+bool do_select_codepage (void);
 
 /*** inline functions ****************************************************************************/
 

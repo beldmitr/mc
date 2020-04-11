@@ -52,8 +52,7 @@
 /*** public functions ****************************************************************************/
 /* --------------------------------------------------------------------------------------------- */
 
-gboolean
-events_init (GError ** mcerror)
+bool events_init (GError ** mcerror)
 {
     /* *INDENT-OFF* */
     static const event_init_t standard_events[] =

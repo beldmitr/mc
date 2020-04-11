@@ -99,7 +99,7 @@ editcmd_dialog_search_show (WEdit * edit)
     {
         quick_widget_t quick_widgets[] = {
             /* *INDENT-OFF* */
-            QUICK_LABELED_INPUT (N_("Enter search string:"), input_label_above, INPUT_LAST_TEXT, 
+            QUICK_LABELED_INPUT (N_("Enter search string:"), input_label_above, INPUT_LAST_TEXT,
                                  MC_HISTORY_SHARED_SEARCH, &search_text, NULL, FALSE, FALSE,
                                  INPUT_COMPLETE_NONE),
             QUICK_SEPARATOR (TRUE),

@@ -70,8 +70,7 @@ get_hotkey (int n)
  *   -1 (SELECT_CHARSET_NO_TRANSLATE) : "No translation" if seldisplay == FALSE
  *   >= 0                             : charset number
  */
-int
-select_charset (int center_y, int center_x, int current_charset, gboolean seldisplay)
+int select_charset (int center_y, int center_x, int current_charset, bool seldisplay)
 {
     size_t i;
     int listbox_result;
@@ -134,17 +133,16 @@ select_charset (int center_y, int center_x, int current_charset, gboolean seldis
 
 /* --------------------------------------------------------------------------------------------- */
 /** Set codepage */
-gboolean
-do_set_codepage (int codepage)
+bool do_set_codepage (int codepage)
 {
     char *errmsg;
-    gboolean ret;
+    bool ret;
 
     mc_global.source_codepage = codepage;
     errmsg = init_translation_table (codepage == SELECT_CHARSET_NO_TRANSLATE ?
                                      mc_global.display_codepage : mc_global.source_codepage,
                                      mc_global.display_codepage);
-    ret = errmsg == NULL;
+    ret = (errmsg == NULL);
 
     if (!ret)
     {
@@ -158,12 +156,9 @@ do_set_codepage (int codepage)
 /* --------------------------------------------------------------------------------------------- */
 /** Show menu selecting codepage */
 
-gboolean
-do_select_codepage (void)
+bool do_select_codepage()
 {
-    int r;
-
-    r = select_charset (-1, -1, default_source_codepage, FALSE);
+    int r = select_charset (-1, -1, default_source_codepage, FALSE);
     if (r == SELECT_CHARSET_CANCEL)
         return FALSE;
 

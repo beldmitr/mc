@@ -213,10 +213,10 @@ typedef struct mcview_nroff_struct
 typedef struct mcview_search_options_t
 {
     mc_search_type_t type;
-    gboolean case_sens;
-    gboolean backwards;
-    gboolean whole_words;
-    gboolean all_codepages;
+    bool case_sens;
+    bool backwards;
+    bool whole_words;
+    bool all_codepages;
 } mcview_search_options_t;
 
 /*** global variables defined in .c file *********************************************************/
