@@ -1122,7 +1122,7 @@ load_setup (void)
     mc_global.tty.setup_color_string =
         mc_config_get_string (mc_global.main_config, "Colors", "base_color", "");
     mc_global.tty.term_color_string =
-        mc_config_get_string (mc_global.main_config, "Colors", getenv ("TERM"), "");
+        mc_config_get_string (mc_global.main_config, "Colors", std::getenv("TERM"), "");
     mc_global.tty.color_terminal_string =
         mc_config_get_string (mc_global.main_config, "Colors", "color_terminals", "");
 
@@ -1133,11 +1133,7 @@ load_setup (void)
 #ifdef HAVE_CHARSET
     if (codepages->len > 1)
     {
-        char *buffer;
-
-        buffer =
-            mc_config_get_string (mc_global.main_config, CONFIG_MISC_SECTION, "display_codepage",
-                                  "");
+        char *buffer = mc_config_get_string (mc_global.main_config, CONFIG_MISC_SECTION, "display_codepage", "");
         if (buffer[0] != '\0')
         {
             mc_global.display_codepage = get_codepage_index (buffer);
@@ -1307,12 +1303,12 @@ load_key_defs (void)
     if (mc_global_config != NULL)
     {
         load_keys_from_section ("general", mc_global_config);
-        load_keys_from_section (getenv ("TERM"), mc_global_config);
+        load_keys_from_section (std::getenv ("TERM"), mc_global_config);
         mc_config_deinit (mc_global_config);
     }
 
     load_keys_from_section ("general", mc_global.main_config);
-    load_keys_from_section (getenv ("TERM"), mc_global.main_config);
+    load_keys_from_section (std::getenv ("TERM"), mc_global.main_config);
 }
 
 /* --------------------------------------------------------------------------------------------- */

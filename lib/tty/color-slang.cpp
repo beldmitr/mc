@@ -61,7 +61,7 @@ has_colors (gboolean disable, gboolean force)
 
     if (!mc_tty_color_disable)
     {
-        const char *terminal = getenv ("TERM");
+        const char *terminal = std::getenv ("TERM");
         const size_t len = strlen (terminal);
         char *cts = mc_global.tty.color_terminal_string;
 

@@ -1315,9 +1315,7 @@ lookup_keycode (const long code, int *idx)
 void
 init_key (void)
 {
-    const char *term;
-
-    term = getenv ("TERM");
+    const char *term = std::getenv ("TERM");
 
     /* This has to be the first define_sequence */
     /* So, we can assume that the first keys member has ESC */

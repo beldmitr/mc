@@ -94,7 +94,7 @@ tty_check_term (gboolean force_xterm)
     const char *termvalue;
     const char *xdisplay;
 
-    termvalue = getenv ("TERM");
+    termvalue = std::getenv("TERM");
     if (termvalue == NULL || *termvalue == '\0')
     {
         fputs (_("The TERM environment variable is unset!\n"), stderr);
@@ -310,9 +310,7 @@ tty_resize (int fd)
 void
 tty_init_xterm_support (gboolean is_xterm)
 {
-    const char *termvalue;
-
-    termvalue = getenv ("TERM");
+    const char *termvalue = std::getenv("TERM");
 
     /* Check mouse and ca capabilities */
     /* terminfo/termcap structures have been already initialized,

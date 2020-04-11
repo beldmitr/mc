@@ -354,7 +354,7 @@ learn_save (void)
     char *section;
     gboolean profile_changed = FALSE;
 
-    section = g_strconcat ("terminal:", getenv ("TERM"), (char *) NULL);
+    section = g_strconcat ("terminal:", std::getenv ("TERM"), (char *) NULL);
 
     for (i = 0; i < learn_total; i++)
         if (learnkeys[i].sequence != NULL)
