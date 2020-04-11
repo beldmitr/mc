@@ -44,7 +44,7 @@
 #include "src/vfs/ftpfs/ftpfs.hpp"
 #endif
 #ifdef ENABLE_VFS_FISH
-#include "src/vfs/fish/fish.h"
+#include "src/vfs/fish/fish.hpp"
 #endif
 
 #ifdef HAVE_CHARSET

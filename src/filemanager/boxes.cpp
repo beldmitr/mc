@@ -50,7 +50,7 @@
 #include "src/vfs/ftpfs/ftpfs.hpp"
 #endif /* ENABLE_VFS_FTP */
 #ifdef ENABLE_VFS_SMB
-#include "src/vfs/smbfs/smbfs.h"
+#include "src/vfs/smbfs/smbfs.hpp"
 #endif /* ENABLE_VFS_SMB */
 
 #include "lib/util.hpp"           /* Q_() */

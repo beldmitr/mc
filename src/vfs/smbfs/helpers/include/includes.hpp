@@ -6,10 +6,6 @@
    Machine customisation and include handling
  */
 
-#ifndef NO_CONFIG_H             /* for some tests */
-#include "config.h"     // FIXME TO be removed
-#endif
-
 #include "local.hpp"
 
 #ifdef AIX
@@ -573,5 +569,7 @@ unsigned long strtoul (const char *nptr, char **endptr, int base);
 
 /* yuck, I'd like a better way of doing this */
 #define DIRP_SIZE (256 + 32)
+
+extern file_info const def_finfo;
 
 #endif /* _INCLUDES_H */

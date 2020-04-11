@@ -143,6 +143,12 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${LIBSSH2_INCLUDE_DIRS})
 link_directories(${LIBSSH2_LIBRARY_DIRS})
 target_link_libraries(${PROJECT_NAME} ${LIBSSH2_LIBRARIES})
 
+# ASPELL
+find_package(X11 REQUIRED)
+include_directories(${X11_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME} ${X11_LIBRARIES})
+
+
 # DEFINITIONS
 add_compile_definitions(VERSION="0.0")
 add_compile_definitions(HAVE_SLANG)
@@ -170,6 +176,19 @@ add_compile_definitions(HAVE_EXT2FS_EXT2_FS_H)
 add_compile_definitions(HAVE_STRINGS_H)
 add_compile_definitions(HAVE_STRING_H)  # FIXME !!! better use cstring instead
 add_compile_definitions(HAVE_GETTIMEOFDAY_TZ)
+add_compile_definitions(HAVE_MEMORY_H)
+add_compile_definitions(HAVE_MALLOC_H)
+add_compile_definitions(HAVE_LIMITS_H)
+add_compile_definitions(ENABLE_VFS_SMB)
+add_compile_definitions(ENABLE_VFS_TAR)
+add_compile_definitions(ENABLE_VFS_UNDELFS)
+add_compile_definitions(ENABLE_VFS_SFS)
+add_compile_definitions(ENABLE_VFS_SFTP)
+add_compile_definitions(ENABLE_VFS_FISH)
+add_compile_definitions(ENABLE_VFS_EXTFS)
+add_compile_definitions(ENABLE_VFS_CPIO)
+add_compile_definitions(USE_INTERNAL_EDIT)
+add_compile_definitions(HAVE_CHARSET)
 
 #curses
 #add_compile_definitions(HAVE_NCURSES_H)

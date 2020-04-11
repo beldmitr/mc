@@ -47,6 +47,7 @@
 #include "lib/strutil.hpp"
 #include "lib/util.hpp"
 #include "lib/widget.hpp"         /* message() */
+#include "smbfs.hpp"    // FIXME ??? CORRECT
 
 #undef  PACKAGE_BUGREPORT
 #undef  PACKAGE_NAME
@@ -67,8 +68,6 @@
 #include "lib/vfs/xdirentry.hpp"  /* vfs_s_subclass */
 #include "lib/vfs/netutil.hpp"
 #include "lib/vfs/utilvfs.hpp"
-
-#include "smbfs.hpp"
 
 /*** global variables ****************************************************************************/
 

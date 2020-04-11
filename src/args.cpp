@@ -34,7 +34,7 @@
 #include "lib/util.hpp"           /* x_basename() */
 
 #ifdef ENABLE_VFS_SMB
-#include "src/vfs/smbfs/smbfs.h"        /* smbfs_set_debugf()  */
+#include "src/vfs/smbfs/smbfs.hpp"        /* smbfs_set_debugf()  */
 #endif
 
 #include "src/textconf.hpp"
