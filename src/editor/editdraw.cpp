@@ -199,7 +199,7 @@ edit_status_fullscreen (WEdit * edit, int color)
     int fname_len;
 
     status_size = w + 1;
-    status = g_malloc (status_size);
+    status = static_cast<char *>(g_malloc(status_size));
     status_string (edit, status, status_size);
     status_len = (int) str_term_width1 (status);
 

@@ -389,7 +389,7 @@ vfs_path_from_str_deprecated_parser (char *path)
             (element->encoding != NULL) ? str_crt_conv_from (element->encoding) : INVALID_CONV;
 #endif
 
-        url_params = strchr (op, ':');  /* skip VFS prefix */
+        url_params = const_cast<char*>(strchr (op, ':'));  /* skip VFS prefix */
         if (url_params != NULL)
         {
             *url_params = '\0';

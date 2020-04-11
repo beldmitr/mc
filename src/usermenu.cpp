@@ -472,9 +472,9 @@ execute_menu_command (const WEdit * edit_widget, const char *commands, gboolean 
                 *parameter = '\0';
                 parameter =
                     input_dialog (_("Parameter"), lc_prompt, MC_HISTORY_FM_MENU_EXEC_PARAM, "",
-                                  INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD |
-                                  INPUT_COMPLETE_HOSTNAMES | INPUT_COMPLETE_VARIABLES |
-                                  INPUT_COMPLETE_USERNAMES);
+                                  static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD |
+                                                                INPUT_COMPLETE_HOSTNAMES | INPUT_COMPLETE_VARIABLES |
+                                                                INPUT_COMPLETE_USERNAMES));
                 if (parameter == NULL || *parameter == '\0')
                 {
                     /* User canceled */
@@ -1010,7 +1010,7 @@ user_menu_cmd (const WEdit * edit_widget, const char *menu_file, int selected_en
             char **new_entries;
 
             menu_limit += MAX_ENTRIES;
-            new_entries = g_try_realloc (entries, sizeof (new_entries[0]) * menu_limit);
+            new_entries = static_cast<char **>(g_try_realloc(entries, sizeof(new_entries[0]) * menu_limit));
             if (new_entries == NULL)
                 break;
 

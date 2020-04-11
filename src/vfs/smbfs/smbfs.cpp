@@ -1717,7 +1717,7 @@ smbfs_loaddir_by_name (const vfs_path_t * vpath)
     if (!info)
         return -1;
     smbfs_readdir (info);
-    smbfs_loaddir (info);
+    smbfs_loaddir (static_cast<opendir_info*>(info));
     return 0;
 }
 

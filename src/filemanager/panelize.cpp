@@ -188,9 +188,11 @@ init_panelize (void)
     group_add_widget (g, label_new (y++, UX, _("Command")));
     pname =
         input_new (y++, UX, input_colors, panelize_cols - UX * 2, "", "in",
-                   INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_HOSTNAMES | INPUT_COMPLETE_COMMANDS |
-                   INPUT_COMPLETE_VARIABLES | INPUT_COMPLETE_USERNAMES | INPUT_COMPLETE_CD |
-                   INPUT_COMPLETE_SHELL_ESC);
+                   static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_HOSTNAMES |
+                                                 INPUT_COMPLETE_COMMANDS |
+                                                 INPUT_COMPLETE_VARIABLES | INPUT_COMPLETE_USERNAMES |
+                                                 INPUT_COMPLETE_CD |
+                                                 INPUT_COMPLETE_SHELL_ESC));
     group_add_widget (g, pname);
 
     group_add_widget (g, hline_new (y++, -1, -1));

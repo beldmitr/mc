@@ -121,7 +121,7 @@ group_select_next_or_prev (WGroup * g, gboolean next)
         while ((widget_get_state (w, WST_DISABLED) || !widget_get_options (w, WOP_SELECTABLE))
                && l != g->current);
 
-        widget_select (l->data);
+        widget_select (static_cast<Widget*>(l->data));
     }
 }
 
@@ -598,7 +598,7 @@ group_default_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm,
 cb_ret_t
 group_default_set_state (Widget * w, widget_state_t state, gboolean enable)
 {
-    gboolean ret = MSG_HANDLED;
+    cb_ret_t ret = MSG_HANDLED;
     WGroup *g = GROUP (w);
     widget_state_info_t st = {
         .state = state,

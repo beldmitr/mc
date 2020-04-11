@@ -157,9 +157,9 @@ edit_about (void)
         quick_widgets, NULL, NULL
     };
 
-    quick_widgets[0].pos_flags = WPOS_KEEP_TOP | WPOS_CENTER_HORZ;
-    quick_widgets[2].pos_flags = WPOS_KEEP_TOP | WPOS_CENTER_HORZ;
-    quick_widgets[4].pos_flags = WPOS_KEEP_TOP | WPOS_CENTER_HORZ;
+    quick_widgets[0].pos_flags = static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_CENTER_HORZ);
+    quick_widgets[2].pos_flags = static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_CENTER_HORZ);
+    quick_widgets[4].pos_flags = static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_CENTER_HORZ);
 
     (void) quick_dialog (&qdlg);
 }
@@ -325,7 +325,7 @@ edit_window_list (const WDialog * h)
             g_free (fname);
         }
 
-    selected = run_listbox_with_data (listbox, g->current->data);
+    selected = static_cast<WEdit *>(run_listbox_with_data(listbox, g->current->data));
     if (selected != NULL)
         widget_select (WIDGET (selected));
 }
@@ -915,7 +915,7 @@ edit_dialog_bg_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm
             w->x = wo->x;
             w->lines = wo->lines - 2;
             w->cols = wo->cols;
-            w->pos_flags |= WPOS_KEEP_ALL;
+            w->pos_flags = static_cast<widget_pos_flags_t>(w->pos_flags | WPOS_KEEP_ALL);
 
             return MSG_HANDLED;
         }

@@ -220,9 +220,7 @@ my_system_make_arg_array (int flags, const char *shell, char **execute_name)
     }
     else
     {
-        char *shell_token;
-
-        shell_token = shell != NULL ? strchr (shell, ' ') : NULL;
+        const char *shell_token = shell != NULL ? strchr (shell, ' ') : NULL;
         if (shell_token == NULL)
             *execute_name = g_strdup (shell);
         else
@@ -521,7 +519,7 @@ mc_popen (const char *command, GError ** error)
     }
 
     if (!g_spawn_async_with_pipes
-        (NULL, (gchar **) argv, NULL, G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_FILE_AND_ARGV_ZERO,
+        (NULL, (gchar **) argv, NULL, static_cast<GSpawnFlags>(G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_FILE_AND_ARGV_ZERO),
          NULL, NULL, &p->child_pid, NULL, &p->out.fd, &p->err.fd, error))
     {
         mc_replace_error (error, MC_PIPE_ERROR_CREATE_PIPE_STREAM, "%s",

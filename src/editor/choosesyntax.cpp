@@ -127,7 +127,8 @@ edit_syntax_dialog (WEdit * edit)
         default:
             option_auto_syntax = FALSE;
             g_free (edit->syntax_type);
-            edit->syntax_type = g_strdup (g_ptr_array_index (names, syntax - N_DFLT_ENTRIES));
+            edit->syntax_type = g_strdup (static_cast<const gchar*>(
+                    g_ptr_array_index (names, syntax - N_DFLT_ENTRIES)));
         }
 
         /* Load or unload syntax rules if the option has changed */

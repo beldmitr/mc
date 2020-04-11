@@ -920,7 +920,7 @@ init_globals (void)
         for (i = 0; parm_table[i].label; i++)
             if ((parm_table[i].type == P_STRING ||
                  parm_table[i].type == P_USTRING) && parm_table[i].ptr)
-                string_init (parm_table[i].ptr, "");
+                string_init (static_cast<char**>(parm_table[i].ptr), "");
 
         string_set (&sDefault.szGuestaccount, GUEST_ACCOUNT);
         string_set (&sDefault.szPrinterDriver, "NULL");
@@ -1684,11 +1684,11 @@ copy_service (service * pserviceDest, service * pserviceSource, BOOL * pcopymapD
                 break;
 
             case P_STRING:
-                string_set (dest_ptr, *(char **) src_ptr);
+                string_set (static_cast<char**>(dest_ptr), *(char **) src_ptr);
                 break;
 
             case P_USTRING:
-                string_set (dest_ptr, *(char **) src_ptr);
+                string_set (static_cast<char**>(dest_ptr), *(char **) src_ptr);
                 strupper (*(char **) dest_ptr);
                 break;
             default:
@@ -2030,11 +2030,11 @@ lp_do_parameter (int snum, const char *pszParmName, const char *pszParmValue)
     switch (parm_table[parmnum].type)
     {
     case P_BOOL:
-        set_boolean (parm_ptr, pszParmValue);
+        set_boolean (static_cast<BOOL*>(parm_ptr), pszParmValue);
         break;
 
     case P_BOOLREV:
-        set_boolean (parm_ptr, pszParmValue);
+        set_boolean (static_cast<BOOL*>(parm_ptr), pszParmValue);
         *(BOOL *) parm_ptr = !*(BOOL *) parm_ptr;
         break;
 
@@ -2051,11 +2051,11 @@ lp_do_parameter (int snum, const char *pszParmName, const char *pszParmValue)
         break;
 
     case P_STRING:
-        string_set (parm_ptr, pszParmValue);
+        string_set (static_cast<char**>(parm_ptr), pszParmValue);
         break;
 
     case P_USTRING:
-        string_set (parm_ptr, pszParmValue);
+        string_set (static_cast<char**>(parm_ptr), pszParmValue);
         strupper (*(char **) parm_ptr);
         break;
 

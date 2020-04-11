@@ -145,7 +145,7 @@ panels_options_t panels_options = {
     .permission_mode = FALSE,
     .qsearch_mode = QSEARCH_PANEL_CASE,
     .torben_fj_mode = FALSE,
-    .select_flags = SELECT_MATCH_CASE | SELECT_SHELL_PATTERNS
+    .select_flags = static_cast<panel_select_flags_t>(SELECT_MATCH_CASE | SELECT_SHELL_PATTERNS)
 };
 
 gboolean easy_patterns = TRUE;
@@ -914,8 +914,9 @@ panels_load_options (void)
             panels_options.qsearch_mode = (qsearch_mode_t) qmode;
 
         panels_options.select_flags =
-            mc_config_get_int (mc_global.main_config, CONFIG_PANELS_SECTION, "select_flags",
-                               (int) panels_options.select_flags);
+                static_cast<panel_select_flags_t>(mc_config_get_int(mc_global.main_config, CONFIG_PANELS_SECTION,
+                                                                    "select_flags",
+                                                                    (int) panels_options.select_flags));
     }
 }
 
@@ -1488,7 +1489,7 @@ panel_load_setup (WPanel * panel, const char *section)
     for (i = 0; list_formats[i].key != NULL; i++)
         if (g_ascii_strcasecmp (list_formats[i].key, buffer) == 0)
         {
-            panel->list_format = list_formats[i].list_format;
+            panel->list_format = static_cast<list_format_t>(list_formats[i].list_format);
             break;
         }
     g_free (buffer);

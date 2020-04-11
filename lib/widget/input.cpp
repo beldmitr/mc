@@ -260,7 +260,7 @@ push_history (WInput * in, const char *text)
     }
 
     if (in->history.list == NULL || in->history.list->data == NULL
-        || strcmp (in->history.list->data, t) != 0 || in->history.changed)
+        || strcmp (static_cast<const char*>(in->history.list->data), t) != 0 || in->history.changed)
     {
         in->history.list = list_append_unique (in->history.list, t);
         in->history.current = in->history.list;
@@ -994,7 +994,7 @@ input_new (int y, int x, const int *colors, int width, const char *def_text,
     in = g_new (WInput, 1);
     w = WIDGET (in);
     widget_init (w, y, x, 1, width, input_callback, input_mouse_callback);
-    w->options |= WOP_SELECTABLE | WOP_IS_INPUT | WOP_WANT_CURSOR;
+    w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE | WOP_IS_INPUT | WOP_WANT_CURSOR);
     w->keymap = input_map;
 
     in->color = colors;

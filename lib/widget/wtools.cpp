@@ -280,7 +280,7 @@ query_dialog (const char *header, const char *text, int flags, int count, ...)
     int cols, lines;
     const int *query_colors = (flags & D_ERROR) != 0 ? alarm_colors : dialog_colors;
     widget_pos_flags_t pos_flags =
-        (flags & D_CENTER) != 0 ? (WPOS_CENTER | WPOS_TRYUP) : WPOS_KEEP_DEFAULT;
+            static_cast<widget_pos_flags_t>((flags & D_CENTER) != 0 ? (WPOS_CENTER | WPOS_TRYUP) : WPOS_KEEP_DEFAULT);
 
     if (header == MSG_ERROR)
         header = _("Error");
@@ -314,7 +314,8 @@ query_dialog (const char *header, const char *text, int flags, int count, ...)
     {
         WButton *defbutton = NULL;
 
-        group_add_widget_autopos (g, label_new (2, 3, text), WPOS_KEEP_TOP | WPOS_CENTER_HORZ,
+        group_add_widget_autopos (g, label_new (2, 3, text),
+                                  static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_CENTER_HORZ),
                                   NULL);
         group_add_widget (g, hline_new (lines - 4, -1, -1));
 
@@ -358,7 +359,8 @@ query_dialog (const char *header, const char *text, int flags, int count, ...)
     }
     else
     {
-        group_add_widget_autopos (g, label_new (2, 3, text), WPOS_KEEP_TOP | WPOS_CENTER_HORZ,
+        group_add_widget_autopos (g, label_new (2, 3, text),
+                                  static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_CENTER_HORZ),
                                   NULL);
         group_add_widget (g, button_new (0, 0, 0, HIDDEN_BUTTON, "-", NULL));
         last_query_dlg = query_dlg;
@@ -705,10 +707,10 @@ simple_status_msg_init_cb (status_msg_t * sm)
 
     y = 2;
     ssm->label = label_new (y++, 3, "");
-    group_add_widget_autopos (wg, ssm->label, WPOS_KEEP_TOP | WPOS_CENTER_HORZ, NULL);
+    group_add_widget_autopos (wg, ssm->label, static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_CENTER_HORZ), NULL);
     group_add_widget (wg, hline_new (y++, -1, -1));
     b = WIDGET (button_new (y++, 3, B_CANCEL, NORMAL_BUTTON, b_name, NULL));
-    group_add_widget_autopos (wg, b, WPOS_KEEP_TOP | WPOS_CENTER_HORZ, NULL);
+    group_add_widget_autopos (wg, b, static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_CENTER_HORZ), NULL);
 
     widget_set_size (wd, wd->y, wd->x, y + 2, wd_width);
 }

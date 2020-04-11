@@ -666,7 +666,7 @@ tar_read_header (struct vfs_class *me, struct vfs_s_super *archive, int tard, si
             longp = header->header.typeflag == GNUTYPE_LONGNAME ? &next_long_name : &next_long_link;
 
             g_free (*longp);
-            bp = *longp = g_malloc (*h_size + 1);
+            bp = *longp = static_cast<char *>(g_malloc(*h_size + 1));
 
             for (size = *h_size; size > 0; size -= written)
             {
@@ -927,7 +927,7 @@ static int
 tar_super_same (const vfs_path_element_t * vpath_element, struct vfs_s_super *parc,
                 const vfs_path_t * vpath, void *cookie)
 {
-    struct stat *archive_stat = cookie; /* stat of main archive */
+    struct stat *archive_stat = static_cast<struct stat *>(cookie); /* stat of main archive */
 
     (void) vpath_element;
 

@@ -218,7 +218,7 @@ dialog_switch_list (void)
     const size_t dlg_num = g_list_length (mc_dialogs);
     int lines, cols;
     Listbox *listbox;
-    GList *h, *selected;
+    GList *h;
     int i = 0;
 
     if (mc_global.midnight_shutdown || mc_current == NULL)
@@ -244,7 +244,7 @@ dialog_switch_list (void)
         g_free (title);
     }
 
-    selected = run_listbox_with_data (listbox, mc_current);
+    GList* selected = static_cast<GList *>(run_listbox_with_data(listbox, mc_current));
     if (selected != NULL)
         dialog_switch_goto (selected);
 }

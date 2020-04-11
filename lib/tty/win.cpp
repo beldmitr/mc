@@ -98,7 +98,6 @@ anything_ready (void)
 void
 show_rxvt_contents (int starty, unsigned char y1, unsigned char y2)
 {
-    unsigned char *k;
     int bytes, i, j, cols = 0;
 
     y1 += mc_global.keybar_visible != 0 ? 1 : 0;        /* i don't knwo why we need this - paul */
@@ -112,7 +111,7 @@ show_rxvt_contents (int starty, unsigned char y1, unsigned char y2)
 
     bytes = (y2 - y1) * (COLS + 1) + 1; /* *should* be the number of bytes read */
     j = 0;
-    k = g_malloc (bytes);
+    unsigned char *k = static_cast<unsigned char *>(g_malloc(bytes));
     while (TRUE)
     {
         int c;

@@ -180,7 +180,7 @@ vfs_s_find_entry_tree (struct vfs_class *me, struct vfs_s_inode *root,
     char *path = pathref;
 
     /* canonicalize as well, but don't remove '../' from path */
-    custom_canonicalize_pathname (path, CANON_PATH_ALL & (~CANON_PATH_REMDOUBLEDOTS));
+    custom_canonicalize_pathname (path, static_cast<CANON_PATH_FLAGS>(CANON_PATH_ALL & (~CANON_PATH_REMDOUBLEDOTS)));
 
     while (root != NULL)
     {
@@ -244,7 +244,7 @@ vfs_s_find_entry_linear (struct vfs_class *me, struct vfs_s_inode *root,
         vfs_die ("We have to use _real_ root. Always. Sorry.");
 
     /* canonicalize as well, but don't remove '../' from path */
-    custom_canonicalize_pathname (path, CANON_PATH_ALL & (~CANON_PATH_REMDOUBLEDOTS));
+    custom_canonicalize_pathname (path, static_cast<CANON_PATH_FLAGS>(CANON_PATH_ALL & (~CANON_PATH_REMDOUBLEDOTS)));
 
     if ((flags & FL_DIR) == 0)
     {
@@ -667,9 +667,9 @@ vfs_s_close (void *fh)
         vfs_stamp_create (me, VFS_FILE_HANDLER_SUPER (fh));
 
     if (file->linear == LS_LINEAR_OPEN)
-        sub->linear_close (me, fh);
+        sub->linear_close (me, static_cast<vfs_file_handler_t *>(fh));
     if (sub->fh_close != NULL)
-        res = sub->fh_close (me, fh);
+        res = sub->fh_close (me, static_cast<vfs_file_handler_t *>(fh));
     if ((me->flags & VFSF_USETMP) != 0 && file->changed && sub->file_store != NULL)
     {
         char *s;
@@ -680,7 +680,7 @@ vfs_s_close (void *fh)
             res = -1;
         else
         {
-            res = sub->file_store (me, fh, s, file->ino->localname);
+            res = sub->file_store (me, static_cast<vfs_file_handler_t *>(fh), s, file->ino->localname);
             g_free (s);
         }
         vfs_s_invalidate (me, super);
@@ -693,7 +693,7 @@ vfs_s_close (void *fh)
     }
 
     vfs_s_free_inode (me, file->ino);
-    vfs_s_free_fh (sub, fh);
+    vfs_s_free_fh (sub, static_cast<vfs_file_handler_t*>(fh));
 
     return res;
 }
@@ -755,7 +755,7 @@ vfs_s_getlocalcopy (const vfs_path_t * vpath)
     if (vpath == NULL)
         return NULL;
 
-    fh = vfs_s_open (vpath, O_RDONLY, 0);
+    fh = static_cast<vfs_file_handler_t *>(vfs_s_open(vpath, O_RDONLY, 0));
 
     if (fh != NULL)
     {

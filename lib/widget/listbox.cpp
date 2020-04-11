@@ -551,7 +551,7 @@ listbox_new (int y, int x, int height, int width, gboolean deletable, lcback_fn 
     l = g_new (WListbox, 1);
     w = WIDGET (l);
     widget_init (w, y, x, height, width, listbox_callback, listbox_mouse_callback);
-    w->options |= WOP_SELECTABLE | WOP_WANT_HOTKEY;
+    w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE | WOP_WANT_HOTKEY);
     w->keymap = listbox_map;
 
     l->list = NULL;

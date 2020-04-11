@@ -63,7 +63,7 @@ bkm_scale_by_power (uintmax_t * x, int base, int power)
 {
     strtol_error_t err = LONGINT_OK;
     while (power-- != 0)
-        err |= bkm_scale (x, base);
+        err = static_cast<strtol_error_t>(err | bkm_scale(x, base));
     return err;
 }
 
@@ -130,7 +130,7 @@ xstrtoumax (const char *s, char **ptr, int base, uintmax_t * val, const char *va
         if (strchr (valid_suffixes, **p) == NULL)
         {
             *val = tmp;
-            return err | LONGINT_INVALID_SUFFIX_CHAR;
+            return static_cast<strtol_error_t>(err | LONGINT_INVALID_SUFFIX_CHAR);
         }
 
         base = 1024;
@@ -237,13 +237,13 @@ xstrtoumax (const char *s, char **ptr, int base, uintmax_t * val, const char *va
 
         default:
             *val = tmp;
-            return err | LONGINT_INVALID_SUFFIX_CHAR;
+            return static_cast<strtol_error_t>(err | LONGINT_INVALID_SUFFIX_CHAR);
         }
 
-        err |= overflow;
+        err = static_cast<strtol_error_t>(err | overflow);
         *p += suffixes;
         if (**p != '\0')
-            err |= LONGINT_INVALID_SUFFIX_CHAR;
+            err = static_cast<strtol_error_t>(err | LONGINT_INVALID_SUFFIX_CHAR);
     }
 
     *val = tmp;

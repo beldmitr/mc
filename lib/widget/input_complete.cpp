@@ -145,16 +145,13 @@ filename_completion_function (const char *text, int state, input_complete_t flag
 
     if (text != NULL && (flags & INPUT_COMPLETE_SHELL_ESC) != 0)
     {
-        char *u_text;
-        char *result;
-        char *e_result;
+        char *u_text = strutils_shell_unescape (text);  // FIXME unique_ptr?? or weak for now ??
 
-        u_text = strutils_shell_unescape (text);
-
-        result = filename_completion_function (u_text, state, flags & (~INPUT_COMPLETE_SHELL_ESC));
+        char *result = filename_completion_function (u_text, state,
+                                                     static_cast<input_complete_t>(flags & (~INPUT_COMPLETE_SHELL_ESC)));
         g_free (u_text);
 
-        e_result = strutils_shell_escape (result);
+        char *e_result = strutils_shell_escape (result);
         g_free (result);
 
         return e_result;
@@ -586,7 +583,7 @@ command_completion_function (const char *text, int state, input_complete_t flags
         return NULL;
 
     u_text = strutils_shell_unescape (text);
-    flags &= ~INPUT_COMPLETE_SHELL_ESC;
+    flags = static_cast<input_complete_t>(flags & ~INPUT_COMPLETE_SHELL_ESC);
 
     if (state == 0)
     {                           /* Initialize us a little bit */
@@ -888,7 +885,7 @@ try_complete_find_start_sign (try_complete_automation_state_t * state)
             /* drop '\\' */
             str_move (state->q - 1, state->q);
             /* adjust flags */
-            state->flags &= ~INPUT_COMPLETE_VARIABLES;
+            state->flags = static_cast<input_complete_t>(state->flags & ~INPUT_COMPLETE_VARIABLES);
             state->q = NULL;
         }
     }
@@ -914,12 +911,13 @@ try_complete_all_possible (try_complete_automation_state_t * state, char *text, 
         SHOW_C_CTX ("try_complete:cmd_subst");
         matches =
             completion_matches (state->word, command_completion_function,
-                                state->flags & (~INPUT_COMPLETE_FILENAMES));
+                                static_cast<input_complete_t>(state->flags & (~INPUT_COMPLETE_FILENAMES)));
     }
     else if ((state->flags & INPUT_COMPLETE_FILENAMES) != 0)
     {
         if (state->is_cd)
-            state->flags &= ~(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_COMMANDS);
+            state->flags = static_cast<input_complete_t>(state->flags &
+                                                         ~(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_COMMANDS));
         SHOW_C_CTX ("try_complete:filename_subst_1");
         matches = completion_matches (state->word, filename_completion_function, state->flags);
 
@@ -990,7 +988,7 @@ insert_text (WInput * in, char *text, ssize_t size)
         char *narea;
         Widget *w = WIDGET (in);
 
-        narea = g_try_realloc (in->buffer, in->current_max_size + size + w->cols);
+        narea = static_cast<char *>(g_try_realloc(in->buffer, in->current_max_size + size + w->cols));
         if (narea != NULL)
         {
             in->buffer = narea;
@@ -1325,7 +1323,7 @@ try_complete (char *text, int *lc_start, int *lc_end, input_complete_t flags)
         SHOW_C_CTX ("try_complete:cmd_backq_subst");
         matches = completion_matches (str_cget_next_char (state.p),
                                       command_completion_function,
-                                      state.flags & (~INPUT_COMPLETE_FILENAMES));
+                                      static_cast<input_complete_t>(state.flags & (~INPUT_COMPLETE_FILENAMES)));
         if (matches != NULL)
             *lc_start += str_get_next_char (state.p) - state.word;
     }

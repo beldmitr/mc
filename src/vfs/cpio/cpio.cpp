@@ -524,7 +524,7 @@ cpio_create_entry (struct vfs_class *me, struct vfs_s_super *super, struct stat 
             {
                 /* FIXME: do we must read from arch->fd in case of inode != NULL only or in any case? */
 
-                inode->linkname = g_malloc (st->st_size + 1);
+                inode->linkname = static_cast<char *>(g_malloc(st->st_size + 1));
 
                 if (mc_read (arch->fd, inode->linkname, st->st_size) < st->st_size)
                 {
@@ -575,7 +575,7 @@ cpio_read_bin_head (struct vfs_class *me, struct vfs_s_super *super)
         message (D_ERROR, MSG_ERROR, _("Corrupted cpio header encountered in\n%s"), super->name);
         return STATUS_FAIL;
     }
-    name = g_malloc (u.buf.c_namesize);
+    name = static_cast<char *>(g_malloc(u.buf.c_namesize));
     len = mc_read (arch->fd, name, u.buf.c_namesize);
     if (len < u.buf.c_namesize)
     {
@@ -647,7 +647,7 @@ cpio_read_oldc_head (struct vfs_class *me, struct vfs_s_super *super)
         message (D_ERROR, MSG_ERROR, _("Corrupted cpio header encountered in\n%s"), super->name);
         return STATUS_FAIL;
     }
-    name = g_malloc (hd.c_namesize);
+    name = static_cast<char *>(g_malloc(hd.c_namesize));
     len = mc_read (arch->fd, name, hd.c_namesize);
     if ((len == -1) || ((unsigned long) len < hd.c_namesize))
     {
@@ -727,7 +727,7 @@ cpio_read_crc_head (struct vfs_class *me, struct vfs_s_super *super)
         return STATUS_FAIL;
     }
 
-    name = g_malloc (hd.c_namesize);
+    name = static_cast<char *>(g_malloc(hd.c_namesize));
     len = mc_read (arch->fd, name, hd.c_namesize);
 
     if ((len == -1) || ((unsigned long) len < hd.c_namesize))

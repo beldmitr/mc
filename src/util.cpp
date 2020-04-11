@@ -60,7 +60,7 @@ check_for_default (const vfs_path_t * default_file_vpath, const vfs_path_t * fil
 
         ctx = file_op_context_new (OP_COPY);
         tctx = file_op_total_context_new ();
-        file_op_context_create_ui (ctx, 0, FALSE);
+        file_op_context_create_ui (ctx, 0, static_cast<filegui_dialog_type_t>(FALSE));
         copy_file_file (tctx, ctx, vfs_path_as_str (default_file_vpath),
                         vfs_path_as_str (file_vpath));
         file_op_total_context_destroy (tctx);

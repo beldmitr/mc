@@ -200,7 +200,7 @@ f_dopen (int fd)
     if (fs == NULL)
         return NULL;
 
-    fs->buf = g_try_malloc (FILE_READ_BUF);
+    fs->buf = static_cast<char*>(g_try_malloc (FILE_READ_BUF));
     if (fs->buf == NULL)
     {
         g_free (fs);
@@ -231,7 +231,7 @@ f_free (FBUF * fs)
 
     if (fs->flags & FILE_FLAG_TEMP)
     {
-        rv = unlink (fs->data);
+        rv = unlink (static_cast<const char*>(fs->data));
         g_free (fs->data);
     }
     g_free (fs->buf);
@@ -543,7 +543,7 @@ p_close (FBUF * fs)
 
     if (fs != NULL)
     {
-        rv = pclose (fs->data);
+        rv = pclose (static_cast<FILE*>(fs->data));
         f_free (fs);
     }
 
@@ -869,7 +869,7 @@ dff_reparse (diff_place_t ord, const char *filename, const GArray * ops, DFUNC p
     if (f == NULL)
         return -1;
 
-    ord &= 1;
+    ord = static_cast<diff_place_t>(ord & 1);
     eff = ord;
 
     add_cmd = 'a';
@@ -1666,7 +1666,7 @@ cvt_fget (FBUF * f, off_t off, char *dst, size_t dstsize, int skip, int ts, gboo
 static void
 cc_free_elt (void *elt)
 {
-    DIFFLN *p = elt;
+    DIFFLN *p = static_cast<DIFFLN *>(elt);
 
     if (p != NULL)
         g_free (p->p);
@@ -1711,7 +1711,7 @@ printer (void *ctx, int ch, int line, off_t off, size_t sz, const char *str)
             char *q;
 
             new_size = p->u.len + sz;
-            q = g_realloc (p->p, new_size);
+            q = static_cast<char*>(g_realloc (p->p, new_size));
             memcpy (q + p->u.len, str, sz);
             p->p = q;
         }
@@ -1811,11 +1811,9 @@ redo_diff (WDiff * dview)
                     h = g_array_new (FALSE, FALSE, sizeof (BRACKET));
                     if (h != NULL)
                     {
-                        gboolean runresult;
-
-                        runresult =
-                            hdiff_scan (p->p, p->u.len, q->p, q->u.len, HDIFF_MINCTX, h,
-                                        HDIFF_DEPTH);
+                        gboolean runresult =
+                            hdiff_scan (static_cast<char *>(p->p), p->u.len, static_cast<char *>(q->p),
+                                    q->u.len, HDIFF_MINCTX, h, HDIFF_DEPTH);
                         if (!runresult)
                         {
                             g_array_free (h, TRUE);
@@ -2600,13 +2598,13 @@ dview_display_file (const WDiff * dview, diff_place_t ord, int r, int c, int hei
 
 #ifdef HAVE_CHARSET
                     if (dview->utf8)
-                        k = dview_str_utf8_offset_to_pos (p->p, width);
+                        k = dview_str_utf8_offset_to_pos (static_cast<char*>(p->p), width);
                     else
 #endif
                         k = width;
 
-                    cvt_mgeta (p->p, p->u.len, buf, k, skip, tab_size, show_cr,
-                               g_ptr_array_index (dview->hdiff, i), ord, att);
+                    cvt_mgeta (static_cast<char*>(p->p), p->u.len, buf, k, skip, tab_size, show_cr,
+                               static_cast<GArray*>(g_ptr_array_index (dview->hdiff, i)), ord, att);
                     tty_gotoyx (r + j, c);
                     col = 0;
 
@@ -2659,11 +2657,11 @@ dview_display_file (const WDiff * dview, diff_place_t ord, int r, int c, int hei
 
 #ifdef HAVE_CHARSET
                 if (dview->utf8)
-                    k = dview_str_utf8_offset_to_pos (p->p, width);
+                    k = dview_str_utf8_offset_to_pos (static_cast<char*>(p->p), width);
                 else
 #endif
                     k = width;
-                cvt_mget (p->p, p->u.len, buf, k, skip, tab_size, show_cr);
+                cvt_mget (static_cast<char*>(p->p), p->u.len, buf, k, skip, tab_size, show_cr);
             }
             else
                 cvt_fget (f, p->u.off, buf, width, skip, tab_size, show_cr);
@@ -2771,7 +2769,7 @@ dview_status (const WDiff * dview, diff_place_t ord, int width, int c)
         filename_width = 8;
 
     vpath = vfs_path_from_str (dview->label[ord]);
-    path = vfs_path_to_str_flags (vpath, 0, VPF_STRIP_HOME | VPF_STRIP_PASSWORD);
+    path = vfs_path_to_str_flags (vpath, 0, static_cast<vfs_path_flag_t>(VPF_STRIP_HOME | VPF_STRIP_PASSWORD));
     vfs_path_free (vpath);
     buf = str_term_trim (path, filename_width);
     if (ord == DIFF_LEFT)
@@ -2870,8 +2868,8 @@ dview_update (WDiff * dview)
     }
     if (width2 > 2)
     {
-        dview_status (dview, dview->ord ^ 1, width2, width1);
-        dview_display_file (dview, dview->ord ^ 1, 2, width1 + 1, height - 2, width2 - 2);
+        dview_status (dview, static_cast<diff_place_t>(dview->ord ^ 1), width2, width1);
+        dview_display_file (dview, static_cast<diff_place_t>(dview->ord ^ 1), 2, width1 + 1, height - 2, width2 - 2);
     }
 }
 
@@ -3168,7 +3166,7 @@ dview_execute_cmd (WDiff * dview, long command)
         dview->tab_size = 8;
         break;
     case CK_Swap:
-        dview->ord ^= 1;
+        dview->ord = static_cast<diff_place_t>(dview->ord ^ 1);
         break;
     case CK_Redo:
         dview_redo (dview);
@@ -3196,7 +3194,7 @@ dview_execute_cmd (WDiff * dview, long command)
         dview_redo (dview);
         break;
     case CK_EditOther:
-        dview_edit (dview, dview->ord ^ 1);
+        dview_edit (dview, static_cast<diff_place_t>(dview->ord ^ 1));
         break;
     case CK_Search:
         dview_search_cmd (dview);
@@ -3454,7 +3452,7 @@ diff_view (const char *file1, const char *file2, const char *label1, const char 
     dview = g_new0 (WDiff, 1);
     w = WIDGET (dview);
     widget_init (w, dw->y, dw->x, dw->lines - 1, dw->cols, dview_callback, dview_mouse_callback);
-    w->options |= WOP_SELECTABLE;
+    w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE);
     w->keymap = diff_map;
     group_add_widget_autopos (g, w, WPOS_KEEP_ALL, NULL);
 

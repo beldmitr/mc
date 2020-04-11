@@ -1049,7 +1049,7 @@ mousedispatch_new (int y, int x, int yl, int xl)
 
     w = g_new0 (Widget, 1);
     widget_init (w, y, x, yl, xl, md_callback, help_mouse_callback);
-    w->options |= WOP_SELECTABLE | WOP_WANT_CURSOR;
+    w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE | WOP_WANT_CURSOR);
 
     return w;
 }
@@ -1125,7 +1125,8 @@ help_interactive_display (const gchar * event_group_name, const gchar * event_na
     help_lines = MIN (LINES - 4, MAX (2 * LINES / 3, 18));
 
     whelp =
-        dlg_create (TRUE, 0, 0, help_lines + 4, HELP_WINDOW_WIDTH + 4, WPOS_CENTER | WPOS_TRYUP,
+        dlg_create (TRUE, 0, 0, help_lines + 4, HELP_WINDOW_WIDTH + 4,
+                    static_cast<widget_pos_flags_t>(WPOS_CENTER | WPOS_TRYUP),
                     FALSE, help_colors, help_callback, NULL, "[Help]", _("Help"));
     wh = WIDGET (whelp);
     g = GROUP (whelp);

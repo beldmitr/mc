@@ -440,7 +440,7 @@ overwrite_query_dialog (file_op_context_t * ctx, enum OperationMode mode)
         /*  2 - label - size */
         { NULL, NULL, 3, 3, WPOS_KEEP_DEFAULT, 0 },
         /*  3 - label - date & time */
-        { NULL, NULL, 3, 43, WPOS_KEEP_TOP | WPOS_KEEP_RIGHT, 0 },
+        { NULL, NULL, 3, 43, static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_KEEP_RIGHT), 0 },
         /*  4 - label */
         { NULL, N_("Existing:"), 4, 3, WPOS_KEEP_DEFAULT, 0 },
         /*  5 - label - name */
@@ -448,10 +448,10 @@ overwrite_query_dialog (file_op_context_t * ctx, enum OperationMode mode)
         /*  6 - label - size */
         { NULL, NULL, 5, 3, WPOS_KEEP_DEFAULT, 0 },
         /*  7 - label - date & time */
-        { NULL, NULL, 5, 43, WPOS_KEEP_TOP | WPOS_KEEP_RIGHT, 0 },
+        { NULL, NULL, 5, 43, static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_KEEP_RIGHT), 0 },
         /* --------------------------------------------------- */
         /*  8 - label */
-        { NULL, N_("Overwrite this file?"), 7, 21, WPOS_KEEP_TOP | WPOS_CENTER_HORZ, 0 },
+        { NULL, N_("Overwrite this file?"), 7, 21, static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_CENTER_HORZ), 0 },
         /*  9 - button */
         { NULL, N_("&Yes"), 8, 14, WPOS_KEEP_DEFAULT, REPLACE_YES },
         /* 10 - button */
@@ -462,7 +462,7 @@ overwrite_query_dialog (file_op_context_t * ctx, enum OperationMode mode)
         { NULL, N_("&Reget"), 8, 40, WPOS_KEEP_DEFAULT, REPLACE_REGET },
         /* --------------------------------------------------- */
         /* 13 - label */
-        { NULL, N_("Overwrite all files?"), 10, 21, WPOS_KEEP_TOP | WPOS_CENTER_HORZ, 0 },
+        { NULL, N_("Overwrite all files?"), 10, 21, static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_CENTER_HORZ), 0 },
         /* 14 - checkbox */
         { NULL, N_("Don't overwrite with &zero length file"), 11, 3, WPOS_KEEP_DEFAULT, 0 },
         /* 15 - button */
@@ -477,13 +477,13 @@ overwrite_query_dialog (file_op_context_t * ctx, enum OperationMode mode)
         { NULL, N_("&Size differs"), 12, 40, WPOS_KEEP_DEFAULT, REPLACE_SIZE },
         /* --------------------------------------------------- */
         /* 20 - button */
-        { NULL, N_("&Abort"), 14, 27, WPOS_KEEP_TOP | WPOS_CENTER_HORZ, REPLACE_ABORT }
+        { NULL, N_("&Abort"), 14, 27, static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_CENTER_HORZ), REPLACE_ABORT }
         /* *INDENT-ON* */
     };
 
     const int gap = 1;
 
-    file_op_context_ui_t *ui = ctx->ui;
+    file_op_context_ui_t *ui = static_cast<file_op_context_ui_t *>(ctx->ui);
     Widget *wd;
     WGroup *g;
     const char *title;
@@ -518,7 +518,7 @@ overwrite_query_dialog (file_op_context_t * ctx, enum OperationMode mode)
     NEW_LABEL (0, dlg_widgets[0].text);
     /* new file name */
     p = vfs_path_from_str (ui->src_filename);
-    s1 = vfs_path_to_str_flags (p, 0, VPF_STRIP_HOME | VPF_STRIP_PASSWORD);
+    s1 = vfs_path_to_str_flags (p, 0, static_cast<vfs_path_flag_t>(VPF_STRIP_HOME | VPF_STRIP_PASSWORD));
     NEW_LABEL (1, s1);
     vfs_path_free (p);
     g_free (s1);
@@ -533,7 +533,7 @@ overwrite_query_dialog (file_op_context_t * ctx, enum OperationMode mode)
     NEW_LABEL (4, dlg_widgets[4].text);
     /* existing file name */
     p = vfs_path_from_str (ui->tgt_filename);
-    s1 = vfs_path_to_str_flags (p, 0, VPF_STRIP_HOME | VPF_STRIP_PASSWORD);
+    s1 = vfs_path_to_str_flags (p, 0, static_cast<vfs_path_flag_t>(VPF_STRIP_HOME | VPF_STRIP_PASSWORD));
     NEW_LABEL (5, s1);
     vfs_path_free (p);
     g_free (s1);
@@ -745,12 +745,11 @@ check_progress_buttons (file_op_context_t * ctx)
 {
     int c;
     Gpm_Event event;
-    file_op_context_ui_t *ui;
 
     if (ctx == NULL || ctx->ui == NULL)
         return FILE_CONT;
 
-    ui = ctx->ui;
+    file_op_context_ui_t *ui = static_cast<file_op_context_ui_t *>(ctx->ui);
 
   get_event:
     event.x = -1;               /* Don't show the GPM cursor */
@@ -820,7 +819,7 @@ file_op_context_create_ui (file_op_context_t * ctx, gboolean with_eta,
     ctx->recursive_result = RECURSIVE_YES;
     ctx->ui = g_new0 (file_op_context_ui_t, 1);
 
-    ui = ctx->ui;
+    ui = static_cast<file_op_context_ui_t *>(ctx->ui);
     ui->replace_result = REPLACE_YES;
 
     ui->op_dlg =
@@ -849,7 +848,8 @@ file_op_context_create_ui (file_op_context_t * ctx, gboolean with_eta,
         ui->progress_file_gauge = gauge_new (y++, x + 3, dlg_width - (x + 3) * 2, FALSE, 100, 0);
         if (!classic_progressbar && (current_panel == right_panel))
             ui->progress_file_gauge->from_left_to_right = FALSE;
-        group_add_widget_autopos (g, ui->progress_file_gauge, WPOS_KEEP_TOP | WPOS_KEEP_HORZ, NULL);
+        group_add_widget_autopos (g, ui->progress_file_gauge,
+                                  static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_KEEP_HORZ), NULL);
 
         ui->progress_file_label = label_new (y++, x, "");
         group_add_widget (g, ui->progress_file_label);
@@ -866,7 +866,7 @@ file_op_context_create_ui (file_op_context_t * ctx, gboolean with_eta,
                 if (!classic_progressbar && (current_panel == right_panel))
                     ui->progress_total_gauge->from_left_to_right = FALSE;
                 group_add_widget_autopos (g, ui->progress_total_gauge,
-                                          WPOS_KEEP_TOP | WPOS_KEEP_HORZ, NULL);
+                                          static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_KEEP_HORZ), NULL);
             }
 
             ui->total_files_processed_label = label_new (y++, x, "");
@@ -967,7 +967,7 @@ file_progress_show (file_op_context_t * ctx, off_t done, off_t total,
     if (!verbose || ctx == NULL || ctx->ui == NULL)
         return;
 
-    ui = ctx->ui;
+    ui = static_cast<file_op_context_ui_t *>(ctx->ui);
 
     if (total == 0)
     {
@@ -1008,12 +1008,11 @@ void
 file_progress_show_count (file_op_context_t * ctx, size_t done, size_t total)
 {
     char buffer[BUF_TINY];
-    file_op_context_ui_t *ui;
 
     if (ctx == NULL || ctx->ui == NULL)
         return;
 
-    ui = ctx->ui;
+    file_op_context_ui_t *ui = static_cast<file_op_context_ui_t *>(ctx->ui);
 
     if (ui->total_files_processed_label == NULL)
         return;
@@ -1039,7 +1038,7 @@ file_progress_show_total (file_op_total_context_t * tctx, file_op_context_t * ct
     if (ctx == NULL || ctx->ui == NULL)
         return;
 
-    ui = ctx->ui;
+    ui = static_cast<file_op_context_ui_t *>(ctx->ui);
 
     if (ui->progress_total_gauge != NULL)
     {
@@ -1118,7 +1117,7 @@ file_progress_show_source (file_op_context_t * ctx, const vfs_path_t * vpath)
     if (ctx == NULL || ctx->ui == NULL)
         return;
 
-    ui = ctx->ui;
+    ui = static_cast<file_op_context_ui_t *>(ctx->ui);
 
     if (vpath != NULL)
     {
@@ -1146,7 +1145,7 @@ file_progress_show_target (file_op_context_t * ctx, const vfs_path_t * vpath)
     if (ctx == NULL || ctx->ui == NULL)
         return;
 
-    ui = ctx->ui;
+    ui = static_cast<file_op_context_ui_t *>(ctx->ui);
 
     if (vpath != NULL)
     {
@@ -1180,7 +1179,7 @@ file_progress_show_deleting (file_op_context_t * ctx, const char *s, size_t * co
     {
         file_op_context_ui_t *ui;
 
-        ui = ctx->ui;
+        ui = static_cast<file_op_context_ui_t *>(ctx->ui);
 
         if (ui->src_file_label != NULL)
             label_set_text (ui->src_file_label, _("Deleting"));
@@ -1207,7 +1206,7 @@ file_progress_real_query_replace (file_op_context_t * ctx, enum OperationMode mo
     if (ctx == NULL || ctx->ui == NULL)
         return FILE_CONT;
 
-    ui = ctx->ui;
+    ui = static_cast<file_op_context_ui_t *>(ctx->ui);
 
     if (ui->replace_result == REPLACE_YES || ui->replace_result == REPLACE_NO
         || ui->replace_result == REPLACE_APPEND)
@@ -1312,7 +1311,7 @@ file_mask_dialog (file_op_context_t * ctx, FileOperation operation,
         int max_len;
 
         format_len = str_term_width1 (format);
-        text_len = str_term_width1 (text);
+        text_len = str_term_width1 (static_cast<const char*>(text));
         max_len = COLS - 2 - 6;
 
         if (format_len + text_len <= max_len)

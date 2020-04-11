@@ -492,12 +492,9 @@ menubar_try_drop_menu (WMenuBar * menubar, int hotkey)
 static cb_ret_t
 menubar_try_exec_menu (WMenuBar * menubar, int hotkey)
 {
-    menu_t *menu;
-    GList *i;
+    menu_t *menu = static_cast<menu_t *>(g_list_nth_data(menubar->menu, menubar->selected));
 
-    menu = g_list_nth_data (menubar->menu, menubar->selected);
-
-    for (i = menu->entries; i != NULL; i = g_list_next (i))
+    for (GList *i = menu->entries; i != NULL; i = g_list_next (i))
     {
         const menu_entry_t *entry = MENUENTRY (i->data);
 
@@ -943,10 +940,10 @@ menubar_new (GList * menu, gboolean visible)
     menubar = g_new0 (WMenuBar, 1);
     w = WIDGET (menubar);
     widget_init (w, 0, 0, 1, COLS, menubar_callback, menubar_mouse_callback);
-    w->pos_flags = WPOS_KEEP_HORZ | WPOS_KEEP_TOP;
+    w->pos_flags = static_cast<widget_pos_flags_t>(WPOS_KEEP_HORZ | WPOS_KEEP_TOP);
     /* initially, menubar is not selectable */
     widget_set_options (w, WOP_SELECTABLE, FALSE);
-    w->options |= WOP_TOP_SELECT;
+    w->options = static_cast<widget_options_t>(w->options | WOP_TOP_SELECT);
     w->keymap = menu_map;
     menubar->is_visible = visible;
     menubar_set_menu (menubar, menu);

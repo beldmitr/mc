@@ -166,7 +166,8 @@ static struct
 {
     /* *INDENT-OFF* */
     { B_ENTER, DEFPUSH_BUTTON, 0, 0, 0, N_("Change &to"),
-            LIST_HOTLIST | LIST_VFSLIST | LIST_MOVELIST, WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM },
+            LIST_HOTLIST | LIST_VFSLIST | LIST_MOVELIST,
+            static_cast<widget_pos_flags_t>(WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM) },
 #ifdef ENABLE_VFS
     { B_FREE_ALL_VFS, NORMAL_BUTTON, 0, 20, 0, N_("&Free VFSs now"),
             LIST_VFSLIST, WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM },
@@ -174,23 +175,24 @@ static struct
             LIST_VFSLIST, WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM },
 #endif
     { B_ADD_CURRENT, NORMAL_BUTTON, 0, 20, 0, N_("&Add current"),
-            LIST_HOTLIST, WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM },
+            LIST_HOTLIST, static_cast<widget_pos_flags_t>(WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM) },
     { B_UP_GROUP, NORMAL_BUTTON, 0, 42, 0, N_("&Up"),
-            LIST_HOTLIST | LIST_MOVELIST, WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM },
+            LIST_HOTLIST | LIST_MOVELIST, static_cast<widget_pos_flags_t>(WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM) },
     { B_CANCEL, NORMAL_BUTTON, 0, 53, 0, N_("&Cancel"),
-            LIST_HOTLIST | LIST_VFSLIST | LIST_MOVELIST, WPOS_KEEP_RIGHT | WPOS_KEEP_BOTTOM },
+            LIST_HOTLIST | LIST_VFSLIST | LIST_MOVELIST,
+            static_cast<widget_pos_flags_t>(WPOS_KEEP_RIGHT | WPOS_KEEP_BOTTOM) },
     { B_NEW_GROUP, NORMAL_BUTTON, 1, 0, 0, N_("New &group"),
-            LIST_HOTLIST, WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM },
+            LIST_HOTLIST, static_cast<widget_pos_flags_t>(WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM) },
     { B_NEW_ENTRY, NORMAL_BUTTON, 1, 15, 0, N_("New &entry"),
-            LIST_HOTLIST, WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM },
+            LIST_HOTLIST, static_cast<widget_pos_flags_t>(WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM) },
     { B_INSERT, NORMAL_BUTTON, 1, 0, 0, N_("&Insert"),
-            LIST_MOVELIST, WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM },
+            LIST_MOVELIST, static_cast<widget_pos_flags_t>(WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM) },
     { B_APPEND, NORMAL_BUTTON, 1, 15, 0, N_("A&ppend"),
-            LIST_MOVELIST, WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM },
+            LIST_MOVELIST, static_cast<widget_pos_flags_t>(WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM) },
     { B_REMOVE, NORMAL_BUTTON, 1, 30, 0, N_("&Remove"),
-            LIST_HOTLIST, WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM },
+            LIST_HOTLIST, static_cast<widget_pos_flags_t>(WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM) },
     { B_MOVE, NORMAL_BUTTON, 1, 42, 0, N_("&Move"),
-            LIST_HOTLIST, WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM }
+            LIST_HOTLIST, static_cast<widget_pos_flags_t>(WPOS_KEEP_LEFT | WPOS_KEEP_BOTTOM) }
     /* *INDENT-ON* */
 };
 
@@ -807,10 +809,10 @@ init_hotlist (hotlist_t list_type)
     y += hotlist_widget->lines;
 
     path_box = groupbox_new (y, UX, 3, hotlist_widget->cols, _("Directory path"));
-    group_add_widget_autopos (g, path_box, WPOS_KEEP_BOTTOM | WPOS_KEEP_HORZ, NULL);
+    group_add_widget_autopos (g, path_box, static_cast<widget_pos_flags_t>(WPOS_KEEP_BOTTOM | WPOS_KEEP_HORZ), NULL);
 
     pname = label_new (y + 1, UX + 2, "");
-    group_add_widget_autopos (g, pname, WPOS_KEEP_BOTTOM | WPOS_KEEP_LEFT, NULL);
+    group_add_widget_autopos (g, pname, static_cast<widget_pos_flags_t>(WPOS_KEEP_BOTTOM | WPOS_KEEP_LEFT), NULL);
     y += WIDGET (path_box)->lines;
 
     group_add_widget_autopos (g, hline_new (y++, -1, -1), WPOS_KEEP_BOTTOM, NULL);
@@ -819,7 +821,8 @@ init_hotlist (hotlist_t list_type)
         if ((hotlist_but[i].type & list_type) != 0)
             group_add_widget_autopos (g,
                                       button_new (y + hotlist_but[i].y, UX + hotlist_but[i].x,
-                                                  hotlist_but[i].ret_cmd, hotlist_but[i].flags,
+                                                  hotlist_but[i].ret_cmd,
+                                                  static_cast<button_flags_t>(hotlist_but[i].flags),
                                                   hotlist_but[i].text, hotlist_button_callback),
                                       hotlist_but[i].pos_flags, NULL);
 
@@ -872,7 +875,8 @@ init_movelist (struct hotlist *item)
         if ((hotlist_but[i].type & LIST_MOVELIST) != 0)
             group_add_widget_autopos (g,
                                       button_new (y + hotlist_but[i].y, UX + hotlist_but[i].x,
-                                                  hotlist_but[i].ret_cmd, hotlist_but[i].flags,
+                                                  hotlist_but[i].ret_cmd,
+                                                  static_cast<button_flags_t>(hotlist_but[i].flags),
                                                   hotlist_but[i].text, hotlist_button_callback),
                                       hotlist_but[i].pos_flags, NULL);
 
@@ -1005,7 +1009,8 @@ add_new_entry_input (const char *header, const char *text1, const char *text2,
                              FALSE, FALSE, INPUT_COMPLETE_NONE),
         QUICK_SEPARATOR (FALSE),
         QUICK_LABELED_INPUT (text2, input_label_above, *r2, "input-lbl", r2, NULL,
-                             FALSE, FALSE, INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD),
+                             FALSE, FALSE,
+                             static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD)),
         QUICK_START_BUTTONS (TRUE, TRUE),
             QUICK_BUTTON (N_("&Append"), B_APPEND, NULL, NULL),
             QUICK_BUTTON (N_("&Insert"), B_INSERT, NULL, NULL),

@@ -142,7 +142,7 @@ forw_ptr (tree_entry * ptr, int *count)
 static void
 remove_callback (tree_entry * entry, void *data)
 {
-    WTree *tree = data;
+    WTree *tree = static_cast<WTree *>(data);
 
     if (tree->selected_ptr == entry)
     {
@@ -677,7 +677,7 @@ tree_do_search (WTree * tree, int key)
 static void
 tree_rescan (void *data)
 {
-    WTree *tree = data;
+    WTree *tree = static_cast<WTree *>(data);
     vfs_path_t *old_vpath;
 
     old_vpath = vfs_path_clone (vfs_get_raw_current_dir ());
@@ -700,7 +700,7 @@ tree_rescan (void *data)
 static void
 tree_forget (void *data)
 {
-    WTree *tree = data;
+    WTree *tree = static_cast<WTree *>(data);
 
     if (tree->selected_ptr != NULL)
         tree_remove_entry (tree, tree->selected_ptr->name);
@@ -721,7 +721,7 @@ tree_copy (WTree * tree, const char *default_dest)
                 str_trunc (vfs_path_as_str (tree->selected_ptr->name), 50));
     dest = input_expand_dialog (Q_ ("DialogTitle|Copy"),
                                 msg, MC_HISTORY_FM_TREE_COPY, default_dest,
-                                INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD);
+                                static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD));
 
     if (dest != NULL && *dest != '\0')
     {
@@ -760,7 +760,7 @@ tree_move (WTree * tree, const char *default_dest)
                 str_trunc (vfs_path_as_str (tree->selected_ptr->name), 50));
     dest =
         input_expand_dialog (Q_ ("DialogTitle|Move"), msg, MC_HISTORY_FM_TREE_MOVE, default_dest,
-                             INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD);
+                             static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD));
 
     if (dest == NULL || *dest == '\0')
         goto ret;
@@ -815,7 +815,7 @@ tree_mkdir (WTree * tree)
 static void
 tree_rmdir (void *data)
 {
-    WTree *tree = data;
+    WTree *tree = static_cast<WTree *>(data);
     file_op_context_t *ctx;
     file_op_total_context_t *tctx;
 
@@ -1288,7 +1288,7 @@ tree_new (int y, int x, int lines, int cols, gboolean is_panel)
 
     w = WIDGET (tree);
     widget_init (w, y, x, lines, cols, tree_callback, tree_mouse_callback);
-    w->options |= WOP_SELECTABLE | WOP_TOP_SELECT;
+    w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE | WOP_TOP_SELECT);
     w->keymap = tree_map;
 
     tree->is_panel = is_panel;

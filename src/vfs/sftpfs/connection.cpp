@@ -184,14 +184,14 @@ sftpfs_recognize_auth_types (struct vfs_s_super *super)
     if ((strstr (userauthlist, "password") != NULL
          || strstr (userauthlist, "keyboard-interactive") != NULL)
         && (sftpfs_super->config_auth_type & PASSWORD) != 0)
-        sftpfs_super->auth_type |= PASSWORD;
+        sftpfs_super->auth_type = static_cast<sftpfs_auth_type_t>(sftpfs_super->auth_type | PASSWORD);
 
     if (strstr (userauthlist, "publickey") != NULL
         && (sftpfs_super->config_auth_type & PUBKEY) != 0)
-        sftpfs_super->auth_type |= PUBKEY;
+        sftpfs_super->auth_type = static_cast<sftpfs_auth_type_t>(sftpfs_super->auth_type | PUBKEY);
 
     if ((sftpfs_super->config_auth_type & AGENT) != 0)
-        sftpfs_super->auth_type |= AGENT;
+        sftpfs_super->auth_type = static_cast<sftpfs_auth_type_t>(sftpfs_super->auth_type | AGENT);
 
     return TRUE;
 }

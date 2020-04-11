@@ -44,6 +44,7 @@
 /* If you use others make sure your code also works without them */
 enum Gpm_Etype
 {
+    GPM_NONE = 0,
     GPM_MOVE = 1,
     GPM_DRAG = 2,               /* exactly one in four is active at a time */
     GPM_DOWN = 4,

@@ -141,7 +141,7 @@ mcview_continue_search_cmd (WView * view)
         history = mc_config_history_get (MC_HISTORY_SHARED_SEARCH);
         if (history != NULL && history->data != NULL)
         {
-            view->last_search_string = (gchar *) g_strdup (history->data);
+            view->last_search_string = (gchar *) g_strdup (static_cast<const gchar*>(history->data));
             history = g_list_first (history);
             g_list_free_full (history, g_free);
 
@@ -416,7 +416,7 @@ mcview_load_file_from_history (WView * view)
 static cb_ret_t
 mcview_execute_cmd (WView * view, long command)
 {
-    int res = MSG_HANDLED;
+    cb_ret_t res = MSG_HANDLED;
 
     switch (command)
     {

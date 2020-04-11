@@ -682,7 +682,7 @@ find_parameters (char **start_dir, ssize_t * start_dir_len,
     group_add_widget (g, label_new (y1++, x1, _("Start at:")));
     in_start =
         input_new (y1, x1, input_colors, cols - b0 - 7, in_start_dir, "start",
-                   INPUT_COMPLETE_CD | INPUT_COMPLETE_FILENAMES);
+                   static_cast<input_complete_t>(INPUT_COMPLETE_CD | INPUT_COMPLETE_FILENAMES));
     group_add_widget (g, in_start);
 
     group_add_widget (g, button_new (y1++, cols - b0 - 3, B_TREE, NORMAL_BUTTON, buts[0], NULL));
@@ -694,7 +694,7 @@ find_parameters (char **start_dir, ssize_t * start_dir_len,
     in_ignore =
         input_new (y1++, x1, input_colors, cols - 6,
                    options.ignore_dirs != NULL ? options.ignore_dirs : "", "ignoredirs",
-                   INPUT_COMPLETE_CD | INPUT_COMPLETE_FILENAMES);
+                   static_cast<input_complete_t>(INPUT_COMPLETE_CD | INPUT_COMPLETE_FILENAMES));
     group_add_widget (g, in_ignore);
 
     group_add_widget (g, hline_new (y1++, -1, -1));
@@ -705,7 +705,7 @@ find_parameters (char **start_dir, ssize_t * start_dir_len,
     group_add_widget (g, label_new (y1++, x1, file_name_label));
     in_name =
         input_new (y1++, x1, input_colors, cw, INPUT_LAST_TEXT, "name",
-                   INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD);
+                   static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD));
     group_add_widget (g, in_name);
 
     /* Start 2nd column */
@@ -923,7 +923,7 @@ insert_file (const char *dir, const char *file, gsize start, gsize end)
     }
 
     tmp_name = g_strdup_printf ("    %s", file);
-    location = g_malloc (sizeof (*location));
+    location = static_cast<find_match_location_t *>(g_malloc(sizeof(*location)));
     location->dir = dirname;
     location->start = start;
     location->end = end;
@@ -1097,7 +1097,7 @@ search_content (WDialog * h, const char *directory, const char *filename)
                 if (i >= strbuf_size - 1)
                 {
                     strbuf_size += 128;
-                    strbuf = g_realloc (strbuf, strbuf_size);
+                    strbuf = static_cast<char *>(g_realloc(strbuf, strbuf_size));
                 }
 
                 /* Strip newline */
@@ -1222,9 +1222,7 @@ find_ignore_dir_search (const char *dir)
                 break;
             case 1:            /* dir is absolute, ignore_dir is relative */
                 {
-                    char *d;
-
-                    d = strstr (dir, *ignore_dir);
+                    const char *d = strstr (dir, *ignore_dir);
                     if (d != NULL && IS_PATH_SEP (d[-1])
                         && (d[ilen] == '\0' || IS_PATH_SEP (d[ilen])))
                         return TRUE;
@@ -1248,7 +1246,9 @@ static void
 find_rotate_dash (const WDialog * h, gboolean show)
 {
     static size_t pos = 0;
-    static const char rotating_dash[4] = "|/-\\";
+
+    // this string "|/-\\" is null-terminated, so can't be fit into 4 elements array;
+    static const char rotating_dash[4] =  {'|','/','-','\\'};
     const Widget *w = CONST_WIDGET (h);
     const int *colors;
 
@@ -1807,7 +1807,7 @@ do_find (const char *start_dir, ssize_t start_dir_len, const char *ignore_dirs,
         {
             const char *lc_filename = NULL;
             WLEntry *le = LENTRY (entry->data);
-            find_match_location_t *location = le->data;
+            find_match_location_t *location = static_cast<find_match_location_t *>(le->data);
             char *p;
             gboolean link_to_dir, stale_link;
 

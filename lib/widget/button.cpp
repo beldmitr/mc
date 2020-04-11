@@ -215,7 +215,7 @@ button_new (int y, int x, int action, button_flags_t flags, const char *text, bc
     b->text = hotkey_new (text);
     widget_init (w, y, x, 1, button_get_len (b), button_default_callback,
                  button_mouse_default_callback);
-    w->options |= WOP_SELECTABLE | WOP_WANT_CURSOR | WOP_WANT_HOTKEY;
+    w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE | WOP_WANT_CURSOR | WOP_WANT_HOTKEY);
     b->callback = callback;
     b->hotpos = (b->text.hotkey != NULL) ? str_term_width1 (b->text.start) : -1;
 

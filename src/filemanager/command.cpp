@@ -461,9 +461,11 @@ command_new (int y, int x, int cols)
     Widget *w;
 
     cmd = input_new (y, x, command_colors, cols, "", "cmdline",
-                     INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_VARIABLES | INPUT_COMPLETE_USERNAMES
-                     | INPUT_COMPLETE_HOSTNAMES | INPUT_COMPLETE_CD | INPUT_COMPLETE_COMMANDS |
-                     INPUT_COMPLETE_SHELL_ESC);
+                     static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_VARIABLES |
+                                                   INPUT_COMPLETE_USERNAMES
+                                                   | INPUT_COMPLETE_HOSTNAMES | INPUT_COMPLETE_CD |
+                                                   INPUT_COMPLETE_COMMANDS |
+                                                   INPUT_COMPLETE_SHELL_ESC));
     w = WIDGET (cmd);
     /* Don't set WOP_SELECTABLE up, otherwise panels will be unselected */
     widget_set_options (w, WOP_SELECTABLE, FALSE);

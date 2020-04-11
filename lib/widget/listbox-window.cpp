@@ -78,7 +78,7 @@ create_listbox_window_centered (int center_y, int center_x, int lines, int cols,
 
     /* adjust position */
     if ((center_y < 0) || (center_x < 0))
-        pos_flags |= WPOS_CENTER;
+        pos_flags = static_cast<widget_pos_flags_t>(pos_flags | WPOS_CENTER);
     else
     {
         /* Actually, this this is not used in MC. */

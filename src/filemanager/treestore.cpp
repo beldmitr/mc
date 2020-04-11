@@ -575,11 +575,14 @@ should_skip_directory (const vfs_path_t * vpath)
     }
 
     for (l = special_dirs; l != NULL; l = g_list_next (l))
-        if (strncmp (vfs_path_as_str (vpath), l->data, strlen (l->data)) == 0)
+    {
+        size_t len = strlen(static_cast<const char *>(l->data));
+        if (strncmp(vfs_path_as_str(vpath), static_cast<const char*>(l->data), len) == 0)
         {
             ret = TRUE;
             break;
         }
+    }
 
     return ret;
 }

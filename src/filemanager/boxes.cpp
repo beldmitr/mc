@@ -1159,7 +1159,7 @@ cd_box (void)
 
     quick_widget_t quick_widgets[] = {
         QUICK_LABELED_INPUT (N_("cd"), input_label_left, "", "input", &my_str, NULL, FALSE, TRUE,
-                             INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD),
+                             static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD)),
         QUICK_END
     };
 
@@ -1266,8 +1266,9 @@ jobs_box (void)
     x = (cols - x) / 2;
     for (i = 0; i < n_but; i++)
     {
-        group_add_widget (g, button_new (lines - 3, x, job_but[i].value, job_but[i].flags,
-                                         job_but[i].name, job_but[i].callback));
+        group_add_widget (g, button_new (lines - 3, x, job_but[i].value,
+                static_cast<button_flags_t>(job_but[i].flags),
+                job_but[i].name, job_but[i].callback));
         x += job_but[i].len + 1;
     }
 

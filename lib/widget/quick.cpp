@@ -404,7 +404,7 @@ quick_dialog_skip (quick_dialog_t * quick_dlg, int nskip)
     width2 = (quick_dlg->cols - 7) / 2;
 
     if (quick_dlg->x == -1 || quick_dlg->y == -1)
-        dd = dlg_create (TRUE, 0, 0, y + 3, quick_dlg->cols, WPOS_CENTER | WPOS_TRYUP, FALSE,
+        dd = dlg_create (TRUE, 0, 0, y + 3, quick_dlg->cols, static_cast<widget_pos_flags_t>(WPOS_CENTER | WPOS_TRYUP), FALSE,
                          dialog_colors, quick_dlg->callback, quick_dlg->mouse_callback,
                          quick_dlg->help, quick_dlg->title);
     else
@@ -560,8 +560,8 @@ quick_dialog_skip (quick_dialog_t * quick_dlg, int nskip)
             unsigned long id;
 
             /* add widget into dialog */
-            item->widget->options |= item->quick_widget->options;       /* FIXME: cannot reset flags, setup only */
-            item->widget->state |= item->quick_widget->state;   /* FIXME: cannot reset flags, setup only */
+            item->widget->options = static_cast<widget_options_t>(item->widget->options | item->quick_widget->options);       /* FIXME: cannot reset flags, setup only */
+            item->widget->state = static_cast<widget_state_t>(item->widget->state | item->quick_widget->state);   /* FIXME: cannot reset flags, setup only */
             id = group_add_widget_autopos (GROUP (dd), item->widget, item->quick_widget->pos_flags,
                                            NULL);
             if (item->quick_widget->id != NULL)

@@ -8,7 +8,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
 
-set(CMAKE_CXX_FLAGS -fpermissive)   # FIXME remove it after code compiling !!!
+#set(CMAKE_CXX_FLAGS -fpermissive)   # FIXME remove it after code compiling !!!
+
+# TODO investigate the problem
+#/usr/bin/ld: CMakeFiles/mcpp.dir/lib/search/regex.cpp.o: undefined reference to symbol 'pcre_compile'
+#/usr/bin/ld: /lib/x86_64-linux-gnu/libpcre.so.3: error adding symbols: DSO missing from command line
+set(CMAKE_CXX_FLAGS -lpcrecpp)
+set(CMAKE_CXX_FLAGS -lpcre)
 
 file(GLOB SRC
         "src/*.cpp"

@@ -768,7 +768,7 @@ xmouse_get_event (Gpm_Event * ev, gboolean extended)
         char c;
 
         btn = ev->x = ev->y = 0;
-        ev->type = 0;           /* In case we return on an invalid sequence */
+        ev->type = Gpm_Etype::GPM_NONE;           /* In case we return on an invalid sequence */
 
         while ((c = tty_lowlevel_getch ()) != ';')
         {
@@ -808,13 +808,13 @@ xmouse_get_event (Gpm_Event * ev, gboolean extended)
                 /* FIXME: DIRTY HACK */
                 /* don't generate GPM_UP after mouse wheel */
                 /* need for menu event handling */
-                ev->type = 0;
+                ev->type = Gpm_Etype::GPM_NONE;
                 tv1.tv_sec = 0;
                 tv1.tv_usec = 0;
             }
             else
             {
-                ev->type = GPM_UP | (GPM_SINGLE << clicks);
+                ev->type = static_cast<Gpm_Etype>(GPM_UP | (GPM_SINGLE << clicks));
                 GET_TIME (tv1);
             }
             ev->buttons = 0;
@@ -824,7 +824,7 @@ xmouse_get_event (Gpm_Event * ev, gboolean extended)
         else
         {
             /* Bogus event, maybe mouse wheel */
-            ev->type = 0;
+            ev->type = Gpm_Etype::GPM_NONE;
         }
     }
     else
@@ -867,7 +867,7 @@ xmouse_get_event (Gpm_Event * ev, gboolean extended)
             break;
         default:
             /* Nothing */
-            ev->type = 0;
+            ev->type = Gpm_Etype::GPM_NONE;
             ev->buttons = 0;
             break;
         }
@@ -1231,9 +1231,7 @@ sort_key_conv_tab (enum KeySortType type_sort)
 {
     if (has_been_sorted != type_sort)
     {
-        size_t i;
-
-        for (i = 0; i < key_conv_tab_size; i++)
+        for (size_t i = 0; i < key_conv_tab_size; i++)
             key_conv_tab_sorted[i] = &key_name_conv_tab[i];
 
         if (type_sort == KEY_SORTBYNAME)
@@ -1256,7 +1254,6 @@ lookup_keyname (const char *name, int *idx)
     {
         const key_code_name_t key = { 0, name, NULL, NULL };
         const key_code_name_t *keyp = &key;
-        const key_code_name_t **res;
 
         if (name[1] == '\0')
         {
@@ -1266,8 +1263,9 @@ lookup_keyname (const char *name, int *idx)
 
         sort_key_conv_tab (KEY_SORTBYNAME);
 
-        res = bsearch (&keyp, key_conv_tab_sorted, key_conv_tab_size,
-                       sizeof (key_conv_tab_sorted[0]), key_code_comparator_by_name);
+        const key_code_name_t **res = static_cast<const key_code_name_t **>(bsearch(&keyp, key_conv_tab_sorted, key_conv_tab_size,
+                                                            sizeof(key_conv_tab_sorted[0]),
+                                                            key_code_comparator_by_name));
 
         if (res != NULL)
         {
@@ -1287,14 +1285,15 @@ lookup_keycode (const long code, int *idx)
 {
     if (code != 0)
     {
-        const key_code_name_t key = { code, NULL, NULL, NULL };
+        const key_code_name_t key = { static_cast<int>(code), NULL, NULL, NULL };
         const key_code_name_t *keyp = &key;
-        const key_code_name_t **res;
+
 
         sort_key_conv_tab (KEY_SORTBYCODE);
 
-        res = bsearch (&keyp, key_conv_tab_sorted, key_conv_tab_size,
-                       sizeof (key_conv_tab_sorted[0]), key_code_comparator_by_code);
+        const key_code_name_t **res = static_cast<const key_code_name_t **>(bsearch(&keyp, key_conv_tab_sorted, key_conv_tab_size,
+                                                            sizeof(key_conv_tab_sorted[0]),
+                                                            key_code_comparator_by_code));
 
         if (res != NULL)
         {

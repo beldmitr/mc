@@ -1696,7 +1696,7 @@ edit_insert_column_from_file (WEdit * edit, int file, off_t * start_pos, off_t *
 
     cursor = edit->buffer.curs1;
     col = edit_get_col (edit);
-    data = g_malloc0 (TEMP_BUF_LEN);
+    data = static_cast<unsigned char*>(g_malloc0 (TEMP_BUF_LEN));
 
     while ((blocklen = mc_read (file, (char *) data, TEMP_BUF_LEN)) > 0)
     {
@@ -2000,7 +2000,7 @@ edit_insert_file (WEdit * edit, const vfs_path_t * filename_vpath)
         if (file == -1)
             return -1;
 
-        buf = g_malloc0 (TEMP_BUF_LEN);
+        buf = static_cast<char*>(g_malloc0 (TEMP_BUF_LEN));
         blocklen = mc_read (file, buf, sizeof (VERTICAL_MAGIC));
         if (blocklen > 0)
         {
@@ -2099,12 +2099,12 @@ edit_init (WEdit * edit, int y, int x, int lines, int cols, const vfs_path_t * f
     else
     {
         Widget *w;
-        edit = g_malloc0 (sizeof (WEdit));
+        edit = static_cast<WEdit*>(g_malloc0 (sizeof (WEdit)));
         to_free = TRUE;
 
         w = WIDGET (edit);
         widget_init (w, y, x, lines, cols, NULL, NULL);
-        w->options |= WOP_SELECTABLE | WOP_TOP_SELECT | WOP_WANT_CURSOR;
+        w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE | WOP_TOP_SELECT | WOP_WANT_CURSOR);
         w->keymap = editor_map;
         w->ext_keymap = editor_x_map;
         edit->fullscreen = TRUE;
@@ -2128,11 +2128,11 @@ edit_init (WEdit * edit, int y, int x, int lines, int cols, const vfs_path_t * f
 
     edit->undo_stack_size = START_STACK_SIZE;
     edit->undo_stack_size_mask = START_STACK_SIZE - 1;
-    edit->undo_stack = g_malloc0 ((edit->undo_stack_size + 10) * sizeof (long));
+    edit->undo_stack = static_cast<long*>(g_malloc0 ((edit->undo_stack_size + 10) * sizeof (long)));
 
     edit->redo_stack_size = START_STACK_SIZE;
     edit->redo_stack_size_mask = START_STACK_SIZE - 1;
-    edit->redo_stack = g_malloc0 ((edit->redo_stack_size + 10) * sizeof (long));
+    edit->redo_stack = static_cast<long*>(g_malloc0 ((edit->redo_stack_size + 10) * sizeof (long)));
 
 #ifdef HAVE_CHARSET
     edit->utf8 = FALSE;
@@ -2229,9 +2229,8 @@ gboolean
 edit_reload_line (WEdit * edit, const vfs_path_t * filename_vpath, long line)
 {
     Widget *w = WIDGET (edit);
-    WEdit *e;
+    WEdit *e = static_cast<WEdit*>(g_malloc0 (sizeof (WEdit)));
 
-    e = g_malloc0 (sizeof (WEdit));
     *WIDGET (e) = *w;
     /* save some widget parameters */
     e->fullscreen = edit->fullscreen;
@@ -2339,7 +2338,7 @@ edit_push_undo_action (WEdit * edit, long c)
             option_max_undo = 256;
         if (edit->undo_stack_size < (unsigned long) option_max_undo)
         {
-            t = g_realloc (edit->undo_stack, (edit->undo_stack_size * 2 + 10) * sizeof (long));
+            t = static_cast<long*>(g_realloc (edit->undo_stack, (edit->undo_stack_size * 2 + 10) * sizeof (long)));
             if (t)
             {
                 edit->undo_stack = t;
@@ -2427,7 +2426,7 @@ edit_push_redo_action (WEdit * edit, long c)
             option_max_undo = 256;
         if (edit->redo_stack_size < (unsigned long) option_max_undo)
         {
-            t = g_realloc (edit->redo_stack, (edit->redo_stack_size * 2 + 10) * sizeof (long));
+            t = static_cast<long*>(g_realloc (edit->redo_stack, (edit->redo_stack_size * 2 + 10) * sizeof (long)));
             if (t)
             {
                 edit->redo_stack = t;

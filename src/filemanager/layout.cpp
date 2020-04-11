@@ -589,20 +589,20 @@ layout_dlg_create (void)
         widget_state_t disabled;
         Widget *w;
 
-        disabled = mc_global.tty.console_flag != '\0' ? 0 : WST_DISABLED;
+        disabled = static_cast<widget_state_t>(mc_global.tty.console_flag != '\0' ? 0 : WST_DISABLED);
 
         w = WIDGET (groupbox_new (8, 3, 3, l1, title2));
-        w->state |= disabled;
+        w->state = static_cast<widget_state_t>(w->state | disabled);
         group_add_widget (g, w);
 
         w = WIDGET (button_new (9, output_lines_label_len + 5, B_PLUS,
                                 NARROW_BUTTON, "&+", bplus_cback));
-        w->state |= disabled;
+        w->state = static_cast<widget_state_t>(w->state | disabled);
         group_add_widget (g, w);
 
         w = WIDGET (button_new (9, output_lines_label_len + 5 + 5, B_MINUS,
                                 NARROW_BUTTON, "&-", bminus_cback));
-        w->state |= disabled;
+        w->state = static_cast<widget_state_t>(w->state | disabled);
         group_add_widget (g, w);
     }
 
@@ -1044,7 +1044,7 @@ rotate_dash (gboolean show)
         tty_print_alt_char (ACS_URCORNER, FALSE);
     else
     {
-        static const char rotating_dash[4] = "|/-\\";
+        static const char rotating_dash[4] = {'|', '/', '-', '\\'}; // "|/-\\" - null terminated
         static size_t pos = 0;
 
         tty_print_char (rotating_dash[pos]);
@@ -1342,7 +1342,7 @@ swap_panels (void)
         panels[1].widget = tmp_widget;
         tmp_type = panels[0].type;
         panels[0].type = panels[1].type;
-        panels[1].type = tmp_type;
+        panels[1].type = static_cast<panel_view_mode_t>(tmp_type);
 
         /* force update formats because of possible changed sizes */
         if (panels[0].type == view_listing)
@@ -1511,7 +1511,8 @@ title_path_prepare (char **path, char **login)
     int res = 0;
 
     *path =
-        vfs_path_to_str_flags (current_panel->cwd_vpath, 0, VPF_STRIP_HOME | VPF_STRIP_PASSWORD);
+        vfs_path_to_str_flags (current_panel->cwd_vpath, 0,
+                               static_cast<vfs_path_flag_t>(VPF_STRIP_HOME | VPF_STRIP_PASSWORD));
 
     res = gethostname (host, sizeof (host));
     if (res != 0)

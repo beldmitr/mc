@@ -245,7 +245,7 @@ extfs_find_entry_int (struct vfs_s_inode *dir, const char *name, GSList * list, 
 
     while ((pent != NULL) && (c != '\0') && (*p != '\0'))
     {
-        q = strchr (p, PATH_SEP);
+        q = const_cast<char *>(strchr(p, PATH_SEP));  // FIXME smelly const_cast :)
         if (q == NULL)
             q = (char *) name_end;
 
@@ -326,7 +326,7 @@ extfs_find_entry (struct vfs_s_inode *dir, const char *name, int flags)
 static void
 extfs_fill_names (struct vfs_class *me, fill_names_f func)
 {
-    g_list_foreach (VFS_SUBCLASS (me)->supers, extfs_fill_name, func);
+    g_list_foreach (VFS_SUBCLASS (me)->supers, extfs_fill_name, reinterpret_cast<gpointer>(func));
 }
 
 /* --------------------------------------------------------------------------------------------- */

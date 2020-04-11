@@ -23,6 +23,7 @@
 */
 typedef enum
 {
+    AT_NONE = 0,
     AT_START_LINE = (1 << 0),
     AT_END_LINE = (1 << 1)
 } edit_search_line_t;

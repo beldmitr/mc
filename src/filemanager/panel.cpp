@@ -842,7 +842,7 @@ format_file (WPanel * panel, int file_index, int width, int attr, gboolean issta
                     {
                         res = FILENAME_SCROLL_LEFT;
                         if (str_length (txt + name_offset) > len)
-                            res |= FILENAME_SCROLL_RIGHT;
+                            res = static_cast<filename_scroll_flag_t>(res | FILENAME_SCROLL_RIGHT);
                     }
                 }
             }
@@ -861,7 +861,8 @@ format_file (WPanel * panel, int file_index, int width, int attr, gboolean issta
                 tty_lowlevel_setcolor (-color);
 
             if (!isstatus && panel->content_shift > -1)
-                prepared_text = str_fit_to_term (txt + name_offset, len, HIDE_FIT (fi->just_mode));
+                prepared_text = str_fit_to_term (txt + name_offset, len,
+                        static_cast<align_crt_t>(HIDE_FIT (fi->just_mode)));
             else
                 prepared_text = str_fit_to_term (txt, len, fi->just_mode);
 
@@ -1217,7 +1218,7 @@ panel_correct_path_to_show (const WPanel * panel)
     vfs_path_add_element (last_vpath, path_element);
     return_path =
         vfs_path_to_str_flags (last_vpath, 0,
-                               VPF_STRIP_HOME | VPF_STRIP_PASSWORD | VPF_HIDE_CHARSET);
+                               static_cast<vfs_path_flag_t>(VPF_STRIP_HOME | VPF_STRIP_PASSWORD | VPF_HIDE_CHARSET));
     vfs_path_free (last_vpath);
 
     return return_path;
@@ -1758,7 +1759,7 @@ parse_display_format (WPanel * panel, const char *format, char **error, gboolean
             if (set_justify)
             {
                 if (IS_FIT (darr->just_mode))
-                    darr->just_mode = MAKE_FIT (justify);
+                    darr->just_mode = static_cast<align_crt_t>(MAKE_FIT (justify));
                 else
                     darr->just_mode = justify;
             }
@@ -2574,13 +2575,16 @@ panel_select_unselect_files (WPanel * panel, const char *title, const char *hist
     g_free (reg_exp);
 
     /* result flags */
-    panels_options.select_flags = 0;
+    panels_options.select_flags = panel_select_flags_t::SELECT_NONE;
     if (case_sens)
-        panels_options.select_flags |= SELECT_MATCH_CASE;
+        panels_options.select_flags =
+                static_cast<panel_select_flags_t>(panels_options.select_flags | SELECT_MATCH_CASE);
     if (files_only)
-        panels_options.select_flags |= SELECT_FILES_ONLY;
+        panels_options.select_flags =
+                static_cast<panel_select_flags_t>(panels_options.select_flags | SELECT_FILES_ONLY);
     if (shell_patterns)
-        panels_options.select_flags |= SELECT_SHELL_PATTERNS;
+        panels_options.select_flags =
+                static_cast<panel_select_flags_t>(panels_options.select_flags | SELECT_SHELL_PATTERNS);
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -2864,7 +2868,7 @@ do_enter (WPanel * panel)
 static void
 panel_cycle_listing_format (WPanel * panel)
 {
-    panel->list_format = (panel->list_format + 1) % LIST_FORMATS;
+    panel->list_format = static_cast<list_format_t>((panel->list_format + 1) % LIST_FORMATS);
 
     if (set_panel_formats (panel) == 0)
         do_refresh ();
@@ -2877,7 +2881,7 @@ chdir_other_panel (WPanel * panel)
 {
     const file_entry_t *entry = &panel->dir.list[panel->selected];
     vfs_path_t *new_dir_vpath;
-    char *sel_entry = NULL;
+    const char *sel_entry = NULL;
 
     if (get_other_type () != view_listing)
         create_panel (get_other_index (), view_listing);
@@ -3405,7 +3409,7 @@ directory_history_list (WPanel * panel)
 static cb_ret_t
 panel_execute_cmd (WPanel * panel, long command)
 {
-    int res = MSG_HANDLED;
+    cb_ret_t res = MSG_HANDLED;
 
     if (command != CK_Search)
         stop_search (panel);
@@ -4029,7 +4033,7 @@ update_one_panel (int which, panel_update_flags_t flags, const char *current_fil
 
         panel = PANEL (get_panel_widget (which));
         if (panel->is_panelized)
-            flags &= ~UP_RELOAD;
+            flags = static_cast<panel_update_flags_t>(flags & ~UP_RELOAD);    // FIXME check the line: flags &= ~UP_RELOAD;
         update_one_panel_widget (panel, flags, current_file);
     }
 }
@@ -4298,7 +4302,7 @@ panel_sized_empty_new (const char *panel_name, int y, int x, int lines, int cols
     panel = g_new0 (WPanel, 1);
     w = WIDGET (panel);
     widget_init (w, y, x, lines, cols, panel_callback, panel_mouse_callback);
-    w->options |= WOP_SELECTABLE | WOP_TOP_SELECT;
+    w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE | WOP_TOP_SELECT);
     w->keymap = panel_map;
 
     panel->dir.size = DIR_LIST_MIN_SIZE;

@@ -245,7 +245,7 @@ buttonbar_new (gboolean visible)
     w = WIDGET (bb);
     widget_init (w, LINES - 1, 0, 1, COLS, buttonbar_callback, buttonbar_mouse_callback);
 
-    w->pos_flags = WPOS_KEEP_HORZ | WPOS_KEEP_BOTTOM;
+    w->pos_flags = static_cast<widget_pos_flags_t>(w->pos_flags | WPOS_KEEP_HORZ | WPOS_KEEP_BOTTOM);
     bb->visible = visible;
     widget_want_hotkey (w, TRUE);
 

@@ -52,6 +52,7 @@ typedef enum
 /* selection flags */
 typedef enum
 {
+    SELECT_NONE = 0,
     SELECT_FILES_ONLY = 1 << 0,
     SELECT_MATCH_CASE = 1 << 1,
     SELECT_SHELL_PATTERNS = 1 << 2

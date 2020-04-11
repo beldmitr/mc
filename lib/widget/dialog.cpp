@@ -381,8 +381,8 @@ dlg_create (gboolean modal, int y1, int x1, int lines, int cols, widget_pos_flag
                 mouse_callback != NULL ? mouse_callback : dlg_default_mouse_callback);
 
     w->pos_flags = pos_flags;
-    w->options |= WOP_SELECTABLE | WOP_TOP_SELECT;
-    w->state |= WST_FOCUSED;
+    w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE | WOP_TOP_SELECT);
+    w->state = static_cast<widget_state_t>(w->state | WST_FOCUSED);
     /* Temporary hack: dialog doesn't have an owner, own itself. */
     w->owner = g;
 
@@ -400,7 +400,7 @@ dlg_create (gboolean modal, int y1, int x1, int lines, int cols, widget_pos_flag
 
     if (modal)
     {
-        w->state |= WST_MODAL;
+        w->state = static_cast<widget_state_t>(w->state | WST_MODAL);
 
         new_d->bg = WIDGET (frame_new (0, 0, w->lines, w->cols, title, FALSE, new_d->compact));
         group_add_widget (g, new_d->bg);

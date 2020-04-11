@@ -675,7 +675,7 @@ do_compute_dir_size (const vfs_path_t * dirname_vpath, dirsize_status_msg_t * ds
                 dsm->dirname_vpath = tmp_vpath;
                 dsm->dir_count = *dir_count;
                 dsm->total_size = *ret_total;
-                ret = sm->update (sm);
+                ret = static_cast<FileProgressStatus>(sm->update(sm));
             }
         }
 
@@ -866,7 +866,8 @@ warn_same_file (const char *fmt, const char *a, const char *b)
     pntr.f = real_warn_same_file;
 
     if (mc_global.we_are_background)
-        return parent_call (pntr.p, NULL, 3, strlen (fmt), fmt, strlen (a), a, strlen (b), b);
+        return static_cast<FileProgressStatus>(parent_call(pntr.p, NULL, 3, strlen(fmt), fmt, strlen(a), a, strlen(b),
+                                                           b));
 #endif
     return real_warn_same_file (Foreground, fmt, a, b);
 }
@@ -963,8 +964,9 @@ real_query_recursive (file_op_context_t * ctx, enum OperationMode mode, const ch
             query_set_sel (1);
 
         ctx->recursive_result =
-            query_dialog (op_names[OP_DELETE], text, D_ERROR, 5, _("&Yes"), _("&No"), _("A&ll"),
-                          _("Non&e"), _("&Abort"));
+                static_cast<FileCopyMode>(query_dialog(op_names[OP_DELETE], text, D_ERROR, 5, _("&Yes"), _("&No"),
+                                                       _("A&ll"),
+                                                       _("Non&e"), _("&Abort")));
         g_free (text);
 
         if (ctx->recursive_result != RECURSIVE_ABORT)
@@ -1004,7 +1006,8 @@ do_file_error (gboolean allow_retry, const char *str)
     pntr.f = real_do_file_error;
 
     if (mc_global.we_are_background)
-        return parent_call (pntr.p, NULL, 2, sizeof (allow_retry), allow_retry, strlen (str), str);
+        return static_cast<FileProgressStatus>(parent_call(pntr.p, NULL, 2, sizeof(allow_retry), allow_retry,
+                                                           strlen(str), str));
     else
         return real_do_file_error (Foreground, allow_retry, str);
 }
@@ -1025,7 +1028,7 @@ query_recursive (file_op_context_t * ctx, const char *s)
     pntr.f = real_query_recursive;
 
     if (mc_global.we_are_background)
-        return parent_call (pntr.p, ctx, 1, strlen (s), s);
+        return static_cast<FileProgressStatus>(parent_call(pntr.p, ctx, 1, strlen(s), s));
     else
         return real_query_recursive (ctx, Foreground, s);
 }
@@ -1048,8 +1051,9 @@ query_replace (file_op_context_t * ctx, const char *src, struct stat *src_stat, 
     pntr.f = file_progress_real_query_replace;
 
     if (mc_global.we_are_background)
-        return parent_call (pntr.p, ctx, 4, strlen (src), src, sizeof (struct stat), src_stat,
-                            strlen (dst), dst, sizeof (struct stat), dst_stat);
+        return static_cast<FileProgressStatus>(parent_call(pntr.p, ctx, 4, strlen(src), src, sizeof(struct stat),
+                                                           src_stat,
+                                                           strlen(dst), dst, sizeof(struct stat), dst_stat));
     else
         return file_progress_real_query_replace (ctx, Foreground, src, src_stat, dst, dst_stat);
 }
@@ -1699,7 +1703,7 @@ do_move_dir_dir (const WPanel * panel, file_op_total_context_t * tctx, file_op_c
     erase_dir_after_copy (tctx, ctx, src_vpath, &return_status);
 
   ret:
-    erase_list = free_linklist (erase_list);
+    erase_list = static_cast<GSList *>(free_linklist(erase_list));
   ret_fast:
     vfs_path_free (src_vpath);
     vfs_path_free (dst_vpath);
@@ -1777,7 +1781,7 @@ check_single_entry (const WPanel * panel, gboolean force_single, struct stat *sr
 
                 /* don't update panelized panel */
                 if (get_other_type () == view_listing && other_panel->is_panelized)
-                    flags |= UP_ONLY_CURRENT;
+                    flags = static_cast<panel_update_flags_t>(flags | UP_ONLY_CURRENT);
 
                 update_panels (flags, UP_KEEPSEL);
             }
@@ -2114,7 +2118,7 @@ operate_one_file (const WPanel * panel, FileOperation operation, file_op_total_c
                     value = copy_file_file (tctx, ctx, src, dest);
                 else
                     value = copy_dir_dir (tctx, ctx, src, dest, TRUE, FALSE, FALSE, NULL);
-                dest_dirs = free_linklist (dest_dirs);
+                dest_dirs = static_cast<GSList *>(free_linklist(dest_dirs));
                 break;
 
             case OP_MOVE:
@@ -2543,7 +2547,7 @@ copy_file_file (file_op_total_context_t * tctx, file_op_context_t * ctx,
         tv_last_update = tv_transfer_start;
 
         bufsize = io_blksize (dst_stat);
-        buf = g_malloc (bufsize);
+        buf = static_cast<char *>(g_malloc(bufsize));
 
         while (TRUE)
         {
@@ -3244,8 +3248,8 @@ panel_operate (void *source_panel, FileOperation operation, gboolean force_singl
         i18n_flag = TRUE;
     }
 
-    linklist = free_linklist (linklist);
-    dest_dirs = free_linklist (dest_dirs);
+    linklist = static_cast<GSList *>(free_linklist(linklist));
+    dest_dirs = static_cast<GSList *>(free_linklist(dest_dirs));
 
     if (single_entry)
     {
@@ -3441,8 +3445,8 @@ panel_operate (void *source_panel, FileOperation operation, gboolean force_singl
         g_free (save_dest);
     }
 
-    linklist = free_linklist (linklist);
-    dest_dirs = free_linklist (dest_dirs);
+    linklist = static_cast<GSList *>(free_linklist(linklist));
+    dest_dirs = static_cast<GSList *>(free_linklist(dest_dirs));
     g_free (dest);
     vfs_path_free (dest_vpath);
     MC_PTR_FREE (ctx->dest_mask);

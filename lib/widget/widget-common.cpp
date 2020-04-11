@@ -392,9 +392,9 @@ void
 widget_set_options (Widget * w, widget_options_t options, gboolean enable)
 {
     if (enable)
-        w->options |= options;
+        w->options = static_cast<widget_options_t>(w->options | options);
     else
-        w->options &= ~options;
+        w->options = static_cast<widget_options_t>(w->options & ~options);
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -735,24 +735,24 @@ widget_default_find_by_id (const Widget * w, unsigned long id)
 cb_ret_t
 widget_default_set_state (Widget * w, widget_state_t state, gboolean enable)
 {
-    gboolean ret = MSG_HANDLED;
+    cb_ret_t ret = MSG_HANDLED;
 
     if (enable)
-        w->state |= state;
+        w->state = static_cast<widget_state_t>(w->state | state);
     else
-        w->state &= ~state;
+        w->state = static_cast<widget_state_t>(w->state & ~state);
 
     if (enable)
     {
         /* exclusive bits */
         if ((state & WST_CONSTRUCT) != 0)
-            w->state &= ~(WST_ACTIVE | WST_SUSPENDED | WST_CLOSED);
+            w->state = static_cast<widget_state_t>(w->state & ~(WST_ACTIVE | WST_SUSPENDED | WST_CLOSED));
         else if ((state & WST_ACTIVE) != 0)
-            w->state &= ~(WST_CONSTRUCT | WST_SUSPENDED | WST_CLOSED);
+            w->state = static_cast<widget_state_t>(w->state & ~(WST_CONSTRUCT | WST_SUSPENDED | WST_CLOSED));
         else if ((state & WST_SUSPENDED) != 0)
-            w->state &= ~(WST_CONSTRUCT | WST_ACTIVE | WST_CLOSED);
+            w->state = static_cast<widget_state_t>(w->state & ~(WST_CONSTRUCT | WST_ACTIVE | WST_CLOSED));
         else if ((state & WST_CLOSED) != 0)
-            w->state &= ~(WST_CONSTRUCT | WST_ACTIVE | WST_SUSPENDED);
+            w->state = static_cast<widget_state_t>(w->state & ~(WST_CONSTRUCT | WST_ACTIVE | WST_SUSPENDED));
     }
 
     if (w->owner == NULL)

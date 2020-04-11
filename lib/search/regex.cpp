@@ -595,18 +595,18 @@ mc_search_regex__process_replace_str (const GString * replace_str, const gsize c
         switch (curr_str[1])
         {
         case 'U':
-            *replace_flags |= REPLACE_T_UPP_TRANSFORM;
-            *replace_flags &= ~REPLACE_T_LOW_TRANSFORM;
+            *replace_flags = static_cast<replace_transform_type_t>(*replace_flags | REPLACE_T_UPP_TRANSFORM);
+            *replace_flags = static_cast<replace_transform_type_t>(*replace_flags & ~REPLACE_T_LOW_TRANSFORM);
             break;
         case 'u':
-            *replace_flags |= REPLACE_T_UPP_TRANSFORM_CHAR;
+            *replace_flags = static_cast<replace_transform_type_t>(*replace_flags | REPLACE_T_UPP_TRANSFORM_CHAR);
             break;
         case 'L':
-            *replace_flags |= REPLACE_T_LOW_TRANSFORM;
-            *replace_flags &= ~REPLACE_T_UPP_TRANSFORM;
+            *replace_flags = static_cast<replace_transform_type_t>(*replace_flags | REPLACE_T_LOW_TRANSFORM);
+            *replace_flags = static_cast<replace_transform_type_t>(*replace_flags & ~REPLACE_T_UPP_TRANSFORM);
             break;
         case 'l':
-            *replace_flags |= REPLACE_T_LOW_TRANSFORM_CHAR;
+            *replace_flags = static_cast<replace_transform_type_t>(*replace_flags | REPLACE_T_LOW_TRANSFORM_CHAR);
             break;
         case 'E':
             *replace_flags = REPLACE_T_NO_TRANSFORM;
@@ -647,14 +647,14 @@ mc_search_regex__process_append_str (GString * dest_str, const char *from, gsize
 
         if ((*replace_flags & REPLACE_T_UPP_TRANSFORM_CHAR) != 0)
         {
-            *replace_flags &= ~REPLACE_T_UPP_TRANSFORM_CHAR;
+            *replace_flags = static_cast<replace_transform_type_t>(*replace_flags & ~REPLACE_T_UPP_TRANSFORM_CHAR);
             tmp_string = mc_search__toupper_case_str (NULL, tmp_str, char_len);
             g_string_append_len (dest_str, tmp_string->str, tmp_string->len);
             g_string_free (tmp_string, TRUE);
         }
         else if ((*replace_flags & REPLACE_T_LOW_TRANSFORM_CHAR) != 0)
         {
-            *replace_flags &= ~REPLACE_T_LOW_TRANSFORM_CHAR;
+            *replace_flags = static_cast<replace_transform_type_t>(*replace_flags & ~REPLACE_T_LOW_TRANSFORM_CHAR);
             tmp_string = mc_search__tolower_case_str (NULL, tmp_str, char_len);
             g_string_append_len (dest_str, tmp_string->str, tmp_string->len);
             g_string_free (tmp_string, TRUE);

@@ -206,7 +206,7 @@ subst_defines (GTree * defines, char **argv, char **argv_end)
     {
         char **t;
 
-        t = g_tree_lookup (defines, *argv);
+        t = static_cast<char **>(g_tree_lookup(defines, *argv));
         if (t != NULL)
         {
             int argc, count;
@@ -1184,7 +1184,7 @@ edit_read_syntax_rules (WEdit * edit, FILE * f, char **args, int args_size)
 
             if (argc < 3)
                 break_a;
-            argv = g_tree_lookup (edit->defines, key);
+            argv = static_cast<char **>(g_tree_lookup(edit->defines, key));
             if (argv != NULL)
                 mc_defines_destroy (NULL, argv, NULL);
             else

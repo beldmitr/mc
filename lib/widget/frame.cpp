@@ -60,7 +60,7 @@ frame_adjust (WFrame * f)
     w->lines = wo->lines;
     w->cols = wo->cols;
 
-    w->pos_flags |= WPOS_KEEP_ALL;
+    w->pos_flags = static_cast<widget_pos_flags_t>(w->pos_flags | WPOS_KEEP_ALL);
 }
 
 /* --------------------------------------------------------------------------------------------- */

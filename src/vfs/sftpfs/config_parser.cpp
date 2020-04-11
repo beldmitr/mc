@@ -85,7 +85,7 @@ static struct
     {"^\\s*Port\\s+(.*)$", NULL, INTEGER, offsetof (sftpfs_ssh_config_entity_t, port)},
     {"^\\s*PasswordAuthentication\\s+(.*)$", NULL, BOOLEAN, offsetof (sftpfs_ssh_config_entity_t, password_auth)},
     {"^\\s*PubkeyAuthentication\\s+(.*)$", NULL, STRING, offsetof (sftpfs_ssh_config_entity_t, pubkey_auth)},
-    {NULL, NULL, 0, 0}
+    {NULL, NULL, static_cast<config_var_type>(0), 0}  // FIXME 0 == STRING
 };
 /* *INDENT-ON* */
 
@@ -362,9 +362,11 @@ sftpfs_fill_connection_data_from_config (struct vfs_s_super *super, GError ** mc
     if (config_entity == NULL)
         return;
 
-    sftpfs_super->config_auth_type = (config_entity->pubkey_auth) ? PUBKEY : 0;
-    sftpfs_super->config_auth_type |= (config_entity->identities_only) ? 0 : AGENT;
-    sftpfs_super->config_auth_type |= (config_entity->password_auth) ? PASSWORD : 0;
+    sftpfs_super->config_auth_type = static_cast<sftpfs_auth_type_t>((config_entity->pubkey_auth) ? PUBKEY : 0);
+    sftpfs_super->config_auth_type = static_cast<sftpfs_auth_type_t>(sftpfs_super->config_auth_type |
+                                                                     ((config_entity->identities_only) ? 0 : AGENT));
+    sftpfs_super->config_auth_type = static_cast<sftpfs_auth_type_t>(sftpfs_super->config_auth_type |
+                                                                     ((config_entity->password_auth) ? PASSWORD : 0));
 
     if (super->path_element->port == 0)
         super->path_element->port = config_entity->port;

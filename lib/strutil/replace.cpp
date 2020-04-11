@@ -79,9 +79,7 @@ str_replace_all (const char *haystack, const char *needle, const char *replaceme
 
     while (TRUE)
     {
-        char *needle_in_str;
-
-        needle_in_str = strstr (haystack, needle);
+        const char *needle_in_str = strstr (haystack, needle);
         if (needle_in_str == NULL)
         {
             if (*haystack != '\0')
@@ -91,7 +89,7 @@ str_replace_all (const char *haystack, const char *needle, const char *replaceme
 
         if (strutils_is_char_escaped (haystack, needle_in_str))
         {
-            char *backslash = needle_in_str - 1;
+            const char *backslash = needle_in_str - 1;
 
             if (haystack != backslash)
                 g_ptr_array_add (str_splints, g_strndup (haystack, backslash - haystack));

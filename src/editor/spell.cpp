@@ -168,95 +168,105 @@ spell_available (void)
     if (spell_module == NULL)
         return FALSE;
 
-    if (!g_module_symbol (spell_module, "new_aspell_config", (void *) &mc_new_aspell_config))
+    if (!g_module_symbol (spell_module, "new_aspell_config",
+            reinterpret_cast<gpointer *>(&mc_new_aspell_config)))
         goto error_ret;
 
     if (!g_module_symbol (spell_module, "aspell_dict_info_list_elements",
-                          (void *) &mc_aspell_dict_info_list_elements))
+            reinterpret_cast<gpointer *>(&mc_aspell_dict_info_list_elements)))
         goto error_ret;
 
     if (!g_module_symbol (spell_module, "aspell_dict_info_enumeration_next",
-                          (void *) &mc_aspell_dict_info_enumeration_next))
+            reinterpret_cast<gpointer *>(&mc_aspell_dict_info_enumeration_next)))
         goto error_ret;
 
-    if (!g_module_symbol (spell_module, "new_aspell_speller", (void *) &mc_new_aspell_speller))
+    if (!g_module_symbol (spell_module, "new_aspell_speller",
+            reinterpret_cast<gpointer *>(&mc_new_aspell_speller)))
         goto error_ret;
 
-    if (!g_module_symbol (spell_module, "aspell_error_number", (void *) &mc_aspell_error_number))
+    if (!g_module_symbol (spell_module, "aspell_error_number",
+            reinterpret_cast<gpointer *>(&mc_aspell_error_number)))
         goto error_ret;
 
     if (!g_module_symbol (spell_module, "aspell_speller_error_message",
-                          (void *) &mc_aspell_speller_error_message))
+            reinterpret_cast<gpointer *>(&mc_aspell_speller_error_message)))
         goto error_ret;
 
-    if (!g_module_symbol (spell_module, "aspell_speller_error", (void *) &mc_aspell_speller_error))
+    if (!g_module_symbol (spell_module, "aspell_speller_error",
+            reinterpret_cast<gpointer *>(&mc_aspell_speller_error)))
         goto error_ret;
 
-    if (!g_module_symbol (spell_module, "aspell_error", (void *) &mc_aspell_error))
+    if (!g_module_symbol (spell_module, "aspell_error",
+            reinterpret_cast<gpointer *>(&mc_aspell_error)))
         goto error_ret;
 
-    if (!g_module_symbol (spell_module, "to_aspell_speller", (void *) &mc_to_aspell_speller))
+    if (!g_module_symbol (spell_module, "to_aspell_speller",
+            reinterpret_cast<gpointer *>(&mc_to_aspell_speller)))
         goto error_ret;
 
-    if (!g_module_symbol (spell_module, "aspell_speller_check", (void *) &mc_aspell_speller_check))
+    if (!g_module_symbol (spell_module, "aspell_speller_check",
+            reinterpret_cast<gpointer *>(&mc_aspell_speller_check)))
         goto error_ret;
 
-    if (!g_module_symbol
-        (spell_module, "aspell_speller_suggest", (void *) &mc_aspell_speller_suggest))
+    if (!g_module_symbol (spell_module, "aspell_speller_suggest",
+            reinterpret_cast<gpointer *>(&mc_aspell_speller_suggest)))
         goto error_ret;
 
-    if (!g_module_symbol
-        (spell_module, "aspell_word_list_elements", (void *) &mc_aspell_word_list_elements))
+    if (!g_module_symbol (spell_module, "aspell_word_list_elements",
+            reinterpret_cast<gpointer *>(&mc_aspell_word_list_elements)))
         goto error_ret;
 
     if (!g_module_symbol (spell_module, "aspell_string_enumeration_next",
-                          (void *) &mc_aspell_string_enumeration_next))
+            reinterpret_cast<gpointer *>(&mc_aspell_string_enumeration_next)))
         goto error_ret;
 
-    if (!g_module_symbol
-        (spell_module, "aspell_config_replace", (void *) &mc_aspell_config_replace))
+    if (!g_module_symbol(spell_module, "aspell_config_replace",
+            reinterpret_cast<gpointer *>(&mc_aspell_config_replace)))
         goto error_ret;
 
-    if (!g_module_symbol (spell_module, "aspell_error_message", (void *) &mc_aspell_error_message))
+    if (!g_module_symbol (spell_module, "aspell_error_message",
+            reinterpret_cast<gpointer *>(&mc_aspell_error_message)))
         goto error_ret;
 
-    if (!g_module_symbol
-        (spell_module, "delete_aspell_speller", (void *) &mc_delete_aspell_speller))
+    if (!g_module_symbol (spell_module, "delete_aspell_speller",
+            reinterpret_cast<gpointer *>(&mc_delete_aspell_speller)))
         goto error_ret;
 
-    if (!g_module_symbol (spell_module, "delete_aspell_config", (void *) &mc_delete_aspell_config))
+    if (!g_module_symbol (spell_module, "delete_aspell_config",
+            reinterpret_cast<gpointer *>(&mc_delete_aspell_config)))
         goto error_ret;
 
     if (!g_module_symbol (spell_module, "delete_aspell_string_enumeration",
-                          (void *) &mc_delete_aspell_string_enumeration))
+                          reinterpret_cast<gpointer *>(&mc_delete_aspell_string_enumeration)))
         goto error_ret;
 
     if (!g_module_symbol (spell_module, "get_aspell_dict_info_list",
-                          (void *) &mc_get_aspell_dict_info_list))
+                          reinterpret_cast<gpointer *>(&mc_get_aspell_dict_info_list)))
         goto error_ret;
 
     if (!g_module_symbol (spell_module, "delete_aspell_can_have_error",
-                          (void *) &mc_delete_aspell_can_have_error))
+                          reinterpret_cast<gpointer *>(&mc_delete_aspell_can_have_error)))
         goto error_ret;
 
     if (!g_module_symbol (spell_module, "delete_aspell_dict_info_enumeration",
-                          (void *) &mc_delete_aspell_dict_info_enumeration))
+                          reinterpret_cast<gpointer *>(&mc_delete_aspell_dict_info_enumeration)))
         goto error_ret;
 
     if (!g_module_symbol
-        (spell_module, "aspell_config_retrieve", (void *) &mc_aspell_config_retrieve))
+        (spell_module, "aspell_config_retrieve",
+                reinterpret_cast<gpointer *>(&mc_aspell_config_retrieve)))
         goto error_ret;
 
-    if (!g_module_symbol
-        (spell_module, "aspell_word_list_size", (void *) &mc_aspell_word_list_size))
+    if (!g_module_symbol (spell_module, "aspell_word_list_size",
+            reinterpret_cast<gpointer *>(&mc_aspell_word_list_size)))
         goto error_ret;
 
     if (!g_module_symbol (spell_module, "aspell_speller_add_to_personal",
-                          (void *) &mc_aspell_speller_add_to_personal))
+                          reinterpret_cast<gpointer *>(&mc_aspell_speller_add_to_personal)))
         goto error_ret;
 
     if (!g_module_symbol (spell_module, "aspell_speller_save_all_word_lists",
-                          (void *) &mc_aspell_speller_save_all_word_lists))
+                          reinterpret_cast<gpointer *>(&mc_aspell_speller_save_all_word_lists)))
         goto error_ret;
 
     ret = TRUE;
@@ -288,7 +298,7 @@ aspell_init (void)
     if (global_speller != NULL)
         return;
 
-    global_speller = g_try_malloc (sizeof (spell_t));
+    global_speller = static_cast<spell_t *>(g_try_malloc(sizeof(spell_t)));
     if (global_speller == NULL)
         return;
 

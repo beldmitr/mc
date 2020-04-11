@@ -302,7 +302,7 @@ ssize_t mc_##name (int handle, C void *buf, size_t count) \
     if (vfs == NULL) \
         return (-1); \
 \
-    result = vfs->name != NULL ? vfs->name (fsinfo, buf, count) : -1; \
+    result = vfs->name != NULL ? vfs->name (fsinfo, static_cast<char*>(const_cast<void*>(buf)), count) : -1; \
     if (result == -1) \
         errno = vfs->name != NULL ? vfs_ferrno (vfs) : E_NOTSUPP; \
     return result; \
@@ -494,7 +494,7 @@ mc_readdir (DIR * dirp)
     vfs_path_element = (vfs_path_element_t *) fsinfo;
     if (vfs->readdir != NULL)
     {
-        entry = vfs->readdir (vfs_path_element->dir.info);
+        entry = static_cast<dirent *>(vfs->readdir(vfs_path_element->dir.info));
         if (entry == NULL)
             return NULL;
 

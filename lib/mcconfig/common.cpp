@@ -129,7 +129,7 @@ mc_config_init (const gchar * ini_path, gboolean read_only)
             GKeyFileFlags flags = G_KEY_FILE_NONE;
 
             if (!read_only)
-                flags |= G_KEY_FILE_KEEP_COMMENTS;
+                flags = static_cast<GKeyFileFlags>(flags | G_KEY_FILE_KEEP_COMMENTS);
 
             /* file exists and not empty */
             g_key_file_load_from_file (mc_config->handle, ini_path, flags, NULL);

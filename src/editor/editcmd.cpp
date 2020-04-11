@@ -664,16 +664,16 @@ edit_search_get_current_end_line_char (const WEdit * edit)
 static edit_search_line_t
 edit_get_search_line_type (mc_search_t * search)
 {
-    edit_search_line_t search_line_type = 0;
+    edit_search_line_t search_line_type = AT_NONE;
 
     if (search->search_type != MC_SEARCH_T_REGEX)
         return search_line_type;
 
     if (*search->original == '^')
-        search_line_type |= AT_START_LINE;
+        search_line_type = static_cast<edit_search_line_t>(search_line_type | AT_START_LINE);
 
     if (search->original[search->original_len - 1] == '$')
-        search_line_type |= AT_END_LINE;
+        search_line_type = static_cast<edit_search_line_t>(search_line_type | AT_END_LINE);
     return search_line_type;
 }
 
@@ -1408,14 +1408,14 @@ static gboolean
 edit_get_macro (WEdit * edit, int hotkey, const macros_t ** macros, guint * indx)
 {
     const macros_t *array_start = &g_array_index (macros_list, struct macros_t, 0);
-    macros_t *result;
+
     macros_t search_macro;
 
     (void) edit;
 
     search_macro.hotkey = hotkey;
-    result = bsearch (&search_macro, macros_list->data, macros_list->len,
-                      sizeof (macros_t), (GCompareFunc) edit_macro_comparator);
+    macros_t *result = static_cast<macros_t*>(bsearch (&search_macro, macros_list->data, macros_list->len,
+                      sizeof (macros_t), (GCompareFunc) edit_macro_comparator));
 
     if (result != NULL && result->macro != NULL)
     {
@@ -2067,7 +2067,7 @@ edit_load_cmd (WDialog * h)
 
     exp = input_expand_dialog (_("Load"), _("Enter file name:"),
                                MC_HISTORY_EDIT_LOAD, INPUT_LAST_TEXT,
-                               INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD);
+                               static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD));
 
     if (exp != NULL && *exp != '\0')
     {
@@ -2453,7 +2453,7 @@ edit_block_move_cmd (WEdit * edit)
         off_t count, count_orig;
 
         current = edit->buffer.curs1;
-        copy_buf = g_malloc0 (end_mark - start_mark);
+        copy_buf = static_cast<unsigned char *>(g_malloc0(end_mark - start_mark));
         edit_cursor_move (edit, start_mark - edit->buffer.curs1);
         edit_scroll_screen_over_cursor (edit);
 
@@ -2938,7 +2938,7 @@ edit_save_block (WEdit * edit, const char *filename, off_t start, off_t finish)
         off_t end;
 
         len = finish - start;
-        buf = g_malloc0 (TEMP_BUF_LEN);
+        buf = static_cast<unsigned char *>(g_malloc0(TEMP_BUF_LEN));
         while (start != finish)
         {
             end = MIN (finish, start + TEMP_BUF_LEN);
@@ -3224,9 +3224,11 @@ edit_ext_cmd (WEdit * edit)
     exp =
         input_dialog (_("Paste output of external command"),
                       _("Enter shell command(s):"), MC_HISTORY_EDIT_PASTE_EXTCMD, INPUT_LAST_TEXT,
-                      INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_VARIABLES | INPUT_COMPLETE_USERNAMES
-                      | INPUT_COMPLETE_HOSTNAMES | INPUT_COMPLETE_CD | INPUT_COMPLETE_COMMANDS |
-                      INPUT_COMPLETE_SHELL_ESC);
+                      static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_VARIABLES |
+                                                    INPUT_COMPLETE_USERNAMES
+                                                    | INPUT_COMPLETE_HOSTNAMES | INPUT_COMPLETE_CD |
+                                                    INPUT_COMPLETE_COMMANDS |
+                                                    INPUT_COMPLETE_SHELL_ESC));
 
     if (!exp)
         return 1;

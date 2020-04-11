@@ -425,8 +425,9 @@ nice_cd (const char *text, const char *xtext, const char *help,
 
     machine =
         input_dialog_help (text, xtext, help, history_name, INPUT_LAST_TEXT, strip_password,
-                           INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD | INPUT_COMPLETE_HOSTNAMES |
-                           INPUT_COMPLETE_USERNAMES);
+                           static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD |
+                                                         INPUT_COMPLETE_HOSTNAMES |
+                                                         INPUT_COMPLETE_USERNAMES));
     if (machine == NULL)
         return;
 
@@ -482,7 +483,7 @@ configure_panel_listing (WPanel * p, int list_format, int brief_cols, gboolean u
                          char **user, char **status)
 {
     p->user_mini_status = use_msformat;
-    p->list_format = list_format;
+    p->list_format = static_cast<list_format_t>(list_format);
 
     if (list_format == list_brief)
         p->brief_cols = brief_cols;
@@ -660,7 +661,7 @@ view_filtered_cmd (void)
         input_dialog (_("Filtered view"),
                       _("Filter command and arguments:"),
                       MC_HISTORY_FM_FILTERED_VIEW, initial_command,
-                      INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_COMMANDS);
+                      static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_COMMANDS));
 
     if (command != NULL)
     {
@@ -939,7 +940,7 @@ reread_cmd (void)
         vfs_path_equal (current_panel->cwd_vpath, other_panel->cwd_vpath))
         flag = UP_OPTIMIZE;
 
-    update_panels (UP_RELOAD | flag, UP_KEEPSEL);
+    update_panels (static_cast<panel_update_flags_t>(UP_RELOAD | flag), UP_KEEPSEL);
     repaint_screen ();
 }
 
@@ -1156,7 +1157,7 @@ compare_dirs_cmd (void)
     if (choice < 0 || choice > 2)
         return;
 
-    thorough_flag = choice;
+    thorough_flag = static_cast<CompareMode>(choice);
 
     if (get_current_type () == view_listing && get_other_type () == view_listing)
     {

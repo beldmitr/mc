@@ -461,7 +461,7 @@ sfs_init (struct vfs_class *me)
                 if (IS_PATH_SEP (*c))
                 {
                     *c = '\0';
-                    flags |= F_FULLMATCH;
+                    flags = static_cast<sfs_flags_t>(flags | F_FULLMATCH);
                 }
                 break;
             }
@@ -477,13 +477,13 @@ sfs_init (struct vfs_class *me)
             switch (*c)
             {
             case '1':
-                flags |= F_1;
+                flags = static_cast<sfs_flags_t>(flags | F_1);
                 break;
             case '2':
-                flags |= F_2;
+                flags = static_cast<sfs_flags_t>(flags | F_2);
                 break;
             case 'R':
-                flags |= F_NOLOCALCOPY;
+                flags = static_cast<sfs_flags_t>(flags | F_NOLOCALCOPY);
                 break;
             default:
                 fprintf (stderr, _("Warning: Invalid flag %c in %s:\n%s\n"), *c, "sfs.ini", key);

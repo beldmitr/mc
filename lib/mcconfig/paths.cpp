@@ -134,7 +134,7 @@ mc_config_mkdir (const char *directory_name, GError ** mcerror)
 {
     mc_return_if_error (mcerror);
 
-    if ((!g_file_test (directory_name, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)) &&
+    if ((!g_file_test (directory_name, static_cast<GFileTest>(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR))) &&
         (g_mkdir_with_parents (directory_name, 0700) != 0))
         mc_propagate_error (mcerror, 0, _("Cannot create %s directory"), directory_name);
 }
@@ -267,7 +267,7 @@ mc_config_deprecated_dir_present (void)
     gboolean is_present;
 
     old_dir = mc_config_get_deprecated_path ();
-    is_present = g_file_test (old_dir, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR);
+    is_present = g_file_test (old_dir, static_cast<GFileTest>(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR));
     g_free (old_dir);
 
     return is_present && !config_dir_present;

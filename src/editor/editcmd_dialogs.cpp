@@ -316,7 +316,8 @@ editcmd_dialog_raw_key_query (const char *heading, const char *query, gboolean c
     w = MAX (w, wq + 3 * 2 + 1 + 2);
 
     raw_dlg =
-        dlg_create (TRUE, 0, 0, cancel ? 7 : 5, w, WPOS_CENTER | WPOS_TRYUP, FALSE, dialog_colors,
+        dlg_create (TRUE, 0, 0, cancel ? 7 : 5, w,
+                static_cast<widget_pos_flags_t>(WPOS_CENTER | WPOS_TRYUP), FALSE, dialog_colors,
                     editcmd_dialog_raw_key_query_cb, NULL, NULL, heading);
     g = GROUP (raw_dlg);
     widget_want_tab (WIDGET (raw_dlg), TRUE);
@@ -329,8 +330,9 @@ editcmd_dialog_raw_key_query (const char *heading, const char *query, gboolean c
     {
         group_add_widget (g, hline_new (y++, -1, -1));
         /* Button w/o hotkey to allow use any key as raw or macro one */
-        group_add_widget_autopos (g, button_new (y, 1, B_CANCEL, NORMAL_BUTTON, _("Cancel"), NULL),
-                                  WPOS_KEEP_TOP | WPOS_CENTER_HORZ, NULL);
+        group_add_widget_autopos (g, button_new (y, 1, B_CANCEL,
+                NORMAL_BUTTON, _("Cancel"), NULL),
+                        static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_CENTER_HORZ), NULL);
     }
 
     w = dlg_run (raw_dlg);
