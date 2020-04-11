@@ -2,8 +2,7 @@
  *  \brief Header: directory hotlist
  */
 
-#ifndef MC__HOTLIST_H
-#define MC__HOTLIST_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -28,4 +27,5 @@ gboolean save_hotlist (void);
 void done_hotlist (void);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__HOTLIST_H */
+
+

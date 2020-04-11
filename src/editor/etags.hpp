@@ -1,5 +1,4 @@
-#ifndef MC__EDIT_ETAGS_H
-#define MC__EDIT_ETAGS_H 1
+#pragma once
 
 #include <sys/types.h>          /* size_t */
 #include "lib/global.hpp"         /* include <glib.h> */
@@ -34,4 +33,4 @@ int etags_set_definition_hash (const char *tagfile, const char *start_path,
                                const char *match_func, etags_hash_t * def_hash);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__EDIT_ETAGS_H */
+

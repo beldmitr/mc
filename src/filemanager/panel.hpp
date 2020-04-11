@@ -2,8 +2,7 @@
  *  \brief Header: defines WPanel structure
  */
 
-#ifndef MC__PANEL_H
-#define MC__PANEL_H
+#pragma once
 
 #include <inttypes.h>           /* uintmax_t */
 #include <limits.h>             /* MB_LEN_MAX */
@@ -265,4 +264,3 @@ panel_sized_new (const char *panel_name, int y, int x, int lines, int cols)
 
 /* --------------------------------------------------------------------------------------------- */
 
-#endif /* MC__PANEL_H */

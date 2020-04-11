@@ -1,5 +1,4 @@
-#ifndef MC__FILE_HISTORY_H
-#define MC__FILE_HISTORY_H
+#pragma once
 
 #include "lib/widget.hpp"
 
@@ -17,4 +16,4 @@ char *show_file_history (const Widget * w, int *action);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__FILE_HISTORY_H */
+

@@ -9,8 +9,7 @@
  *  root is even worse.
  */
 
-#ifndef MC__CONS_SAVER_H
-#define MC__CONS_SAVER_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -43,4 +42,4 @@ void handle_console (console_action_t action);
 #endif /* !LINUX_CONS_SAVER_C */
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__CONS_SAVER_H */
+

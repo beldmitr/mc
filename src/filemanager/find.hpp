@@ -2,8 +2,7 @@
  *  \brief Header: Find file command
  */
 
-#ifndef MC__FIND_H
-#define MC__FIND_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -18,4 +17,5 @@
 void find_file (void);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__FIND_H */
+
+

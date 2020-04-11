@@ -6,8 +6,7 @@
  *  \brief Header: widget group features module
  */
 
-#ifndef MC__GROUP_H
-#define MC__GROUP_H
+#pragma once
 
 #include "lib/global.hpp"
 
@@ -122,4 +121,3 @@ group_get_current_widget_id (const WGroup * g)
     return WIDGET (g->current->data)->id;
 }
 
-#endif /* MC__GROUP_H */

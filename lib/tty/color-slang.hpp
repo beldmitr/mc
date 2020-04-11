@@ -3,8 +3,7 @@
  *  \brief Header: S-Lang-specific color setup
  */
 
-#ifndef MC__COLOR_SLANG_H
-#define MC__COLOR_SLANG_H
+#pragma once
 
 #include "tty-slang.hpp"          /* S-Lang headers */
 
@@ -53,4 +52,5 @@
 /*** declarations of public functions ************************************************************/
 
 /*** inline functions ****************************************************************************/
-#endif /* MC_COLOR_SLANG_H */
+
+

@@ -3,8 +3,7 @@
  *  \brief Header: WBackground widget
  */
 
-#ifndef MC__WIDGET_BACKGROUND_H
-#define MC__WIDGET_BACKGROUND_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -33,4 +32,3 @@ cb_ret_t background_callback (Widget * w, Widget * sender, widget_msg_t msg, int
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_BACKGROUND_H */

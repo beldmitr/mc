@@ -1,5 +1,4 @@
-#ifndef MC__EDIT_ASPELL_H
-#define MC__EDIT_ASPELL_H
+#pragma once
 
 #include "lib/global.hpp"         /* include <glib.h> */
 
@@ -25,4 +24,3 @@ gboolean aspell_add_to_dict (const char *word, const int word_size);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__EDIT_ASPELL_H */

@@ -10,8 +10,7 @@
  *  \date 2009, 2012
  */
 
-#ifndef MC__EDIT_H
-#define MC__EDIT_H
+#pragma once
 
 #include "lib/global.hpp"         /* PATH_SEP_STR */
 #include "lib/vfs/vfs.hpp"        /* vfs_path_t */
@@ -75,4 +74,5 @@ long edit_get_curs_col (const WEdit * edit);
 const char *edit_get_syntax_type (const WEdit * edit);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__EDIT_H */
+
+

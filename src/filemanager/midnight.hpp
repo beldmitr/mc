@@ -2,8 +2,7 @@
  *  \brief Header: main dialog (file panel) for Midnight Commander
  */
 
-#ifndef MC__MIDNIGHT_H
-#define MC__MIDNIGHT_H
+#pragma once
 
 #include "lib/widget.hpp"
 
@@ -50,4 +49,3 @@ gboolean do_nc (void);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__MIDNIGHT_H */

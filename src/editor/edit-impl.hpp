@@ -8,8 +8,7 @@
  *  \date 1996, 1997
  */
 
-#ifndef MC__EDIT_IMPL_H
-#define MC__EDIT_IMPL_H
+#pragma once
 
 #include <stdio.h>
 
@@ -296,4 +295,3 @@ edit_reload (WEdit * edit, const vfs_path_t * filename_vpath)
     return edit_reload_line (edit, filename_vpath, 0);
 }
 
-#endif /* MC__EDIT_IMPL_H */

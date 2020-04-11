@@ -3,8 +3,7 @@
  *  \brief Header: WFrame widget
  */
 
-#ifndef MC__WIDGET_FRAME_H
-#define MC__WIDGET_FRAME_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -40,4 +39,3 @@ void frame_set_title (WFrame * f, const char *title);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_FRAME_H */

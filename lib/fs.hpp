@@ -4,8 +4,7 @@
 
 /* Include file to use opendir/closedir/readdir */
 
-#ifndef MC_FS_H
-#define MC_FS_H
+#pragma once
 
 #include <sys/types.h>
 #include <unistd.h>
@@ -121,4 +120,3 @@
 
 /*** inline functions ****************************************************************************/
 
-#endif

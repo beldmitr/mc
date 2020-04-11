@@ -6,8 +6,7 @@
  *  \brief Header: dialog box features module
  */
 
-#ifndef MC__DIALOG_H
-#define MC__DIALOG_H
+#pragma once
 
 #include <sys/types.h>          /* size_t */
 
@@ -129,4 +128,3 @@ void do_refresh (void);
 /*** inline functions ****************************************************************************/
 /* --------------------------------------------------------------------------------------------- */
 
-#endif /* MC__DIALOG_H */

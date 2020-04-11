@@ -2,8 +2,7 @@
  *  \brief Header: shell structure
  */
 
-#ifndef MC_SHELL_H
-#define MC_SHELL_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -40,4 +39,3 @@ void mc_shell_deinit (void);
 
 /*** inline functions **************************************************/
 
-#endif /* MC_SHELL_H */

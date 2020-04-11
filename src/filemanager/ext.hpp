@@ -2,8 +2,8 @@
  *  \brief Header: extension dependent execution
  */
 
-#ifndef MC__EXT_H
-#define MC__EXT_H
+#pragma once
+
 /*** typedefs(not structures) and defined constants **********************************************/
 
 /*** enums ***************************************************************************************/
@@ -30,4 +30,3 @@ regex_command (const vfs_path_t * filename_vpath, const char *action)
     return regex_command_for (NULL, filename_vpath, action, NULL);
 }
 
-#endif /* MC__EXT_H */

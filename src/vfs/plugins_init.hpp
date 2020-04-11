@@ -1,5 +1,4 @@
-#ifndef MC__VFS_PLUINS_INIT_H
-#define MC__VFS_PLUINS_INIT_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -15,4 +14,3 @@ void vfs_plugins_init (void);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__VFS_PLUINS_INIT_H */

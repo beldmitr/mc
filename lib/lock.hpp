@@ -6,8 +6,7 @@
  *  Look at lock.c for more details
  */
 
-#ifndef MC_LOCK_H
-#define MC_LOCK_H
+#pragma once
 
 #include "lib/vfs/vfs.hpp"        /* vfs_path_t */
 
@@ -26,4 +25,3 @@ int unlock_file (const vfs_path_t * fname_vpath);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC_LOCK_H */

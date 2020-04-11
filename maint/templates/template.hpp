@@ -1,5 +1,4 @@
-#ifndef MC__TEMPLATE_H
-#define MC__TEMPLATE_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -13,4 +12,4 @@
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__TEMPLATE_H */
+

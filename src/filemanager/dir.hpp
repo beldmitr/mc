@@ -2,8 +2,7 @@
  *  \brief Header: directory routines
  */
 
-#ifndef MC__DIR_H
-#define MC__DIR_H
+#pragma once
 
 #include <sys/stat.h>
 
@@ -91,4 +90,4 @@ link_isdir (const file_entry_t * file)
     return (gboolean) file->f.link_to_dir;
 }
 
-#endif /* MC__DIR_H */
+

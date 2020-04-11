@@ -2,8 +2,7 @@
  *  \brief Header: internal file viewer
  */
 
-#ifndef MC__VIEWER_H
-#define MC__VIEWER_H
+#pragma once
 
 #include "lib/global.hpp"
 
@@ -54,4 +53,4 @@ extern gboolean mcview_load (WView * view, const char *command, const char *file
 extern void mcview_clear_mode_flags (mcview_mode_flags_t * flags);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__VIEWER_H */
+

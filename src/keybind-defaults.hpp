@@ -1,5 +1,4 @@
-#ifndef MC__KEYBIND_DEFAULTS_H
-#define MC__KEYBIND_DEFAULTS_H
+#pragma once
 
 #include "lib/global.hpp"
 #include "lib/keybind.hpp"        /* global_keymap_t */
@@ -54,4 +53,3 @@ mc_config_t *create_default_keymap (void);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__KEYBIND_DEFAULTS_H */

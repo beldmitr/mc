@@ -2,8 +2,7 @@
 /* Copyright (C) 1998 John H Terpstra <jht@aquasoft.com.au> */
 
 /* local definitions for file server */
-#ifndef _LOCAL_H
-#define _LOCAL_H
+#pragma once
 
 /* The default workgroup - usually overridden in smb.conf */
 #ifndef WORKGROUP
@@ -195,4 +194,4 @@
 /* Minimum length of allowed password when changing UNIX password. */
 #define MINPASSWDLENGTH 5
 
-#endif
+

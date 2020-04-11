@@ -1,5 +1,4 @@
-#ifndef MC_SRC_UTIL_H
-#define MC_SRC_UTIL_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -15,5 +14,3 @@
 gboolean check_for_default (const vfs_path_t * default_file_vpath, const vfs_path_t * file_vpath);
 
 /*** inline functions ****************************************************************************/
-
-#endif /* MC_SRC_UTIL_H */

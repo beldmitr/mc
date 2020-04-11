@@ -1,5 +1,4 @@
-#ifndef MC__FILEHIGHLIGHT_H
-#define MC__FILEHIGHLIGHT_H
+#pragma once
 
 #include "lib/mcconfig.hpp"       /* mc_config_t */
 #include "lib/util.hpp"           /* file_entry_t */
@@ -31,4 +30,3 @@ void mc_fhl_clear (mc_fhl_t *);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__FILEHIGHLIGHT_H */

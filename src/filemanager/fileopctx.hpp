@@ -5,8 +5,7 @@
  *  \author Miguel de Icaza <miguel@nuclecu.unam.mx>
  */
 
-#ifndef MC__FILEOPCTX_H
-#define MC__FILEOPCTX_H
+#pragma once
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -196,4 +195,5 @@ FileProgressStatus file_progress_real_query_replace (file_op_context_t * ctx,
                                                      struct stat *dst_stat);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__FILEOPCTX_H */
+
+

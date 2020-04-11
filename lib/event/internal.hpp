@@ -1,5 +1,4 @@
-#ifndef MC_EVENT_INTERNAL_H
-#define MC_EVENT_INTERNAL_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants ********************/
 
@@ -29,4 +28,4 @@ mc_event_callback_t *mc_event_is_callback_in_array (GPtrArray * callbacks,
                                                     gpointer event_init_data);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC_EVENT_INTERNAL_H */
+

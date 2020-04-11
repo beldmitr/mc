@@ -1,5 +1,4 @@
-#ifndef MC__STRUTILS_ESCAPE_H
-#define MC__STRUTILS_ESCAPE_H
+#pragma once
 
 #include "lib/global.hpp"         /* <glib.h> */
 
@@ -27,4 +26,3 @@ char *strutils_regex_unescape (const char *);
 
 gboolean strutils_is_char_escaped (const char *, const char *);
 
-#endif

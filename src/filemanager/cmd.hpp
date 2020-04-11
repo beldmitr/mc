@@ -4,8 +4,7 @@
  *  They normally operate on the current panel.
  */
 
-#ifndef MC__CMD_H
-#define MC__CMD_H
+#pragma once
 
 #include "lib/global.hpp"
 
@@ -94,4 +93,4 @@ void encoding_cmd (void);
 #endif
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__CMD_H */
+

@@ -2,8 +2,7 @@
  *  \brief Header: setup loading/saving
  */
 
-#ifndef MC__SETUP_H
-#define MC__SETUP_H
+#pragma once
 
 #include "lib/global.hpp"         /* GError */
 
@@ -159,4 +158,3 @@ void panel_save_setup (WPanel * panel, const char *section);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__SETUP_H */

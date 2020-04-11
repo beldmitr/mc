@@ -3,8 +3,7 @@
  * \brief Header: local FS
  */
 
-#ifndef MC__VFS_LOCAL_H
-#define MC__VFS_LOCAL_H
+#pragma once
 
 #include "lib/vfs/vfs.hpp"
 
@@ -29,4 +28,4 @@ extern int local_errno (struct vfs_class *me);
 extern off_t local_lseek (void *data, off_t offset, int whence);
 
 /*** inline functions ****************************************************************************/
-#endif
+

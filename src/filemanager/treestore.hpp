@@ -4,8 +4,7 @@
  *  Contains a storage of the file system tree representation.
  */
 
-#ifndef MC__TREE_STORE_H
-#define MC__TREE_STORE_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -60,4 +59,5 @@ void tree_store_add_entry_remove_hook (tree_store_remove_fn callback, void *data
 void tree_store_remove_entry_remove_hook (tree_store_remove_fn callback);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__TREE_STORE_H */
+
+

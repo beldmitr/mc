@@ -1,5 +1,4 @@
-#ifndef MC__VIEWER_INLINES_H
-#define MC__VIEWER_INLINES_H
+#pragma once
 
 #include <limits.h>             /* CHAR_BIT */
 
@@ -169,4 +168,3 @@ mcview_growbuf_read_all_data (WView * view)
 
 /* --------------------------------------------------------------------------------------------- */
 
-#endif /* MC__VIEWER_INLINES_H */

@@ -2,8 +2,7 @@
  *  \brief Header: External panelization module
  */
 
-#ifndef MC__PANELIZE_H
-#define MC__PANELIZE_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -25,4 +24,5 @@ void panelize_change_root (const vfs_path_t * new_root);
 void panelize_absolutize_if_needed (WPanel * panel);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__PANELIZE_H */
+
+

@@ -3,8 +3,7 @@
  *  \brief Header: show history
  */
 
-#ifndef MC__WIDGET_HISTORY_H
-#define MC__WIDGET_HISTORY_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -48,4 +47,3 @@ void history_show (history_descriptor_t * hd);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_HISTORY_H */

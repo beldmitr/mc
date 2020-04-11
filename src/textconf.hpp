@@ -2,8 +2,7 @@
  *  \brief Header: prints features specific for this build
  */
 
-#ifndef MC__TEXTCONF_H
-#define MC__TEXTCONF_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -20,4 +19,4 @@ extern void show_datadirs_extended (void);
 extern void show_configure_options (void);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__TEXTCONF_H */
+

@@ -1,5 +1,4 @@
-#ifndef MC_STRUTIL_H
-#define MC_STRUTIL_H
+#pragma once
 
 #include "lib/global.hpp"         /* include glib.h */
 
@@ -629,4 +628,3 @@ str_move (char *dest, const char *src)
 
 /* --------------------------------------------------------------------------------------------- */
 
-#endif /* MC_STRUTIL_H */

@@ -4,8 +4,7 @@
  *  please read the relevant sections of the C standard.
  */
 
-#ifndef MC__X11CONN_H
-#define MC__X11CONN_H
+#pragma once
 
 /*
    This module provides support for some X11 functions.  The functions
@@ -35,4 +34,4 @@ extern Bool mc_XQueryPointer (Display *, Window, Window *, Window *,
                               int *, int *, int *, int *, unsigned int *);
 
 /*** inline functions ****************************************************************************/
-#endif
+

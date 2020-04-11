@@ -1,5 +1,4 @@
-#ifndef MC__SERIALIZE_H
-#define MC__SERIALIZE_H
+#pragma once
 
 #include "lib/global.hpp"
 #include "lib/mcconfig.hpp"
@@ -22,4 +21,4 @@ mc_config_t *mc_deserialize_config (const char *data, GError ** error);
 
 /*** inline functions ****************************************************************************/
 
-#endif
+

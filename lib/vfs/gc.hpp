@@ -3,8 +3,7 @@
  * \brief Header: Virtual File System: garbage collection code
  */
 
-#ifndef MC__VFS_GC_H
-#define MC__VFS_GC_H
+#pragma once
 
 #include "vfs.hpp"
 
@@ -24,4 +23,4 @@ void vfs_stamp_create (struct vfs_class *vclass, vfsid id);
 void vfs_gc_done (void);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC_VFS_GC_H */
+

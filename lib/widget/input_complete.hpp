@@ -1,5 +1,4 @@
-#ifndef MC__WIDGET_INPUT_COMPLETE_H
-#define MC__WIDGET_INPUT_COMPLETE_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -15,4 +14,3 @@ void complete (WInput * in);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_INPUT_COMPLETE_H */

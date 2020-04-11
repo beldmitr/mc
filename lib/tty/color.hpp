@@ -8,8 +8,7 @@
  *
  */
 
-#ifndef MC__COLOR_H
-#define MC__COLOR_H
+#pragma once
 
 #include "lib/global.hpp"         /* glib.h */
 
@@ -51,4 +50,4 @@ extern gboolean tty_use_256colors (void);
 extern gboolean tty_use_truecolors (GError **);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC_COLOR_H */
+

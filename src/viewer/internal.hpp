@@ -1,5 +1,4 @@
-#ifndef MC__VIEWER_INTERNAL_H
-#define MC__VIEWER_INTERNAL_H
+#pragma once
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -347,4 +346,3 @@ void mcview_do_search (WView * view, off_t want_search_start);
 
 #include "inlines.hpp"
 
-#endif /* MC__VIEWER_INTERNAL_H */

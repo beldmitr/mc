@@ -1,6 +1,4 @@
-
-#ifndef MC__DIALOG_SWITCH_H
-#define MC__DIALOG_SWITCH_H
+#pragma once
 
 #include <sys/types.h>
 
@@ -36,4 +34,3 @@ void dialog_change_screen_size (void);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__DIALOG_SWITCH_H */

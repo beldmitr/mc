@@ -4,8 +4,7 @@
    SMB transaction2 handling
  */
 
-#ifndef _TRANS2_H_
-#define _TRANS2_H_
+#pragma once
 
 /* Define the structures needed for the trans2 calls. */
 
@@ -242,4 +241,3 @@ Byte offset   Type     name                description
 #define TYPE_MOUNTED			0x20
 #define TYPE_VIRTUAL			0x40
 
-#endif

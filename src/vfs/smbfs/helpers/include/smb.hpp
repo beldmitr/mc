@@ -3,8 +3,7 @@
    Version 1.9.
    SMB parameters and setup
  */
-#ifndef _SMB_H
-#define _SMB_H
+#pragma once
 
 #define BUFFER_SIZE (0xFFFF)
 #define SAFETY_MARGIN 1024
@@ -1740,6 +1739,3 @@ struct nmb_name
 #define MAP_TO_GUEST_ON_BAD_USER 1
 #define MAP_TO_GUEST_ON_BAD_PASSWORD 2
 
-#endif /* _SMB_H */
-
-/* _SMB_H */

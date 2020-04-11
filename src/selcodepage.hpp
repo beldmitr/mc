@@ -3,8 +3,7 @@
  *  \brief Header: user %interface for charset %selection
  */
 
-#ifndef MC__SELCODEPAGE_H
-#define MC__SELCODEPAGE_H
+#pragma once
 
 #include "lib/global.hpp"
 
@@ -36,4 +35,3 @@ gboolean do_select_codepage (void);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__SELCODEPAGE_H */

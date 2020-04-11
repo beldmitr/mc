@@ -1,5 +1,4 @@
-#ifndef MC__EVENT_H
-#define MC__EVENT_H
+#pragma once
 
 #include "event-types.hpp"
 
@@ -42,4 +41,3 @@ gboolean mc_event_raise (const gchar *, const gchar *, gpointer);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__EVENT_H */

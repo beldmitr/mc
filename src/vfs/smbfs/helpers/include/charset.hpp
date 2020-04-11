@@ -4,6 +4,8 @@
    Character set handling
  */
 
+#pragma once
+
 #ifndef CHARSET_C
 
 extern char *dos_char_map;

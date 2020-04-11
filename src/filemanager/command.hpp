@@ -2,8 +2,7 @@
  *  \brief Header: command line widget
  */
 
-#ifndef MC__COMMAND_H
-#define MC__COMMAND_H
+#pragma once
 
 #include "lib/widget.hpp"
 
@@ -25,4 +24,5 @@ void do_cd_command (char *cmd);
 void command_insert (WInput * in, const char *text, gboolean insert_extra_space);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__COMMAND_H */
+
+

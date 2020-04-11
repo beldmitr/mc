@@ -5,8 +5,7 @@
  */
 
 
-#ifndef MC__VFS_XDIRENTRY_H
-#define MC__VFS_XDIRENTRY_H
+#pragma once
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -199,4 +198,3 @@ vfs_s_store_filename_leading_spaces (struct vfs_s_entry *entry, size_t position)
     entry->ino->data_offset = (off_t) position;
 }
 
-#endif

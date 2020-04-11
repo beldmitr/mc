@@ -3,8 +3,7 @@
  *  \brief Header: Internal stuff of color setup
  */
 
-#ifndef MC__COLOR_INTERNAL_H
-#define MC__COLOR_INTERNAL_H
+#pragma once
 
 #include <sys/types.h>          /* size_t */
 
@@ -57,4 +56,5 @@ void tty_color_deinit_lib (void);
 void tty_color_try_alloc_pair_lib (tty_color_pair_t *);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC_COLOR_INTERNAL_H */
+
+

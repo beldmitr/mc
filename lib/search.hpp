@@ -1,5 +1,4 @@
-#ifndef MC__SEARCH_H
-#define MC__SEARCH_H
+#pragma once
 
 #include "lib/global.hpp"         /* <glib.h> */
 
@@ -172,4 +171,3 @@ void mc_search_set_error (mc_search_t * lc_mc_search, mc_search_error_t code, co
      G_GNUC_PRINTF (3, 4);
 /* *INDENT-ON* */
 
-#endif

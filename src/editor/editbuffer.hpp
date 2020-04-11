@@ -2,8 +2,7 @@
  *  \brief Header: text keep buffer for WEdit
  */
 
-#ifndef MC__EDIT_BUFFER_H
-#define MC__EDIT_BUFFER_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -112,4 +111,4 @@ edit_buffer_get_current_eol (const edit_buffer_t * buf)
 
 /* --------------------------------------------------------------------------------------------- */
 
-#endif /* MC__EDIT_BUFFER_H */
+

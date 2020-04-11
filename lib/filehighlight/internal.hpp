@@ -1,5 +1,4 @@
-#ifndef MC__FILEHIGHLIGHT_INTERNAL_H
-#define MC__FILEHIGHLIGHT_INTERNAL_H
+#pragma once
 
 #include "lib/search.hpp"         /* mc_search_t */
 
@@ -57,4 +56,3 @@ gboolean mc_fhl_init_from_standard_files (mc_fhl_t *);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__FILEHIGHLIGHT_INTERNAL_H */

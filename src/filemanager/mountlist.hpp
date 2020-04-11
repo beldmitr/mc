@@ -6,8 +6,7 @@
  *  \brief Header: list of mounted filesystems
  */
 
-#ifndef MC__MOUNTLIST_H
-#define MC__MOUNTLIST_H
+#pragma once
 
 #include <stdint.h>             /* uintmax_t */
 
@@ -41,4 +40,3 @@ void free_my_statfs (void);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__MOUNTLIST_H */

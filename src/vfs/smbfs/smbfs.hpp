@@ -4,8 +4,7 @@
  * \brief Header: Virtual File System: smb file system
  */
 
-#ifndef MC__VFS_SMBFS_H
-#define MC__VFS_SMBFS_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -39,4 +38,4 @@ smb_authinfo *vfs_smb_get_authinfo (const char *host,
                                     const char *share, const char *domain, const char *user);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC_VFS_SMBFS_H */
+

@@ -3,8 +3,7 @@
  * \brief Header: SFTP FS
  */
 
-#ifndef MC__VFS_SFTPFS_INTERNAL_H
-#define MC__VFS_SFTPFS_INTERNAL_H
+#pragma once
 
 #include <libssh2.h>
 #include <libssh2_sftp.h>
@@ -106,4 +105,4 @@ off_t sftpfs_lseek (vfs_file_handler_t * fh, off_t offset, int whence, GError **
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__VFS_SFTPFS_INTERNAL_H */
+

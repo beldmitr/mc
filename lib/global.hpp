@@ -4,8 +4,7 @@
  *  This file should be included after all system includes and before all local includes.
  */
 
-#ifndef MC_GLOBAL_H
-#define MC_GLOBAL_H
+#pragma once
 
 #if defined(HAVE_STRING_H)
 #include <string.h>
@@ -292,4 +291,5 @@ extern mc_global_t mc_global;
 /*** declarations of public functions ************************************************************/
 
 /*** inline functions ****************************************************************************/
-#endif
+
+

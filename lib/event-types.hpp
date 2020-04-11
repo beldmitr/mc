@@ -1,5 +1,4 @@
-#ifndef MC__EVENT_TYPES_H
-#define MC__EVENT_TYPES_H
+#pragma once
 
 #include <stdarg.h>
 
@@ -81,4 +80,3 @@ typedef struct
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__EVENT_TYPES_H */

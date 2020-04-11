@@ -2,6 +2,8 @@
    we start supporting NT error codes in Samba. They were extracted
    using a loop in smbclient then printing a netmon sniff to a file */
 
+#pragma once
+
 #define NT_STATUS_UNSUCCESSFUL (1)
 #define NT_STATUS_NOT_IMPLEMENTED (2)
 #define NT_STATUS_INVALID_INFO_CLASS (3)

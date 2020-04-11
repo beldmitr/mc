@@ -4,8 +4,7 @@
    SMB Byte handling
  */
 
-#ifndef _BYTEORDER_H
-#define _BYTEORDER_H
+#pragma once
 
 /*
    This file implements macros for machine independent short and 
@@ -208,4 +207,3 @@
 #define RPSSVALS(buf,pos,val,len) SSMBMACRO(RSSVALS,buf,pos,val,len,2)
 #define RPSIVALS(buf,pos,val,len) SSMBMACRO(RSIVALS,buf,pos,val,len,4)
 
-#endif /* _BYTEORDER_H */

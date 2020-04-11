@@ -5,8 +5,7 @@
  *  Events received by clients of this library have their coordinates 0 based
  */
 
-#ifndef MC__MOUSE_H
-#define MC__MOUSE_H
+#pragma once
 
 #ifdef HAVE_LIBGPM
 /* GPM mouse support include file */
@@ -115,4 +114,5 @@ void disable_mouse (void);
 void show_mouse_pointer (int x, int y);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC_MOUSE_H */
+
+

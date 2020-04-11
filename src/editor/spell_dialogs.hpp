@@ -1,5 +1,4 @@
-#ifndef MC__EDIT_ASPELL_DIALOGS_H
-#define MC__EDIT_ASPELL_DIALOGS_H
+#pragma once
 
 #include "lib/global.hpp"         /* include <glib.h> */
 
@@ -22,4 +21,3 @@ char *spell_dialog_lang_list_show (GArray * languages);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__EDIT_ASPELL_DIALOGS_H */

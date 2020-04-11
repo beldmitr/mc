@@ -25,8 +25,7 @@
  *  This file is included by help.c and man2hlp.c
  */
 
-#ifndef MC__HELP_H
-#define MC__HELP_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -54,4 +53,4 @@ gboolean help_interactive_display (const gchar * event_group_name, const gchar *
                                    gpointer init_data, gpointer data);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__HELP_H */
+

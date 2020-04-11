@@ -2,8 +2,7 @@
  *  \brief Header: editor widget WEdit
  */
 
-#ifndef MC__EDIT_WIDGET_H
-#define MC__EDIT_WIDGET_H
+#pragma once
 
 #include "lib/search.hpp"         /* mc_search_t */
 #include "lib/widget.hpp"         /* Widget */
@@ -169,4 +168,4 @@ struct WEdit
 /*** declarations of public functions ************************************************************/
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__EDIT_WIDGET_H */
+

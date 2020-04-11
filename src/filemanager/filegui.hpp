@@ -2,8 +2,7 @@
  *  \brief Header: file management GUI for the text mode edition
  */
 
-#ifndef MC__FILEGUI_H
-#define MC__FILEGUI_H
+#pragma once
 
 #include "lib/global.hpp"
 #include "fileopctx.hpp"
@@ -39,4 +38,5 @@ void file_progress_show_target (file_op_context_t * ctx, const vfs_path_t * vpat
 gboolean file_progress_show_deleting (file_op_context_t * ctx, const char *path, size_t * count);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__FILEGUI_H */
+
+

@@ -2,8 +2,7 @@
  *  \brief Header: chown command
  */
 
-#ifndef MC__CHOWN_H
-#define MC__CHOWN_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -18,4 +17,5 @@
 void chown_cmd (void);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__CHOWN_H */
+
+

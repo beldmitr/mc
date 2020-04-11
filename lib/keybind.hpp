@@ -1,5 +1,4 @@
-#ifndef MC__KEYBIND_H
-#define MC__KEYBIND_H
+#pragma once
 
 #include <sys/types.h>
 #include <sys/time.h>           /* time_t */
@@ -376,4 +375,3 @@ long keybind_lookup_keymap_command (const global_keymap_t * keymap, long key);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__KEYBIND_H */

@@ -8,8 +8,7 @@
  *  files small.
  */
 
-#ifndef MC__TTY_H
-#define MC__TTY_H
+#pragma once
 
 #include "lib/global.hpp"         /* include <glib.h> */
 
@@ -138,4 +137,5 @@ extern void tty_enter_ca_mode (void);
 extern void tty_exit_ca_mode (void);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC_TTY_H */
+
+

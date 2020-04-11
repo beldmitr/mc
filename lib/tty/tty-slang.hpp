@@ -1,6 +1,5 @@
 
-#ifndef MC__TTY_SLANG_H
-#define MC__TTY_SLANG_H
+#pragma once
 
 #ifdef HAVE_SLANG_SLANG_H
 #include <slang/slang.h>
@@ -59,4 +58,3 @@ extern int reset_hp_softkeys;
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC_TTY_SLANG_H */

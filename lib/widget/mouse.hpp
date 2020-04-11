@@ -7,8 +7,7 @@
  * into something that's easy to work with in widgets.
  */
 
-#ifndef MC__WIDGET_MOUSE_H
-#define MC__WIDGET_MOUSE_H
+#pragma once
 
 #include "lib/tty/mouse.hpp"      /* Gpm_Event */
 
@@ -62,4 +61,3 @@ int mouse_handle_event (Widget * w, Gpm_Event * event);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_MOUSE_H */

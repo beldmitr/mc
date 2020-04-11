@@ -2,8 +2,7 @@
  *  \brief Header: panel layout module
  */
 
-#ifndef MC__LAYOUT_H
-#define MC__LAYOUT_H
+#pragma once
 
 #include "lib/global.hpp"
 #include "lib/widget.hpp"
@@ -95,4 +94,4 @@ void title_path_prepare (char **path, char **login);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__LAYOUT_H */
+#pragma once

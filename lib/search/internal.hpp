@@ -1,5 +1,4 @@
-#ifndef MC__SEARCH_INTERNAL_H
-#define MC__SEARCH_INTERNAL_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -79,5 +78,3 @@ gboolean mc_search__run_hex (mc_search_t *, const void *, gsize, gsize, gsize *)
 GString *mc_search_hex_prepare_replace_str (mc_search_t *, GString *);
 
 /*** inline functions ****************************************************************************/
-
-#endif

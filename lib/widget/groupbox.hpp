@@ -3,8 +3,7 @@
  *  \brief Header: WGroupbox widget
  */
 
-#ifndef MC__WIDGET_GROUPBOX_H
-#define MC__WIDGET_GROUPBOX_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -29,4 +28,3 @@ void groupbox_set_title (WGroupbox * g, const char *title);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_GROUPBOX_H */

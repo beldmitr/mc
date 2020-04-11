@@ -1,6 +1,4 @@
-
-#ifndef MC__TTY_NCURSES_H
-#define MC__TTY_NCURSES_H
+#pragma once
 
 #ifdef USE_NCURSES
 #ifdef HAVE_NCURSES_CURSES_H
@@ -37,4 +35,3 @@
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC_TTY_NCURSES_H */

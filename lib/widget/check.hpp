@@ -3,8 +3,7 @@
  *  \brief Header: WCheck widget
  */
 
-#ifndef MC__WIDGET_CHECK_H
-#define MC__WIDGET_CHECK_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -30,4 +29,3 @@ void check_set_text (WCheck * check, const char *text);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_CHECK_H */

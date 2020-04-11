@@ -1,5 +1,4 @@
-#ifndef MC__VFS_PATH_H
-#define MC__VFS_PATH_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -146,4 +145,3 @@ vfs_path_as_str (const vfs_path_t * vpath)
 
 /* --------------------------------------------------------------------------------------------- */
 
-#endif

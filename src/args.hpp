@@ -1,5 +1,4 @@
-#ifndef MC__ARGS_H
-#define MC__ARGS_H
+#pragma once
 
 #include "lib/global.hpp"         /* gboolean */
 #include "lib/vfs/vfs.hpp"        /* vfs_path_t */
@@ -54,5 +53,3 @@ gboolean mc_setup_by_args (int argc, char **argv, GError ** mcerror);
 void mcedit_arg_free (mcedit_arg_t * arg);
 
 /*** inline functions ****************************************************************************/
-
-#endif /* MC__ARGS_H */

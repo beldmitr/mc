@@ -2,8 +2,7 @@
  *  \brief Header: Listbox widget, a listbox within dialog window
  */
 
-#ifndef MC__LISTBOX_DIALOG_H
-#define MC__LISTBOX_DIALOG_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -33,4 +32,3 @@ void *run_listbox_with_data (Listbox * l, const void *select);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__LISTBOX_DIALOG_H */

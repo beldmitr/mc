@@ -26,8 +26,7 @@
  */
 /* *INDENT-ON* */
 
-#ifndef STAT_SIZE_H
-#define STAT_SIZE_H
+#pragma once
 
 /* sys/param.h may define DEV_BSIZE */
 #if HAVE_SYS_PARAM_H
@@ -102,4 +101,3 @@
 #endif
 #endif
 
-#endif /* STAT_SIZE_H */

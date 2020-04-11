@@ -2,8 +2,7 @@
  *  \brief Header: panel managing
  */
 
-#ifndef MC__INFO_H
-#define MC__INFO_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -21,4 +20,4 @@ typedef struct WInfo WInfo;
 WInfo *info_new (int y, int x, int lines, int cols);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__INFO_H */
+

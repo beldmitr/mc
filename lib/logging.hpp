@@ -2,8 +2,7 @@
  *  \brief Header: provides a log file to ease tracing the program
  */
 
-#ifndef MC_LOGGING_H
-#define MC_LOGGING_H
+#pragma once
 
 /*
    This file provides an easy-to-use function for writing all kinds of
@@ -29,4 +28,3 @@ void mc_always_log (const char *fmt, ...) G_GNUC_PRINTF (1, 2);
 
 /*** inline functions ****************************************************************************/
 
-#endif

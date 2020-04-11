@@ -1,5 +1,4 @@
-#ifndef MC__SKIN_INTERNAL_H
-#define MC__SKIN_INTERNAL_H
+#pragma once
 
 #include "lib/global.hpp"
 #include "lib/skin.hpp"
@@ -37,4 +36,3 @@ void mc_skin_colors_old_configure (mc_skin_t *);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__SKIN_INTERNAL_H */

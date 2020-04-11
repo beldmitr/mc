@@ -2,8 +2,7 @@
  *  \brief Header: File and directory operation routines
  */
 
-#ifndef MC__FILE_H
-#define MC__FILE_H
+#pragma once
 
 #include <inttypes.h>           /* off_t, uintmax_t */
 
@@ -69,4 +68,6 @@ int dirsize_status_update_cb (status_msg_t * sm);
 void dirsize_status_deinit_cb (status_msg_t * sm);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__FILE_H */
+
+
+

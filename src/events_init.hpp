@@ -1,5 +1,4 @@
-#ifndef MC__EVENTS_INIT_H
-#define MC__EVENTS_INIT_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -15,5 +14,3 @@
 gboolean events_init (GError **);
 
 /*** inline functions ****************************************************************************/
-
-#endif /* MC__EVENTS_INIT_H */

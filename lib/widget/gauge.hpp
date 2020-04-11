@@ -3,8 +3,7 @@
  *  \brief Header: WGauge widget
  */
 
-#ifndef MC__WIDGET_GAUGE_H
-#define MC__WIDGET_GAUGE_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -33,4 +32,3 @@ void gauge_show (WGauge * g, gboolean shown);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_GAUGE_H */

@@ -2,8 +2,7 @@
  *  \brief Header: directory tree browser
  */
 
-#ifndef MC__TREE_H
-#define MC__TREE_H
+#pragma once
 
 #include "lib/global.hpp"
 
@@ -32,4 +31,5 @@ void sync_tree (const vfs_path_t * vpath);
 WTree *find_tree (const WDialog * h);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__TREE_H */
+
+

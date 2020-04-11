@@ -1,5 +1,4 @@
-#ifndef _INCLUDES_H
-#define _INCLUDES_H
+#pragma once
 /*
    Unix SMB/Netbios implementation.
    Version 1.9.
@@ -572,4 +571,3 @@ unsigned long strtoul (const char *nptr, char **endptr, int base);
 
 extern file_info const def_finfo;
 
-#endif /* _INCLUDES_H */

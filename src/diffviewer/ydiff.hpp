@@ -1,5 +1,4 @@
-#ifndef MC__DIFFVIEW_YDIFF_H
-#define MC__DIFFVIEW_YDIFF_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -13,4 +12,4 @@
 
 gboolean dview_diff_cmd (const void *f0, const void *f1);
 
-#endif /* MC__DIFFVIEW_YDIFF_H */
+

@@ -4,8 +4,7 @@
    SMB parameters and setup
  */
 
-#ifndef _CLIENT_H
-#define _CLIENT_H
+#pragma once
 
 /* the client asks for a smaller buffer to save ram and also to get more
    overlap on the wire. This size gives us a nice read/write size, which
@@ -124,4 +123,4 @@ struct cli_state
     uint16_t max_recv_frag;
 };
 
-#endif /* _CLIENT_H */
+

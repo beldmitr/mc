@@ -2,8 +2,7 @@
  *  \brief Header: various utilities
  */
 
-#ifndef MC_UTIL_H
-#define MC_UTIL_H
+#pragma once
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -272,4 +271,4 @@ is_exe (mode_t mode)
     return (gboolean) ((S_IXUSR & mode) || (S_IXGRP & mode) || (S_IXOTH & mode));
 }
 
-#endif /* MC_UTIL_H */
+

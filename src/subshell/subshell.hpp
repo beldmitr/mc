@@ -2,8 +2,7 @@
  *  \brief Header: concurrent shell support
  */
 
-#ifndef MC__SUBSHELL_H
-#define MC__SUBSHELL_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -49,4 +48,4 @@ void sigchld_handler (int sig);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__SUBSHELL_H */
+

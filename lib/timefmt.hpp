@@ -3,8 +3,7 @@
  *  \brief Header: time formating functions
  */
 
-#ifndef MC__UTIL_TIMEFMT_H
-#define MC__UTIL_TIMEFMT_H
+#pragma once
 
 #include <sys/time.h>
 #include <sys/types.h>
@@ -56,4 +55,4 @@ const char *file_date (time_t);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__UTIL_TIMEFMT_H */
+#pragma once

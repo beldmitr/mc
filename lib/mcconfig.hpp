@@ -1,5 +1,4 @@
-#ifndef MC__CONFIG_H
-#define MC__CONFIG_H
+#pragma once
 
 #include "lib/vfs/vfs.hpp"        /* vfs_path_t */
 
@@ -115,4 +114,3 @@ void mc_config_history_save (mc_config_t * cfg, const char *name, GList * h);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__CONFIG_H */

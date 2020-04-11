@@ -10,8 +10,7 @@
  *  \todo This inconsistency should disappear in the one of the next versions (5.0?)
  */
 
-#ifndef MC_FILELOC_H
-#define MC_FILELOC_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -87,4 +86,3 @@
 
 /*** inline functions ****************************************************************************/
 
-#endif

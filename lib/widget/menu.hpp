@@ -6,8 +6,7 @@
  *  \brief Header: pulldown menu code
  */
 
-#ifndef MC__WIDGET_MENU_H
-#define MC__WIDGET_MENU_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -67,4 +66,3 @@ menubar_set_visible (WMenuBar * menubar, gboolean visible)
     menubar->is_visible = visible;
 }
 
-#endif /* MC__WIDGET_MENU_H */

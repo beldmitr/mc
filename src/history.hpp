@@ -2,8 +2,7 @@
  *  \brief Header: defines history section names
  */
 
-#ifndef MC__HISTORY_H
-#define MC__HISTORY_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -56,4 +55,3 @@
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__HISTORY_H */

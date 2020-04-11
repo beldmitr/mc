@@ -2,8 +2,7 @@
  *  \brief Header: chmod command
  */
 
-#ifndef MC__CHMOD_H
-#define MC__CHMOD_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -18,4 +17,3 @@
 void chmod_cmd (void);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__CHMOD_H */

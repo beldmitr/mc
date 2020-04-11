@@ -2,8 +2,7 @@
  *  \brief Header: Contains functions for advanced chowning
  */
 
-#ifndef MC__ACHOWN_H
-#define MC__ACHOWN_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -18,4 +17,5 @@
 void advanced_chown_cmd (void);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__ACHOWN_H */
+
+

@@ -3,8 +3,7 @@
  *  \brief Header: WButton widget
  */
 
-#ifndef MC__WIDGET_BUTTON_H
-#define MC__WIDGET_BUTTON_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -55,4 +54,3 @@ void button_mouse_default_callback (Widget * w, mouse_msg_t msg, mouse_event_t *
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_BUTTON_H */

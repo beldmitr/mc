@@ -4,8 +4,7 @@
  * \brief Header: Virtual File System switch code
  */
 
-#ifndef MC__VFS_VFS_H
-#define MC__VFS_VFS_H
+#pragma once
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -338,4 +337,3 @@ const char *mc_tmpdir (void);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC_VFS_VFS_H */

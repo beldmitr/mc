@@ -2,8 +2,7 @@
  *  \brief Header: X terminal management: xterm and rxvt
  */
 
-#ifndef MC__WIN_H
-#define MC__WIN_H
+#pragma once
 
 #include "lib/global.hpp"         /* <glib.h> */
 
@@ -21,4 +20,4 @@ void show_rxvt_contents (int starty, unsigned char y1, unsigned char y2);
 gboolean look_for_rxvt_extensions (void);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC_WIN_H */
+

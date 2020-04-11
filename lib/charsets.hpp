@@ -2,8 +2,7 @@
  *  \brief Header: Text conversion from one charset to another
  */
 
-#ifndef MC__CHARSETS_H
-#define MC__CHARSETS_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -91,4 +90,3 @@ convert_from_input_c (int c)
     return (int) conv_input[c];
 }
 
-#endif /* MC__CHARSETS_H */

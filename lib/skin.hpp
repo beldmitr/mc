@@ -1,5 +1,4 @@
-#ifndef MC_SKIN_H
-#define MC_SKIN_H
+#pragma once
 
 #include "lib/global.hpp"
 
@@ -140,5 +139,3 @@ void mc_skin_lines_parse_ini_file (mc_skin_t *);
 gchar *mc_skin_get (const gchar *, const gchar *, const gchar *);
 
 GPtrArray *mc_skin_list (void);
-
-#endif /* MC_SKIN_H */

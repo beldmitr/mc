@@ -2,8 +2,7 @@
  *  \brief Header: quick dialog engine
  */
 
-#ifndef MC__QUICK_H
-#define MC__QUICK_H
+#pragma once
 
 #include "lib/tty/mouse.hpp"
 
@@ -353,4 +352,3 @@ quick_dialog (quick_dialog_t * quick_dlg)
     return quick_dialog_skip (quick_dlg, 1);
 }
 
-#endif /* MC__QUICK_H */

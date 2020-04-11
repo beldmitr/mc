@@ -3,8 +3,7 @@
  *  \brief Header: WInput widget
  */
 
-#ifndef MC__WIDGET_INPUT_H
-#define MC__WIDGET_INPUT_H
+#pragma once
 
 #include <limits.h>             /* MB_LEN_MAX */
 
@@ -103,4 +102,3 @@ void input_free_completions (WInput * in);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_INPUT_H */

@@ -1,8 +1,8 @@
 /** \file widget.h
  *  \brief Header: MC widget and dialog manager: main include file.
  */
-#ifndef MC__WIDGET_H
-#define MC__WIDGET_H
+
+#pragma once
 
 #include "lib/global.hpp"         /* GLib */
 
@@ -50,4 +50,3 @@ typedef struct WGroup WGroup;
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_H */

@@ -2,8 +2,7 @@
  *  \brief Header: simple timer
  */
 
-#ifndef MC_TIMER_H
-#define MC_TIMER_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -24,4 +23,3 @@ guint64 mc_timer_elapsed (const mc_timer_t * timer);
 
 /*** inline functions **************************************************/
 
-#endif /* MC_TIMER_H */

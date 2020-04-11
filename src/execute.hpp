@@ -2,8 +2,7 @@
  *  \brief Header: execution routines
  */
 
-#ifndef MC__EXECUTE_H
-#define MC__EXECUTE_H
+#pragma once
 
 #include "lib/utilunix.hpp"
 #include "lib/vfs/vfs.hpp"
@@ -48,4 +47,3 @@ void pre_exec (void);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__EXECUTE_H */

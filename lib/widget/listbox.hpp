@@ -3,8 +3,7 @@
  *  \brief Header: WListbox widget
  */
 
-#ifndef MC__WIDGET_LISTBOX_H
-#define MC__WIDGET_LISTBOX_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -79,4 +78,3 @@ char *listbox_add_item (WListbox * l, listbox_append_t pos, int hotkey, const ch
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_LISTBOX_H */

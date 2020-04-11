@@ -1,5 +1,4 @@
-#ifndef MC_GLIBCOMPAT_H
-#define MC_GLIBCOMPAT_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -26,4 +25,3 @@ void g_queue_clear_full (GQueue * queue, GDestroyNotify free_func);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC_GLIBCOMPAT_H */

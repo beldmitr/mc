@@ -6,8 +6,7 @@
  * \date 1995, 1996
  */
 
-#ifndef MC_VFS_UTILVFS_H
-#define MC_VFS_UTILVFS_H
+#pragma once
 
 #include <sys/stat.h>
 
@@ -60,4 +59,3 @@ size_t vfs_parse_ls_lga_get_final_spaces (void);
 int vfs_parse_filedate (int idx, time_t * t);
 
 /*** inline functions ****************************************************************************/
-#endif

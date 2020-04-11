@@ -2,8 +2,7 @@
  *  \brief Header: Background support
  */
 
-#ifndef MC__BACKGROUND_H
-#define MC__BACKGROUND_H
+#pragma once
 
 #include <sys/types.h>          /* pid_t */
 #include "filemanager/fileopctx.hpp"
@@ -51,4 +50,3 @@ background_parent_call_string (const gchar * event_group_name, const gchar * eve
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__BACKGROUND_H */

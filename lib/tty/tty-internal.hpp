@@ -3,8 +3,7 @@
  *  \brief Header: internal stuff of the terminal controlling library
  */
 
-#ifndef MC__TTY_INTERNAL_H
-#define MC__TTY_INTERNAL_H
+#pragma once
 
 #include "lib/global.hpp"         /* include <glib.h> */
 
@@ -43,5 +42,3 @@ void tty_init_xterm_support (gboolean is_xterm);
 int tty_lowlevel_getch (void);
 
 /*** inline functions ****************************************************************************/
-
-#endif /* MC_TTY_INTERNAL_H */

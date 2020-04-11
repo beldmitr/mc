@@ -2,8 +2,7 @@
  *  \brief Header: learn keys module
  */
 
-#ifndef MC__LEARN_H
-#define MC__LEARN_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -18,4 +17,4 @@
 void learn_keys (void);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__LEARN_H */
+

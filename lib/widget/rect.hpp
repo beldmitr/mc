@@ -3,8 +3,7 @@
  *  \brief Header: rectangular class
  */
 
-#ifndef MC__WIDGET_RECT_H
-#define MC__WIDGET_RECT_H
+#pragma once
 
 /*** typedefs (not structures) and defined constants *********************************************/
 
@@ -41,4 +40,3 @@ gboolean rects_are_equal (const WRect * r1, const WRect * r2);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_RECT_H */

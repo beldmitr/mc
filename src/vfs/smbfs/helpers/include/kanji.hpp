@@ -3,8 +3,7 @@
    Version 1.9.
    Kanji Extensions
  */
-#ifndef _KANJI_H_
-#define _KANJI_H_
+#pragma once
 
 /* FOR SHIFT JIS CODE */
 #define is_shift_jis(c) \
@@ -147,4 +146,4 @@ extern int (*_skip_multibyte_char) (char c);
 #define CAP_CODE (6)
 #define DOSV_CODE SJIS_CODE
 
-#endif /* _KANJI_H_ */
+

@@ -4,8 +4,7 @@
  * \brief Header: FISH script defaults
  */
 
-#ifndef MC__FISH_DEF_H
-#define MC__FISH_DEF_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -233,4 +232,4 @@
 /*** declarations of public functions ************************************************************/
 
 /*** inline functions ****************************************************************************/
-#endif
+

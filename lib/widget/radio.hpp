@@ -3,8 +3,7 @@
  *  \brief Header: WRadio widget
  */
 
-#ifndef MC__WIDGET_RADIO_H
-#define MC__WIDGET_RADIO_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -31,4 +30,3 @@ WRadio *radio_new (int y, int x, int count, const char **text);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_RADIO_H */

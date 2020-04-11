@@ -8,8 +8,7 @@
  *  they are provided by the operating system or emulate it.
  */
 
-#ifndef MC_UNIXCOMPAT_H
-#define MC_UNIXCOMPAT_H
+#pragma once
 
 #include <sys/types.h>          /* BSD */
 
@@ -60,4 +59,4 @@
 
 /*** inline functions ****************************************************************************/
 
-#endif
+

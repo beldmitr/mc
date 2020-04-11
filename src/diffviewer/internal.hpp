@@ -1,5 +1,4 @@
-#ifndef MC__DIFFVIEW_INTERNAL_H
-#define MC__DIFFVIEW_INTERNAL_H
+#pragma once
 
 #include "lib/global.hpp"
 #include "lib/mcconfig.hpp"
@@ -150,4 +149,3 @@ typedef struct WDiff
 void dview_search_cmd (WDiff * dview);
 void dview_continue_search_cmd (WDiff * dview);
 
-#endif /* MC__DIFFVIEW_INTERNAL_H */

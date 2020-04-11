@@ -2,8 +2,8 @@
  *  \brief Header: directory panel listing format editor
  */
 
-#ifndef MC__LISTMODE_H
-#define MC__LISTMODE_H
+#pragma once
+
 /*** typedefs(not structures) and defined constants **********************************************/
 
 /*** enums ***************************************************************************************/
@@ -19,4 +19,4 @@ char *listmode_edit (char *);
 #endif /* LISTMODE_EDITOR */
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__LISTMODE_H */
+

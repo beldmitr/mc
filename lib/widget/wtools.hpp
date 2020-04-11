@@ -2,8 +2,7 @@
  *  \brief Header: widget based utility functions
  */
 
-#ifndef MC__WTOOLS_H
-#define MC__WTOOLS_H
+#pragma once
 
 #include "lib/timer.hpp"
 
@@ -99,4 +98,3 @@ void simple_status_msg_init_cb (status_msg_t * sm);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WTOOLS_H */

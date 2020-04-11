@@ -2,8 +2,7 @@
  *  \brief Header: user menu implementation
  */
 
-#ifndef MC__USERMENU_H
-#define MC__USERMENU_H
+#pragma once
 
 #include "lib/global.hpp"
 
@@ -26,5 +25,3 @@ int check_format_var (const char *, char **);
 int check_format_cd (const char *);
 
 /*** inline functions ****************************************************************************/
-
-#endif /* MC__USERMENU_H */

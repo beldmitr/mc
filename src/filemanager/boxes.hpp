@@ -2,8 +2,7 @@
  *  \brief Header: Some misc dialog boxes for the program
  */
 
-#ifndef MC__BOXES_H
-#define MC__BOXES_H
+#pragma once
 
 #include "dir.hpp"
 #include "panel.hpp"
@@ -34,4 +33,5 @@ void symlink_box (const vfs_path_t * existing_vpath, const vfs_path_t * new_vpat
 char *tree_box (const char *current_dir);
 
 /*** inline functions ****************************************************************************/
-#endif /* MC__BOXES_H */
+
+

@@ -3,8 +3,7 @@
  * \brief Header: Virtual File System: FTP file system
  */
 
-#ifndef MC__VFS_FTPFS_H
-#define MC__VFS_FTPFS_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -39,4 +38,4 @@ void ftpfs_init_passwd (void);
 void vfs_init_ftpfs (void);
 
 /*** inline functions ****************************************************************************/
-#endif
+

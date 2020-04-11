@@ -2,8 +2,7 @@
  *  \brief Header: execution routines
  */
 
-#ifndef MC__UTILUNIX_H
-#define MC__UTILUNIX_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -22,4 +21,3 @@
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__UTILUNIX_H */

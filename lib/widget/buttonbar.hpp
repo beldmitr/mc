@@ -3,8 +3,7 @@
  *  \brief Header: WButtonBar widget
  */
 
-#ifndef MC__WIDGET_BUTTONBAR_H
-#define MC__WIDGET_BUTTONBAR_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -49,4 +48,3 @@ buttonbar_set_visible (WButtonBar * bb, gboolean visible)
     bb->visible = visible;
 }
 
-#endif /* MC__WIDGET_BUTTONBAR_H */

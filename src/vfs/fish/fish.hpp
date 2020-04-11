@@ -6,8 +6,7 @@
  */
 
 
-#ifndef MC__VFS_FISH_H
-#define MC__VFS_FISH_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -25,4 +24,3 @@ void vfs_init_fish (void);
 
 /*** inline functions ****************************************************************************/
 
-#endif

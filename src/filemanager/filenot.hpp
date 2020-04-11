@@ -2,8 +2,7 @@
  *  \brief Header: File and directory operation routines
  */
 
-#ifndef MC__FILENOT_H
-#define MC__FILENOT_H
+#pragma once
 
 #include "lib/global.hpp"
 
@@ -23,4 +22,5 @@ int my_rmdir (const char *path);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__FILE_H */
+
+

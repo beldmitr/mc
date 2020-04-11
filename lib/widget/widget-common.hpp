@@ -3,8 +3,7 @@
  *  \brief Header: shared stuff of widgets
  */
 
-#ifndef MC__WIDGET_INTERNAL_H
-#define MC__WIDGET_INTERNAL_H
+#pragma once
 
 #include "lib/keybind.hpp"        /* global_keymap_t */
 #include "lib/tty/mouse.hpp"
@@ -382,4 +381,3 @@ widget_set_size_rect (Widget * w, const WRect * r)
 
 /* --------------------------------------------------------------------------------------------- */
 
-#endif /* MC__WIDGET_INTERNAL_H */

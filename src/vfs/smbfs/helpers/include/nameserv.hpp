@@ -1,5 +1,4 @@
-#ifndef _NAMESERV_H_
-#define _NAMESERV_H_
+#pragma once
 /*
    Unix SMB/Netbios implementation.
    Version 1.9.
@@ -503,4 +502,3 @@ extern struct subnet_record *remote_broadcast_subnet;
 /* To be removed. */
 enum state_type
 { TEST };
-#endif /* _NAMESERV_H_ */

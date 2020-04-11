@@ -1,5 +1,4 @@
-#ifndef MC__EDITCMD_DIALOGS_H
-#define MC__EDITCMD_DIALOGS_H
+#pragma once
 
 #include "src/editor/edit.hpp"
 
@@ -33,4 +32,4 @@ void editcmd_dialog_select_definition_show (WEdit *, char *, int, int, struct et
 
 int editcmd_dialog_replace_prompt_show (WEdit *, char *, char *, int, int);
 /*** inline functions ****************************************************************************/
-#endif /* MC__EDITCMD_DIALOGS_H */
+

@@ -3,8 +3,7 @@
  *  \brief Header: WHLine widget
  */
 
-#ifndef MC__WIDGET_HLINE_H
-#define MC__WIDGET_HLINE_H
+#pragma once
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -31,4 +30,4 @@ void hline_set_text (WHLine * l, const char *text);
 
 /*** inline functions ****************************************************************************/
 
-#endif /* MC__WIDGET_HLINE_H */
+
