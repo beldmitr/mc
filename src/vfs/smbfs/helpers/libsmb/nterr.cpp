@@ -19,13 +19,13 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "includes.h"
-#include "nterr.h"
+#include "includes.hpp"
+#include "nterr.hpp"
 
 typedef struct
 {
     const char *nt_errstr;
-    uint32 nt_errcode;
+    uint32_t nt_errcode;
 
 } nt_err_code_struct;
 
@@ -539,7 +539,7 @@ nt_err_code_struct const nt_errs[] = {
  returns an NT error message.  not amazingly helpful, but better than a number.
  *****************************************************************************/
 const char *
-get_nt_error_msg (uint32 nt_code)
+get_nt_error_msg (uint32_t nt_code)
 {
     int idx = 0;
 

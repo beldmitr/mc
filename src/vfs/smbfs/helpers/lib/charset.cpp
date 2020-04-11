@@ -25,7 +25,7 @@
  */
 
 #define CHARSET_C
-#include "includes.h"
+#include "includes.hpp"
 
 const char *unix_error_string (int error_num);
 extern int DEBUGLEVEL;
@@ -172,7 +172,7 @@ charset_initialise (void)
 
     for (i = 0; i <= 127; i++)
     {
-        if (isalnum (i) || strchr ("._^$~!#%&-{}()@'`", (char) i))
+        if (std::isalnum (i) || strchr ("._^$~!#%&-{}()@'`", (char) i))
             add_dos_char (i, False, 0, False);
     }
 
@@ -185,10 +185,10 @@ charset_initialise (void)
            above 127. Best not to rely on them. */
         if (i < 128)
         {
-            if (isupper ((int) c))
-                lower_char_map[i] = tolower (c);
-            if (islower ((int) c))
-                upper_char_map[i] = toupper (c);
+            if (std::isupper ((int) c))
+                lower_char_map[i] = std::tolower (c);
+            if (std::islower ((int) c))
+                upper_char_map[i] = std::toupper (c);
         }
     }
 }
@@ -282,7 +282,7 @@ Needed %hu, got %hu.\n", codepage_file_name, (uint16) client_codepage, SVAL (buf
     if (IVAL (buf, CODEPAGE_LENGTH_OFFSET) != (size - CODEPAGE_HEADER_SIZE))
     {
         DEBUG (0, ("load_client_codepage: filename %s has incorrect size headers. \
-Needed %u, got %u.\n", codepage_file_name, (uint32) (size - CODEPAGE_HEADER_SIZE), IVAL (buf, CODEPAGE_LENGTH_OFFSET)));
+Needed %u, got %u.\n", codepage_file_name, (uint32_t) (size - CODEPAGE_HEADER_SIZE), IVAL (buf, CODEPAGE_LENGTH_OFFSET)));
         goto clean_and_exit;
     }
 

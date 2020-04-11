@@ -24,7 +24,7 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "includes.h"
+#include "includes.hpp"
 
 extern int DEBUGLEVEL;
 
@@ -68,7 +68,7 @@ pwd_obfuscate (struct pwd_info *pwd)
 sets the obfuscation key info
 ****************************************************************************/
 void
-pwd_obfuscate_key (struct pwd_info *pwd, uint32 int_key, char *str_key)
+pwd_obfuscate_key (struct pwd_info *pwd, uint32_t int_key, char *str_key)
 {
     (void) pwd;
     (void) int_key;

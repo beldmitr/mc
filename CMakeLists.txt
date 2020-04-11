@@ -6,15 +6,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a -lpcrecpp -lslang -lgmodule-2.0")
 
-#set(CMAKE_CXX_FLAGS -fpermissive)   # FIXME remove it after code compiling !!!
-
-# TODO investigate the problem
-#/usr/bin/ld: CMakeFiles/mcpp.dir/lib/search/regex.cpp.o: undefined reference to symbol 'pcre_compile'
-#/usr/bin/ld: /lib/x86_64-linux-gnu/libpcre.so.3: error adding symbols: DSO missing from command line
-set(CMAKE_CXX_FLAGS -lpcrecpp)
-set(CMAKE_CXX_FLAGS -lpcre)
 
 file(GLOB SRC
         "src/*.cpp"
@@ -33,8 +26,8 @@ file(GLOB SRC
         "src/vfs/sfs/*.cpp"
         "src/vfs/sftpfs/*.cpp"
         "src/vfs/smbfs/*.cpp"
-        "src/vfs/smbfs/helpers/lib*.cpp"
-        "src/vfs/smbfs/helpers/libsmb*.cpp"
+        "src/vfs/smbfs/helpers/lib/*.cpp"
+        "src/vfs/smbfs/helpers/libsmb/*.cpp"
         "src/vfs/smbfs/helpers/param/*.cpp"
         "src/vfs/tar/*.cpp"
         "src/vfs/undelfs/*.cpp"
@@ -102,16 +95,53 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${GLIB2_INCLUDE_DIRS})
 link_directories(${GLIB_LIBRARY_DIRS})
 target_link_libraries(${PROJECT_NAME} ${GLIB2_LIBRARIES})
 
+# Gmodule
+pkg_check_modules(GMODULE2 REQUIRED IMPORTED_TARGET gmodule-2.0)
+target_include_directories(${PROJECT_NAME} PUBLIC ${GMODULE2_INCLUDE_DIRS})
+link_directories(${GMODULE2_LIBRARY_DIRS})
+target_link_libraries(${PROJECT_NAME} ${GMODULE2_LIBRARIES})
+
 # EXT2FS
 pkg_check_modules(EXT2FS REQUIRED IMPORTED_TARGET ext2fs)
 target_include_directories(${PROJECT_NAME} PUBLIC ${EXT2FS_INCLUDE_DIRS})
 link_directories(${EXT2FS_LIBRARY_DIRS})
 target_link_libraries(${PROJECT_NAME} ${EXT2FS_LIBRARIES})
 
-# CURSES
+# CURSES FIXME DO I NEED IT ??
 find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})
+
+# ASPELL
+find_package(ASPELL REQUIRED)
+include_directories(${ASPELL_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME} ${ASPELL_LIBRARIES})
+
+# PCRE
+FIND_PATH(PCRE_INCLUDE_DIR NAMES pcre.h)
+FIND_LIBRARY(PCRE_LIBRARY NAMES pcre)
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(PCRE DEFAULT_MSG PCRE_LIBRARY PCRE_INCLUDE_DIR)
+IF(PCRE_FOUND)
+    include_directories(${PCRE_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} ${PCRE_LIBRARY})
+ENDIF(PCRE_FOUND)
+
+# SLANG
+FIND_PATH(SLANG_INCLUDE_DIR NAMES slang.h)
+FIND_LIBRARY(SLANG_LIBRARY NAMES slang)
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(SLANG DEFAULT_MSG SLANG_LIBRARY SLANG_INCLUDE_DIR)
+IF(SLANG_FOUND)
+    include_directories(${SLANG_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} ${SLANG_LIBRARY})
+ENDIF(SLANG_FOUND)
+
+# LIBSSH2
+pkg_check_modules(LIBSSH2 REQUIRED IMPORTED_TARGET libssh2)
+target_include_directories(${PROJECT_NAME} PUBLIC ${LIBSSH2_INCLUDE_DIRS})
+link_directories(${LIBSSH2_LIBRARY_DIRS})
+target_link_libraries(${PROJECT_NAME} ${LIBSSH2_LIBRARIES})
 
 # DEFINITIONS
 add_compile_definitions(VERSION="0.0")
@@ -137,6 +167,9 @@ add_compile_definitions(ENABLE_VFS_FTP)
 add_compile_definitions(NO_CONFIG_H)
 add_compile_definitions(HAVE_STDARG_H)
 add_compile_definitions(HAVE_EXT2FS_EXT2_FS_H)
+add_compile_definitions(HAVE_STRINGS_H)
+add_compile_definitions(HAVE_STRING_H)  # FIXME !!! better use cstring instead
+add_compile_definitions(HAVE_GETTIMEOFDAY_TZ)
 
 #curses
 #add_compile_definitions(HAVE_NCURSES_H)
@@ -160,5 +193,7 @@ add_compile_definitions(LIBEXECDIR="/usr/local/libexec/mc/")
 add_compile_definitions(DRIVERFILE="")  # FIXME !!!!! missing correct path: ?? $prefix/lib/printers.def
 add_compile_definitions(CONFIGDIR="")   # FIXME figure out correct path
 add_compile_definitions(PACKAGE="")        # FIXME figure out wtf is package
+add_compile_definitions(LMHOSTSFILE="/usr/local/lib/lmhosts") # TODO check me
+add_compile_definitions(CODEPAGEDIR="") # FIXME ???
 
 add_compile_definitions(PROMOTED_MODE_T=mode_t)

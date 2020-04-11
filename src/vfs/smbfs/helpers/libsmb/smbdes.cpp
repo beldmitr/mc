@@ -26,7 +26,7 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "includes.h"
+#include "includes.hpp"
 
 /* NOTES: 
 
@@ -188,7 +188,7 @@ concat (char *out, char *in1, char *in2, int l1, int l2)
 }
 
 static void
-xor (char *out, char *in1, char *in2, int n)
+Xor (char *out, char *in1, char *in2, int n)
 {
     int i;
     for (i = 0; i < n; i++)
@@ -243,7 +243,7 @@ dohash (char *out, char *in, char *key, int forw)
 
         permute (er, r, perm4, 48);
 
-        xor (erk, er, ki[forw ? i : 15 - i], 48);
+        Xor (erk, er, ki[forw ? i : 15 - i], 48);
 
         for (j = 0; j < 8; j++)
             for (k = 0; k < 6; k++)
@@ -265,7 +265,7 @@ dohash (char *out, char *in, char *key, int forw)
                 cb[j * 4 + k] = b[j][k];
         permute (pcb, cb, perm5, 32);
 
-        xor (r2, l, pcb, 32);
+        Xor (r2, l, pcb, 32);
 
         for (j = 0; j < 32; j++)
             l[j] = r[j];

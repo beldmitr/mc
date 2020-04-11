@@ -25,7 +25,7 @@
 #define DEFAULT_PRINTING PRINT_QNX
 #endif
 
-#include <sys/types.h>
+#include <sys/types.h>  // FIXME #include <cctype> ??
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/time.h>
@@ -36,6 +36,8 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <sys/wait.h>
+
+#include <cctype>
 
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>

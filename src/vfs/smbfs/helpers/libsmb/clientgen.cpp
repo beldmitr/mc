@@ -26,8 +26,8 @@
 
 #define NO_SYSLOG
 
-#include "includes.h"
-#include "trans2.h"
+#include "includes.hpp"
+#include "trans2.hpp"
 
 
 extern int DEBUGLEVEL;
@@ -129,9 +129,9 @@ char *
 cli_errstr (struct cli_state *cli)
 {
     static fstring error_message;
-    uint8 errclass;
-    uint32 errnum;
-    uint32 nt_rpc_error;
+    uint8_t errclass;
+    uint32_t errnum;
+    uint32_t nt_rpc_error;
     int i;
 
     /*  
@@ -360,8 +360,8 @@ cli_receive_trans (struct cli_state *cli, int trans,
     int total_data = 0;
     int total_param = 0;
     int this_data, this_param;
-    uint8 eclass;
-    uint32 ecode;
+    uint8_t eclass;
+    uint32_t ecode;
 
     *data_len = *param_len = 0;
 
@@ -395,8 +395,8 @@ cli_receive_trans (struct cli_state *cli, int trans,
     total_param = SVAL (cli->inbuf, smb_tprcnt);
 
     /* allocate it */
-    *data = Realloc (*data, total_data);
-    *param = Realloc (*param, total_param);
+    *data = static_cast<char *>(Realloc(*data, total_data));
+    *param = static_cast<char *>(Realloc(*param, total_param));
 
     while (1)
     {
@@ -560,7 +560,7 @@ cli_NetWkstaUserLogon (struct cli_state * cli, char *user, char *workstation)
 call a NetShareEnum - try and browse available connections on a host
 ****************************************************************************/
 int
-cli_RNetShareEnum (struct cli_state *cli, void (*fn) (const char *, uint32, const char *, void *),
+cli_RNetShareEnum (struct cli_state *cli, void (*fn) (const char *, uint32_t, const char *, void *),
                    void *state)
 {
     char *rparam = NULL;
@@ -636,19 +636,19 @@ The callback function takes 3 arguments: the machine name, the server type and
 the comment.
 ****************************************************************************/
 BOOL
-cli_NetServerEnum (struct cli_state * cli, char *workgroup, uint32 stype,
-                   void (*fn) (const char *, uint32, const char *, void *), void *state)
+cli_NetServerEnum (struct cli_state * cli, char *workgroup, uint32_t stype,
+                   void (*fn) (const char *, uint32_t, const char *, void *), void *state)
 {
     char *rparam = NULL;
     char *rdata = NULL;
     int rdrcnt, rprcnt;
-    char *p;
+
     pstring param;
     int uLevel = 1;
     int count = -1;
 
     /* send a SMBtrans command with api NetServerEnum */
-    p = param;
+    char *p = param;
     SSVAL (p, 0, 0x68);         /* api number */
     p += 2;
     pstrcpy (p, "WrLehDz");
@@ -2230,8 +2230,8 @@ cli_list (struct cli_state *cli, const char *Mask, uint16 attribute,
         {
             /* we need to work around a Win95 bug - sometimes
                it gives ERRSRV/ERRerror temprarily */
-            uint8 eclass;
-            uint32 ecode;
+            uint8_t eclass;
+            uint32_t ecode;
             cli_error (cli, &eclass, &ecode, NULL);
             if (eclass != ERRSRV || ecode != ERRerror)
                 break;
@@ -2285,7 +2285,7 @@ cli_list (struct cli_state *cli, const char *Mask, uint16 attribute,
         }
 
         /* and add them to the dirlist pool */
-        dirlist = Realloc (dirlist, dirlist_len + data_len);
+        dirlist = static_cast<char *>(Realloc(dirlist, dirlist_len + data_len));
 
         if (!dirlist)
         {
@@ -2619,7 +2619,7 @@ cli_shutdown (struct cli_state *cli)
 
 ****************************************************************************/
 int
-cli_error (struct cli_state *cli, uint8 * eclass, uint32 * num, uint32 * nt_rpc_error)
+cli_error (struct cli_state *cli, uint8_t * eclass, uint32_t * num, uint32_t * nt_rpc_error)
 {
     int flgs2 = SVAL (cli->inbuf, smb_flg2);
     char rcls;
@@ -2635,7 +2635,7 @@ cli_error (struct cli_state *cli, uint8 * eclass, uint32 * num, uint32 * nt_rpc_
     if (flgs2 & FLAGS2_32_BIT_ERROR_CODES)
     {
         /* 32 bit error codes detected */
-        uint32 nt_err = IVAL (cli->inbuf, smb_rcls);
+        uint32_t nt_err = IVAL (cli->inbuf, smb_rcls);
         if (num)
             *num = nt_err;
         DEBUG (10, ("cli_error: 32 bit codes: code=%08x\n", nt_err));

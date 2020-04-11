@@ -26,11 +26,11 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "includes.h"
+#include "includes.hpp"
 
 extern int DEBUGLEVEL;
 
-#include "byteorder.h"
+#include "byteorder.hpp"
 
 /*
    This implements the X/Open SMB password encryption

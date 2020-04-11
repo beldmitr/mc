@@ -30,7 +30,7 @@
  */
 
 #define _KANJI_C_
-#include "includes.h"
+#include "includes.hpp"
 
 /*
  * Function pointers that get overridden when multi-byte code pages
@@ -125,7 +125,7 @@ sj_strtok (char *s1, const char *s2)
         }
         else
         {
-            char *p = strchr (s2, *s1);
+            const char *p = strchr (s2, *s1);
             if (p)
             {
                 if (s1 != q)
@@ -326,7 +326,7 @@ generic_multibyte_strtok (char *s1, const char *s2)
         }
         else
         {
-            char *p = strchr (s2, *s1);
+            const char *p = strchr (s2, *s1);
             if (p)
             {
                 if (s1 != q)

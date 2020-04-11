@@ -25,7 +25,7 @@
 
 #define NO_SYSLOG
 
-#include "includes.h"
+#include "includes.hpp"
 
 extern int DEBUGLEVEL;
 
@@ -148,7 +148,7 @@ static err_code_struct const hard_msgs[] = {
 struct
 {
     int code;
-    const char *class;
+    const char *Class;
     err_code_struct const *err_msgs;
 } const err_classes[] = {
     {0, "SUCCESS", NULL},
@@ -171,12 +171,12 @@ char *
 smb_errstr (char *inbuf)
 {
     static pstring ret;
-    int class = CVAL (inbuf, smb_rcls);
+    int Class = CVAL (inbuf, smb_rcls);
     int num = SVAL (inbuf, smb_err);
     int i, j;
 
-    for (i = 0; err_classes[i].class; i++)
-        if (err_classes[i].code == class)
+    for (i = 0; err_classes[i].Class; i++)
+        if (err_classes[i].code == Class)
         {
             if (err_classes[i].err_msgs)
             {
@@ -185,19 +185,19 @@ smb_errstr (char *inbuf)
                     if (num == err[j].code)
                     {
                         if (DEBUGLEVEL > 0)
-                            slprintf (ret, sizeof (ret) - 1, "%s - %s (%s)", err_classes[i].class,
+                            slprintf (ret, sizeof (ret) - 1, "%s - %s (%s)", err_classes[i].Class,
                                       err[j].name, err[j].message);
                         else
-                            slprintf (ret, sizeof (ret) - 1, "%s - %s", err_classes[i].class,
+                            slprintf (ret, sizeof (ret) - 1, "%s - %s", err_classes[i].Class,
                                       err[j].name);
                         return ret;
                     }
             }
 
-            slprintf (ret, sizeof (ret) - 1, "%s - %d", err_classes[i].class, num);
+            slprintf (ret, sizeof (ret) - 1, "%s - %d", err_classes[i].Class, num);
             return ret;
         }
 
-    slprintf (ret, sizeof (ret) - 1, "Error: Unknown error (%d,%d)", class, num);
+    slprintf (ret, sizeof (ret) - 1, "Error: Unknown error (%d,%d)", Class, num);
     return (ret);
 }

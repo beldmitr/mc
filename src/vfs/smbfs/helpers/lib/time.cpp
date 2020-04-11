@@ -24,7 +24,7 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "includes.h"
+#include "includes.hpp"
 
 /*
    This stuff was largely rewritten by Paul Eggert <eggert@twinsun.com>
@@ -340,8 +340,8 @@ unix_to_nt_time (NTTIME * nt, time_t t)
     d += TIME_FIXUP_CONSTANT;
     d *= 1.0e7;
 
-    nt->high = (uint32) (d * (1.0 / (4.0 * (double) (1 << 30))));
-    nt->low = (uint32) (d - ((double) nt->high) * 4.0 * (double) (1 << 30));
+    nt->high = (uint32_t) (d * (1.0 / (4.0 * (double) (1 << 30))));
+    nt->low = (uint32_t) (d - ((double) nt->high) * 4.0 * (double) (1 << 30));
 }
 
 
@@ -397,11 +397,11 @@ make_dos_time1 (struct tm *t)
   create a 32 bit dos packed date/time from some parameters
   This takes a GMT time and returns a packed localtime structure
 ********************************************************************/
-static uint32
+static uint32_t
 make_dos_date (time_t unixdate)
 {
     struct tm *t;
-    uint32 ret = 0;
+    uint32_t ret = 0;
 
     t = LocalTime (&unixdate);
     if (!t)
@@ -420,7 +420,7 @@ This takes GMT time and puts local time in the buffer
 void
 put_dos_date (char *buf, int offset, time_t unixdate)
 {
-    uint32 x = make_dos_date (unixdate);
+    uint32_t x = make_dos_date (unixdate);
     SIVAL (buf, offset, x);
 }
 
@@ -455,10 +455,10 @@ put_dos_date3 (char *buf, int offset, time_t unixdate)
   interpret a 32 bit dos packed date/time to some parameters
 ********************************************************************/
 static void
-interpret_dos_date (uint32 date, int *year, int *month, int *day, int *hour, int *minute,
+interpret_dos_date (uint32_t date, int *year, int *month, int *day, int *hour, int *minute,
                     int *second)
 {
-    uint32 p0, p1, p2, p3;
+    uint32_t p0, p1, p2, p3;
 
     p0 = date & 0xFF;
     p1 = ((date & 0xFF00) >> 8) & 0xFF;
@@ -480,7 +480,7 @@ interpret_dos_date (uint32 date, int *year, int *month, int *day, int *hour, int
 time_t
 make_unix_date (void *date_ptr)
 {
-    uint32 dos_date = 0;
+    uint32_t dos_date = 0;
     struct tm t;
     time_t ret;
 
@@ -505,7 +505,7 @@ like make_unix_date() but the words are reversed
 time_t
 make_unix_date2 (void *date_ptr)
 {
-    uint32 x, x2;
+    uint32_t x, x2;
 
     x = IVAL (date_ptr, 0);
     x2 = ((x & 0xFFFF) << 16) | ((x & 0xFFFF0000) >> 16);

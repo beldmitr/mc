@@ -24,7 +24,7 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "includes.h"
+#include "includes.hpp"
 
 const char *unix_error_string (int error_num);
 
@@ -739,7 +739,7 @@ send_one_packet (char *buf, int len, struct in_addr ip, int port, int type)
 open a socket of the specified type, port and address for incoming data
 ****************************************************************************/
 int
-open_socket_in (int type, int port, int dlevel, uint32 socket_addr, BOOL rebind)
+open_socket_in (int type, int port, int dlevel, uint32_t socket_addr, BOOL rebind)
 {
     struct hostent *hp;
     struct sockaddr_in sock;

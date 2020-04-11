@@ -37,7 +37,7 @@
  */
 
 #ifndef AUTOCONF
-#include "config.h"
+//#include "config.h"       // TODO remove it at all
 #endif
 
 #include <stdlib.h>

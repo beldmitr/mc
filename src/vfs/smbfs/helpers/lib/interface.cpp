@@ -24,7 +24,7 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "includes.h"
+#include "includes.hpp"
 
 extern int DEBUGLEVEL;
 
@@ -42,7 +42,7 @@ static struct interface *local_interfaces = NULL;
 
 struct interface *last_iface;
 
-#define ALLONES  ((uint32)0xFFFFFFFF)
+#define ALLONES  ((uint32_t)0xFFFFFFFF)
 #define MKBCADDR(_IP, _NM) ((_IP & _NM) | (_NM ^ ALLONES))
 /****************************************************************************
 calculate the default netmask for an address
@@ -84,7 +84,7 @@ default_netmask (struct in_addr *inm, struct in_addr *iad)
 static void
 get_broadcast (struct in_addr *if_ipaddr, struct in_addr *if_bcast, struct in_addr *if_nmask)
 {
-    uint32 nm;
+    uint32_t nm;
     short onbc;
     short offbc;
 

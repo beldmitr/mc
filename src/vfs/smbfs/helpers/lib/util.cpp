@@ -24,7 +24,7 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "includes.h"
+#include "includes.hpp"
 
 #if (defined(HAVE_NETGROUP) && defined (WITH_AUTOMOUNT))
 #ifdef WITH_NISPLUS_HOME
@@ -1870,9 +1870,8 @@ true if two IP addresses are equal
 BOOL
 ip_equal (struct in_addr ip1, struct in_addr ip2)
 {
-    uint32 a1, a2;
-    a1 = ntohl (ip1.s_addr);
-    a2 = ntohl (ip2.s_addr);
+    uint32_t a1 = ntohl (ip1.s_addr);
+    uint32_t a2 = ntohl (ip2.s_addr);
     return (a1 == a2);
 }
 
@@ -1905,11 +1904,11 @@ interpret_protocol (char *str, int def)
 /****************************************************************************
 interpret an internet address or name into an IP address in 4 byte form
 ****************************************************************************/
-uint32
+uint32_t
 interpret_addr (const char *str)
 {
     struct hostent *hp;
-    uint32 res;
+    uint32_t res;
     int i;
     BOOL pure_address = True;
 
@@ -1944,7 +1943,7 @@ interpret_addr (const char *str)
         putip ((char *) &res, (char *) hp->h_addr);
     }
 
-    if (res == (uint32) - 1)
+    if (res == (uint32_t) - 1)
         return (0);
 
     return (res);
@@ -1957,7 +1956,7 @@ struct in_addr *
 interpret_addr2 (const char *str)
 {
     static struct in_addr ret;
-    uint32 a = interpret_addr (str);
+    uint32_t a = interpret_addr (str);
     ret.s_addr = a;
     return (&ret);
 }
@@ -1968,7 +1967,7 @@ interpret_addr2 (const char *str)
 BOOL
 zero_ip (struct in_addr ip)
 {
-    uint32 a;
+    uint32_t a;
     putip ((char *) &a, (char *) &ip);
     return (a == 0);
 }
@@ -2425,11 +2424,9 @@ are two IPs on the same subnet?
 BOOL
 same_net (struct in_addr ip1, struct in_addr ip2, struct in_addr mask)
 {
-    uint32 net1, net2, nmask;
-
-    nmask = ntohl (mask.s_addr);
-    net1 = ntohl (ip1.s_addr);
-    net2 = ntohl (ip2.s_addr);
+    uint32_t nmask = ntohl (mask.s_addr);
+    uint32_t net1 = ntohl (ip1.s_addr);
+    uint32_t net2 = ntohl (ip2.s_addr);
 
     return ((net1 & nmask) == (net2 & nmask));
 }
