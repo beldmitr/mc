@@ -29,18 +29,16 @@
  *  Events received by clients of this library have their coordinates 0 based
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "tty.h"
-#include "tty-internal.h"       /* mouse_enabled */
-#include "mouse.h"
-#include "key.h"                /* define sequence */
+#include "tty.hpp"
+#include "tty-internal.hpp"       /* mouse_enabled */
+#include "mouse.hpp"
+#include "key.hpp"                /* define sequence */
 
 /*** global variables ****************************************************************************/
 

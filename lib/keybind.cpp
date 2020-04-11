@@ -25,16 +25,14 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 
-#include "lib/global.h"
-#include "lib/tty/key.h"        /* KEY_M_ */
-#include "lib/keybind.h"
+#include "lib/global.hpp"
+#include "lib/tty/key.hpp"        /* KEY_M_ */
+#include "lib/keybind.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -438,8 +436,8 @@ keybind_lookup_action (const char *name)
 
     sort_command_names ();
 
-    res = bsearch (&key, command_names, num_command_names,
-                   sizeof (command_names[0]), name_keymap_comparator);
+    res = static_cast<name_keymap_t *>(bsearch (&key, command_names, num_command_names,
+                   sizeof (command_names[0]), name_keymap_comparator));
 
     return (res != NULL) ? res->val : CK_IgnoreKey;
 }

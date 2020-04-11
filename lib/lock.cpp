@@ -40,8 +40,6 @@
  *  by the process specified by the link.
  */
 
-#include <config.h>
-
 #include <signal.h>             /* kill() */
 #include <stdio.h>
 #include <stdarg.h>
@@ -54,11 +52,11 @@
 #include <pwd.h>
 #include <stdlib.h>
 
-#include "lib/global.h"
-#include "lib/vfs/vfs.h"
-#include "lib/util.h"           /* tilde_expand() */
-#include "lib/lock.h"
-#include "lib/widget.h"         /* query_dialog() */
+#include "lib/global.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/util.hpp"           /* tilde_expand() */
+#include "lib/lock.hpp"
+#include "lib/widget.hpp"         /* query_dialog() */
 
 /*** global variables ****************************************************************************/
 

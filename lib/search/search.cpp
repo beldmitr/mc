@@ -25,21 +25,19 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <stdarg.h>
 #include <stdlib.h>
 #include <sys/types.h>
 
-#include "lib/global.h"
-#include "lib/strutil.h"
-#include "lib/search.h"
-#include "lib/util.h"
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"
+#include "lib/search.hpp"
+#include "lib/util.hpp"
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -65,7 +63,7 @@ mc_search__cond_struct_new (mc_search_t * lc_mc_search, const char *str,
 {
     mc_search_cond_t *mc_search_cond;
 
-    mc_search_cond = g_malloc0 (sizeof (mc_search_cond_t));
+    mc_search_cond = static_cast<mc_search_cond_t *>(g_malloc0 (sizeof (mc_search_cond_t)));
     mc_search_cond->str = g_string_new_len (str, str_len);
     mc_search_cond->charset = g_strdup (charset);
 

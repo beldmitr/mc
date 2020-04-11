@@ -23,13 +23,11 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <stdlib.h>
 
-#include "lib/global.h"
-#include "lib/strutil.h"
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"
 
 /* using g_ascii function from glib
  * on terminal are showed only ascii characters (lower than 0x80)

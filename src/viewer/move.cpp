@@ -49,11 +49,9 @@
    such that dpy_text_column < view_get_datacolumns().
  */
 
-#include <config.h>
-
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "internal.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

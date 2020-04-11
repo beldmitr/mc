@@ -26,14 +26,13 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
 #include <stdlib.h>
 #include <string.h>             /* strcmp() */
 #include <sys/types.h>          /* size_t */
 
-#include "internal.h"
+#include "internal.hpp"
 
-#include "lib/tty/color.h"
+#include "lib/tty/color.hpp"
 
 /*** global variables ****************************************************************************/
 

@@ -101,7 +101,7 @@ BOOL user_in_list (const char *user, char *list);
 const char *tmpdir (void);
 BOOL in_group (gid_t group, gid_t current_gid, int ngroups, gid_t * groups);
 char *Atoic (char *p, int *n, char *c);
-char *get_numlist (char *p, uint32 ** num, int *count);
+char *get_numlist (char *p, uint32_t ** num, int *count);
 void putip (void *dest, void *src);
 char *dns_to_netbios_name (char *dns_name);
 int name_mangle (char *In, char *Out, char name_type);
@@ -109,7 +109,7 @@ BOOL file_exist (char *fname, SMB_STRUCT_STAT * sbuf);
 time_t file_modtime (char *fname);
 BOOL directory_exist (char *dname, SMB_STRUCT_STAT * st);
 SMB_OFF_T file_size (char *file_name);
-char *attrib_string (uint16 mode);
+char *attrib_string (uint16_t mode);
 void unix_format (char *fname);
 void dos_format (char *fname);
 void show_msg (char *buf);
@@ -139,7 +139,7 @@ void *Realloc (void *p, size_t size);
 BOOL get_myname (char *my_name, struct in_addr *ip);
 BOOL ip_equal (struct in_addr ip1, struct in_addr ip2);
 int interpret_protocol (char *str, int def);
-uint32 interpret_addr (const char *str);
+uint32_t interpret_addr (const char *str);
 struct in_addr *interpret_addr2 (const char *str);
 BOOL zero_ip (struct in_addr ip);
 BOOL matchname (char *remotehost, struct in_addr addr);
@@ -198,7 +198,7 @@ BOOL client_receive_smb (int fd, char *buffer, unsigned int timeout);
 BOOL send_null_session_msg (int fd);
 BOOL send_smb (int fd, char *buffer);
 BOOL send_one_packet (char *buf, int len, struct in_addr ip, int port, int type);
-int open_socket_in (int type, int port, int dlevel, uint32 socket_addr, BOOL rebind);
+int open_socket_in (int type, int port, int dlevel, uint32_t socket_addr, BOOL rebind);
 int open_socket_out (int type, struct in_addr *addr, int port, int timeout);
 char *client_name (int fd);
 char *client_addr (int fd);
@@ -243,19 +243,19 @@ void split_at_last_component (char *path, char *front, char sep, char *back);
 int cli_set_port (struct cli_state *cli, int port);
 char *cli_errstr (struct cli_state *cli);
 BOOL cli_api_pipe (struct cli_state *cli, char *pipe_name, int pipe_name_len,
-                   uint16 * setup, uint32 setup_count, uint32 max_setup_count,
-                   char *params, uint32 param_count, uint32 max_param_count,
-                   char *data, uint32 data_count, uint32 max_data_count,
-                   char **rparam, uint32 * rparam_count, char **rdata, uint32 * rdata_count);
+                   uint16 * setup, uint32_t setup_count, uint32_t max_setup_count,
+                   char *params, uint32_t param_count, uint32_t max_param_count,
+                   char *data, uint32_t data_count, uint32_t max_data_count,
+                   char **rparam, uint32_t * rparam_count, char **rdata, uint32_t * rdata_count);
 BOOL cli_api (struct cli_state *cli,
               char *param, int prcnt, int mprcnt,
               char *data, int drcnt, int mdrcnt,
               char **rparam, int *rprcnt, char **rdata, int *rdrcnt);
 BOOL cli_NetWkstaUserLogon (struct cli_state *cli, char *user, char *workstation);
 int cli_RNetShareEnum (struct cli_state *cli,
-                       void (*fn) (const char *, uint32, const char *, void *), void *state);
-BOOL cli_NetServerEnum (struct cli_state *cli, char *workgroup, uint32 stype,
-                        void (*fn) (const char *, uint32, const char *, void *), void *state);
+                       void (*fn) (const char *, uint32_t , const char *, void *), void *state);
+BOOL cli_NetServerEnum (struct cli_state *cli, char *workgroup, uint32_t stype,
+                        void (*fn) (const char *, uint32_t , const char *, void *), void *state);
 BOOL cli_session_setup (struct cli_state *cli, char *user, char *pass, int passlen, char *ntpass,
                         int ntpasslen, char *workgroup);
 BOOL cli_ulogoff (struct cli_state *cli);
@@ -269,36 +269,36 @@ BOOL cli_rmdir (struct cli_state *cli, char *dname);
 int cli_nt_create (struct cli_state *cli, char *fname);
 int cli_open (struct cli_state *cli, char *fname, int flags, int share_mode);
 BOOL cli_close (struct cli_state *cli, int fnum);
-BOOL cli_lock (struct cli_state *cli, int fnum, uint32 offset, uint32 len, int timeout);
-BOOL cli_unlock (struct cli_state *cli, int fnum, uint32 offset, uint32 len, int timeout);
+BOOL cli_lock (struct cli_state *cli, int fnum, uint32_t offset, uint32_t len, int timeout);
+BOOL cli_unlock (struct cli_state *cli, int fnum, uint32_t offset, uint32_t len, int timeout);
 size_t cli_read (struct cli_state *cli, int fnum, char *buf, off_t offset, size_t size);
 ssize_t cli_write (struct cli_state *cli,
-                   int fnum, uint16 write_mode, const char *buf, off_t offset, size_t size);
+                   int fnum, uint16_t write_mode, const char *buf, off_t offset, size_t size);
 ssize_t cli_smbwrite (struct cli_state *cli, int fnum, const char *buf, off_t offset, size_t size);
 BOOL cli_getattrE (struct cli_state *cli, int fd,
-                   uint16 * attr, size_t * size, time_t * c_time, time_t * a_time, time_t * m_time);
-BOOL cli_getatr (struct cli_state *cli, char *fname, uint16 * attr, size_t * size, time_t * t);
-BOOL cli_setatr (struct cli_state *cli, char *fname, uint16 attr, time_t t);
+                   uint16_t * attr, size_t * size, time_t * c_time, time_t * a_time, time_t * m_time);
+BOOL cli_getatr (struct cli_state *cli, char *fname, uint16_t * attr, size_t * size, time_t * t);
+BOOL cli_setatr (struct cli_state *cli, char *fname, uint16_t attr, time_t t);
 BOOL cli_qpathinfo (struct cli_state *cli, const char *fname,
                     time_t * c_time, time_t * a_time, time_t * m_time,
-                    size_t * size, uint16 * mode);
+                    size_t * size, uint16_t * mode);
 BOOL cli_qpathinfo2 (struct cli_state *cli, const char *fname,
                      time_t * c_time, time_t * a_time, time_t * m_time,
-                     time_t * w_time, size_t * size, uint16 * mode, SMB_INO_T * ino);
+                     time_t * w_time, size_t * size, uint16_t * mode, SMB_INO_T * ino);
 BOOL cli_qfileinfo (struct cli_state *cli, int fnum,
-                    uint16 * mode, size_t * size,
+                    uint16_t * mode, size_t * size,
                     time_t * c_time, time_t * a_time, time_t * m_time,
                     time_t * w_time, SMB_INO_T * ino);
-int cli_list (struct cli_state *cli, const char *Mask, uint16 attribute,
+int cli_list (struct cli_state *cli, const char *Mask, uint16_t attribute,
               void (*fn) (file_info *, const char *, void *), void *state);
 BOOL cli_negprot (struct cli_state *cli);
 BOOL cli_session_request (struct cli_state *cli, struct nmb_name *calling, struct nmb_name *called);
 BOOL cli_connect (struct cli_state *cli, const char *host, struct in_addr *ip);
 struct cli_state *cli_initialise (struct cli_state *cli);
 void cli_shutdown (struct cli_state *cli);
-int cli_error (struct cli_state *cli, uint8 * eclass, uint32 * num, uint32 * nt_rpc_error);
+int cli_error (struct cli_state *cli, uint8 * eclass, uint32_t * num, uint32_t * nt_rpc_error);
 void cli_sockopt (struct cli_state *cli, char *options);
-uint16 cli_setpid (struct cli_state *cli, uint16 pid);
+uint16_t cli_setpid (struct cli_state *cli, uint16_t pid);
 BOOL cli_reestablish_connection (struct cli_state *cli);
 BOOL cli_establish_connection (struct cli_state *cli,
                                char *dest_host, struct in_addr *dest_ip,
@@ -335,21 +335,21 @@ void sort_query_replies (char *data, int n, struct in_addr ip);
 
 /* The following definitions come from libsmb/nterr.c  */
 
-const char *get_nt_error_msg (uint32 nt_code);
+const char *get_nt_error_msg (uint32_t nt_code);
 
 /* The following definitions come from libsmb/pwd_cache.c  */
 
 void pwd_init (struct pwd_info *pwd);
-void pwd_obfuscate_key (struct pwd_info *pwd, uint32 int_key, char *str_key);
+void pwd_obfuscate_key (struct pwd_info *pwd, uint32_t int_key, char *str_key);
 void pwd_read (struct pwd_info *pwd, char *passwd_report, BOOL do_encrypt);
 void pwd_set_nullpwd (struct pwd_info *pwd);
 void pwd_set_cleartext (struct pwd_info *pwd, char *clr);
 void pwd_get_cleartext (struct pwd_info *pwd, char *clr);
-void pwd_set_lm_nt_16 (struct pwd_info *pwd, uchar lm_pwd[16], uchar nt_pwd[16]);
-void pwd_get_lm_nt_16 (struct pwd_info *pwd, uchar lm_pwd[16], uchar nt_pwd[16]);
+void pwd_set_lm_nt_16 (struct pwd_info *pwd, uint8_t lm_pwd[16], uint8_t nt_pwd[16]);
+void pwd_get_lm_nt_16 (struct pwd_info *pwd, uint8_t lm_pwd[16], uint8_t nt_pwd[16]);
 void pwd_make_lm_nt_16 (struct pwd_info *pwd, char *clr);
-void pwd_make_lm_nt_owf (struct pwd_info *pwd, uchar cryptkey[8]);
-void pwd_get_lm_nt_owf (struct pwd_info *pwd, uchar lm_owf[24], uchar nt_owf[24]);
+void pwd_make_lm_nt_owf (struct pwd_info *pwd, uint8_t cryptkey[8]);
+void pwd_get_lm_nt_owf (struct pwd_info *pwd, uint8_t lm_owf[24], uint8_t nt_owf[24]);
 
 /* The following definitions come from libsmb/smbdes.c  */
 
@@ -364,12 +364,12 @@ void SamOEMhash (unsigned char *data, unsigned char *key, int val);
 
 /* The following definitions come from libsmb/smbencrypt.c  */
 
-void SMBencrypt (uchar * passwd, uchar * c8, uchar * p24);
-void E_md4hash (uchar * passwd, uchar * p16);
-void nt_lm_owf_gen (char *pwd, uchar nt_p16[16], uchar p16[16]);
-void SMBOWFencrypt (uchar passwd[16], uchar * c8, uchar p24[24]);
-void NTLMSSPOWFencrypt (uchar passwd[8], uchar * ntlmchalresp, uchar p24[24]);
-void SMBNTencrypt (uchar * passwd, uchar * c8, uchar * p24);
+void SMBencrypt (uint8_t * passwd, uint8_t * c8, uint8_t * p24);
+void E_md4hash (uint8_t * passwd, uint8_t * p16);
+void nt_lm_owf_gen (char *pwd, uint8_t nt_p16[16], uint8_t p16[16]);
+void SMBOWFencrypt (uint8_t passwd[16], uint8_t * c8, uint8_t p24[24]);
+void NTLMSSPOWFencrypt (uint8_t passwd[8], uint8_t * ntlmchalresp, uint8_t p24[24]);
+void SMBNTencrypt (uint8_t * passwd, uint8_t * c8, uint8_t * p24);
 
 /* The following definitions come from libsmb/smberr.c  */
 

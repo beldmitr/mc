@@ -24,14 +24,13 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
 #include <string.h>
 
-#include "lib/global.h"
-#include "lib/skin.h"
-#include "lib/util.h"           /* is_exe() */
-#include "lib/filehighlight.h"
-#include "internal.h"
+#include "lib/global.hpp"
+#include "lib/skin.hpp"
+#include "lib/util.hpp"           /* is_exe() */
+#include "lib/filehighlight.hpp"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

@@ -29,8 +29,6 @@
  *  \brief Source: NCurses-based tty layer of Midnight-commander
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <stdarg.h>
 #include <signal.h>
@@ -39,19 +37,19 @@
 #endif
 #include <termios.h>
 
-#include "lib/global.h"
-#include "lib/strutil.h"        /* str_term_form */
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"        /* str_term_form */
 
 #ifndef WANT_TERM_H
 #define WANT_TERM_H
 #endif
 
-#include "tty-internal.h"       /* mc_tty_normalize_from_utf8() */
-#include "tty.h"
-#include "color-internal.h"
-#include "key.h"
-#include "mouse.h"
-#include "win.h"
+#include "tty-internal.hpp"       /* mc_tty_normalize_from_utf8() */
+#include "tty.hpp"
+#include "color-internal.hpp"
+#include "key.hpp"
+#include "mouse.hpp"
+#include "win.hpp"
 
 /* include at last !!! */
 #ifdef WANT_TERM_H

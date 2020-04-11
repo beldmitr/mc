@@ -29,12 +29,10 @@
  *  \brief Source: Internal stuff of color setup
  */
 
-#include <config.h>
-
 #include <string.h>             /* strcmp */
 
-#include "color.h"              /* colors and attributes */
-#include "color-internal.h"
+#include "color.hpp"              /* colors and attributes */
+#include "color-internal.hpp"
 
 /*** global variables ****************************************************************************/
 

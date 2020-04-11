@@ -6,7 +6,7 @@
 #ifndef MC__TTY_INTERNAL_H
 #define MC__TTY_INTERNAL_H
 
-#include "lib/global.h"         /* include <glib.h> */
+#include "lib/global.hpp"         /* include <glib.h> */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

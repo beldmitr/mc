@@ -24,10 +24,8 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
-#include "lib/global.h"
-#include "lib/strescape.h"
+#include "lib/global.hpp"
+#include "lib/strescape.hpp"
 
 /*** global variables ****************************************************************************/
 

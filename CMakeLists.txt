@@ -91,6 +91,11 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${GLIB2_INCLUDE_DIRS})
 link_directories(${GLIB_LIBRARY_DIRS})
 target_link_libraries(${PROJECT_NAME} ${GLIB2_LIBRARIES})
 
+# EXT2FS
+pkg_check_modules(EXT2FS REQUIRED IMPORTED_TARGET ext2fs)
+target_include_directories(${PROJECT_NAME} PUBLIC ${EXT2FS_INCLUDE_DIRS})
+link_directories(${EXT2FS_LIBRARY_DIRS})
+target_link_libraries(${PROJECT_NAME} ${EXT2FS_LIBRARIES})
 
 # DEFINITIONS
 add_compile_definitions(VERSION="0.0")
@@ -115,7 +120,8 @@ add_compile_definitions(HAVE_SYS_SELECT_H)
 add_compile_definitions(ENABLE_VFS_FTP)
 add_compile_definitions(NO_CONFIG_H)
 add_compile_definitions(HAVE_STDARG_H)
-
+add_compile_definitions(HAVE_EXT2FS_EXT2_FS_H)
+add_compile_definitions(USE_NCURSESW)   # TODO ???
 
 # SIG_ATOMIC_VOLATILE
 # Some systems declare sig_atomic_t as volatile, some others -- no.
@@ -131,5 +137,6 @@ add_compile_definitions(SYSCONFDIR="/usr/local/etc/mc/")
 add_compile_definitions(DATADIR="/usr/local/share/mc/")
 add_compile_definitions(EXTHELPERSDIR="/usr/local/libexec/mc/ext.d/")
 add_compile_definitions(LIBEXECDIR="/usr/local/libexec/mc/")
-
-
+add_compile_definitions(DRIVERFILE="")  # FIXME !!!!! missing correct path: ?? $prefix/lib/printers.def
+add_compile_definitions(CONFIGDIR="")   # FIXME figure out correct path
+add_compile_definitions(PACKAGE="")        # FIXME figure out wtf is package

@@ -33,23 +33,21 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <inttypes.h>           /* uintmax_t */
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/skin.h"
-#include "lib/vfs/vfs.h"
-#include "lib/lock.h"           /* lock_file() and unlock_file() */
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/skin.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/lock.hpp"           /* lock_file() and unlock_file() */
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

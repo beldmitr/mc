@@ -33,24 +33,23 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
 #include <inttypes.h>           /* uintmax_t */
 
-#include "lib/global.h"
-#include "lib/skin.h"
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"
-#include "lib/strutil.h"
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/skin.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
-#include "src/setup.h"          /* panels_options */
-#include "src/keybind-defaults.h"
+#include "src/setup.hpp"          /* panels_options */
+#include "src/keybind-defaults.hpp"
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

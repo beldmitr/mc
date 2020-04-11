@@ -28,16 +28,14 @@
  *  \brief Source: provides a log file to ease tracing the program
  */
 
-#include <config.h>
-
 #include <stdarg.h>
 #include <stdio.h>
 
-#include "lib/global.h"
-#include "lib/mcconfig.h"
-#include "lib/fileloc.h"
+#include "lib/global.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/fileloc.hpp"
 
-#include "logging.h"
+#include "logging.hpp"
 
 /*** global variables ****************************************************************************/
 

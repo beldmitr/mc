@@ -25,13 +25,12 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
 #include <stdlib.h>
 
-#include "internal.h"
-#include "lib/util.h"
+#include "internal.hpp"
+#include "lib/util.hpp"
 
-#include "lib/tty/color.h"      /* tty_use_256colors(); */
+#include "lib/tty/color.hpp"      /* tty_use_256colors(); */
 
 /*** global variables ****************************************************************************/
 

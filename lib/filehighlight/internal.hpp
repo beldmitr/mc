@@ -1,7 +1,7 @@
 #ifndef MC__FILEHIGHLIGHT_INTERNAL_H
 #define MC__FILEHIGHLIGHT_INTERNAL_H
 
-#include "lib/search.h"         /* mc_search_t */
+#include "lib/search.hpp"         /* mc_search_t */
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

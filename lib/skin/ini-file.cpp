@@ -24,15 +24,13 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <string.h>
 
-#include "lib/global.h"         /* <glib.h> */
+#include "lib/global.hpp"         /* <glib.h> */
 
-#include "internal.h"
-#include "lib/fileloc.h"
-#include "lib/util.h"           /* exist_file() */
+#include "internal.hpp"
+#include "lib/fileloc.hpp"
+#include "lib/util.hpp"           /* exist_file() */
 
 /*** global variables ****************************************************************************/
 
@@ -73,7 +71,7 @@ mc_skin_get_list_from_dir (const gchar * base_dir, GPtrArray * list)
                 sname[slen - 4] = '\0';
 
             for (i = 0; i < list->len; i++)
-                if (strcmp (sname, g_ptr_array_index (list, i)) == 0)
+                if (strcmp (sname, static_cast<const char *>(g_ptr_array_index (list, i))) == 0)
                     break;
 
             if (i < list->len)

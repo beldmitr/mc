@@ -332,8 +332,8 @@ typedef char fstring[128];
 /* 64 bit time (100usec) since ????? - cifs6.txt, section 3.5, page 30 */
 typedef struct nttime_info
 {
-    uint32 low;
-    uint32 high;
+    uint32_t low;
+    uint32_t high;
 
 } NTTIME;
 
@@ -374,21 +374,21 @@ struct sam_passwd
 
     uid_t smb_userid;           /* this is actually the unix uid_t */
     gid_t smb_grpid;            /* this is actually the unix gid_t */
-    uint32 user_rid;            /* Primary User ID */
-    uint32 group_rid;           /* Primary Group ID */
+    uint32_t user_rid;            /* Primary User ID */
+    uint32_t group_rid;           /* Primary Group ID */
 
     unsigned char *smb_passwd;  /* Null if no password */
     unsigned char *smb_nt_passwd;       /* Null if no password */
 
-    uint16 acct_ctrl;           /* account info (ACB_xxxx bit-mask) */
-    uint32 unknown_3;           /* 0x00ff ffff */
+    uint16_t acct_ctrl;           /* account info (ACB_xxxx bit-mask) */
+    uint32_t unknown_3;           /* 0x00ff ffff */
 
-    uint16 logon_divs;          /* 168 - number of hours in a week */
-    uint32 hours_len;           /* normally 21 bytes */
-    uint8 hours[MAX_HOURS_LEN];
+    uint16_t logon_divs;          /* 168 - number of hours in a week */
+    uint32_t hours_len;           /* normally 21 bytes */
+    uint8_t hours[MAX_HOURS_LEN];
 
-    uint32 unknown_5;           /* 0x0002 0000 */
-    uint32 unknown_6;           /* 0x0000 04ec */
+    uint32_t unknown_5;           /* 0x0002 0000 */
+    uint32_t unknown_6;           /* 0x0000 04ec */
 };
 
 struct smb_passwd
@@ -399,14 +399,14 @@ struct smb_passwd
     unsigned char *smb_passwd;  /* Null if no password */
     unsigned char *smb_nt_passwd;       /* Null if no password */
 
-    uint16 acct_ctrl;           /* account info (ACB_xxxx bit-mask) */
+    uint16_t acct_ctrl;           /* account info (ACB_xxxx bit-mask) */
     time_t pass_last_set_time;  /* password last set time */
 };
 
 
 struct sam_disp_info
 {
-    uint32 user_rid;            /* Primary User ID */
+    uint32_t user_rid;            /* Primary User ID */
     char *smb_name;             /* username string */
     char *full_name;            /* user's full name string */
 };
@@ -416,14 +416,14 @@ struct sam_disp_info
 /* DOM_SID - security id */
 typedef struct sid_info
 {
-    uint8 sid_rev_num;          /* SID revision number */
-    uint8 num_auths;            /* number of sub-authorities */
-    uint8 id_auth[6];           /* Identifier Authority */
+    uint8_t sid_rev_num;          /* SID revision number */
+    uint8_t num_auths;            /* number of sub-authorities */
+    uint8_t id_auth[6];           /* Identifier Authority */
     /*
      * Note that the values in these uint32's are in *native* byteorder,
      * not neccessarily little-endian...... JRA.
      */
-    uint32 sub_auths[MAXSUBAUTHS];      /* pointer to sub-authorities. */
+    uint32_t sub_auths[MAXSUBAUTHS];      /* pointer to sub-authorities. */
 
 } DOM_SID;
 
@@ -434,7 +434,7 @@ typedef struct sid_info
 typedef struct local_grp_member_info
 {
     DOM_SID sid;                /* matches with name */
-    uint8 sid_use;              /* usr=1 grp=2 dom=3 alias=4 wkng=5 del=6 inv=7 unk=8 */
+    uint8_t sid_use;              /* usr=1 grp=2 dom=3 alias=4 wkng=5 del=6 inv=7 unk=8 */
     fstring name;               /* matches with sid: must be of the form "DOMAIN\account" */
 
 } LOCAL_GRP_MEMBER;
@@ -456,8 +456,8 @@ typedef struct domain_grp_info
 {
     fstring name;
     fstring comment;
-    uint32 rid;                 /* group rid */
-    uint8 attr;                 /* attributes forced to be set to 0x7: SE_GROUP_xxx */
+    uint32_t rid;                 /* group rid */
+    uint8_t attr;                 /* attributes forced to be set to 0x7: SE_GROUP_xxx */
 
 } DOMAIN_GRP;
 
@@ -467,20 +467,20 @@ typedef struct domain_grp_info
 typedef struct domain_grp_member_info
 {
     fstring name;
-    uint8 attr;                 /* attributes forced to be set to 0x7: SE_GROUP_xxx */
+    uint8_t attr;                 /* attributes forced to be set to 0x7: SE_GROUP_xxx */
 
 } DOMAIN_GRP_MEMBER;
 
 /* DOM_CHAL - challenge info */
 typedef struct chal_info
 {
-    uchar data[8];              /* credentials */
+    uint8_t data[8];              /* credentials */
 } DOM_CHAL;
 
 /* 32 bit time (sec) since 01jan1970 - cifs6.txt, section 3.5, page 30 */
 typedef struct time_info
 {
-    uint32 time;
+    uint32_t time;
 } UTIME;
 
 /* DOM_CREDs - timestamped client or server credentials */
@@ -494,9 +494,9 @@ typedef struct cred_info
 typedef struct
 {
     size_t wr_total_written;    /* So we know when to discard this */
-    int32 wr_timeout;
-    int32 wr_errclass;
-    int32 wr_error;             /* Cached errors */
+    int32_t wr_timeout;
+    int32_t wr_errclass;
+    int32_t wr_error;             /* Cached errors */
     BOOL wr_mode;               /* write through mode) */
     BOOL wr_discard;            /* discard all further data */
 } write_bmpx_struct;
@@ -510,8 +510,8 @@ typedef struct
 typedef struct file_fd_struct
 {
     struct file_fd_struct *next, *prev;
-    uint16 ref_count;
-    uint16 uid_cache_count;
+    uint16_t ref_count;
+    uint16_t uid_cache_count;
     uid_t uid_users_cache[10];
     SMB_DEV_T dev;
     SMB_INO_T inode;
@@ -564,7 +564,7 @@ typedef struct connection_struct
     uid_t uid;                  /* uid of user who *opened* this connection */
     gid_t gid;                  /* gid of user who *opened* this connection */
 
-    uint16 vuid;                /* vuid of user who *opened* this connection, or UID_FIELD_INVALID */
+    uint16_t vuid;                /* vuid of user who *opened* this connection, or UID_FIELD_INVALID */
 
     /* following groups stuff added by ih */
 
@@ -584,7 +584,7 @@ typedef struct connection_struct
 struct current_user
 {
     connection_struct *conn;
-    uint16 vuid;
+    uint16_t vuid;
     uid_t uid;
     gid_t gid;
     int ngroups;
@@ -629,8 +629,8 @@ struct dcinfo
     DOM_CRED clnt_cred;         /* Last client credential */
     DOM_CRED srv_cred;          /* Last server credential */
 
-    uchar sess_key[8];          /* Session key */
-    uchar md4pw[16];            /* md4(machine password) */
+    uint8_t sess_key[8];          /* Session key */
+    uint8_t md4pw[16];            /* md4(machine password) */
 };
 
 typedef struct
@@ -684,7 +684,7 @@ typedef struct
 struct server_info_struct
 {
     fstring name;
-    uint32 type;
+    uint32_t type;
     fstring comment;
     fstring domain;             /* used ONLY in ipc.c NOT namework.c */
     BOOL server_added;          /* used ONLY in ipc.c NOT namework.c */
@@ -704,8 +704,8 @@ struct interface
 typedef struct
 {
     int pid;
-    uint16 op_port;
-    uint16 op_type;
+    uint16_t op_port;
+    uint16_t op_type;
     int share_mode;
     struct timeval time;
 } share_mode_entry;
@@ -763,7 +763,7 @@ struct passdb_ops
      */
     struct smb_passwd *(*getsmbpwnam) (char *);
     struct smb_passwd *(*getsmbpwuid) (uid_t);
-    struct smb_passwd *(*getsmbpwrid) (uint32);
+    struct smb_passwd *(*getsmbpwrid) (uint32_t);
     struct smb_passwd *(*getsmbpwent) (void *);
 
     /*
@@ -782,7 +782,7 @@ struct passdb_ops
      */
     struct sam_passwd *(*getsam21pwnam) (char *);
     struct sam_passwd *(*getsam21pwuid) (uid_t);
-    struct sam_passwd *(*getsam21pwrid) (uint32);
+    struct sam_passwd *(*getsam21pwrid) (uint32_t);
 
     /*
      * sam password database modification functions.
@@ -794,7 +794,7 @@ struct passdb_ops
      * sam query display info functions.
      */
     struct sam_disp_info *(*getsamdispnam) (char *);
-    struct sam_disp_info *(*getsamdisprid) (uint32);
+    struct sam_disp_info *(*getsamdisprid) (uint32_t);
     struct sam_disp_info *(*getsamdispent) (void *);
 
 #if 0
@@ -828,19 +828,19 @@ struct connection_options
 {
     int protocol;
     /* Connection-Options */
-    uint32 max_xmit;
-    uint16 server_vuid;
-    uint16 tid;
+    uint32_t max_xmit;
+    uint16_t server_vuid;
+    uint16_t tid;
     /* The following are LANMAN 1.0 options */
-    uint16 sec_mode;
-    uint16 max_mux;
-    uint16 max_vcs;
-    uint16 rawmode;
-    uint32 sesskey;
+    uint16_t sec_mode;
+    uint16_t max_mux;
+    uint16_t max_vcs;
+    uint16_t rawmode;
+    uint32_t sesskey;
     /* The following are NT LM 0.12 options */
-    uint32 maxraw;
-    uint32 capabilities;
-    uint16 serverzone;
+    uint32_t maxraw;
+    uint32_t capabilities;
+    uint16_t serverzone;
 };
 
 /* the following are used by loadparm for option lists */
@@ -865,7 +865,7 @@ struct parm_struct
 {
     const char *label;
     parm_type type;
-    parm_class class;
+    parm_class Class;
     void *ptr;
       BOOL (*special) (const char *, char **);
     const struct enum_list *enum_list;
@@ -881,7 +881,7 @@ struct parm_struct
 
 struct bitmap
 {
-    uint32 *b;
+    uint32_t *b;
     int n;
 };
 

@@ -33,20 +33,19 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
 #include <errno.h>
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/vfs/vfs.h"
-#include "lib/strutil.h"
-#include "lib/util.h"           /* load_file_position() */
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"           /* load_file_position() */
+#include "lib/widget.hpp"
 
-#include "src/filemanager/layout.h"
-#include "src/filemanager/midnight.h"   /* the_menubar */
+#include "src/filemanager/layout.hpp"
+#include "src/filemanager/midnight.hpp"   /* the_menubar */
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

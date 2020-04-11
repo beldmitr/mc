@@ -23,11 +23,9 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
-#include "lib/global.h"
-#include "lib/strescape.h"
-#include "lib/strutil.h"
+#include "lib/global.hpp"
+#include "lib/strescape.hpp"
+#include "lib/strutil.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -49,7 +47,7 @@ str_ptr_array_join (const GPtrArray * str_splints)
 
     return_str = g_string_sized_new (32);
     for (i = 0; i < str_splints->len; i++)
-        g_string_append (return_str, g_ptr_array_index (str_splints, i));
+        g_string_append (return_str, static_cast<const char*>(g_ptr_array_index (str_splints, i)));
 
     return g_string_free (return_str, FALSE);
 }

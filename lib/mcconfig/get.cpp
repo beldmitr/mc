@@ -20,12 +20,10 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"
 
-#include "lib/global.h"
-#include "lib/strutil.h"
-
-#include "lib/mcconfig.h"
+#include "lib/mcconfig.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -55,7 +53,7 @@ mc_config_get_groups (const mc_config_t * mc_config, gsize * len)
 
     if (ret == NULL)
     {
-        ret = g_try_malloc0 (sizeof (gchar **));
+        ret = static_cast<gchar **>(g_try_malloc0 (sizeof (gchar **)));
         if (len != NULL)
             *len = 0;
     }
@@ -75,7 +73,7 @@ mc_config_get_keys (const mc_config_t * mc_config, const gchar * group, gsize * 
 
     if (ret == NULL)
     {
-        ret = g_try_malloc0 (sizeof (gchar **));
+        ret = static_cast<gchar **>(g_try_malloc0 (sizeof (gchar **)));
         if (len != NULL)
             *len = 0;
     }

@@ -26,17 +26,15 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 
-#include "lib/global.h"
-#include "lib/strutil.h"
-#include "lib/search.h"
-#include "lib/strescape.h"
-#include "lib/util.h"           /* MC_PTR_FREE */
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"
+#include "lib/search.hpp"
+#include "lib/strescape.hpp"
+#include "lib/util.hpp"           /* MC_PTR_FREE */
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

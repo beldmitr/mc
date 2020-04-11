@@ -33,25 +33,23 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <string.h>             /* memset() */
 #include <sys/types.h>
 
-#include "lib/global.h"
-#include "lib/vfs/vfs.h"
-#include "lib/strutil.h"
-#include "lib/util.h"           /* save_file_position() */
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"           /* save_file_position() */
+#include "lib/widget.hpp"
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
 #ifdef HAVE_CHARSET
-#include "src/selcodepage.h"
+#include "src/selcodepage.hpp"
 #endif
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

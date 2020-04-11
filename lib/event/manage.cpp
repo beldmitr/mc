@@ -24,13 +24,11 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "lib/global.hpp"
+#include "lib/util.hpp"
+#include "lib/event.hpp"
 
-#include "lib/global.h"
-#include "lib/util.h"
-#include "lib/event.h"
-
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -215,7 +213,7 @@ mc_event_is_callback_in_array (GPtrArray * callbacks, mc_event_callback_func_t e
 
     for (array_index = 0; array_index < callbacks->len; array_index++)
     {
-        mc_event_callback_t *cb = g_ptr_array_index (callbacks, array_index);
+        mc_event_callback_t *cb = static_cast<mc_event_callback_t *>(g_ptr_array_index (callbacks, array_index));
         if (cb->callback == event_callback && cb->init_data == event_init_data)
             return cb;
     }

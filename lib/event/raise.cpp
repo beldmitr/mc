@@ -24,12 +24,10 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "lib/global.hpp"
+#include "lib/event.hpp"
 
-#include "lib/global.h"
-#include "lib/event.h"
-
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -65,7 +63,8 @@ mc_event_raise (const gchar * event_group_name, const gchar * event_name, gpoint
 
     for (array_index = callbacks->len; array_index > 0; array_index--)
     {
-        mc_event_callback_t *cb = g_ptr_array_index (callbacks, array_index - 1);
+        mc_event_callback_t *cb =
+                static_cast<mc_event_callback_t *>(g_ptr_array_index (callbacks, array_index - 1));
         if (!(*cb->callback) (event_group_name, event_name, cb->init_data, event_data))
             break;
     }

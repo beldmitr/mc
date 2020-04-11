@@ -1,10 +1,8 @@
 #ifndef MC__SERIALIZE_H
 #define MC__SERIALIZE_H
 
-#include <config.h>
-
-#include "lib/global.h"
-#include "lib/mcconfig.h"
+#include "lib/global.hpp"
+#include "lib/mcconfig.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

@@ -20,18 +20,16 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <errno.h>              /* extern int errno */
 
-#include "lib/global.h"
-#include "lib/vfs/vfs.h"        /* mc_stat */
-#include "lib/util.h"
+#include "lib/global.hpp"
+#include "lib/vfs/vfs.hpp"        /* mc_stat */
+#include "lib/util.hpp"
 
-#include "lib/mcconfig.h"
+#include "lib/mcconfig.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -107,7 +105,7 @@ mc_config_init (const gchar * ini_path, gboolean read_only)
     mc_config_t *mc_config;
     struct stat st;
 
-    mc_config = g_try_malloc0 (sizeof (mc_config_t));
+    mc_config = static_cast<mc_config_t *>(g_try_malloc0 (sizeof (mc_config_t)));
     if (mc_config == NULL)
         return NULL;
 

@@ -32,18 +32,16 @@
  *  \brief Source: save and load history
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <sys/types.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/fileloc.h"        /* MC_HISTORY_FILE */
-#include "lib/strutil.h"
-#include "lib/util.h"           /* list_append_unique */
+#include "lib/fileloc.hpp"        /* MC_HISTORY_FILE */
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"           /* list_append_unique */
 
-#include "lib/mcconfig.h"
+#include "lib/mcconfig.hpp"
 
 /*** global variables ****************************************************************************/
 

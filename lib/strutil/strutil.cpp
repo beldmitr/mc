@@ -23,16 +23,14 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <langinfo.h>
 #include <string.h>
 #include <errno.h>
 
-#include "lib/global.h"
-#include "lib/util.h"           /* MC_PTR_FREE */
-#include "lib/strutil.h"
+#include "lib/global.hpp"
+#include "lib/util.hpp"           /* MC_PTR_FREE */
+#include "lib/strutil.hpp"
 
 /*** global variables ****************************************************************************/
 

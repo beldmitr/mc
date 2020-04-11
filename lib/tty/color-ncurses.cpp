@@ -29,18 +29,16 @@
  *  \brief Source: NCUrses-specific color setup
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>          /* size_t */
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "tty-ncurses.h"
-#include "color.h"              /* variables */
-#include "color-internal.h"
+#include "tty-ncurses.hpp"
+#include "color.hpp"              /* variables */
+#include "color-internal.hpp"
 
 /*** global variables ****************************************************************************/
 

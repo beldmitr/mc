@@ -24,11 +24,10 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
 #include <stdlib.h>
 
-#include "internal.h"
-#include "lib/tty/tty.h"
+#include "internal.hpp"
+#include "lib/tty/tty.hpp"
 
 /*** global variables ****************************************************************************/
 

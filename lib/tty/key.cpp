@@ -33,8 +33,6 @@
  *  \brief Source: keyboard support routines
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
@@ -48,16 +46,16 @@
 #include <unistd.h>
 #endif
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/vfs/vfs.h"
+#include "lib/vfs/vfs.hpp"
 
-#include "tty.h"
-#include "tty-internal.h"       /* mouse_enabled */
-#include "mouse.h"
-#include "key.h"
+#include "tty.hpp"
+#include "tty-internal.hpp"       /* mouse_enabled */
+#include "mouse.hpp"
+#include "key.hpp"
 
-#include "lib/widget.h"         /* mc_refresh() */
+#include "lib/widget.hpp"         /* mc_refresh() */
 
 #ifdef HAVE_TEXTMODE_X11_SUPPORT
 #include "x11conn.h"
@@ -1399,14 +1397,14 @@ done_key (void)
 void
 add_select_channel (int fd, select_fn callback, void *info)
 {
-    select_t *new;
+    select_t *New;
 
-    new = g_new (select_t, 1);
-    new->fd = fd;
-    new->callback = callback;
-    new->info = info;
+    New = g_new (select_t, 1);
+    New->fd = fd;
+    New->callback = callback;
+    New->info = info;
 
-    select_list = g_slist_prepend (select_list, new);
+    select_list = g_slist_prepend (select_list, New);
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -1730,13 +1728,13 @@ int
 get_key_code (int no_delay)
 {
     int c;
-    static key_def *this = NULL, *parent;
+    static key_def *This = NULL, *parent;
     static struct timeval esctime = { -1, -1 };
     static int lastnodelay = -1;
 
     if (no_delay != lastnodelay)
     {
-        this = NULL;
+        This = NULL;
         lastnodelay = no_delay;
     }
 
@@ -1792,7 +1790,7 @@ get_key_code (int no_delay)
         {
             struct timeval current, time_out;
 
-            if (this == NULL || parent == NULL || parent->action != MCKEY_ESCAPE || !old_esc_mode ||
+            if (This == NULL || parent == NULL || parent->action != MCKEY_ESCAPE || !old_esc_mode ||
                 esctime.tv_sec == -1)
                 return -1;
 
@@ -1808,7 +1806,7 @@ get_key_code (int no_delay)
                 (current.tv_sec == time_out.tv_sec && current.tv_usec < time_out.tv_usec))
                 return -1;
 
-            this = NULL;
+            This = NULL;
             pending_keys = seq_append = NULL;
             return ESC_CHAR;
         }
@@ -1820,7 +1818,7 @@ get_key_code (int no_delay)
            tty_lowlevel_getch can return -1 at any time. */
         if (seq_append == NULL)
         {
-            this = NULL;
+            This = NULL;
             return -1;
         }
 
@@ -1829,9 +1827,9 @@ get_key_code (int no_delay)
     }
 
     /* Search the key on the root */
-    if (no_delay == 0 || this == NULL)
+    if (no_delay == 0 || This == NULL)
     {
-        this = keys;
+        This = keys;
         parent = NULL;
 
         if (c > 127 && c < 256 && use_8th_bit_as_meta)
@@ -1840,19 +1838,19 @@ get_key_code (int no_delay)
 
             /* The first sequence defined starts with esc */
             parent = keys;
-            this = keys->child;
+            This = keys->child;
         }
     }
 
-    while (this != NULL)
+    while (This != NULL)
     {
-        if (c == this->ch)
+        if (c == This->ch)
         {
-            if (this->child == NULL)
+            if (This->child == NULL)
             {
                 /* We got a complete match, return and reset search */
                 pending_keys = seq_append = NULL;
-                c = this->code;
+                c = This->code;
                 goto done;
             }
 
@@ -1863,8 +1861,8 @@ get_key_code (int no_delay)
                 goto pend_send;
             }
 
-            parent = this;
-            this = this->child;
+            parent = This;
+            This = This->child;
             if (parent->action == MCKEY_ESCAPE && old_esc_mode)
             {
                 if (no_delay != 0)
@@ -1879,7 +1877,7 @@ get_key_code (int no_delay)
                     continue;
 
                 pending_keys = seq_append = NULL;
-                this = NULL;
+                This = NULL;
                 return ESC_CHAR;
             }
 
@@ -1890,9 +1888,9 @@ get_key_code (int no_delay)
         }
 
         /* c != this->ch. Try other keys with this prefix */
-        if (this->next != NULL)
+        if (This->next != NULL)
         {
-            this = this->next;
+            This = This->next;
             continue;
         }
 
@@ -1918,7 +1916,7 @@ get_key_code (int no_delay)
     }                           /* while (this != NULL) */
 
   done:
-    this = NULL;
+    This = NULL;
     return correct_key_code (c);
 }
 

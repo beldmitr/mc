@@ -43,8 +43,6 @@
  *    and I don't think it would be too useful to undelete files
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -61,15 +59,15 @@
 #include <ext2fs/ext2fs.h>
 #include <ctype.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/util.h"
-#include "lib/widget.h"         /* message() */
-#include "lib/vfs/xdirentry.h"
-#include "lib/vfs/utilvfs.h"
-#include "lib/vfs/vfs.h"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"         /* message() */
+#include "lib/vfs/xdirentry.hpp"
+#include "lib/vfs/utilvfs.hpp"
+#include "lib/vfs/vfs.hpp"
 
-#include "undelfs.h"
+#include "undelfs.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -208,9 +206,9 @@ undelfs_get_path (const vfs_path_t * vpath, char **fsname, char **file)
 /* --------------------------------------------------------------------------------------------- */
 
 static int
-undelfs_lsdel_proc (ext2_filsys _fs, blk_t * block_nr, int blockcnt, void *private)
+undelfs_lsdel_proc (ext2_filsys _fs, blk_t * block_nr, int blockcnt, void *Private)
 {
-    struct lsdel_struct *_lsd = (struct lsdel_struct *) private;
+    struct lsdel_struct *_lsd = (struct lsdel_struct *) Private;
     (void) blockcnt;
     _lsd->num_blocks++;
 
@@ -242,13 +240,13 @@ undelfs_loaddel (void)
 
     max_delarray = 100;
     num_delarray = 0;
-    delarray = g_try_malloc (sizeof (struct deleted_info) * max_delarray);
+    delarray = static_cast<struct deleted_info*>(g_try_malloc (sizeof (struct deleted_info) * max_delarray));
     if (!delarray)
     {
         message (D_ERROR, undelfserr, "%s", _("not enough memory"));
         return 0;
     }
-    block_buf = g_try_malloc (fs->blocksize * 3);
+    block_buf = static_cast<char*>(g_try_malloc (fs->blocksize * 3));
     if (!block_buf)
     {
         message (D_ERROR, undelfserr, "%s", _("while allocating block buffer"));
@@ -292,9 +290,9 @@ undelfs_loaddel (void)
         {
             if (num_delarray >= max_delarray)
             {
-                struct deleted_info *delarray_new = g_try_realloc (delarray,
+                struct deleted_info *delarray_new = static_cast<struct deleted_info *>(g_try_realloc (delarray,
                                                                    sizeof (struct deleted_info) *
-                                                                   (max_delarray + 50));
+                                                                   (max_delarray + 50)));
                 if (!delarray_new)
                 {
                     message (D_ERROR, undelfserr, "%s",
@@ -389,10 +387,10 @@ undelfs_opendir (const vfs_path_t * vpath)
     /* Now load the deleted information */
     if (!undelfs_loaddel ())
         goto quit_opendir;
-    vfs_print_message (_("%s: done."), path_element->class->name);
+    vfs_print_message (_("%s: done."), path_element->Class->name);
     return fs;
   quit_opendir:
-    vfs_print_message (_("%s: failure"), path_element->class->name);
+    vfs_print_message (_("%s: failure"), path_element->Class->name);
     ext2fs_close (fs);
     fs = NULL;
     return 0;
@@ -475,7 +473,7 @@ undelfs_open (const vfs_path_t * vpath, int flags, mode_t mode)
             g_free (f);
             return 0;
         }
-        p->buf = g_try_malloc (fs->blocksize);
+        p->buf = static_cast<char*>(g_try_malloc (fs->blocksize));
         if (!p->buf)
         {
             g_free (p);
@@ -501,7 +499,7 @@ undelfs_open (const vfs_path_t * vpath, int flags, mode_t mode)
 static int
 undelfs_close (void *vfs_info)
 {
-    undelfs_file *p = vfs_info;
+    undelfs_file *p = static_cast<undelfs_file *>(vfs_info);
     g_free (p->buf);
     g_free (p);
     undelfs_usage--;
@@ -511,10 +509,10 @@ undelfs_close (void *vfs_info)
 /* --------------------------------------------------------------------------------------------- */
 
 static int
-undelfs_dump_read (ext2_filsys param_fs, blk_t * blocknr, int blockcnt, void *private)
+undelfs_dump_read (ext2_filsys param_fs, blk_t * blocknr, int blockcnt, void *Private)
 {
     int copy_count;
-    undelfs_file *p = (undelfs_file *) private;
+    undelfs_file *p = (undelfs_file *) Private;
 
     if (blockcnt < 0)
         return 0;
@@ -585,7 +583,7 @@ undelfs_dump_read (ext2_filsys param_fs, blk_t * blocknr, int blockcnt, void *pr
 static ssize_t
 undelfs_read (void *vfs_info, char *buffer, size_t count)
 {
-    undelfs_file *p = vfs_info;
+    undelfs_file *p = static_cast<undelfs_file *>(vfs_info);
     int retval;
 
     p->dest_buffer = buffer;
@@ -696,7 +694,7 @@ undelfs_lstat (const vfs_path_t * vpath, struct stat *buf)
 static int
 undelfs_fstat (void *vfs_info, struct stat *buf)
 {
-    undelfs_file *p = vfs_info;
+    undelfs_file *p = static_cast<undelfs_file *>(vfs_info);
 
     return undelfs_stat_int (p->f_index, buf);
 }

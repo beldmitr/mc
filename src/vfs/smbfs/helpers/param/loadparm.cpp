@@ -52,6 +52,7 @@
  *
  */
 
+#include <cstring> /* memset */
 #include "includes.hpp"
 
 /* Set default coding system for KANJI if none specified in Makefile. */
@@ -914,7 +915,7 @@ init_globals (void)
     if (!done_init)
     {
         int i;
-        memset ((void *) &Globals, '\0', sizeof (Globals));
+        std::memset ((void *) &Globals, '\0', sizeof (Globals));
 
         for (i = 0; parm_table[i].label; i++)
             if ((parm_table[i].type == P_STRING ||
@@ -1423,7 +1424,7 @@ free_service (service * pservice)
 
     for (i = 0; parm_table[i].label; i++)
         if ((parm_table[i].type == P_STRING ||
-             parm_table[i].type == P_USTRING) && parm_table[i].class == P_LOCAL)
+             parm_table[i].type == P_USTRING) && parm_table[i].Class == P_LOCAL)
             string_free ((char **) (((char *) pservice) + PTR_DIFF (parm_table[i].ptr, &sDefault)));
 }
 
@@ -1659,7 +1660,7 @@ copy_service (service * pserviceDest, service * pserviceSource, BOOL * pcopymapD
     BOOL bcopyall = (pcopymapDest == NULL);
 
     for (i = 0; parm_table[i].label; i++)
-        if (parm_table[i].ptr && parm_table[i].class == P_LOCAL && (bcopyall || pcopymapDest[i]))
+        if (parm_table[i].ptr && parm_table[i].Class == P_LOCAL && (bcopyall || pcopymapDest[i]))
         {
             void *def_ptr = parm_table[i].ptr;
             void *src_ptr = ((char *) pserviceSource) + PTR_DIFF (def_ptr, &sDefault);
@@ -1998,7 +1999,7 @@ lp_do_parameter (int snum, const char *pszParmName, const char *pszParmValue)
     }
     else
     {
-        if (parm_table[parmnum].class == P_GLOBAL)
+        if (parm_table[parmnum].Class == P_GLOBAL)
         {
             DEBUG (0, ("Global parameter %s found in service section!\n", pszParmName));
             return (True);

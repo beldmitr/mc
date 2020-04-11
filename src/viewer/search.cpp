@@ -33,15 +33,13 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"
+#include "lib/widget.hpp"
 
-#include "lib/global.h"
-#include "lib/strutil.h"
-#include "lib/widget.h"
+#include "src/setup.hpp"
 
-#include "src/setup.h"
-
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

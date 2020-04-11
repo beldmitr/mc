@@ -33,22 +33,20 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <sys/types.h>
 
-#include "lib/global.h"
-#include "lib/search.h"
-#include "lib/strutil.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/search.hpp"
+#include "lib/strutil.hpp"
+#include "lib/widget.hpp"
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
-#include "src/history.h"
+#include "src/history.hpp"
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

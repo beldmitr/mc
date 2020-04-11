@@ -252,6 +252,7 @@
 #endif
 #endif /* HAVE_NETGROUP */
 
+// FIXME to be removed, use instead c++ types
 #ifndef uchar
 #define uchar unsigned char
 #endif

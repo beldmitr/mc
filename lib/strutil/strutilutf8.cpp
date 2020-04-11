@@ -23,14 +23,12 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <langinfo.h>
 #include <string.h>
 
-#include "lib/global.h"
-#include "lib/strutil.h"
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"
 
 /* using function for utf-8 from glib */
 

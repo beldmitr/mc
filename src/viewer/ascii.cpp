@@ -144,19 +144,17 @@
    Add wrapping at word boundaries to where wrapping at char boundaries happens now.
  */
 
-#include <config.h>
-
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/skin.h"
-#include "lib/util.h"           /* is_printable() */
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/skin.hpp"
+#include "lib/util.hpp"           /* is_printable() */
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
-#include "src/setup.h"          /* option_tab_spacing */
+#include "src/setup.hpp"          /* option_tab_spacing */
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

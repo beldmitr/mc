@@ -47,16 +47,14 @@
    in display().
  */
 
-#include <config.h>
-
 #include <string.h>             /* memmove() */
 #ifdef MC_ENABLE_DEBUGGING_CODE
 #include <inttypes.h>           /* uintmax_t */
 #endif
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "internal.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

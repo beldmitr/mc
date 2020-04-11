@@ -30,11 +30,10 @@
  *  provide compatibility with older versions of glib.
  */
 
-#include <config.h>
 #include <string.h>
 
-#include "global.h"
-#include "glibcompat.h"
+#include "global.hpp"
+#include "glibcompat.hpp"
 
 /*** global variables ****************************************************************************/
 

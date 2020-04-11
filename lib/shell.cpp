@@ -27,15 +27,13 @@
  *  \brief Source: provides a functions for working with shell.
  */
 
-#include <config.h>
-
 #include <pwd.h>                /* for username in xterm title */
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "global.h"
-#include "util.h"
+#include "global.hpp"
+#include "util.hpp"
 
 
 /*** global variables ****************************************************************************/

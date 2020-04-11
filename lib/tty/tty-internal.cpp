@@ -27,18 +27,16 @@
  *  \brief Source: internal stuff of the terminal controlling library.
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
 #include <glib-unix.h>
 
-#include "tty-internal.h"
+#include "tty-internal.hpp"
 
 /*** global variables ****************************************************************************/
 

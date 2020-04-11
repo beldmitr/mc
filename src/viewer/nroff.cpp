@@ -33,18 +33,16 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/skin.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/skin.hpp"
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
-#include "src/setup.h"          /* option_tab_spacing */
+#include "src/setup.hpp"          /* option_tab_spacing */
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -131,7 +129,7 @@ mcview_nroff_seq_new_num (WView * view, off_t lc_index)
 {
     mcview_nroff_t *nroff;
 
-    nroff = g_try_malloc0 (sizeof (mcview_nroff_t));
+    nroff = static_cast<mcview_nroff_t *>(g_try_malloc0 (sizeof (mcview_nroff_t)));
     if (nroff != NULL)
     {
         nroff->index = lc_index;

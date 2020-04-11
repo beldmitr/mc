@@ -28,10 +28,8 @@
  *
  */
 
-#include <config.h>
-
-#include "global.h"
-#include "lib/timer.h"
+#include "global.hpp"
+#include "lib/timer.hpp"
 
 /* *INDENT-OFF* */
 #ifdef ENABLE_SUBSHELL

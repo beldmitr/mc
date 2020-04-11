@@ -33,15 +33,14 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
 #include <errno.h>
 
-#include "lib/global.h"
-#include "lib/vfs/vfs.h"
-#include "lib/util.h"
-#include "lib/widget.h"         /* D_NORMAL */
+#include "lib/global.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"         /* D_NORMAL */
 
-#include "internal.h"
+#include "internal.hpp"
 
 /* Block size for reading files in parts */
 #define VIEW_PAGE_SIZE ((size_t) 8192)
@@ -142,7 +141,7 @@ mcview_growbuf_read_until (WView * view, off_t ofs)
         if (view->growbuf_lastindex == VIEW_PAGE_SIZE)
         {
             /* Append a new block to the growing buffer */
-            byte *newblock = g_try_malloc (VIEW_PAGE_SIZE);
+            byte *newblock = static_cast<byte*>(g_try_malloc (VIEW_PAGE_SIZE));
             if (newblock == NULL)
                 return;
 

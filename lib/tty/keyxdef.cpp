@@ -44,13 +44,11 @@
  *
  */
 
-#include <config.h>
+#include "lib/global.hpp"
 
-#include "lib/global.h"
-
-#include "tty.h"
-#include "mouse.h"              /* required before key.h */
-#include "key.h"
+#include "tty.hpp"
+#include "mouse.hpp"              /* required before key.h */
+#include "key.hpp"
 
 #if defined (__QNX__) && !defined (__QNXNTO__)
 #define HAVE_QNX_KEYS

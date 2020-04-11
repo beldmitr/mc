@@ -34,15 +34,13 @@
  *  \brief Source: time formatting functions
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <limits.h>             /* MB_LEN_MAX */
 
-#include "lib/global.h"
-#include "lib/strutil.h"
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"
 
-#include "lib/timefmt.h"
+#include "lib/timefmt.hpp"
 
 /*** global variables ****************************************************************************/
 

@@ -19,7 +19,7 @@
 typedef struct file_info
 {
     SMB_OFF_T size;
-    uint16 mode;
+    uint16_t mode;
     uid_t uid;
     gid_t gid;
     /* these times are normally kept in GMT */
@@ -31,8 +31,8 @@ typedef struct file_info
 
 struct print_job_info
 {
-    uint16 id;
-    uint16 priority;
+    uint16_t id;
+    uint16_t priority;
     size_t size;
     fstring user;
     fstring name;
@@ -47,21 +47,21 @@ struct pwd_info
 
     fstring password;
 
-    uchar smb_lm_pwd[16];
-    uchar smb_nt_pwd[16];
+    uint8_t smb_lm_pwd[16];
+    uint8_t smb_nt_pwd[16];
 
-    uchar smb_lm_owf[24];
-    uchar smb_nt_owf[24];
+    uint8_t smb_lm_owf[24];
+    uint8_t smb_nt_owf[24];
 };
 
 struct cli_state
 {
     int port;
     int fd;
-    uint16 cnum;
-    uint16 pid;
-    uint16 mid;
-    uint16 vuid;
+    uint16_t cnum;
+    uint16_t pid;
+    uint16_t mid;
+    uint16_t vuid;
     int protocol;
     int sec_mode;
     int rap_error;
@@ -90,9 +90,9 @@ struct cli_state
 
     struct pwd_info pwd;
     unsigned char cryptkey[8];
-    uint32 sesskey;
+    uint32_t sesskey;
     int serverzone;
-    uint32 servertime;
+    uint32_t servertime;
     int readbraw_supported;
     int writebraw_supported;
     int timeout;                /* in milliseconds. */
@@ -103,25 +103,25 @@ struct cli_state
     int bufsize;
     int initialised;
     int win95;
-    uint32 capabilities;
+    uint32_t capabilities;
 
     /*
      * Only used in NT domain calls.
      */
 
-    uint32 nt_error;            /* NT RPC error code. */
-    uint16 nt_pipe_fnum;        /* Pipe handle. */
+    uint32_t nt_error;            /* NT RPC error code. */
+    uint16_t nt_pipe_fnum;        /* Pipe handle. */
     unsigned char sess_key[16]; /* Current session key. */
     unsigned char ntlmssp_hash[258];    /* ntlmssp data. */
-    uint32 ntlmssp_cli_flgs;    /* ntlmssp client flags */
-    uint32 ntlmssp_srv_flgs;    /* ntlmssp server flags */
-    uint32 ntlmssp_seq_num;     /* ntlmssp sequence number */
+    uint32_t ntlmssp_cli_flgs;    /* ntlmssp client flags */
+    uint32_t ntlmssp_srv_flgs;    /* ntlmssp server flags */
+    uint32_t ntlmssp_seq_num;     /* ntlmssp sequence number */
     DOM_CRED clnt_cred;         /* Client credential. */
     fstring mach_acct;          /* MYNAME$. */
     fstring srv_name_slash;     /* \\remote server. */
     fstring clnt_name_slash;    /* \\local client. */
-    uint16 max_xmit_frag;
-    uint16 max_recv_frag;
+    uint16_t max_xmit_frag;
+    uint16_t max_recv_frag;
 };
 
 #endif /* _CLIENT_H */

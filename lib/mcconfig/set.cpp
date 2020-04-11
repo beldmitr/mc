@@ -20,12 +20,10 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"
 
-#include "lib/global.h"
-#include "lib/strutil.h"
-
-#include "lib/mcconfig.h"
+#include "lib/mcconfig.hpp"
 
 /*** global variables ****************************************************************************/
 

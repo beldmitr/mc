@@ -27,15 +27,13 @@
  *  \brief Source: serialize/unserialize functionality for INI-like formats.
  */
 
-#include <config.h>
-
 #include <string.h>
 #include <stdlib.h>
 #include <stdarg.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/serialize.h"
+#include "lib/serialize.hpp"
 
 /*** global variables ****************************************************************************/
 

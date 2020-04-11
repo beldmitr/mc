@@ -42,34 +42,32 @@
    "_cmd".
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <stdlib.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"        /* is_idle() */
-#include "lib/lock.h"           /* lock_file() */
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"        /* is_idle() */
+#include "lib/lock.hpp"           /* lock_file() */
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
-#include "lib/event.h"          /* mc_event_raise() */
-#include "lib/mcconfig.h"       /* mc_config_history_get() */
+#include "lib/event.hpp"          /* mc_event_raise() */
+#include "lib/mcconfig.hpp"       /* mc_config_history_get() */
 
-#include "src/filemanager/layout.h"
-#include "src/filemanager/midnight.h"   /* current_panel */
-#include "src/filemanager/ext.h"        /* regex_command_for() */
+#include "src/filemanager/layout.hpp"
+#include "src/filemanager/midnight.hpp"   /* current_panel */
+#include "src/filemanager/ext.hpp"        /* regex_command_for() */
 
-#include "src/history.h"
-#include "src/file_history.h"   /* show_file_history() */
-#include "src/execute.h"
-#include "src/keybind-defaults.h"
+#include "src/history.hpp"
+#include "src/file_history.hpp"   /* show_file_history() */
+#include "src/execute.hpp"
+#include "src/keybind-defaults.hpp"
 
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

@@ -27,18 +27,16 @@
  *  \brief Source: Text conversion from one charset to another
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "lib/global.h"
-#include "lib/strutil.h"        /* utf-8 functions */
-#include "lib/fileloc.h"
-#include "lib/util.h"           /* whitespace() */
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"        /* utf-8 functions */
+#include "lib/fileloc.hpp"
+#include "lib/util.hpp"           /* whitespace() */
 
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 
 /*** global variables ****************************************************************************/
 

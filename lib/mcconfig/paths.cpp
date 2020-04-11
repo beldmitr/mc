@@ -23,18 +23,16 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 
-#include "lib/global.h"
-#include "lib/fileloc.h"
-#include "lib/vfs/vfs.h"
-#include "lib/util.h"           /* unix_error_string() */
+#include "lib/global.hpp"
+#include "lib/fileloc.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/util.hpp"           /* unix_error_string() */
 
-#include "lib/mcconfig.h"
+#include "lib/mcconfig.hpp"
 
 /*** global variables ****************************************************************************/
 

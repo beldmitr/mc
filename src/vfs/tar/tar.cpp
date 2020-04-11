@@ -35,27 +35,26 @@
  * Namespace: init_tarfs
  */
 
-#include <config.h>
 #include <sys/types.h>
 #include <errno.h>
 #include <ctype.h>
 
-#ifdef hpux
+#ifdef hpux // TODO wtf ??
 /* major() and minor() macros (among other things) defined here for hpux */
 #include <sys/mknod.h>
 #endif
 
-#include "lib/global.h"
-#include "lib/util.h"
-#include "lib/unixcompat.h"     /* makedev() */
-#include "lib/widget.h"         /* message() */
+#include "lib/global.hpp"
+#include "lib/util.hpp"
+#include "lib/unixcompat.hpp"     /* makedev() */
+#include "lib/widget.hpp"         /* message() */
 
-#include "lib/vfs/vfs.h"
-#include "lib/vfs/utilvfs.h"
-#include "lib/vfs/xdirentry.h"
-#include "lib/vfs/gc.h"         /* vfs_rmstamp */
+#include "lib/vfs/vfs.hpp"
+#include "lib/vfs/utilvfs.hpp"
+#include "lib/vfs/xdirentry.hpp"
+#include "lib/vfs/gc.hpp"         /* vfs_rmstamp */
 
-#include "tar.h"
+#include "tar.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -846,7 +845,7 @@ tar_open_archive (struct vfs_s_super *archive, const vfs_path_t * vpath,
 
     current_tar_position = 0;
     /* Open for reading */
-    tard = tar_open_archive_int (vpath_element->class, vpath, archive);
+    tard = tar_open_archive_int (vpath_element->Class, vpath, archive);
     if (tard == -1)
         return -1;
 
@@ -855,7 +854,7 @@ tar_open_archive (struct vfs_s_super *archive, const vfs_path_t * vpath,
         size_t h_size = 0;
         ReadStatus prev_status = status;
 
-        status = tar_read_header (vpath_element->class, archive, tard, &h_size);
+        status = tar_read_header (vpath_element->Class, archive, tard, &h_size);
 
         switch (status)
         {

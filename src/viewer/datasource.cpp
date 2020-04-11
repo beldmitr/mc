@@ -52,14 +52,12 @@
    know if the size can change later.
  */
 
-#include <config.h>
+#include "lib/global.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"         /* D_NORMAL, D_ERROR */
 
-#include "lib/global.h"
-#include "lib/vfs/vfs.h"
-#include "lib/util.h"
-#include "lib/widget.h"         /* D_NORMAL, D_ERROR */
-
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -369,7 +367,7 @@ mcview_set_datasource_file (WView * view, int fd, const struct stat *st)
     view->ds_file_fd = fd;
     view->ds_file_filesize = st->st_size;
     view->ds_file_offset = 0;
-    view->ds_file_data = g_malloc (4096);
+    view->ds_file_data = static_cast<byte*>(g_malloc (4096));
     view->ds_file_datalen = 0;
     view->ds_file_datasize = 4096;
 }

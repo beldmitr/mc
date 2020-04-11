@@ -5,16 +5,16 @@
 #include <stdio.h>
 #include <sys/types.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/search.h"
-#include "lib/widget.h"
-#include "lib/vfs/vfs.h"        /* vfs_path_t */
+#include "lib/search.hpp"
+#include "lib/widget.hpp"
+#include "lib/vfs/vfs.hpp"        /* vfs_path_t */
 
-#include "src/keybind-defaults.h"       /* global_keymap_t */
-#include "src/filemanager/dir.h"        /* dir_list */
+#include "src/keybind-defaults.hpp"       /* global_keymap_t */
+#include "src/filemanager/dir.hpp"        /* dir_list */
 
-#include "mcviewer.h"
+#include "mcviewer.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 
@@ -345,6 +345,6 @@ void mcview_do_search (WView * view, off_t want_search_start);
 
 /*** inline functions ****************************************************************************/
 
-#include "inlines.h"
+#include "inlines.hpp"
 
 #endif /* MC__VIEWER_INTERNAL_H */

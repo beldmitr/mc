@@ -1,8 +1,8 @@
 #ifndef MC__SKIN_INTERNAL_H
 #define MC__SKIN_INTERNAL_H
 
-#include "lib/global.h"
-#include "lib/skin.h"
+#include "lib/global.hpp"
+#include "lib/skin.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

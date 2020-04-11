@@ -24,13 +24,11 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"
+#include "lib/search.hpp"
 
-#include "lib/global.h"
-#include "lib/strutil.h"
-#include "lib/search.h"
-
-#include "internal.h"
+#include "internal.hpp"
 
 /*** global variables ****************************************************************************/
 

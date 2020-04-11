@@ -8,10 +8,10 @@
 
 #include <sys/types.h>          /* size_t */
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
 #ifdef HAVE_SLANG
-#include "tty-slang.h"
+#include "tty-slang.hpp"
 #else
 #include "tty-ncurses.h"
 #endif /* HAVE_SLANG */

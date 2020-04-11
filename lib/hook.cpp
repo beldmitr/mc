@@ -34,10 +34,8 @@
  *  \brief Source: hooks
  */
 
-#include <config.h>
-
-#include "lib/global.h"
-#include "lib/hook.h"
+#include "lib/global.hpp"
+#include "lib/hook.hpp"
 
 /*** global variables ****************************************************************************/
 

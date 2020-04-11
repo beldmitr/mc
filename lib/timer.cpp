@@ -27,12 +27,10 @@
  *  \brief Source: simple timer
  */
 
-#include <config.h>
-
 #include <sys/time.h>
 
-#include "lib/global.h"
-#include "lib/timer.h"
+#include "lib/global.hpp"
+#include "lib/timer.hpp"
 
 /*** global variables ****************************************************************************/
 

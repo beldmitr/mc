@@ -17,14 +17,12 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <config.h>
-
 #include <sys/types.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
 
-#include "lib/strutil.h"
+#include "lib/strutil.hpp"
 
 /*** global variables ****************************************************************************/
 

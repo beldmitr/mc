@@ -30,19 +30,17 @@
  *  \brief Source: color setup
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>          /* size_t */
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "tty.h"
-#include "color.h"
+#include "tty.hpp"
+#include "color.hpp"
 
-#include "color-internal.h"
+#include "color-internal.hpp"
 
 /*** global variables ****************************************************************************/
 

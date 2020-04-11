@@ -18,8 +18,6 @@
 
 /* Written by Jim Meyering. */
 
-#include <config.h>
-
 /* Some pre-ANSI implementations (e.g. SunOS 4)
    need stderr defined if assertion checking is enabled.  */
 #include <stdio.h>
@@ -31,7 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "lib/strutil.h"
+#include "lib/strutil.hpp"
 
 /*** global variables ****************************************************************************/
 
