@@ -593,7 +593,7 @@ vfs_path_strip_home (const char *dir)
 #define vfs_append_from_path(appendfrom, is_relative) \
 { \
     if ((flags & VPF_STRIP_HOME) && element_index == 0 && \
-        (element->class->flags & VFSF_LOCAL) != 0) \
+        (element->Class->flags & VFSF_LOCAL) != 0) \
     { \
         char *stripped_home_str; \
         stripped_home_str = vfs_path_strip_home (appendfrom); \

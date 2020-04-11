@@ -2,17 +2,17 @@ cmake_minimum_required(VERSION 3.15)
 
 project(mcpp)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
 
 set(CMAKE_CXX_FLAGS -fpermissive)   # FIXME remove it after code compiling !!!
 
-# Temp workaround for error
-# /home/wbull/CLionProjects/mc/lib/tty/tty-slang.hpp:34:5: error: expected identifier before numeric constant
-#   34 |     KEY_BACKSPACE = 400,
-set(CMAKE_CXX_FLAGS -E)
-
 file(GLOB SRC
         "src/*.cpp"
-        "src/consaver/*.cpp"
+#        "src/consaver/*.cpp"   # SECOND MAIN FUNCTION ???
         "src/diffviewer/*.cpp"
         "src/editor/*.cpp"
         "src/filemanager/*.cpp"
@@ -102,6 +102,11 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${EXT2FS_INCLUDE_DIRS})
 link_directories(${EXT2FS_LIBRARY_DIRS})
 target_link_libraries(${PROJECT_NAME} ${EXT2FS_LIBRARIES})
 
+# CURSES
+find_package(Curses REQUIRED)
+include_directories(${CURSES_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})
+
 # DEFINITIONS
 add_compile_definitions(VERSION="0.0")
 add_compile_definitions(HAVE_SLANG)
@@ -126,7 +131,11 @@ add_compile_definitions(ENABLE_VFS_FTP)
 add_compile_definitions(NO_CONFIG_H)
 add_compile_definitions(HAVE_STDARG_H)
 add_compile_definitions(HAVE_EXT2FS_EXT2_FS_H)
-add_compile_definitions(USE_NCURSESW)   # TODO ???
+
+#curses
+#add_compile_definitions(HAVE_NCURSES_H)
+#add_compile_definitions(USE_NCURSESW)
+#add_compile_definitions(USE_NCURSES)
 
 # SIG_ATOMIC_VOLATILE
 # Some systems declare sig_atomic_t as volatile, some others -- no.
@@ -145,3 +154,5 @@ add_compile_definitions(LIBEXECDIR="/usr/local/libexec/mc/")
 add_compile_definitions(DRIVERFILE="")  # FIXME !!!!! missing correct path: ?? $prefix/lib/printers.def
 add_compile_definitions(CONFIGDIR="")   # FIXME figure out correct path
 add_compile_definitions(PACKAGE="")        # FIXME figure out wtf is package
+
+add_compile_definitions(PROMOTED_MODE_T=mode_t)

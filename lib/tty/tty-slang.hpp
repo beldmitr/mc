@@ -28,26 +28,26 @@
 #define LINES SLtt_Screen_Rows
 
 /*** enums ***************************************************************************************/
+// FIXME this was in enum, but it caused an error
+// /home/wbull/CLionProjects/mc/lib/tty/tty-slang.hpp:36:9: error: expected identifier before numeric constant
+// 36 |         KEY_BACKSPACE = 400,
 
-enum
-{
-    KEY_BACKSPACE = 400,
-    KEY_END,
-    KEY_UP,
-    KEY_DOWN,
-    KEY_LEFT,
-    KEY_RIGHT,
-    KEY_HOME,
-    KEY_A1,
-    KEY_C1,
-    KEY_NPAGE,
-    KEY_PPAGE,
-    KEY_IC,
-    KEY_ENTER,
-    KEY_DC,
-    KEY_SCANCEL,
-    KEY_BTAB
-};
+#define KEY_BACKSPACE   400
+#define KEY_END 401
+#define KEY_UP  402
+#define KEY_DOWN    403
+#define KEY_LEFT    404
+#define KEY_RIGHT   405
+#define KEY_HOME 406
+#define KEY_A1  407
+#define KEY_C1 408
+#define KEY_NPAGE 409
+#define KEY_PPAGE 410
+#define KEY_IC  411
+#define KEY_ENTER 412
+#define KEY_DC  413
+#define KEY_SCANCEL 414
+#define KEY_BTAB    415
 
 /*** structures declarations (and typedefs of structures)*****************************************/
 

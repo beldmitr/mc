@@ -240,9 +240,9 @@ int mc_##name inarg \
     if (!vfs_path_element_valid (path_element)) \
         return (-1); \
 \
-    result = path_element->class->name != NULL ? path_element->class->name callarg : -1; \
+    result = path_element->Class->name != NULL ? path_element->Class->name callarg : -1; \
     if (result == -1) \
-        errno = path_element->class->name != NULL ? vfs_ferrno (path_element->class) : E_NOTSUPP; \
+        errno = path_element->Class->name != NULL ? vfs_ferrno (path_element->Class) : E_NOTSUPP; \
     return result; \
 }
 
@@ -331,16 +331,16 @@ int mc_##name (const vfs_path_t *vpath1, const vfs_path_t *vpath2) \
     path_element2 = vfs_path_get_by_index (vpath2, (-1)); \
 \
     if (!vfs_path_element_valid (path_element1) || !vfs_path_element_valid (path_element2) || \
-        path_element1->class != path_element2->class) \
+        path_element1->Class != path_element2->Class) \
     { \
         errno = EXDEV; \
         return (-1); \
     } \
 \
-    result = path_element1->class->name != NULL \
-        ? path_element1->class->name (vpath1, vpath2) : -1; \
+    result = path_element1->Class->name != NULL \
+        ? path_element1->Class->name (vpath1, vpath2) : -1; \
     if (result == -1) \
-        errno = path_element1->class->name != NULL ? vfs_ferrno (path_element1->class) : E_NOTSUPP; \
+        errno = path_element1->Class->name != NULL ? vfs_ferrno (path_element1->Class) : E_NOTSUPP; \
     return result; \
 }
 
@@ -628,11 +628,11 @@ mc_getlocalcopy (const vfs_path_t * pathname_vpath)
     path_element = vfs_path_get_by_index (pathname_vpath, -1);
     if (vfs_path_element_valid (path_element))
     {
-        result = path_element->class->getlocalcopy != NULL ?
-            path_element->class->getlocalcopy (pathname_vpath) :
+        result = path_element->Class->getlocalcopy != NULL ?
+            path_element->Class->getlocalcopy (pathname_vpath) :
             mc_def_getlocalcopy (pathname_vpath);
         if (result == NULL)
-            errno = vfs_ferrno (path_element->class);
+            errno = vfs_ferrno (path_element->Class);
     }
     return result;
 }
@@ -651,8 +651,8 @@ mc_ungetlocalcopy (const vfs_path_t * pathname_vpath, const vfs_path_t * local_v
 
     path_element = vfs_path_get_by_index (pathname_vpath, -1);
     if (vfs_path_element_valid (path_element))
-        result = path_element->class->ungetlocalcopy != NULL ?
-            path_element->class->ungetlocalcopy (pathname_vpath, local_vpath, has_changed) :
+        result = path_element->Class->ungetlocalcopy != NULL ?
+            path_element->Class->ungetlocalcopy (pathname_vpath, local_vpath, has_changed) :
             mc_def_ungetlocalcopy (pathname_vpath, local_vpath, has_changed);
 
     return result;
@@ -685,14 +685,14 @@ mc_chdir (const vfs_path_t * vpath)
         cd_vpath = vfs_path_clone (vpath);
 
     path_element = vfs_path_get_by_index (cd_vpath, -1);
-    if (!vfs_path_element_valid (path_element) || path_element->class->chdir == NULL)
+    if (!vfs_path_element_valid (path_element) || path_element->Class->chdir == NULL)
         goto error_end;
 
 
-    result = path_element->class->chdir (cd_vpath);
+    result = path_element->Class->chdir (cd_vpath);
     if (result == -1)
     {
-        errno = vfs_ferrno (path_element->class);
+        errno = vfs_ferrno (path_element->Class);
         goto error_end;
     }
 
@@ -702,7 +702,7 @@ mc_chdir (const vfs_path_t * vpath)
     /* Actually change directory */
     vfs_set_raw_current_dir (cd_vpath);
 
-    current_vfs = path_element->class;
+    current_vfs = path_element->Class;
 
     /* This function uses the new current_dir implicitly */
     vfs_stamp_create (old_vfs, old_vfsid);

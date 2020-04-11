@@ -34,17 +34,17 @@
 
 /*** enums ***************************************************************************************/
 
-enum
-{
-    COLOR_BLACK = 0,
-    COLOR_RED,
-    COLOR_GREEN,
-    COLOR_YELLOW,
-    COLOR_BLUE,
-    COLOR_MAGENTA,
-    COLOR_CYAN,
-    COLOR_WHITE
-};
+// FIXME this was made by enum, but it caused an error
+// /home/wbull/CLionProjects/mc/lib/tty/color-slang.hpp:39:5: error: expected identifier before numeric constant
+// 39 |     COLOR_BLACK = 0,
+#define COLOR_BLACK 0
+#define COLOR_RED   1
+#define COLOR_GREEN 2
+#define COLOR_YELLOW    3
+#define COLOR_BLUE  4
+#define COLOR_MAGENTA   5
+#define COLOR_CYAN  6
+#define COLOR_WHITE 7
 
 /*** structures declarations (and typedefs of structures)*****************************************/
 

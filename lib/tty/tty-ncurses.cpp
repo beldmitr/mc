@@ -76,7 +76,7 @@
 /*** file scope type declarations ****************************************************************/
 
 /*** file scope variables ************************************************************************/
-
+#ifndef HAVE_SLANG
 /* ncurses supports cursor positions only within window */
 /* We use our own cursor coordinates to support partially visible widgets */
 static int mc_curs_row, mc_curs_col;
@@ -703,3 +703,4 @@ tty_beep (void)
 }
 
 /* --------------------------------------------------------------------------------------------- */
+#endif

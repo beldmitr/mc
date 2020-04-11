@@ -430,7 +430,7 @@ vfs_s_opendir (const vfs_path_t * vpath)
 
     if (!S_ISDIR (dir->st.st_mode))
     {
-        path_element->class->verrno = ENOTDIR;
+        path_element->Class->verrno = ENOTDIR;
         return NULL;
     }
 
