@@ -27,17 +27,15 @@
  *  \brief Source: widget group features module
  */
 
-#include <config.h>
-
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/key.h"        /* ALT() */
+#include "lib/tty/key.hpp"        /* ALT() */
 
-#include "lib/widget.h"
+#include "lib/widget.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -351,7 +349,7 @@ group_set_position (WGroup * g, const WRect * r)
     Widget *w = WIDGET (g);
     widget_shift_scale_t wss;
     /* save old positions, will be used to reposition childs */
-    WRect or = { w->y, w->x, w->lines, w->cols };
+    WRect Or = { w->y, w->x, w->lines, w->cols };
 
     w->x = r->x;
     w->y = r->y;
@@ -366,10 +364,10 @@ group_set_position (WGroup * g, const WRect * r)
         g->current = g->widgets;
 
     /* values by which controls should be moved */
-    wss.shift_x = w->x - or.x;
-    wss.scale_x = w->cols - or.cols;
-    wss.shift_y = w->y - or.y;
-    wss.scale_y = w->lines - or.lines;
+    wss.shift_x = w->x - Or.x;
+    wss.scale_x = w->cols - Or.cols;
+    wss.shift_y = w->y - Or.y;
+    wss.scale_y = w->lines - Or.lines;
 
     if (wss.shift_x != 0 || wss.shift_y != 0 || wss.scale_x != 0 || wss.scale_y != 0)
         g_list_foreach (g->widgets, group_widget_set_position, &wss);

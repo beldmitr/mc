@@ -27,12 +27,10 @@
  *  \brief Header: High-level mouse API
  */
 
-#include <config.h>
+#include "lib/global.hpp"
+#include "lib/widget.hpp"
 
-#include "lib/global.h"
-#include "lib/widget.h"
-
-#include "lib/widget/mouse.h"
+#include "lib/widget/mouse.hpp"
 
 /*** global variables ****************************************************************************/
 

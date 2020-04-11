@@ -30,8 +30,6 @@
  *  \brief Source: Input line filename/username/hostname/variable/command completion
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <limits.h>             /* MB_LEN_MAX */
 #include <stdio.h>
@@ -43,17 +41,17 @@
 #include <pwd.h>
 #include <unistd.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"        /* XCTRL and ALT macros */
-#include "lib/vfs/vfs.h"
-#include "lib/strescape.h"
-#include "lib/strutil.h"
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"        /* XCTRL and ALT macros */
+#include "lib/vfs/vfs.hpp"
+#include "lib/strescape.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 
-#include "input_complete.h"
+#include "input_complete.hpp"
 
 /*** global variables ****************************************************************************/
 

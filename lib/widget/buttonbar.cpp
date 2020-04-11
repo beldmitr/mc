@@ -32,19 +32,17 @@
  *  \brief Source: WButtonBar widget
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <string.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"        /* XCTRL and ALT macros  */
-#include "lib/skin.h"
-#include "lib/strutil.h"
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"        /* XCTRL and ALT macros  */
+#include "lib/skin.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 
 /*** global variables ****************************************************************************/
 

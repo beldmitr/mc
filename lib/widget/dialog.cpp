@@ -24,8 +24,6 @@
  *  \brief Source: dialog box features module
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -34,19 +32,19 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/skin.h"
-#include "lib/tty/key.h"
-#include "lib/strutil.h"
-#include "lib/fileloc.h"        /* MC_HISTORY_FILE */
-#include "lib/event.h"          /* mc_event_raise() */
-#include "lib/util.h"           /* MC_PTR_FREE */
-#include "lib/mcconfig.h"       /* num_history_items_recorded */
+#include "lib/tty/tty.hpp"
+#include "lib/skin.hpp"
+#include "lib/tty/key.hpp"
+#include "lib/strutil.hpp"
+#include "lib/fileloc.hpp"        /* MC_HISTORY_FILE */
+#include "lib/event.hpp"          /* mc_event_raise() */
+#include "lib/util.hpp"           /* MC_PTR_FREE */
+#include "lib/mcconfig.hpp"       /* num_history_items_recorded */
 
-#include "lib/widget.h"
-#include "lib/widget/mouse.h"
+#include "lib/widget.hpp"
+#include "lib/widget/mouse.hpp"
 
 /*** global variables ****************************************************************************/
 

@@ -32,16 +32,14 @@
  *  \brief Source: WHLine widget (horizontal line)
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/tty/color.h"
-#include "lib/skin.h"
-#include "lib/strutil.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/color.hpp"
+#include "lib/skin.hpp"
+#include "lib/strutil.hpp"
+#include "lib/widget.hpp"
 
 /*** global variables ****************************************************************************/
 

@@ -31,18 +31,15 @@
  * \date 2011
  */
 
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"           /* mc_build_filename() */
+#include "lib/serialize.hpp"
 
-#include <config.h>
-
-#include "lib/global.h"
-#include "lib/strutil.h"
-#include "lib/util.h"           /* mc_build_filename() */
-#include "lib/serialize.h"
-
-#include "vfs.h"
-#include "utilvfs.h"
-#include "xdirentry.h"
-#include "path.h"
+#include "vfs.hpp"
+#include "utilvfs.hpp"
+#include "xdirentry.hpp"
+#include "path.hpp"
 
 extern GPtrArray *vfs__classes_list;
 
@@ -372,16 +369,16 @@ vfs_path_from_str_deprecated_parser (char *path)
 {
     vfs_path_t *vpath;
     vfs_path_element_t *element;
-    struct vfs_class *class;
+    struct vfs_class *Class;
     const char *local, *op;
 
     vpath = vfs_path_new ();
 
-    while ((class = _vfs_split_with_semi_skip_count (path, &local, &op, 0)) != NULL)
+    while ((Class = _vfs_split_with_semi_skip_count (path, &local, &op, 0)) != NULL)
     {
         char *url_params;
         element = g_new0 (vfs_path_element_t, 1);
-        element->class = class;
+        element->Class = Class;
         if (local == NULL)
             local = "";
         element->path = vfs_translate_path_n (local);
@@ -408,7 +405,7 @@ vfs_path_from_str_deprecated_parser (char *path)
     if (path[0] != '\0')
     {
         element = g_new0 (vfs_path_element_t, 1);
-        element->class = g_ptr_array_index (vfs__classes_list, 0);
+        element->Class = static_cast<struct vfs_class*>(g_ptr_array_index (vfs__classes_list, 0));
         element->path = vfs_translate_path_n (path);
 
 #ifdef HAVE_CHARSET
@@ -456,12 +453,12 @@ vfs_path_from_str_uri_parser (char *path)
         *url_delimiter = '\0';
 
         element = g_new0 (vfs_path_element_t, 1);
-        element->class = vfs_prefix_to_class (vfs_prefix_start);
+        element->Class = vfs_prefix_to_class (vfs_prefix_start);
         element->vfs_prefix = g_strdup (vfs_prefix_start);
 
         url_delimiter += strlen (VFS_PATH_URL_DELIMITER);
 
-        if (element->class != NULL && (element->class->flags & VFSF_REMOTE) != 0)
+        if (element->Class != NULL && (element->Class->flags & VFSF_REMOTE) != 0)
         {
             char *slash_pointer;
 
@@ -503,7 +500,7 @@ vfs_path_from_str_uri_parser (char *path)
     if (path[0] != '\0')
     {
         element = g_new0 (vfs_path_element_t, 1);
-        element->class = g_ptr_array_index (vfs__classes_list, 0);
+        element->Class = static_cast<struct vfs_class*>(g_ptr_array_index (vfs__classes_list, 0));
         element->path = vfs_translate_path_n (path);
 #ifdef HAVE_CHARSET
         element->encoding = vfs_get_encoding (path, -1);
@@ -530,7 +527,7 @@ static void
 vfs_path_tokens_add_class_info (const vfs_path_element_t * element, GString * ret_tokens,
                                 GString * element_tokens)
 {
-    if (((element->class->flags & VFSF_LOCAL) == 0 || ret_tokens->len > 0)
+    if (((element->Class->flags & VFSF_LOCAL) == 0 || ret_tokens->len > 0)
         && element_tokens->len > 0)
     {
         char *url_str;
@@ -856,7 +853,7 @@ vfs_path_element_clone (const vfs_path_element_t * element)
     new_element->ipv6 = element->ipv6;
     new_element->port = element->port;
     new_element->path = g_strdup (element->path);
-    new_element->class = element->class;
+    new_element->Class = element->Class;
     new_element->vfs_prefix = g_strdup (element->vfs_prefix);
 #ifdef HAVE_CHARSET
     new_element->encoding = g_strdup (element->encoding);
@@ -1109,7 +1106,7 @@ vfs_path_serialize (const vfs_path_t * vpath, GError ** mcerror)
         /* convert one element to config group */
 
         mc_config_set_string_raw (cpath, groupname, "path", element->path);
-        mc_config_set_string_raw (cpath, groupname, "class-name", element->class->name);
+        mc_config_set_string_raw (cpath, groupname, "class-name", element->Class->name);
 #ifdef HAVE_CHARSET
         mc_config_set_string_raw (cpath, groupname, "encoding", element->encoding);
 #endif
@@ -1176,7 +1173,7 @@ vfs_path_deserialize (const char *data, GError ** mcerror)
         g_free (cfg_value);
 
         element = g_new0 (vfs_path_element_t, 1);
-        element->class = eclass;
+        element->Class = eclass;
         element->path = mc_config_get_string_raw (cpath, groupname, "path", NULL);
 
 #ifdef HAVE_CHARSET
@@ -1530,7 +1527,7 @@ vfs_path_element_build_pretty_path_str (const vfs_path_element_t * element)
     char *url_params;
     GString *pretty_path;
 
-    pretty_path = g_string_new (element->class->prefix);
+    pretty_path = g_string_new (element->Class->prefix);
     g_string_append (pretty_path, VFS_PATH_URL_DELIMITER);
 
     url_params = vfs_path_build_url_params_str (element, FALSE);

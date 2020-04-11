@@ -32,9 +32,21 @@
 enum
 {
     KEY_BACKSPACE = 400,
-    KEY_END, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT,
-    KEY_HOME, KEY_A1, KEY_C1, KEY_NPAGE, KEY_PPAGE, KEY_IC,
-    KEY_ENTER, KEY_DC, KEY_SCANCEL, KEY_BTAB
+    KEY_END,
+    KEY_UP,
+    KEY_DOWN,
+    KEY_LEFT,
+    KEY_RIGHT,
+    KEY_HOME,
+    KEY_A1,
+    KEY_C1,
+    KEY_NPAGE,
+    KEY_PPAGE,
+    KEY_IC,
+    KEY_ENTER,
+    KEY_DC,
+    KEY_SCANCEL,
+    KEY_BTAB
 };
 
 /*** structures declarations (and typedefs of structures)*****************************************/

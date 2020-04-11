@@ -5,6 +5,11 @@ project(mcpp)
 
 set(CMAKE_CXX_FLAGS -fpermissive)   # FIXME remove it after code compiling !!!
 
+# Temp workaround for error
+# /home/wbull/CLionProjects/mc/lib/tty/tty-slang.hpp:34:5: error: expected identifier before numeric constant
+#   34 |     KEY_BACKSPACE = 400,
+set(CMAKE_CXX_FLAGS -E)
+
 file(GLOB SRC
         "src/*.cpp"
         "src/consaver/*.cpp"

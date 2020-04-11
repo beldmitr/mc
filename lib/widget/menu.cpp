@@ -27,21 +27,19 @@
  *  \brief Source: pulldown menu code
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <stdarg.h>
 #include <string.h>
 #include <sys/types.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/skin.h"
-#include "lib/tty/key.h"        /* key macros */
-#include "lib/strutil.h"
-#include "lib/widget.h"
-#include "lib/event.h"          /* mc_event_raise() */
+#include "lib/tty/tty.hpp"
+#include "lib/skin.hpp"
+#include "lib/tty/key.hpp"        /* key macros */
+#include "lib/strutil.hpp"
+#include "lib/widget.hpp"
+#include "lib/event.hpp"          /* mc_event_raise() */
 
 /*** global variables ****************************************************************************/
 

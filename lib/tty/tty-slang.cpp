@@ -29,8 +29,6 @@
  *  \brief Source: S-Lang-based tty layer of Midnight Commander
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -41,18 +39,18 @@
 #endif
 #include <termios.h>
 
-#include "lib/global.h"
-#include "lib/strutil.h"        /* str_term_form */
-#include "lib/util.h"           /* is_printable() */
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"        /* str_term_form */
+#include "lib/util.hpp"           /* is_printable() */
 
-#include "tty-internal.h"       /* mc_tty_normalize_from_utf8() */
-#include "tty.h"
-#include "color.h"
-#include "color-slang.h"
-#include "color-internal.h"
-#include "mouse.h"              /* Gpm_Event is required in key.h */
-#include "key.h"                /* define_sequence */
-#include "win.h"
+#include "tty-internal.hpp"       /* mc_tty_normalize_from_utf8() */
+#include "tty.hpp"
+#include "color.hpp"
+#include "color-slang.hpp"
+#include "color-internal.hpp"
+#include "mouse.hpp"              /* Gpm_Event is required in key.h */
+#include "key.hpp"                /* define_sequence */
+#include "win.hpp"
 
 
 /*** global variables ****************************************************************************/

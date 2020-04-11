@@ -33,17 +33,15 @@
  * \date 1995, 1996
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "lib/global.h"
-#include "lib/unixcompat.h"     /* makedev */
-#include "lib/widget.h"         /* message() */
+#include "lib/global.hpp"
+#include "lib/unixcompat.hpp"     /* makedev */
+#include "lib/widget.hpp"         /* message() */
 
-#include "utilvfs.h"
+#include "utilvfs.hpp"
 
 /*** global variables ****************************************************************************/
 

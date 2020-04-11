@@ -30,13 +30,11 @@
  *  \brief Source: support of multiply editors and viewers.
  */
 
-#include <config.h>
-
-#include "lib/global.h"
-#include "lib/tty/tty.h"        /* LINES, COLS */
-#include "lib/tty/color.h"      /* tty_set_normal_attrs() */
-#include "lib/widget.h"
-#include "lib/event.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"        /* LINES, COLS */
+#include "lib/tty/color.hpp"      /* tty_set_normal_attrs() */
+#include "lib/widget.hpp"
+#include "lib/event.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -150,14 +148,14 @@ dialog_switch_add (WDialog * h)
 void
 dialog_switch_remove (WDialog * h)
 {
-    GList *this;
+    GList *This;
 
     if (DIALOG (mc_current->data) == h)
-        this = mc_current;
+        This = mc_current;
     else
-        this = g_list_find (mc_dialogs, h);
+        This = g_list_find (mc_dialogs, h);
 
-    mc_dialogs = g_list_delete_link (mc_dialogs, this);
+    mc_dialogs = g_list_delete_link (mc_dialogs, This);
 
     /* adjust current dialog */
     if (top_dlg != NULL)

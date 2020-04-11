@@ -32,15 +32,13 @@
  *  \brief Source: WButton widget
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/strutil.h"
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"
+#include "lib/strutil.hpp"
+#include "lib/widget.hpp"
 
 /*** global variables ****************************************************************************/
 

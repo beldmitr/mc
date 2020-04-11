@@ -28,8 +28,6 @@
  *  \brief Source: %interface to the terminal controlling library
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <signal.h>
 #include <stdarg.h>
@@ -48,13 +46,13 @@
 #include <sys/ioctl.h>
 #endif
 
-#include "lib/global.h"
-#include "lib/strutil.h"
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"
 
-#include "tty.h"
-#include "tty-internal.h"
-#include "mouse.h"              /* use_mouse_p */
-#include "win.h"
+#include "tty.hpp"
+#include "tty-internal.hpp"
+#include "mouse.hpp"              /* use_mouse_p */
+#include "win.hpp"
 
 /*** global variables ****************************************************************************/
 

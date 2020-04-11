@@ -32,14 +32,12 @@
  *  \brief Source: WCheck widget (checkbutton)
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"
+#include "lib/widget.hpp"
 
 /*** global variables ****************************************************************************/
 

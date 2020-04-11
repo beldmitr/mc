@@ -31,15 +31,13 @@
  *  \brief Source: Listbox widget, a listbox within dialog window
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"        /* COLS */
-#include "lib/skin.h"
-#include "lib/strutil.h"        /* str_term_width1() */
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"        /* COLS */
+#include "lib/skin.hpp"
+#include "lib/strutil.hpp"        /* str_term_width1() */
+#include "lib/widget.hpp"
 
 /*** global variables ****************************************************************************/
 

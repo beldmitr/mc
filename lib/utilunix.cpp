@@ -34,8 +34,6 @@
  *  \brief Source: various utilities - Unix variant
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <errno.h>
 #include <limits.h>
@@ -62,20 +60,20 @@
 #include <pwd.h>
 #include <grp.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/unixcompat.h"
-#include "lib/vfs/vfs.h"        /* VFS_ENCODING_PREFIX */
-#include "lib/strutil.h"        /* str_move() */
-#include "lib/util.h"
-#include "lib/widget.h"         /* message() */
-#include "lib/vfs/xdirentry.h"
+#include "lib/unixcompat.hpp"
+#include "lib/vfs/vfs.hpp"        /* VFS_ENCODING_PREFIX */
+#include "lib/strutil.hpp"        /* str_move() */
+#include "lib/util.hpp"
+#include "lib/widget.hpp"         /* message() */
+#include "lib/vfs/xdirentry.hpp"
 
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
-#include "utilunix.h"
+#include "utilunix.hpp"
 
 /*** global variables ****************************************************************************/
 

@@ -30,9 +30,6 @@
  * \date 2011
  */
 
-
-#include <config.h>
-
 #include <stdio.h>
 #include <stdlib.h>             /* For atol() */
 #include <stdarg.h>
@@ -47,17 +44,17 @@
 #include <pwd.h>
 #include <grp.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/widget.h"         /* message() */
-#include "lib/strutil.h"        /* str_crt_conv_from() */
-#include "lib/util.h"
+#include "lib/widget.hpp"         /* message() */
+#include "lib/strutil.hpp"        /* str_crt_conv_from() */
+#include "lib/util.hpp"
 
-#include "vfs.h"
-#include "utilvfs.h"
-#include "path.h"
-#include "gc.h"
-#include "xdirentry.h"
+#include "vfs.hpp"
+#include "utilvfs.hpp"
+#include "path.hpp"
+#include "gc.hpp"
+#include "xdirentry.hpp"
 
 /* TODO: move it to separate private .h */
 extern GString *vfs_str_buffer;
@@ -209,16 +206,16 @@ mc_open (const vfs_path_t * vpath, int flags, ...)
     }
 
     path_element = vfs_path_get_by_index (vpath, -1);
-    if (vfs_path_element_valid (path_element) && path_element->class->open != NULL)
+    if (vfs_path_element_valid (path_element) && path_element->Class->open != NULL)
     {
         void *info;
 
         /* open must be supported */
-        info = path_element->class->open (vpath, flags, mode);
+        info = path_element->Class->open (vpath, flags, mode);
         if (info == NULL)
-            errno = vfs_ferrno (path_element->class);
+            errno = vfs_ferrno (path_element->Class);
         else
-            result = vfs_new_handle (path_element->class, info);
+            result = vfs_new_handle (path_element->Class, info);
     }
     else
         errno = -EOPNOTSUPP;
@@ -275,13 +272,13 @@ mc_symlink (const vfs_path_t * vpath1, const vfs_path_t * vpath2)
         if (vfs_path_element_valid (path_element))
         {
             result =
-                path_element->class->symlink != NULL ?
-                path_element->class->symlink (vpath1, vpath2) : -1;
+                path_element->Class->symlink != NULL ?
+                path_element->Class->symlink (vpath1, vpath2) : -1;
 
             if (result == -1)
                 errno =
-                    path_element->class->symlink != NULL ?
-                    vfs_ferrno (path_element->class) : E_NOTSUPP;
+                    path_element->Class->symlink != NULL ?
+                    vfs_ferrno (path_element->Class) : E_NOTSUPP;
         }
     }
     return result;
@@ -379,7 +376,7 @@ mc_setctl (const vfs_path_t * vpath, int ctlop, void *arg)
     path_element = vfs_path_get_by_index (vpath, -1);
     if (vfs_path_element_valid (path_element))
         result =
-            path_element->class->setctl != NULL ? path_element->class->setctl (vpath,
+            path_element->Class->setctl != NULL ? path_element->Class->setctl (vpath,
                                                                                ctlop, arg) : 0;
 
     return result;
@@ -433,14 +430,14 @@ mc_opendir (const vfs_path_t * vpath)
         return NULL;
     }
 
-    info = path_element->class->opendir ? path_element->class->opendir (vpath) : NULL;
+    info = path_element->Class->opendir ? path_element->Class->opendir (vpath) : NULL;
     if (info == NULL)
     {
-        errno = path_element->class->opendir ? vfs_ferrno (path_element->class) : E_NOTSUPP;
+        errno = path_element->Class->opendir ? vfs_ferrno (path_element->Class) : E_NOTSUPP;
         return NULL;
     }
 
-    path_element->dir.info = info;
+    path_element->dir.info = static_cast<DIR*>(info);
 
 #ifdef HAVE_CHARSET
     path_element->dir.converter = (path_element->encoding != NULL) ?
@@ -449,7 +446,7 @@ mc_opendir (const vfs_path_t * vpath)
         path_element->dir.converter = str_cnv_from_term;
 #endif
 
-    handle = vfs_new_handle (path_element->class, vfs_path_element_clone (path_element));
+    handle = vfs_new_handle (path_element->Class, vfs_path_element_clone (path_element));
 
     handlep = g_new (int, 1);
     *handlep = handle;
@@ -565,9 +562,9 @@ mc_stat (const vfs_path_t * vpath, struct stat *buf)
     path_element = vfs_path_get_by_index (vpath, -1);
     if (vfs_path_element_valid (path_element))
     {
-        result = path_element->class->stat ? path_element->class->stat (vpath, buf) : -1;
+        result = path_element->Class->stat ? path_element->Class->stat (vpath, buf) : -1;
         if (result == -1)
-            errno = path_element->class->name ? vfs_ferrno (path_element->class) : E_NOTSUPP;
+            errno = path_element->Class->name ? vfs_ferrno (path_element->Class) : E_NOTSUPP;
     }
 
     return result;
@@ -587,9 +584,9 @@ mc_lstat (const vfs_path_t * vpath, struct stat *buf)
     path_element = vfs_path_get_by_index (vpath, -1);
     if (vfs_path_element_valid (path_element))
     {
-        result = path_element->class->lstat ? path_element->class->lstat (vpath, buf) : -1;
+        result = path_element->Class->lstat ? path_element->Class->lstat (vpath, buf) : -1;
         if (result == -1)
-            errno = path_element->class->name ? vfs_ferrno (path_element->class) : E_NOTSUPP;
+            errno = path_element->Class->name ? vfs_ferrno (path_element->Class) : E_NOTSUPP;
     }
 
     return result;

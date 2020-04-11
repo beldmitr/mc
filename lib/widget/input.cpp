@@ -32,25 +32,23 @@
  *  \brief Source: WInput widget
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"        /* XCTRL and ALT macros  */
-#include "lib/fileloc.h"
-#include "lib/skin.h"
-#include "lib/strutil.h"
-#include "lib/util.h"
-#include "lib/widget.h"
-#include "lib/event.h"          /* mc_event_raise() */
-#include "lib/mcconfig.h"       /* mc_config_history_*() */
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"        /* XCTRL and ALT macros  */
+#include "lib/fileloc.hpp"
+#include "lib/skin.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
+#include "lib/event.hpp"          /* mc_event_raise() */
+#include "lib/mcconfig.hpp"       /* mc_config_history_*() */
 
-#include "input_complete.h"
+#include "input_complete.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -1200,7 +1198,7 @@ input_assign_text (WInput * in, const char *text)
     buffer_len = 1 + MAX ((size_t) w->cols, text_len);
     in->current_max_size = buffer_len;
     if (buffer_len > (size_t) w->cols)
-        in->buffer = g_realloc (in->buffer, buffer_len);
+        in->buffer = static_cast<char*>(g_realloc (in->buffer, buffer_len));
     memmove (in->buffer, text, text_len + 1);
     in->point = str_length (in->buffer);
     input_update (in, TRUE);

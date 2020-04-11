@@ -40,8 +40,6 @@
  * parse_ls_lga and friends which do not have that prefix.
  */
 
-#include <config.h>
-
 #include <errno.h>
 #include <stdlib.h>
 
@@ -54,19 +52,19 @@
 #endif /* HAVE_SYS_IOCTL_H */
 #endif /* __linux__ */
 
-#include "lib/global.h"
-#include "lib/strutil.h"
-#include "lib/util.h"
-#include "lib/widget.h"         /* message() */
-#include "lib/event.h"
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"         /* message() */
+#include "lib/event.hpp"
 
 #ifdef HAVE_CHARSET
-#include "lib/charsets.h"
+#include "lib/charsets.hpp"
 #endif
 
-#include "vfs.h"
-#include "utilvfs.h"
-#include "gc.h"
+#include "vfs.hpp"
+#include "utilvfs.hpp"
+#include "gc.hpp"
 
 /* TODO: move it to the separate .h */
 extern struct dirent *mc_readdir_result;
@@ -453,7 +451,7 @@ vfs_file_class_flags (const vfs_path_t * vpath)
     if (!vfs_path_element_valid (path_element))
         return VFSF_UNKNOWN;
 
-    return path_element->class->flags;
+    return path_element->Class->flags;
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -487,7 +485,7 @@ vfs_setup_work_dir (void)
      */
 
     path_element = vfs_path_get_by_index (current_path, -1);
-    current_vfs = path_element->class;
+    current_vfs = path_element->Class;
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -597,7 +595,7 @@ vfs_setup_cwd (void)
 
     path_element = vfs_path_get_by_index (vfs_get_raw_current_dir (), -1);
 
-    if ((path_element->class->flags & VFSF_LOCAL) != 0)
+    if ((path_element->Class->flags & VFSF_LOCAL) != 0)
     {
         current_dir = g_get_current_dir ();
         tmp_vpath = vfs_path_from_str (current_dir);

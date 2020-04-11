@@ -29,16 +29,14 @@
  *  please read the relevant sections of the C standard.
  */
 
-#include <config.h>
-
 #include <setjmp.h>
 #include <X11/Xlib.h>
 #ifdef HAVE_GMODULE
 #include <gmodule.h>
 #endif
 
-#include "lib/global.h"
-#include "x11conn.h"
+#include "lib/global.hpp"
+#include "x11conn.hpp"
 
 /*** global variables ****************************************************************************/
 

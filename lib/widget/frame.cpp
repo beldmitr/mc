@@ -27,17 +27,15 @@
  *  \brief Source: WFrame widget (frame of dialogs)
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/tty/color.h"
-#include "lib/skin.h"
-#include "lib/strutil.h"
-#include "lib/util.h"           /* MC_PTR_FREE */
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/color.hpp"
+#include "lib/skin.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"           /* MC_PTR_FREE */
+#include "lib/widget.hpp"
 
 /*** global variables ****************************************************************************/
 

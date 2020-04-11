@@ -26,13 +26,11 @@
  *  \brief Source: shared stuff of widgets
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "rect.h"
+#include "rect.hpp"
 
 /*** global variables ****************************************************************************/
 

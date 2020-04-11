@@ -32,15 +32,13 @@
  *  \brief Source: WGroupbox widget
  */
 
-#include <config.h>
+#include "lib/global.hpp"
 
-#include "lib/global.h"
-
-#include "lib/tty/tty.h"
-#include "lib/tty/color.h"
-#include "lib/skin.h"
-#include "lib/util.h"
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/color.hpp"
+#include "lib/skin.hpp"
+#include "lib/util.hpp"
+#include "lib/widget.hpp"
 
 /*** global variables ****************************************************************************/
 

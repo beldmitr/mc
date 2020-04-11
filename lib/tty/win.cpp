@@ -27,8 +27,6 @@
  *  \brief Source: Terminal management xterm and rxvt support
  */
 
-#include <config.h>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -40,11 +38,11 @@
 #include <unistd.h>
 #endif
 
-#include "lib/global.h"
-#include "lib/util.h"           /* is_printable() */
-#include "tty-internal.h"
-#include "tty.h"                /* tty_gotoyx, tty_print_char */
-#include "win.h"
+#include "lib/global.hpp"
+#include "lib/util.hpp"           /* is_printable() */
+#include "tty-internal.hpp"
+#include "tty.hpp"                /* tty_gotoyx, tty_print_char */
+#include "win.hpp"
 
 /*** global variables ****************************************************************************/
 

@@ -32,8 +32,6 @@
  *  \brief Source: various utilities
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <limits.h>
 #include <stdarg.h>
@@ -45,13 +43,13 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "lib/global.h"
-#include "lib/mcconfig.h"
-#include "lib/fileloc.h"
-#include "lib/vfs/vfs.h"
-#include "lib/strutil.h"
-#include "lib/util.h"
-#include "lib/timer.h"
+#include "lib/global.hpp"
+#include "lib/mcconfig.hpp"
+#include "lib/fileloc.hpp"
+#include "lib/vfs/vfs.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"
+#include "lib/timer.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -120,8 +118,8 @@ resolve_symlinks (const vfs_path_t * vpath)
         return NULL;
 
     p = p2 = g_strdup (vfs_path_as_str (vpath));
-    r = buf = g_malloc (MC_MAXPATHLEN);
-    buf2 = g_malloc (MC_MAXPATHLEN);
+    r = buf = static_cast<char*>(g_malloc (MC_MAXPATHLEN));
+    buf2 = static_cast<char*>(g_malloc (MC_MAXPATHLEN));
     *r++ = PATH_SEP;
     *r = '\0';
 
@@ -1066,7 +1064,7 @@ diff_two_paths (const vfs_path_t * vpath1, const vfs_path_t * vpath2)
             else
                 goto ret;
         }
-        p = buf = g_malloc (currlen);
+        p = buf = static_cast<char*>(g_malloc (currlen));
         prevlen = currlen;
         for (; i >= 0; i--, p += 3)
             strcpy (p, "../");

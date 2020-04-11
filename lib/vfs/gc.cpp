@@ -37,20 +37,18 @@
  */
 
 
-#include <config.h>
-
 #include <stdlib.h>             /* For atol() */
 #include <sys/types.h>
 #include <sys/time.h>           /* gettimeofday() */
 
-#include "lib/global.h"
-#include "lib/event.h"
-#include "lib/util.h"           /* MC_PTR_FREE */
+#include "lib/global.hpp"
+#include "lib/event.hpp"
+#include "lib/util.hpp"           /* MC_PTR_FREE */
 
-#include "vfs.h"
-#include "utilvfs.h"
+#include "vfs.hpp"
+#include "utilvfs.hpp"
 
-#include "gc.h"
+#include "gc.hpp"
 
 /*
  * The garbage collection mechanism is based on "stamps".
@@ -202,7 +200,7 @@ vfs_stamp_path (const vfs_path_t * vpath)
     path_element = vfs_path_get_by_index (vpath, -1);
 
     id = vfs_getid (vpath);
-    vfs_addstamp (path_element->class, id);
+    vfs_addstamp (path_element->Class, id);
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -231,9 +229,9 @@ vfs_stamp_create (struct vfs_class *vclass, vfsid id)
     path_element = vfs_path_get_by_index (vpath, -1);
 
     nvfsid = vfs_getid (vpath);
-    vfs_rmstamp (path_element->class, nvfsid);
+    vfs_rmstamp (path_element->Class, nvfsid);
 
-    if (!(id == NULL || (path_element->class == vclass && nvfsid == id)))
+    if (!(id == NULL || (path_element->Class == vclass && nvfsid == id)))
     {
         mc_event_raise (MCEVENT_GROUP_CORE, "vfs_timestamp", (gpointer) & event_data);
 
@@ -331,7 +329,7 @@ vfs_release_path (const vfs_path_t * vpath)
     const vfs_path_element_t *path_element;
 
     path_element = vfs_path_get_by_index (vpath, -1);
-    vfs_stamp_create (path_element->class, vfs_getid (vpath));
+    vfs_stamp_create (path_element->Class, vfs_getid (vpath));
 }
 
 /* --------------------------------------------------------------------------------------------- */

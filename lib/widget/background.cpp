@@ -27,14 +27,12 @@
  *  \brief Source: WBackground widget (background area of dialog)
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/tty/color.h"
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/color.hpp"
+#include "lib/widget.hpp"
 
 /*** global variables ****************************************************************************/
 

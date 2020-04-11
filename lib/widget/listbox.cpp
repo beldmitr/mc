@@ -32,17 +32,15 @@
  *  \brief Source: WListbox widget
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"
-#include "lib/skin.h"
-#include "lib/strutil.h"
-#include "lib/util.h"           /* Q_() */
-#include "lib/widget.h"
+#include "lib/tty/tty.hpp"
+#include "lib/skin.hpp"
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"           /* Q_() */
+#include "lib/widget.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -75,7 +73,7 @@ listbox_entry_cmp (const void *a, const void *b, void *user_data)
 static void
 listbox_entry_free (void *data)
 {
-    WLEntry *e = data;
+    WLEntry *e = static_cast<WLEntry *>(data);
 
     g_free (e->text);
     if (e->free_data)

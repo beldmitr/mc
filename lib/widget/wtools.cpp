@@ -31,18 +31,16 @@
  *  \brief Source: widget based utility functions
  */
 
-#include <config.h>
-
 #include <stdarg.h>
 #include <stdlib.h>
 
-#include "lib/global.h"
-#include "lib/tty/tty.h"
-#include "lib/tty/key.h"        /* tty_getch() */
-#include "lib/strutil.h"
-#include "lib/util.h"           /* tilde_expand() */
-#include "lib/widget.h"
-#include "lib/event.h"          /* mc_event_raise() */
+#include "lib/global.hpp"
+#include "lib/tty/tty.hpp"
+#include "lib/tty/key.hpp"        /* tty_getch() */
+#include "lib/strutil.hpp"
+#include "lib/util.hpp"           /* tilde_expand() */
+#include "lib/widget.hpp"
+#include "lib/event.hpp"          /* mc_event_raise() */
 
 /*** global variables ****************************************************************************/
 
@@ -240,7 +238,7 @@ wtools_parent_call (void *routine, gpointer ctx, int argc, ...)
     ev_background_parent_call_t event_data;
 
     event_data.routine = routine;
-    event_data.ctx = ctx;
+    event_data.ctx = static_cast<gpointer*>(ctx);
     event_data.argc = argc;
     va_start (event_data.ap, argc);
     mc_event_raise (MCEVENT_GROUP_CORE, "background_parent_call", (gpointer) & event_data);

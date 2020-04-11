@@ -31,15 +31,13 @@
  *  \brief Source: quick dialog engine
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <stdio.h>              /* fprintf() */
 
-#include "lib/global.h"
-#include "lib/strutil.h"        /* str_term_width1() */
-#include "lib/util.h"           /* tilde_expand() */
-#include "lib/widget.h"
+#include "lib/global.hpp"
+#include "lib/strutil.hpp"        /* str_term_width1() */
+#include "lib/util.hpp"           /* tilde_expand() */
+#include "lib/widget.hpp"
 
 /*** global variables ****************************************************************************/
 

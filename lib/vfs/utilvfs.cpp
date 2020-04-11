@@ -29,8 +29,6 @@
  * \date 1995, 1996
  */
 
-#include <config.h>
-
 #include <ctype.h>
 #include <sys/types.h>
 #include <pwd.h>
@@ -38,14 +36,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "lib/global.h"
-#include "lib/unixcompat.h"
-#include "lib/util.h"           /* mc_mkstemps() */
-#include "lib/widget.h"         /* message() */
-#include "lib/strutil.h"        /* INVALID_CONV */
+#include "lib/global.hpp"
+#include "lib/unixcompat.hpp"
+#include "lib/util.hpp"           /* mc_mkstemps() */
+#include "lib/widget.hpp"         /* message() */
+#include "lib/strutil.hpp"        /* INVALID_CONV */
 
-#include "vfs.h"
-#include "utilvfs.h"
+#include "vfs.hpp"
+#include "utilvfs.hpp"
 
 /*** global variables ****************************************************************************/
 

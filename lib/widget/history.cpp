@@ -32,17 +32,15 @@
  *  \brief Source: show history
  */
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <sys/types.h>
 
-#include "lib/global.h"
+#include "lib/global.hpp"
 
-#include "lib/tty/tty.h"        /* LINES, COLS */
-#include "lib/strutil.h"
-#include "lib/widget.h"
-#include "lib/keybind.h"        /* CK_* */
+#include "lib/tty/tty.hpp"        /* LINES, COLS */
+#include "lib/strutil.hpp"
+#include "lib/widget.hpp"
+#include "lib/keybind.hpp"        /* CK_* */
 
 /*** global variables ****************************************************************************/
 
