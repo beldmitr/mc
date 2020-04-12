@@ -24,50 +24,5 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "lib/global.hpp"
-#include "lib/util.hpp"
 
-#include "src/filemanager/file.hpp"
-#include "src/filemanager/filegui.hpp"
 
-#include "util.hpp"
-
-/*** global variables ****************************************************************************/
-
-/*** file scope macro definitions ****************************************************************/
-
-/*** file scope type declarations ****************************************************************/
-
-/*** file scope variables ************************************************************************/
-
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-gboolean
-check_for_default (const vfs_path_t * default_file_vpath, const vfs_path_t * file_vpath)
-{
-    if (!exist_file (vfs_path_as_str (file_vpath)))
-    {
-        file_op_context_t *ctx;
-        file_op_total_context_t *tctx;
-
-        if (!exist_file (vfs_path_as_str (default_file_vpath)))
-            return FALSE;
-
-        ctx = file_op_context_new (OP_COPY);
-        tctx = file_op_total_context_new ();
-        file_op_context_create_ui (ctx, 0, static_cast<filegui_dialog_type_t>(FALSE));
-        copy_file_file (tctx, ctx, vfs_path_as_str (default_file_vpath),
-                        vfs_path_as_str (file_vpath));
-        file_op_total_context_destroy (tctx);
-        file_op_context_destroy (ctx);
-    }
-
-    return TRUE;
-}
-
-/* --------------------------------------------------------------------------------------------- */
