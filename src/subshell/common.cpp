@@ -288,7 +288,7 @@ init_subshell_child (const char *pty_name)
         putenv (g_strdup (sid_str));
     }
 
-    switch (mc_global.shell->type)
+    switch (mc_global.shell->GetType())
     {
     case Shell::Type::SHELL_BASH:
         /* Do we have a custom init file ~/.local/share/mc/bashrc? */
@@ -346,7 +346,7 @@ init_subshell_child (const char *pty_name)
         break;
 
     default:
-        fprintf (stderr, __FILE__ ": unimplemented subshell type %u\r\n", mc_global.shell->type);
+        fprintf (stderr, __FILE__ ": unimplemented subshell type %u\r\n", mc_global.shell->GetType());
         my_exit (FORK_FAILURE);
     }
 
@@ -371,16 +371,16 @@ init_subshell_child (const char *pty_name)
 
     /* Execute the subshell at last */
 
-    switch (mc_global.shell->type)
+    switch (mc_global.shell->GetType())
     {
     case Shell::Type::SHELL_BASH:
-        execl (mc_global.shell->path.c_str(), "bash", "-rcfile", init_file, (char *) NULL);
+        execl (mc_global.shell->GetPath(), "bash", "-rcfile", init_file, (char *) NULL);
         break;
 
     case Shell::Type::SHELL_ZSH:
         /* Use -g to exclude cmds beginning with space from history
          * and -Z to use the line editor on non-interactive term */
-        execl (mc_global.shell->path.c_str(), "zsh", "-Z", "-g", (char *) NULL);
+        execl (mc_global.shell->GetPath(), "zsh", "-Z", "-g", (char *) NULL);
 
         break;
 
@@ -388,7 +388,7 @@ init_subshell_child (const char *pty_name)
     case Shell::Type::SHELL_DASH:
     case Shell::Type::SHELL_TCSH:
     case Shell::Type::SHELL_FISH:
-        execl (mc_global.shell->path.c_str(), mc_global.shell->path.c_str(), (char *) NULL);
+        execl (mc_global.shell->GetPath(), mc_global.shell->GetPath(), (char *) NULL);
         break;
 
     default:
@@ -779,7 +779,7 @@ pty_open_slave (const char *pty_name)
 static void
 init_subshell_precmd (char *precmd, size_t buff_size)
 {
-    switch (mc_global.shell->type)
+    switch (mc_global.shell->GetType())
     {
     case Shell::Type::SHELL_BASH:
         g_snprintf (precmd, buff_size,
@@ -896,7 +896,7 @@ subshell_name_quote (const char *s)
     const char *su, *n;
     const char *quote_cmd_start, *quote_cmd_end;
 
-    if (mc_global.shell->type == Shell::Type::SHELL_FISH)
+    if (mc_global.shell->GetType() == Shell::Type::SHELL_FISH)
     {
         quote_cmd_start = "(printf '%b' '";
         quote_cmd_end = "')";
@@ -976,7 +976,7 @@ init_subshell (void)
 
     if (mc_global.tty.subshell_pty == 0)
     {                           /* First time through */
-        if (mc_global.shell->type == Shell::Type::SHELL_NONE)
+        if (mc_global.shell->GetType() == Shell::Type::SHELL_NONE)
             return;
 
         /* Open a pty for talking to the subshell */
@@ -1011,7 +1011,7 @@ init_subshell (void)
 
         /* Create a pipe for receiving the subshell's CWD */
 
-        if (mc_global.shell->type == Shell::Type::SHELL_TCSH)
+        if (mc_global.shell->GetType() == Shell::Type::SHELL_TCSH)
         {
             g_snprintf (tcsh_fifo, sizeof (tcsh_fifo), "%s/mc.pipe.%d",
                         mc_tmpdir (), (int) getpid ());
@@ -1221,7 +1221,7 @@ exit_subshell (void)
 
     if (subshell_quit)
     {
-        if (mc_global.shell->type == Shell::Type::SHELL_TCSH)
+        if (mc_global.shell->GetType() == Shell::Type::SHELL_TCSH)
         {
             if (unlink (tcsh_fifo) == -1)
                 fprintf (stderr, "Cannot remove named pipe %s: %s\r\n",
@@ -1295,7 +1295,7 @@ do_subshell_chdir (const vfs_path_t * vpath, gboolean update_prompt)
 
         bPathNotEq = strcmp (subshell_cwd, pcwd) != 0;
 
-        if (bPathNotEq && mc_global.shell->type == Shell::Type::SHELL_TCSH)
+        if (bPathNotEq && mc_global.shell->GetType() == Shell::Type::SHELL_TCSH)
         {
             char rp_subshell_cwd[PATH_MAX];
             char rp_current_panel_cwd[PATH_MAX];
@@ -1322,7 +1322,7 @@ do_subshell_chdir (const vfs_path_t * vpath, gboolean update_prompt)
     }
 
     /* Really escape Zsh history */
-    if (mc_global.shell->type == Shell::Type::SHELL_ZSH)
+    if (mc_global.shell->GetType() == Shell::Type::SHELL_ZSH)
     {
         /* Per Zsh documentation last command prefixed with space lingers in the internal history
          * until the next command is entered before it vanishes. To make it vanish right away,

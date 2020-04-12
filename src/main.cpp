@@ -119,7 +119,7 @@ static void check_codeset (void)
 
 static void OS_Setup (void)
 {
-    Shell::Init ();
+    mc_global.shell = std::make_shared<Shell>();
 
     /* This is the directory, where MC was installed, on Unix this is DATADIR */
     /* and can be overriden by the MC_DATADIR environment variable */

@@ -36,80 +36,70 @@
 #include "util.hpp"
 
 
-char Shell::rp_shell[PATH_MAX];
-
 void Shell::Init()
 {
-    Shell *mc_shell;
-
-    char *shell_name = Get_name_env();
-    if(shell_name)
+    std::string shell_name = GetNameEnv();
+    if(!shell_name.empty())
+        this->path = shell_name;    // Set path fomr ENV, else get path from system
+    else
     {
-        mc_shell = new Shell(shell_name);
+        SetPathFromSystem();
     }
 
-    if (!mc_shell)
-        mc_shell = Get_installed_in_system();
-
-    mc_shell->real_path = mc_realpath(mc_shell->path.c_str(), rp_shell);
+    this->real_path = mc_realpath(this->path.c_str(), rp_shell);
 
     /* Find out what type of shell we have. Also consider real paths (resolved symlinks)
      * because e.g. csh might point to tcsh, ash to dash or busybox, sh to anything. */
 
-    if (!mc_shell->real_path.empty())
-        Recognize_real_path(mc_shell);
+    if (!this->real_path.empty())
+        RecognizeRealPath();
 
-    if (mc_shell->type == Shell::Type::SHELL_NONE)
-        Recognize_path(mc_shell);
+    if (this->type == Shell::Type::SHELL_NONE)
+        RecognizePath();
 
-    if (mc_shell->type == Shell::Type::SHELL_NONE)
+    if (this->type == Shell::Type::SHELL_NONE)
         mc_global.tty.use_subshell = FALSE;
-
-    mc_global.shell = std::shared_ptr<Shell>(mc_shell);
-
 }
 
-void Shell::Recognize_path (Shell* mc_shell)
+void Shell::RecognizePath ()
 {
     /* If shell is not symlinked to busybox, it is safe to assume it is a real shell */
-    if (std::strstr(mc_shell->path.c_str(), "/bash") != NULL || getenv ("BASH") != NULL)
+    if (std::strstr(this->path.c_str(), "/bash") != NULL || getenv ("BASH") != NULL)
     {
-        mc_shell->type = Shell::Type::SHELL_BASH;
-        mc_shell->name = "bash";
+        this->type = Shell::Type::SHELL_BASH;
+        this->name = "bash";
     }
-    else if (std::strstr(mc_shell->path.c_str(), "/sh") != NULL || getenv ("SH") != NULL)
+    else if (std::strstr(this->path.c_str(), "/sh") != NULL || getenv ("SH") != NULL)
     {
-        mc_shell->type = Shell::Type::SHELL_SH;
-        mc_shell->name = "sh";
+        this->type = Shell::Type::SHELL_SH;
+        this->name = "sh";
     }
-    else if (std::strstr(mc_shell->path.c_str(), "/ash") != NULL || getenv ("ASH") != NULL)
+    else if (std::strstr(this->path.c_str(), "/ash") != NULL || getenv ("ASH") != NULL)
     {
-        mc_shell->type = Shell::Type::SHELL_ASH_BUSYBOX;
-        mc_shell->name = "ash";
+        this->type = Shell::Type::SHELL_ASH_BUSYBOX;
+        this->name = "ash";
     }
     else
-        mc_shell->type = Shell::Type::SHELL_NONE;
+        this->type = Shell::Type::SHELL_NONE;
 }
 
-Shell* Shell::Get_installed_in_system ()
+void Shell::SetPathFromSystem()
 {
-    Shell* mc_shell = new Shell;
-
     /* 3rd choice: look for existing shells supported as MC subshells.  */
     if (access ("/bin/bash", X_OK) == 0)
-        mc_shell->path = "/bin/bash";
+        this->path = "/bin/bash";
     else if (access ("/bin/ash", X_OK) == 0)
-        mc_shell->path = "/bin/ash";
+        this->path = "/bin/ash";
     else if (access ("/bin/dash", X_OK) == 0)
-        mc_shell->path = "/bin/dash";
+        this->path = "/bin/dash";
     else if (access ("/bin/busybox", X_OK) == 0)
-        mc_shell->path = "/bin/busybox";
+        this->path = "/bin/busybox";
     else if (access ("/bin/zsh", X_OK) == 0)
-        mc_shell->path = "/bin/zsh";
+        this->path = "/bin/zsh";
     else if (access ("/bin/tcsh", X_OK) == 0)
-        mc_shell->path = "/bin/tcsh";
+        this->path = "/bin/tcsh";
     else if (access ("/bin/csh", X_OK) == 0)
-        mc_shell->path = "/bin/csh";
+        this->path = "/bin/csh";
         /* No fish as fallback because it is so much different from other shells and
          * in a way exotic (even though user-friendly by name) that we should not
          * present it as a subshell without the user's explicit intention. We rather
@@ -119,48 +109,46 @@ Shell* Shell::Get_installed_in_system ()
          */
     else
         /* Fallback and last resort: system default shell */
-        mc_shell->path = "/bin/sh";
-
-    return mc_shell;
+        this->path = "/bin/sh";
 }
 
-void Shell::Recognize_real_path (Shell* mc_shell)
+void Shell::RecognizeRealPath ()
 {
-    if (std::strstr(mc_shell->path.c_str(), "/zsh") != NULL
-        || std::strstr(mc_shell->real_path.c_str(), "/zsh") != NULL
+    if (std::strstr(this->path.c_str(), "/zsh") != NULL
+        || std::strstr(this->real_path.c_str(), "/zsh") != NULL
         || getenv ("ZSH_VERSION") != NULL)
     {
         /* Also detects ksh symlinked to zsh */
-        mc_shell->type = Shell::Type::SHELL_ZSH;
-        mc_shell->name = "zsh";
+        this->type = Shell::Type::SHELL_ZSH;
+        this->name = "zsh";
     }
-    else if (std::strstr(mc_shell->path.c_str(), "/tcsh") != NULL
-             || std::strstr(mc_shell->real_path.c_str(), "/tcsh") != NULL)
+    else if (std::strstr(this->path.c_str(), "/tcsh") != NULL
+             || std::strstr(this->real_path.c_str(), "/tcsh") != NULL)
     {
         /* Also detects csh symlinked to tcsh */
-        mc_shell->type = Shell::Type::SHELL_TCSH;
-        mc_shell->name = "tcsh";
+        this->type = Shell::Type::SHELL_TCSH;
+        this->name = "tcsh";
     }
-    else if (std::strstr(mc_shell->path.c_str(), "/csh") != NULL
-             || std::strstr(mc_shell->real_path.c_str(), "/csh") != NULL)
+    else if (std::strstr(this->path.c_str(), "/csh") != NULL
+             || std::strstr(this->real_path.c_str(), "/csh") != NULL)
     {
-        mc_shell->type = Shell::Type::SHELL_TCSH;
-        mc_shell->name = "csh";
+        this->type = Shell::Type::SHELL_TCSH;
+        this->name = "csh";
     }
-    else if (std::strstr(mc_shell->path.c_str(), "/fish") != NULL
-             || std::strstr(mc_shell->real_path.c_str(), "/fish") != NULL)
+    else if (std::strstr(this->path.c_str(), "/fish") != NULL
+             || std::strstr(this->real_path.c_str(), "/fish") != NULL)
     {
-        mc_shell->type = Shell::Type::SHELL_FISH;
-        mc_shell->name = "fish";
+        this->type = Shell::Type::SHELL_FISH;
+        this->name = "fish";
     }
-    else if (std::strstr(mc_shell->path.c_str(), "/dash") != NULL
-             || std::strstr(mc_shell->real_path.c_str(), "/dash") != NULL)
+    else if (std::strstr(this->path.c_str(), "/dash") != NULL
+             || std::strstr(this->real_path.c_str(), "/dash") != NULL)
     {
         /* Debian ash (also found if symlinked to by ash/sh) */
-        mc_shell->type = Shell::Type::SHELL_DASH;
-        mc_shell->name = "dash";
+        this->type = Shell::Type::SHELL_DASH;
+        this->name = "dash";
     }
-    else if (std::strstr(mc_shell->real_path.c_str(), "/busybox") != NULL)
+    else if (std::strstr(this->real_path.c_str(), "/busybox") != NULL)
     {
         /* If shell is symlinked to busybox, assume it is an ash, even though theoretically
          * it could also be a hush (a mini shell for non-MMU systems deactivated by default).
@@ -169,16 +157,16 @@ void Shell::Recognize_real_path (Shell* mc_shell)
          * Sometimes even bash is symlinked to busybox (CONFIG_FEATURE_BASH_IS_ASH option),
          * so we need to check busybox symlinks *before* checking for the name "bash"
          * in order to avoid that case. */
-        mc_shell->type = Shell::Type::SHELL_ASH_BUSYBOX;
-        mc_shell->name = mc_shell->path.c_str();
+        this->type = Shell::Type::SHELL_ASH_BUSYBOX;
+        this->name = this->path.c_str();
     }
     else
-        mc_shell->type = Shell::Type::SHELL_NONE;
+        this->type = Shell::Type::SHELL_NONE;
 }
 
-char* Shell::Get_name_env ()
+std::string Shell::GetNameEnv ()
 {
-    char *shell_name = NULL;
+    std::string shell_name;
 
     const char *shell_env = std::getenv("SHELL");
     if ((shell_env == NULL) || (shell_env[0] == '\0'))
@@ -186,20 +174,11 @@ char* Shell::Get_name_env ()
         /* 2nd choice: user login shell */
         struct passwd *pwd = getpwuid (geteuid ());
         if (pwd)
-            shell_name = g_strdup (pwd->pw_shell);
+            shell_name = pwd->pw_shell;
     }
     else
         /* 1st choice: SHELL environment variable */
-        shell_name = g_strdup (shell_env);
+        shell_name = shell_env;
 
     return shell_name;
 }
-
-//Shell* Shell::Get_from_env ()
-//{
-//    char *shell_name = Get_name_env();
-//    if(!shell_name) return nullptr;
-//
-//    Shell* mc_shell = new Shell(shell_name);
-//    return mc_shell;
-//}

@@ -21,33 +21,39 @@ public:
         SHELL_FISH
     };
 public:
-    Shell() = default;
-
-    Shell(char* path)
-        :   path(path)
+    Shell()
     {
-
+        Init();
     }
 
     ~Shell()
     {
     }
 
-public:
+private:
     Type type;
     std::string name;
     std::string path;
     std::string real_path;
 
-private:
-    static char rp_shell[PATH_MAX];
 public:
-    static void Init();
+    Type GetType() const
+    {
+        return type;
+    }
+
+    const char* GetPath() const
+    {
+        return path.c_str();
+    }
 
 private:
-    static void Recognize_path (Shell* mc_shell);
-    static Shell* Get_installed_in_system ();
-    static void Recognize_real_path (Shell* mc_shell);
-    static char* Get_name_env ();
-//    static Shell* Get_from_env ();
+    char rp_shell[PATH_MAX];
+
+private:
+    void Init();
+    void RecognizePath();
+    void SetPathFromSystem();
+    void RecognizeRealPath();
+    std::string GetNameEnv();
 };
