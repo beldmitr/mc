@@ -4,22 +4,25 @@
 
 #pragma once
 
-/*** typedefs(not structures) and defined constants **********************************************/
+#include <sys/time.h>
 
-/*** enums ***************************************************************************************/
+class mc_timer_t
+{
+private:
+    uint64_t start;
+public:
+    mc_timer_t()
+    {
+        struct timeval tv;
+        gettimeofday (&tv, NULL);
+        this->start = static_cast<uint64_t>(tv.tv_sec) * G_USEC_PER_SEC + static_cast<uint64_t>(tv.tv_usec);
+    }
 
-/*** structures declarations (and typedefs of structures)*****************************************/
+    uint64_t mc_timer_elapsed ()
+    {
+        struct timeval tv;
+        gettimeofday (&tv, NULL);
+        return (static_cast<uint64_t>(tv.tv_sec) * G_USEC_PER_SEC + static_cast<uint64_t>(tv.tv_usec) - this->start);
 
-struct mc_timer_t;
-typedef struct mc_timer_t mc_timer_t;
-
-/*** global variables defined in .c file *********************************************************/
-
-/*** declarations of public functions ************************************************************/
-
-mc_timer_t *mc_timer_new (void);
-void mc_timer_destroy (mc_timer_t * timer);
-guint64 mc_timer_elapsed (const mc_timer_t * timer);
-
-/*** inline functions **************************************************/
-
+    }
+};

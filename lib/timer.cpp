@@ -27,7 +27,7 @@
  *  \brief Source: simple timer
  */
 
-#include <sys/time.h>
+
 
 #include "lib/global.hpp"
 #include "lib/timer.hpp"
@@ -41,10 +41,10 @@
  * #mc_timer_t records a start time, and counts microseconds elapsed since
  * that time.
  **/
-struct mc_timer_t
-{
-    guint64 start;
-};
+//struct mc_timer_t
+//{
+//    uint64_t start;
+//};
 
 /*** file scope macro definitions ****************************************************************/
 
@@ -63,18 +63,17 @@ struct mc_timer_t
  *
  * @return: a new #mc_timer_t.
  **/
-mc_timer_t *
-mc_timer_new (void)
-{
-    mc_timer_t *timer;
-    struct timeval tv;
-
-    timer = g_new (mc_timer_t, 1);
-    gettimeofday (&tv, NULL);
-    timer->start = (guint64) tv.tv_sec * G_USEC_PER_SEC + (guint64) tv.tv_usec;
-
-    return timer;
-}
+//mc_timer_t* mc_timer_new()
+//{
+//    auto *mem = malloc(sizeof(mc_timer_t));
+//    auto* timer = new (mem) mc_timer_t{};
+//
+//    struct timeval tv;
+//    gettimeofday (&tv, NULL);
+//    timer->start = static_cast<uint64_t>(tv.tv_sec) * G_USEC_PER_SEC + static_cast<uint64_t>(tv.tv_usec);
+//
+//    return timer;
+//}
 
 /* --------------------------------------------------------------------------------------------- */
 
@@ -83,11 +82,10 @@ mc_timer_new (void)
  *
  * @timer: an #mc_timer_t to destroy.
  **/
-void
-mc_timer_destroy (mc_timer_t * timer)
-{
-    g_free (timer);
-}
+//void mc_timer_destroy (mc_timer_t * timer)
+//{
+//    g_free (timer);
+//}
 
 /* --------------------------------------------------------------------------------------------- */
 
@@ -99,14 +97,13 @@ mc_timer_destroy (mc_timer_t * timer)
  * @return: microseconds elapsed, the time since the timer was started
  *
  **/
-guint64
-mc_timer_elapsed (const mc_timer_t * timer)
-{
-    struct timeval tv;
-
-    gettimeofday (&tv, NULL);
-
-    return ((guint64) tv.tv_sec * G_USEC_PER_SEC + (guint64) tv.tv_usec - timer->start);
-}
+//uint64_t mc_timer_elapsed (const mc_timer_t * timer)
+//{
+//    struct timeval tv;
+//
+//    gettimeofday (&tv, NULL);
+//
+//    return ((guint64) tv.tv_sec * G_USEC_PER_SEC + (guint64) tv.tv_usec - timer->start);
+//}
 
 /* --------------------------------------------------------------------------------------------- */

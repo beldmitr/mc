@@ -89,12 +89,9 @@
 /*** file scope functions ************************************************************************/
 /* --------------------------------------------------------------------------------------------- */
 
-static void
-check_codeset (void)
+static void check_codeset (void)
 {
-    const char *current_system_codepage = NULL;
-
-    current_system_codepage = str_detect_termencoding ();
+    const char *current_system_codepage = str_detect_termencoding ();
 
 #ifdef HAVE_CHARSET
     {
@@ -214,25 +211,22 @@ init_sigchld (void)
 /**
  * Check MC_SID to prevent running one mc from another.
  *
- * @return TRUE if no parent mc in our session was found, FALSE otherwise.
+ * @return true if no parent mc in our session was found, FALSE otherwise.
  */
 
 static bool check_sid()
 {
-    pid_t my_sid, old_sid;
-    const char *sid_str;
+    const char *sid_str = getenv ("MC_SID");
+    if (!sid_str)
+        return true;
 
-    sid_str = getenv ("MC_SID");
-    if (sid_str == NULL)
-        return TRUE;
-
-    old_sid = (pid_t) strtol (sid_str, NULL, 0);
+    pid_t old_sid = (pid_t) strtol (sid_str, NULL, 0);
     if (old_sid == 0)
-        return TRUE;
+        return true;
 
-    my_sid = getsid (0);
+    pid_t my_sid = getsid (0);
     if (my_sid == -1)
-        return TRUE;
+        return true;
 
     /* The parent mc is in a different session, it's OK */
     return (old_sid != my_sid);
@@ -251,7 +245,7 @@ int main (int argc, char *argv[])
 
     mc_global.run_from_parent_mc = !check_sid ();
 
-    mc_global.timer = mc_timer_new ();
+    mc_global.timer = new mc_timer_t;
 
     /* We had LC_CTYPE before, LC_ALL includs LC_TYPE as well */
 #ifdef HAVE_SETLOCALE
@@ -273,7 +267,7 @@ int main (int argc, char *argv[])
       startup_exit_ok:
         mc_shell_deinit ();
         str_uninit_strings ();
-        mc_timer_destroy (mc_global.timer);
+        delete(mc_global.timer);
         return exit_code;
     }
 
@@ -333,11 +327,8 @@ int main (int argc, char *argv[])
      */
     if (mc_global.mc_run_mode == MC_RUN_FULL)
     {
-        char *buffer;
-        vfs_path_t *vpath;
-
-        buffer = mc_config_get_string (mc_global.panels_config, "Dirs", "other_dir", ".");
-        vpath = vfs_path_from_str (buffer);
+        char *buffer = mc_config_get_string (mc_global.panels_config, "Dirs", "other_dir", ".");
+        vfs_path_t *vpath = vfs_path_from_str (buffer);
         if (vfs_file_is_local (vpath))
             saved_other_dir = buffer;
         else
@@ -553,7 +544,7 @@ int main (int argc, char *argv[])
         exit_code = EXIT_FAILURE;
     }
 
-    mc_timer_destroy (mc_global.timer);
+    delete(mc_global.timer);
 
     (void) putchar ('\n');      /* Hack to make shell's prompt start at left of screen */
 

@@ -6,6 +6,9 @@
 
 #pragma once
 
+#include <new>
+#include <cstdint>
+
 #if defined(HAVE_STRING_H)
 #include <string.h>
    /* An ANSI string.h and pre-ANSI memory.h might conflict */

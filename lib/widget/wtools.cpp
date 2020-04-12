@@ -583,12 +583,12 @@ void
 status_msg_init (status_msg_t * sm, const char *title, double delay, status_msg_cb init_cb,
                  status_msg_update_cb update_cb, status_msg_cb deinit_cb)
 {
-    guint64 start;
+
 
     /* repaint screen to remove previous finished dialog */
     mc_refresh ();
 
-    start = mc_timer_elapsed (mc_global.timer);
+    uint64_t start = mc_global.timer->mc_timer_elapsed();
 
     sm->dlg = dlg_create (TRUE, 0, 0, 7, MIN (MAX (40, COLS / 2), COLS), WPOS_CENTER, FALSE,
                           dialog_colors, NULL, NULL, NULL, title);

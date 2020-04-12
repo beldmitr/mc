@@ -1515,12 +1515,9 @@ mc_replace_error (GError ** dest, int code, const char *format, ...)
 
  * @return TRUE if clock skew detected, FALSE otherwise
  */
-gboolean
-mc_time_elapsed (guint64 * timestamp, guint64 delay)
+gboolean mc_time_elapsed (guint64 * timestamp, guint64 delay)
 {
-    guint64 now;
-
-    now = mc_timer_elapsed (mc_global.timer);
+    uint64_t now = mc_global.timer->mc_timer_elapsed();
 
     if (now >= *timestamp && now < *timestamp + delay)
         return FALSE;
