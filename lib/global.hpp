@@ -158,22 +158,23 @@
 /*** enums ***************************************************************************************/
 
 /* run mode and params */
-typedef enum
+enum mc_run_mode_t
 {
     MC_RUN_FULL = 0,
     MC_RUN_EDITOR,
     MC_RUN_VIEWER,
     MC_RUN_DIFFVIEWER
-} mc_run_mode_t;
+};
 
 /*** structures declarations (and typedefs of structures)*****************************************/
 
-typedef struct
+class mc_global_t
 {
+public:
     mc_run_mode_t mc_run_mode;
     gboolean run_from_parent_mc;
     /* global timer */
-    mc_timer_t *timer;
+    mc_timer_t* timer;
     /* Used so that widgets know if they are being destroyed or shut down */
     gboolean midnight_shutdown;
 
@@ -229,7 +230,7 @@ typedef struct
     } widget;
 
     /* The user's shell */
-    std::shared_ptr<Shell> shell;
+    std::shared_ptr<Shell> shell = nullptr;
 
     struct
     {
@@ -288,7 +289,7 @@ typedef struct
         bool preallocate_space;
 
     } vfs;
-} mc_global_t;
+};
 
 /*** global variables defined in .c file *********************************************************/
 

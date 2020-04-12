@@ -78,7 +78,7 @@ mc_global_t mc_global = {
         .is_right = FALSE
     },
 
-    .shell = NULL,
+    .shell = nullptr,
 
     .tty =
     {
