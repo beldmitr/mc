@@ -221,7 +221,7 @@ mc_search_prepare (mc_search_t * lc_mc_search)
             gsize recoded_str_len;
             gchar *buffer;
 
-            id = ((codepage_desc *) g_ptr_array_index (codepages, loop1))->id;
+            id = (static_cast<CodepageDesc*>(g_ptr_array_index (codepages, loop1)))->id;
             if (g_ascii_strcasecmp (id, lc_mc_search->original_charset) == 0)
             {
                 g_ptr_array_add (ret,

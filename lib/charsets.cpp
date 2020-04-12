@@ -61,12 +61,9 @@ const char *cp_source = NULL;
 /*** file scope functions ************************************************************************/
 /* --------------------------------------------------------------------------------------------- */
 
-static codepage_desc *
-new_codepage_desc (const char *id, const char *name)
+static CodepageDesc* new_codepage_desc (const char *id, const char *name)
 {
-    codepage_desc *desc;
-
-    desc = g_new (codepage_desc, 1);
+    CodepageDesc* desc = g_new (CodepageDesc, 1);
     desc->id = g_strdup (id);
     desc->name = g_strdup (name);
 
@@ -75,10 +72,9 @@ new_codepage_desc (const char *id, const char *name)
 
 /* --------------------------------------------------------------------------------------------- */
 
-static void
-free_codepage_desc (gpointer data, gpointer user_data)
+static void free_codepage_desc (gpointer data, gpointer user_data)
 {
-    codepage_desc *desc = (codepage_desc *) data;
+    CodepageDesc *desc = (CodepageDesc *) data;
     (void) user_data;
 
     g_free (desc->id);
@@ -142,9 +138,7 @@ load_codepages_list_from_file (GPtrArray ** list, const char *fname)
                 /* if yes, overwrite description */
                 for (i = 0; i < (*list)->len; i++)
                 {
-                    codepage_desc *desc;
-
-                    desc = (codepage_desc *) g_ptr_array_index (*list, i);
+                    CodepageDesc *desc = static_cast<CodepageDesc*>(g_ptr_array_index (*list, i));
 
                     if (strcmp (id, desc->id) == 0)
                     {
@@ -232,16 +226,14 @@ free_codepages_list (void)
 
 /* --------------------------------------------------------------------------------------------- */
 
-const char *
-get_codepage_id (const int n)
+const char* get_codepage_id (const int n)
 {
-    return (n < 0) ? OTHER_8BIT : ((codepage_desc *) g_ptr_array_index (codepages, n))->id;
+    return (n < 0) ? OTHER_8BIT : (static_cast<CodepageDesc*>(g_ptr_array_index (codepages, n)))->id;
 }
 
 /* --------------------------------------------------------------------------------------------- */
 
-int
-get_codepage_index (const char *id)
+int get_codepage_index(const char *id)
 {
     size_t i;
 
@@ -250,7 +242,7 @@ get_codepage_index (const char *id)
     if (strcmp (id, OTHER_8BIT) == 0)
         return -1;
     for (i = 0; i < codepages->len; i++)
-        if (strcmp (id, ((codepage_desc *) g_ptr_array_index (codepages, i))->id) == 0)
+        if (strcmp (id, (static_cast<CodepageDesc*>(g_ptr_array_index (codepages, i)))->id) == 0)
             return i;
     return -1;
 }
@@ -271,7 +263,7 @@ is_supported_encoding (const char *encoding)
     {
         const char *id;
 
-        id = ((codepage_desc *) g_ptr_array_index (codepages, t))->id;
+        id = (static_cast<CodepageDesc*>(g_ptr_array_index (codepages, t)))->id;
         result |= (g_ascii_strncasecmp (encoding, id, strlen (id)) == 0);
     }
 
@@ -304,8 +296,8 @@ init_translation_table (int cpsource, int cpdisplay)
         conv_displ[i] = i;
         conv_input[i] = i;
     }
-    cp_source = ((codepage_desc *) g_ptr_array_index (codepages, cpsource))->id;
-    cp_display = ((codepage_desc *) g_ptr_array_index (codepages, cpdisplay))->id;
+    cp_source = (static_cast<CodepageDesc*>(g_ptr_array_index (codepages, cpsource)))->id;
+    cp_display = (static_cast<CodepageDesc*>(g_ptr_array_index (codepages, cpdisplay)))->id;
 
     /* display <- inpit table */
 

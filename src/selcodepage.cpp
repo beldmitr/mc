@@ -88,7 +88,7 @@ int select_charset (int center_y, int center_x, int current_charset, bool seldis
     /* insert all the items found */
     for (i = 0; i < codepages->len; i++)
     {
-        const char *name = ((codepage_desc *) g_ptr_array_index (codepages, i))->name;
+        const char *name = (static_cast<CodepageDesc*>(g_ptr_array_index (codepages, i)))->name;
         g_snprintf (buffer, sizeof (buffer), "%c  %s", get_hotkey (i), name);
         LISTBOX_APPEND_TEXT (listbox, get_hotkey (i), buffer, NULL, FALSE);
     }

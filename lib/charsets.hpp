@@ -10,11 +10,12 @@
 
 /*** structures declarations (and typedefs of structures)*****************************************/
 
-typedef struct
+class CodepageDesc
 {
+public:
     char *id;
     char *name;
-} codepage_desc;
+};
 
 /*** global variables defined in .c file *********************************************************/
 
