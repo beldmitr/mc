@@ -394,8 +394,7 @@ str_isutf8 (const char *codeset_name)
 
 /* --------------------------------------------------------------------------------------------- */
 
-void
-str_init_strings (const char *termenc)
+void str_init_strings (const char *termenc)
 {
     codeset = termenc != NULL ? g_ascii_strup (termenc, -1) : g_strdup (str_detect_termencoding ());
 

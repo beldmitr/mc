@@ -84,8 +84,7 @@ static gboolean mc_args__show_version = FALSE;
 /* forward declarations */
 static gboolean parse_mc_e_argument (const gchar * option_name, const gchar * value,
                                      gpointer data, GError ** mcerror);
-static gboolean parse_mc_v_argument (const gchar * option_name, const gchar * value,
-                                     gpointer data, GError ** mcerror);
+static bool parse_mc_v_argument (const gchar * option_name, const gchar * value, gpointer data, GError ** mcerror);
 
 static GOptionContext *context;
 
@@ -473,19 +472,13 @@ parse_mc_e_argument (const gchar * option_name, const gchar * value, gpointer da
 
 /* --------------------------------------------------------------------------------------------- */
 
-static gboolean
-parse_mc_v_argument (const gchar * option_name, const gchar * value, gpointer data,
-                     GError ** mcerror)
+static bool parse_mc_v_argument (const gchar * /* option_name */, const gchar * /* value */, gpointer /* data */, GError ** mcerror)
 {
-    (void) option_name;
-    (void) value;
-    (void) data;
-
     mc_return_val_if_error (mcerror, FALSE);
 
     mc_global.mc_run_mode = MC_RUN_VIEWER;
 
-    return TRUE;
+    return true;
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -592,31 +585,7 @@ static GList* parse_mcedit_arguments (int argc, char **argv)
 /*** public functions ****************************************************************************/
 /* --------------------------------------------------------------------------------------------- */
 
-void
-mc_setup_run_mode (char **argv)
-{
-    const char *base;
 
-    base = x_basename (argv[0]);
-
-    if (strncmp (base, "mce", 3) == 0 || strcmp (base, "vi") == 0)
-    {
-        /* mce* or vi is link to mc */
-        mc_global.mc_run_mode = MC_RUN_EDITOR;
-    }
-    else if (strncmp (base, "mcv", 3) == 0 || strcmp (base, "view") == 0)
-    {
-        /* mcv* or view is link to mc */
-        mc_global.mc_run_mode = MC_RUN_VIEWER;
-    }
-#ifdef USE_DIFF_VIEW
-    else if (strncmp (base, "mcd", 3) == 0 || strcmp (base, "diff") == 0)
-    {
-        /* mcd* or diff is link to mc */
-        mc_global.mc_run_mode = MC_RUN_DIFFVIEWER;
-    }
-#endif /* USE_DIFF_VIEW */
-}
 
 bool mc_args_parse (int *argc, char ***argv, const char *translation_domain, GError ** mcerror)
 {
@@ -704,30 +673,30 @@ bool mc_args_show_info ()
     if (mc_args__show_version)
     {
         show_version ();
-        return FALSE;
+        return false;
     }
 
     if (mc_args__show_datadirs)
     {
         printf ("%s (%s)\n", mc_global.sysconfig_dir, mc_global.share_data_dir);
-        return FALSE;
+        return false;
     }
 
     if (mc_args__show_datadirs_extended)
     {
         show_datadirs_extended ();
-        return FALSE;
+        return false;
     }
 
 #ifdef ENABLE_CONFIGURE_ARGS
     if (mc_args__show_configure_opts)
     {
         show_configure_options ();
-        return FALSE;
+        return false;
     }
 #endif
 
-    return TRUE;
+    return true;
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -813,13 +782,3 @@ bool mc_setup_by_args (int argc, char **argv, GError ** mcerror)
     return TRUE;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-/**
- * Free the mcedit_arg_t object.
- *
- * @param arg mcedit_arg_t object
- */
-
-
-
-/* --------------------------------------------------------------------------------------------- */

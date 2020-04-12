@@ -9,6 +9,7 @@
 #include <new>
 #include <cstdint>
 #include <list> // doubly linked list (TODO use instead of GList*)
+#include <cstring>
 
 #if defined(HAVE_STRING_H)
 #include <string.h>

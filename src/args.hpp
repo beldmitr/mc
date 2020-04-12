@@ -45,6 +45,27 @@ public:
         vfs_path_free (arg->file_vpath);
         g_free (arg);
     }
+
+    static void mc_setup_run_mode (const char* base)
+    {
+        if (std::strncmp (base, "mce", 3) == 0 || std::strcmp (base, "vi") == 0)
+        {
+            /* mce* or vi is link to mc */
+            mc_global.mc_run_mode = MC_RUN_EDITOR;
+        }
+        else if (std::strncmp (base, "mcv", 3) == 0 || std::strcmp (base, "view") == 0)
+        {
+            /* mcv* or view is link to mc */
+            mc_global.mc_run_mode = MC_RUN_VIEWER;
+        }
+#ifdef USE_DIFF_VIEW
+        else if (std::strncmp (base, "mcd", 3) == 0 || std::strcmp (base, "diff") == 0)
+        {
+            /* mcd* or diff is link to mc */
+            mc_global.mc_run_mode = MC_RUN_DIFFVIEWER;
+        }
+#endif /* USE_DIFF_VIEW */
+    }
 private:
     vfs_path_t *file_vpath;
     long line_number;
@@ -80,7 +101,6 @@ extern char *mc_run_param1;
 
 /*** declarations of public functions ************************************************************/
 
-void mc_setup_run_mode (char **argv);
 bool mc_args_parse (int *argc, char ***argv, const char *translation_domain, GError ** mcerror);
 bool mc_args_show_info ();
 bool mc_setup_by_args (int argc, char **argv, GError ** mcerror);

@@ -218,22 +218,18 @@ mc_shell_recognize_path (mc_shell_t * mc_shell)
 /*** public functions ****************************************************************************/
 /* --------------------------------------------------------------------------------------------- */
 
-void
-mc_shell_init (void)
+void mc_shell_init()
 {
-    mc_shell_t *mc_shell;
+    mc_shell_t *mc_shell = mc_shell_get_from_env ();
 
-    mc_shell = mc_shell_get_from_env ();
-
-    if (mc_shell == NULL)
-        mc_shell = mc_shell_get_installed_in_system ();
+    if (!mc_shell) mc_shell = mc_shell_get_installed_in_system ();
 
     mc_shell->real_path = mc_realpath (mc_shell->path, rp_shell);
 
     /* Find out what type of shell we have. Also consider real paths (resolved symlinks)
      * because e.g. csh might point to tcsh, ash to dash or busybox, sh to anything. */
 
-    if (mc_shell->real_path != NULL)
+    if (mc_shell->real_path)
         mc_shell_recognize_real_path (mc_shell);
 
     if (mc_shell->type == SHELL_NONE)

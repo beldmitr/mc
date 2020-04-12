@@ -117,16 +117,13 @@ static void check_codeset (void)
 /* --------------------------------------------------------------------------------------------- */
 /** POSIX version.  The only version we support.  */
 
-static void
-OS_Setup (void)
+static void OS_Setup (void)
 {
-    const char *datadir_env;
-
     mc_shell_init ();
 
     /* This is the directory, where MC was installed, on Unix this is DATADIR */
     /* and can be overriden by the MC_DATADIR environment variable */
-    datadir_env = g_getenv ("MC_DATADIR");
+    const char *datadir_env = g_getenv ("MC_DATADIR");
     if (datadir_env != NULL)
         mc_global.sysconfig_dir = g_strdup (datadir_env);
     else
@@ -238,9 +235,8 @@ static bool check_sid()
 
 int main (int argc, char *argv[])
 {
-    GError *mcerror = NULL;
-    bool config_migrated = FALSE;
-    char *config_migrate_msg = NULL;
+    bool config_migrated = false;
+    char *config_migrate_msg = nullptr;
     int exit_code = EXIT_FAILURE;
 
     mc_global.run_from_parent_mc = !check_sid ();
@@ -257,8 +253,10 @@ int main (int argc, char *argv[])
     /* do this before args parsing */
     str_init_strings (NULL);
 
-    mc_setup_run_mode (argv);   /* are we mc? editor? viewer? etc... */
+    // set up mc_global
+    Args::mc_setup_run_mode (argv[0]);   /* are we mc? editor? viewer? etc... */
 
+    GError *mcerror = nullptr;
     if (!mc_args_parse (&argc, &argv, "mc", &mcerror))
     {
       startup_exit_falure:
