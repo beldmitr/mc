@@ -490,42 +490,6 @@ parse_mc_v_argument (const gchar * option_name, const gchar * value, gpointer da
 
 /* --------------------------------------------------------------------------------------------- */
 /**
- * Create mcedit_arg_t object from vfs_path_t object and the line number.
- *
- * @param file_vpath  file path object
- * @param line_number line number. If value is 0, try to restore saved position.
- * @return mcedit_arg_t object
- */
-
-static mcedit_arg_t *
-mcedit_arg_vpath_new (vfs_path_t * file_vpath, long line_number)
-{
-    mcedit_arg_t *arg;
-
-    arg = g_new (mcedit_arg_t, 1);
-    arg->file_vpath = file_vpath;
-    arg->line_number = line_number;
-
-    return arg;
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/**
- * Create mcedit_arg_t object from file name and the line number.
- *
- * @param file_name   file name
- * @param line_number line number. If value is 0, try to restore saved position.
- * @return mcedit_arg_t object
- */
-
-static mcedit_arg_t *
-mcedit_arg_new (const char *file_name, long line_number)
-{
-    return mcedit_arg_vpath_new (vfs_path_from_str (file_name), line_number);
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/**
  * Get list of filenames (and line numbers) from command line, when mc called as editor
  *
  * @param argc count of all arguments
@@ -533,20 +497,18 @@ mcedit_arg_new (const char *file_name, long line_number)
  * @return list of mcedit_arg_t objects
  */
 
-static GList *
-parse_mcedit_arguments (int argc, char **argv)
+static GList* parse_mcedit_arguments (int argc, char **argv)
 {
     GList *flist = NULL;
-    int i;
     long first_line_number = -1;
 
-    for (i = 0; i < argc; i++)
+    for (int i = 0; i < argc; i++)
     {
-        char *tmp;
-        char *end, *p;
-        mcedit_arg_t *arg;
 
-        tmp = argv[i];
+        char *end, *p;
+        Args *arg;
+
+        char *tmp = argv[i];
 
         /*
          * First, try to get line number as +lineno.
@@ -583,13 +545,11 @@ parse_mcedit_arguments (int argc, char **argv)
 
         if (tmp < p && p < end && p[-1] == ':')
         {
-            char *fname;
-            vfs_path_t *tmp_vpath, *fname_vpath;
             struct stat st;
 
-            fname = g_strndup (tmp, p - 1 - tmp);
-            tmp_vpath = vfs_path_from_str (tmp);
-            fname_vpath = vfs_path_from_str (fname);
+            char *fname = g_strndup (tmp, p - 1 - tmp);
+            vfs_path_t *tmp_vpath = vfs_path_from_str (tmp);
+            vfs_path_t *fname_vpath = vfs_path_from_str (fname);
 
             /*
              * Check that the file before the colon actually exists.
@@ -597,33 +557,33 @@ parse_mcedit_arguments (int argc, char **argv)
              */
             if (mc_stat (tmp_vpath, &st) == -1 && mc_stat (fname_vpath, &st) != -1)
             {
-                arg = mcedit_arg_vpath_new (fname_vpath, atoi (p));
+                arg = new Args(fname_vpath, atoi (p));
                 vfs_path_free (tmp_vpath);
             }
             else
             {
-                arg = mcedit_arg_vpath_new (tmp_vpath, 0);
+                arg = new Args(tmp_vpath, 0);
                 vfs_path_free (fname_vpath);
             }
 
             g_free (fname);
         }
         else
-            arg = mcedit_arg_new (tmp, 0);
+            arg = new Args(vfs_path_from_str (tmp), 0);
 
         flist = g_list_prepend (flist, arg);
     }
 
-    if (flist == NULL)
-        flist = g_list_prepend (flist, mcedit_arg_new (NULL, 0));
+    if (!flist)
+        flist = g_list_prepend (flist, new Args(vfs_path_from_str (NULL), 0));
     else if (first_line_number != -1)
     {
         /* overwrite line number for first file */
-        GList *l;
-
-        l = g_list_last (flist);
-        ((mcedit_arg_t *) l->data)->line_number = first_line_number;
+        GList *l = g_list_last (flist);
+        ((Args *) l->data)->SetLineNumber(first_line_number);
     }
+
+
 
     return flist;
 }
@@ -812,7 +772,7 @@ bool mc_setup_by_args (int argc, char **argv, GError ** mcerror)
     switch (mc_global.mc_run_mode)
     {
     case MC_RUN_EDITOR:
-        mc_run_param0 = parse_mcedit_arguments (argc - 1, &argv[1]);
+         mc_run_param0 = parse_mcedit_arguments (argc - 1, &argv[1]);
         break;
 
     case MC_RUN_VIEWER:
@@ -860,11 +820,6 @@ bool mc_setup_by_args (int argc, char **argv, GError ** mcerror)
  * @param arg mcedit_arg_t object
  */
 
-void
-mcedit_arg_free (mcedit_arg_t * arg)
-{
-    vfs_path_free (arg->file_vpath);
-    g_free (arg);
-}
+
 
 /* --------------------------------------------------------------------------------------------- */

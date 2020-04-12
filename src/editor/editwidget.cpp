@@ -1186,7 +1186,7 @@ edit_mouse_callback (Widget * w, mouse_msg_t msg, mouse_event_t * event)
 
 bool edit_file (const vfs_path_t * file_vpath, long line)
 {
-    mcedit_arg_t arg = { (vfs_path_t *) file_vpath, line };
+    Args arg = { (vfs_path_t *) file_vpath, line };
     GList *files;
     gboolean ok;
 
@@ -1255,11 +1255,9 @@ bool edit_files (const GList * files)
 
     for (file = files; file != NULL; file = g_list_next (file))
     {
-        mcedit_arg_t *f = (mcedit_arg_t *) file->data;
-        gboolean f_ok;
-
-        f_ok = edit_add_window (edit_dlg, wd->y + 1, wd->x, wd->lines - 2, wd->cols, f->file_vpath,
-                                f->line_number);
+        Args *f = static_cast<Args*>(file->data);
+        gboolean f_ok = edit_add_window
+                (edit_dlg, wd->y + 1, wd->x, wd->lines - 2, wd->cols, f->GetFileVPath(), f->GetLineNumber());
         /* at least one file has been opened succefully */
         ok = ok || f_ok;
     }
@@ -1359,14 +1357,10 @@ edit_save_size (WEdit * edit)
 
 bool edit_add_window (WDialog * h, int y, int x, int lines, int cols, const vfs_path_t * f, long fline)
 {
-    WEdit *edit;
-    Widget *w;
+    WEdit *edit = edit_init (NULL, y, x, lines, cols, f, fline);
+    if (!edit) return false;
 
-    edit = edit_init (NULL, y, x, lines, cols, f, fline);
-    if (edit == NULL)
-        return FALSE;
-
-    w = WIDGET (edit);
+    Widget *w = WIDGET (edit);
     w->callback = edit_callback;
     w->mouse_callback = edit_mouse_callback;
 
@@ -1374,7 +1368,7 @@ bool edit_add_window (WDialog * h, int y, int x, int lines, int cols, const vfs_
     edit_set_buttonbar (edit, find_buttonbar (h));
     widget_draw (WIDGET (h));
 
-    return TRUE;
+    return true;
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -1497,7 +1491,7 @@ bool edit_handle_move_resize (WEdit * edit, long command)
 
 /* --------------------------------------------------------------------------------------------- */
 /**
- * Toggle window fuulscreen mode.
+ * Toggle window fullscreen mode.
  *
  * @param edit editor object
  */
