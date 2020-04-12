@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <list> // doubly linked list (TODO use instead of GList*)
 #include <cstring>
+#include <memory>
 
 #if defined(HAVE_STRING_H)
 #include <string.h>
@@ -228,7 +229,7 @@ typedef struct
     } widget;
 
     /* The user's shell */
-    mc_shell_t *shell;
+    std::shared_ptr<Shell> shell;
 
     struct
     {

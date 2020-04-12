@@ -426,13 +426,13 @@ shell_execute (const char *command, int flags)
     if (mc_global.tty.use_subshell)
     {
         if (subshell_state == INACTIVE)
-            do_execute (mc_global.shell->path, cmd ? cmd : command, flags | EXECUTE_AS_SHELL);
+            do_execute (mc_global.shell->path.c_str(), cmd ? cmd : command, flags | EXECUTE_AS_SHELL);
         else
             message (D_ERROR, MSG_ERROR, "%s", _("The shell is already running a command"));
     }
     else
 #endif /* ENABLE_SUBSHELL */
-        do_execute (mc_global.shell->path, cmd ? cmd : command, flags | EXECUTE_AS_SHELL);
+        do_execute (mc_global.shell->path.c_str(), cmd ? cmd : command, flags | EXECUTE_AS_SHELL);
 
     g_free (cmd);
 }
@@ -496,7 +496,7 @@ void toggle_subshell ()
             fputs (_("Type 'exit' to return to the Midnight Commander"), stderr);
             fputs ("\n\r\n\r", stderr);
 
-            my_system (EXECUTE_INTERNAL, mc_global.shell->path, NULL);
+            my_system (EXECUTE_INTERNAL, mc_global.shell->path.c_str(), NULL);
         }
         else
             get_key_code (0);

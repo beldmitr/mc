@@ -4,38 +4,50 @@
 
 #pragma once
 
-/*** typedefs(not structures) and defined constants **********************************************/
+#include <string>
 
-/*** enums ***************************************************************************************/
-
-typedef enum
+class Shell
 {
-    SHELL_NONE,
-    SHELL_SH,
-    SHELL_BASH,
-    SHELL_ASH_BUSYBOX,          /* BusyBox default shell (ash) */
-    SHELL_DASH,                 /* Debian variant of ash */
-    SHELL_TCSH,
-    SHELL_ZSH,
-    SHELL_FISH
-} shell_type_t;
+public:
+    enum Type
+    {
+        SHELL_NONE,
+        SHELL_SH,
+        SHELL_BASH,
+        SHELL_ASH_BUSYBOX,          /* BusyBox default shell (ash) */
+        SHELL_DASH,                 /* Debian variant of ash */
+        SHELL_TCSH,
+        SHELL_ZSH,
+        SHELL_FISH
+    };
+public:
+    Shell() = default;
 
-/*** structures declarations (and typedefs of structures)*****************************************/
+    Shell(char* path)
+        :   path(path)
+    {
 
-typedef struct
-{
-    shell_type_t type;
-    const char *name;
-    char *path;
-    char *real_path;
-} mc_shell_t;
+    }
 
-/*** global variables defined in .c file *********************************************************/
+    ~Shell()
+    {
+    }
 
-/*** declarations of public functions ************************************************************/
+public:
+    Type type;
+    std::string name;
+    std::string path;
+    std::string real_path;
 
-void mc_shell_init (void);
-void mc_shell_deinit (void);
+private:
+    static char rp_shell[PATH_MAX];
+public:
+    static void Init();
 
-/*** inline functions **************************************************/
-
+private:
+    static void Recognize_path (Shell* mc_shell);
+    static Shell* Get_installed_in_system ();
+    static void Recognize_real_path (Shell* mc_shell);
+    static char* Get_name_env ();
+//    static Shell* Get_from_env ();
+};

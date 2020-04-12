@@ -119,7 +119,7 @@ static void check_codeset (void)
 
 static void OS_Setup (void)
 {
-    mc_shell_init ();
+    Shell::Init ();
 
     /* This is the directory, where MC was installed, on Unix this is DATADIR */
     /* and can be overriden by the MC_DATADIR environment variable */
@@ -263,7 +263,6 @@ int main (int argc, char *argv[])
         fprintf (stderr, _("Failed to run:\n%s\n"), mcerror->message);
         g_error_free (mcerror);
       startup_exit_ok:
-        mc_shell_deinit ();
         str_uninit_strings ();
         delete(mc_global.timer);
         return exit_code;
@@ -500,8 +499,6 @@ int main (int argc, char *argv[])
         }
     }
     g_free (last_wd_string);
-
-    mc_shell_deinit ();
 
     done_key ();
 

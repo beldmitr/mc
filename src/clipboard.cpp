@@ -82,7 +82,7 @@ bool clipboard_file_to_ext_clip (const gchar * event_group_name, const gchar * e
     cmd = g_strconcat (clipboard_store_path, " ", tmp, " 2>/dev/null", (char *) NULL);
 
     if (cmd != NULL)
-        my_system (EXECUTE_AS_SHELL, mc_global.shell->path, cmd);
+        my_system (EXECUTE_AS_SHELL, mc_global.shell->path.c_str(), cmd);
 
     g_free (cmd);
     g_free (tmp);
