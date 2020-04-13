@@ -41,6 +41,7 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <pwd.h>                /* for username in xterm title */
+#include <filesystem>
 
 #include "lib/global.hpp"
 #include "lib/fileloc.hpp"        /* MC_HINT */
@@ -89,6 +90,7 @@
 #include "src/file_history.hpp"   /* show_file_history() */
 
 #include "midnight.hpp"
+
 
 /*** global variables ****************************************************************************/
 
@@ -945,10 +947,9 @@ create_file_manager (void)
 static vfs_path_t *
 prepend_cwd_on_local (const char *filename)
 {
-    vfs_path_t *vpath;
 
-    vpath = vfs_path_from_str (filename);
-    if (!vfs_file_is_local (vpath) || g_path_is_absolute (filename))
+    vfs_path_t *vpath = vfs_path_from_str (filename);
+    if (!vfs_file_is_local (vpath) || std::filesystem::path(filename).is_absolute())
         return vpath;
 
     vfs_path_free (vpath);
@@ -1023,9 +1024,7 @@ show_editor_viewer_history (void)
 
         default:
             {
-                char *d;
-
-                d = g_path_get_dirname (s);
+                char *d = g_path_get_dirname (s);
                 s_vpath = vfs_path_from_str (d);
                 do_cd (s_vpath, cd_exact);
                 try_to_select (current_panel, s);
