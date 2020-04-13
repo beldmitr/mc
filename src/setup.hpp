@@ -18,13 +18,13 @@
 
 /*** enums ***************************************************************************************/
 
-typedef enum
+enum qsearch_mode_t
 {
     QSEARCH_CASE_INSENSITIVE = 0,       /* quick search in case insensitive mode */
     QSEARCH_CASE_SENSITIVE = 1, /* quick search in case sensitive mode */
     QSEARCH_PANEL_CASE = 2,     /* quick search get value from panel case_sensitive */
     QSEARCH_NUM
-} qsearch_mode_t;
+};
 
 /*** structures declarations (and typedefs of structures)*****************************************/
 

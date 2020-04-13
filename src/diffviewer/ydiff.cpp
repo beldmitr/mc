@@ -3521,7 +3521,7 @@ dview_diff_cmd (const void *f0, const void *f1)
     gboolean is_dir0 = FALSE;
     gboolean is_dir1 = FALSE;
 
-    switch (mc_global.mc_run_mode)
+    switch (mc_global.GetRunMode())
     {
     case Global::RunMode::MC_RUN_FULL:
         {

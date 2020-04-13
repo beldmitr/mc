@@ -393,7 +393,7 @@ mc_args_add_usage_info (void)
 {
     gchar *s;
 
-    switch (mc_global.mc_run_mode)
+    switch (mc_global.GetRunMode())
     {
     case Global::RunMode::MC_RUN_EDITOR:
         s = g_strdup_printf ("%s\n", _("[+lineno] file1[:lineno] [file2[:lineno]...]"));
@@ -466,7 +466,7 @@ parse_mc_e_argument (const gchar * option_name, const gchar * value, gpointer da
 
     mc_return_val_if_error (mcerror, FALSE);
 
-    mc_global.mc_run_mode = Global::RunMode::MC_RUN_EDITOR;
+    mc_global.SetRunMode(Global::RunMode::MC_RUN_EDITOR);
 
     return TRUE;
 }
@@ -477,7 +477,7 @@ static bool parse_mc_v_argument (const gchar * /* option_name */, const gchar * 
 {
     mc_return_val_if_error (mcerror, FALSE);
 
-    mc_global.mc_run_mode = Global::RunMode::MC_RUN_VIEWER;
+    mc_global.SetRunMode(Global::RunMode::MC_RUN_VIEWER);
 
     return true;
 }
@@ -727,7 +727,7 @@ bool mc_setup_by_args (int argc, char **argv, GError ** mcerror)
 
     char *tmp = (argc > 0) ? argv[1] : nullptr;
 
-    switch (mc_global.mc_run_mode)
+    switch (mc_global.GetRunMode())
     {
     case Global::RunMode::MC_RUN_EDITOR:
          mc_run_param0 = parse_mcedit_arguments (argc - 1, &argv[1]);

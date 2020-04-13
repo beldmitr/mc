@@ -250,14 +250,23 @@ public:
         MC_RUN_VIEWER,
         MC_RUN_DIFFVIEWER
     };
+private:
+    RunMode runMode = MC_RUN_FULL;
 public:
-    RunMode mc_run_mode = MC_RUN_FULL;
-
-    bool run_from_parent_mc = FALSE;
+    void SetRunMode(const RunMode& runMode)
+    {
+        this->runMode = runMode;
+    }
+    RunMode GetRunMode() const
+    {
+        return this->runMode;
+    }
+public:
+    bool run_from_parent_mc = false;
     /* global timer */
     std::shared_ptr<Timer> timer = nullptr;
     /* Used so that widgets know if they are being destroyed or shut down */
-    gboolean midnight_shutdown = FALSE;
+    bool midnight_shutdown = false;
 
     /* sysconfig_dir: Area for default settings from maintainers of distributuves
        default is /etc/mc or may be defined by MC_DATADIR */

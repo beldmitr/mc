@@ -242,7 +242,7 @@ mcview_done (WView * view)
     mcview_nroff_seq_free (&view->search_nroff_seq);
     mcview_hexedit_free_change_list (view);
 
-    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_VIEWER && view->dir != NULL)
+    if (mc_global.GetRunMode() == Global::RunMode::MC_RUN_VIEWER && view->dir != NULL)
     {
         /* mcviewer is the owner of file list */
         dir_list_free_list (view->dir);

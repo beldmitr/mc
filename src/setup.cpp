@@ -989,7 +989,7 @@ save_panel_types (void)
 {
     panel_view_mode_t type;
 
-    if (mc_global.mc_run_mode != Global::RunMode::MC_RUN_FULL)
+    if (mc_global.GetRunMode() != Global::RunMode::MC_RUN_FULL)
         return;
 
     type = get_panel_type (0);
@@ -1066,18 +1066,15 @@ setup_init (void)
 
 /* --------------------------------------------------------------------------------------------- */
 
-void
-load_setup (void)
+void load_setup()
 {
-    const char *profile;
-
 #ifdef HAVE_CHARSET
     const char *cbuffer;
 
     CodepageDesc::load_codepages_list ();
 #endif /* HAVE_CHARSET */
 
-    profile = setup_init ();
+    const char *profile = setup_init ();
 
     /* mc.lib is common for all users, but has priority lower than
        ${XDG_CONFIG_HOME}/mc/ini.  FIXME: it's only used for keys and treestore now */

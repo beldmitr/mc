@@ -697,7 +697,7 @@ edit_file_at_line (const vfs_path_t * what_vpath, gboolean internal, long start_
         execute_external_editor_or_viewer (editor, what_vpath, start_line);
     }
 
-    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
+    if (mc_global.GetRunMode() == Global::RunMode::MC_RUN_FULL)
         update_panels (UP_OPTIMIZE, UP_KEEPSEL);
 
 #ifdef USE_INTERNAL_EDIT
@@ -1183,7 +1183,7 @@ diff_view_cmd (void)
         else
             dview_diff_cmd (other_panel, current_panel);
 
-        if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
+        if (mc_global.GetRunMode() == Global::RunMode::MC_RUN_FULL)
             update_panels (UP_OPTIMIZE, UP_KEEPSEL);
 
         dialog_switch_process_pending ();

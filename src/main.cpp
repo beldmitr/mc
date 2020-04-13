@@ -28,7 +28,7 @@
 /** \file main.c
  *  \brief Source: this is a main module
  */
-// TODO Remove unused headers
+// TODO DB Remove unused headers
 
 //#include <cctype>
 //#include <cerrno>
@@ -101,7 +101,7 @@ int main (int argc, char *argv[])
     str_init_strings (nullptr);
 
     // set up mc_global
-    Args::mc_setup_run_mode (argv[0]);   /* are we mc? editor? viewer? etc... */
+    mc_global.SetRunMode(Args::mc_setup_run_mode (argv[0]));   /* are we mc? editor? viewer? etc... */
 
     GError *mcerror = nullptr;
     if (!mc_args_parse (&argc, &argv, "mc", &mcerror))
@@ -145,7 +145,7 @@ int main (int argc, char *argv[])
     }
 
     vfs_init ();
-    vfs_plugins_init ();
+    Plugins::VFSPluginsInit ();
 
     load_setup ();
 
@@ -170,7 +170,7 @@ int main (int argc, char *argv[])
      * 1. Must be done after vfs_setup_work_dir().
      * 2. Must be done after mc_setup_by_args() because of mc_run_mode.
      */
-    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
+    if (mc_global.GetRunMode() == Global::RunMode::MC_RUN_FULL)
     {
         char *buffer = mc_config_get_string (mc_global.panels_config, "Dirs", "other_dir", ".");
         vfs_path_t *vpath = vfs_path_from_str (buffer);
@@ -197,7 +197,7 @@ int main (int argc, char *argv[])
 
 #ifdef ENABLE_SUBSHELL
     /* Disallow subshell when invoked as standalone viewer or editor from running mc */
-    if (mc_global.mc_run_mode != Global::RunMode::MC_RUN_FULL && mc_global.run_from_parent_mc)
+    if (mc_global.GetRunMode() != Global::RunMode::MC_RUN_FULL && mc_global.run_from_parent_mc)
         mc_global.tty.use_subshell = FALSE;
 
     if (mc_global.tty.use_subshell)
@@ -231,7 +231,7 @@ int main (int argc, char *argv[])
     mc_skin_init (nullptr, &mcerror);
     dlg_set_default_colors ();
     input_set_default_colors ();
-    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
+    if (mc_global.GetRunMode() == Global::RunMode::MC_RUN_FULL)
         command_set_default_colors ();
 
     mc_error_message (&mcerror, nullptr);
@@ -326,7 +326,7 @@ int main (int argc, char *argv[])
     if (mc_global.tty.console_flag != '\0')
         handle_console (CONSOLE_DONE);
 
-    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL && mc_args__last_wd_file
+    if (mc_global.GetRunMode() == Global::RunMode::MC_RUN_FULL && mc_args__last_wd_file
         && last_wd_string && !print_last_revert)
     {
         int last_wd_fd = open (mc_args__last_wd_file, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL, S_IRUSR | S_IWUSR);
@@ -355,7 +355,7 @@ int main (int argc, char *argv[])
 
     str_uninit_strings ();
 
-    if (mc_global.mc_run_mode != Global::RunMode::MC_RUN_EDITOR)
+    if (mc_global.GetRunMode() != Global::RunMode::MC_RUN_EDITOR)
         g_free (mc_run_param0);
     else
         g_list_free_full ((GList *) mc_run_param0, (GDestroyNotify) Args::mcedit_arg_free);

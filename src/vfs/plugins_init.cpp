@@ -89,8 +89,7 @@
 /*** public functions ****************************************************************************/
 /* --------------------------------------------------------------------------------------------- */
 
-void
-vfs_plugins_init (void)
+void Plugins::VFSPluginsInit()
 {
     /* localfs needs to be the first one */
     vfs_init_localfs ();

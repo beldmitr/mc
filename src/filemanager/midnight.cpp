@@ -968,7 +968,7 @@ mc_maybe_editor_or_viewer (void)
 {
     gboolean ret;
 
-    switch (mc_global.mc_run_mode)
+    switch (mc_global.GetRunMode())
     {
 #ifdef USE_INTERNAL_EDIT
     case Global::RunMode::MC_RUN_EDITOR:
@@ -1807,7 +1807,7 @@ do_nc (void)
                                midnight_callback, NULL, "[main]", NULL);
 
     /* Check if we were invoked as an editor or file viewer */
-    if (mc_global.mc_run_mode != Global::RunMode::MC_RUN_FULL)
+    if (mc_global.GetRunMode() != Global::RunMode::MC_RUN_FULL)
     {
         setup_dummy_mc ();
         ret = mc_maybe_editor_or_viewer ();

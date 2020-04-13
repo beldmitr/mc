@@ -285,7 +285,7 @@ mcview_handle_editkey (WView * view, int key)
 static void
 mcview_load_next_prev_init (WView * view)
 {
-    if (mc_global.mc_run_mode != Global::RunMode::MC_RUN_VIEWER)
+    if (mc_global.GetRunMode() != Global::RunMode::MC_RUN_VIEWER)
     {
         /* get file list from current panel. Update it each time */
         view->dir = &current_panel->dir;

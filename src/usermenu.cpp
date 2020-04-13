@@ -737,7 +737,7 @@ expand_format (const WEdit * edit_widget, char c, gboolean do_quote)
     if (c == '%')
         return g_strdup ("%");
 
-    switch (mc_global.mc_run_mode)
+    switch (mc_global.GetRunMode())
     {
     case Global::RunMode::MC_RUN_FULL:
 #ifdef USE_INTERNAL_EDIT
