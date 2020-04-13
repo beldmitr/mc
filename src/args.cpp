@@ -394,18 +394,18 @@ mc_args_add_usage_info (void)
 
     switch (mc_global.mc_run_mode)
     {
-    case MC_RUN_EDITOR:
+    case Global::RunMode::MC_RUN_EDITOR:
         s = g_strdup_printf ("%s\n", _("[+lineno] file1[:lineno] [file2[:lineno]...]"));
         break;
-    case MC_RUN_VIEWER:
+    case Global::RunMode::MC_RUN_VIEWER:
         s = g_strdup_printf ("%s\n", _("file"));
         break;
 #ifdef USE_DIFF_VIEW
-    case MC_RUN_DIFFVIEWER:
+    case Global::RunMode::MC_RUN_DIFFVIEWER:
         s = g_strdup_printf ("%s\n", _("file1 file2"));
         break;
 #endif /* USE_DIFF_VIEW */
-    case MC_RUN_FULL:
+    case Global::RunMode::MC_RUN_FULL:
     default:
         s = g_strdup_printf ("%s\n", _("[this_dir] [other_panel_dir]"));
     }
@@ -465,7 +465,7 @@ parse_mc_e_argument (const gchar * option_name, const gchar * value, gpointer da
 
     mc_return_val_if_error (mcerror, FALSE);
 
-    mc_global.mc_run_mode = MC_RUN_EDITOR;
+    mc_global.mc_run_mode = Global::RunMode::MC_RUN_EDITOR;
 
     return TRUE;
 }
@@ -476,7 +476,7 @@ static bool parse_mc_v_argument (const gchar * /* option_name */, const gchar * 
 {
     mc_return_val_if_error (mcerror, FALSE);
 
-    mc_global.mc_run_mode = MC_RUN_VIEWER;
+    mc_global.mc_run_mode = Global::RunMode::MC_RUN_VIEWER;
 
     return true;
 }
@@ -740,11 +740,11 @@ bool mc_setup_by_args (int argc, char **argv, GError ** mcerror)
 
     switch (mc_global.mc_run_mode)
     {
-    case MC_RUN_EDITOR:
+    case Global::RunMode::MC_RUN_EDITOR:
          mc_run_param0 = parse_mcedit_arguments (argc - 1, &argv[1]);
         break;
 
-    case MC_RUN_VIEWER:
+    case Global::RunMode::MC_RUN_VIEWER:
         if (tmp == NULL)
         {
             mc_propagate_error (mcerror, 0, "%s\n", _("No arguments given to the viewer."));
@@ -755,7 +755,7 @@ bool mc_setup_by_args (int argc, char **argv, GError ** mcerror)
         break;
 
 #ifdef USE_DIFF_VIEW
-    case MC_RUN_DIFFVIEWER:
+    case Global::RunMode::MC_RUN_DIFFVIEWER:
         if (argc < 3)
         {
             mc_propagate_error (mcerror, 0, "%s\n",
@@ -765,7 +765,7 @@ bool mc_setup_by_args (int argc, char **argv, GError ** mcerror)
         MC_FALLTHROUGH;
 #endif /* USE_DIFF_VIEW */
 
-    case MC_RUN_FULL:
+    case Global::RunMode::MC_RUN_FULL:
     default:
         /* set the current dir and the other dir for filemanager,
            or two files for diff viewer */

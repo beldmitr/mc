@@ -971,11 +971,11 @@ mc_maybe_editor_or_viewer (void)
     switch (mc_global.mc_run_mode)
     {
 #ifdef USE_INTERNAL_EDIT
-    case MC_RUN_EDITOR:
+    case Global::RunMode::MC_RUN_EDITOR:
         ret = edit_files ((GList *) mc_run_param0);
         break;
 #endif /* USE_INTERNAL_EDIT */
-    case MC_RUN_VIEWER:
+    case Global::RunMode::MC_RUN_VIEWER:
         {
             vfs_path_t *vpath = NULL;
 
@@ -987,7 +987,7 @@ mc_maybe_editor_or_viewer (void)
             break;
         }
 #ifdef USE_DIFF_VIEW
-    case MC_RUN_DIFFVIEWER:
+    case Global::RunMode::MC_RUN_DIFFVIEWER:
         ret = dview_diff_cmd (mc_run_param0, mc_run_param1);
         break;
 #endif /* USE_DIFF_VIEW */
@@ -1807,7 +1807,7 @@ do_nc (void)
                                midnight_callback, NULL, "[main]", NULL);
 
     /* Check if we were invoked as an editor or file viewer */
-    if (mc_global.mc_run_mode != MC_RUN_FULL)
+    if (mc_global.mc_run_mode != Global::RunMode::MC_RUN_FULL)
     {
         setup_dummy_mc ();
         ret = mc_maybe_editor_or_viewer ();

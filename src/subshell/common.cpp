@@ -1097,7 +1097,7 @@ invoke_subshell (const char *command, int how, vfs_path_t ** new_dir_vpath)
             subshell_state = ACTIVE;
 
             /* FIXME: possibly take out this hack; the user can re-play it by hitting C-hyphen a few times! */
-            if (subshell_ready && mc_global.mc_run_mode == MC_RUN_FULL)
+            if (subshell_ready && mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
                 write_all (mc_global.tty.subshell_pty, " \b", 2);       /* Hack to make prompt reappear */
         }
     }

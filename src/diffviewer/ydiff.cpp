@@ -3523,7 +3523,7 @@ dview_diff_cmd (const void *f0, const void *f1)
 
     switch (mc_global.mc_run_mode)
     {
-    case MC_RUN_FULL:
+    case Global::RunMode::MC_RUN_FULL:
         {
             /* run from panels */
             const WPanel *panel0 = (const WPanel *) f0;
@@ -3551,7 +3551,7 @@ dview_diff_cmd (const void *f0, const void *f1)
             break;
         }
 
-    case MC_RUN_DIFFVIEWER:
+    case Global::RunMode::MC_RUN_DIFFVIEWER:
         {
             /* run from command line */
             const char *p0 = (const char *) f0;

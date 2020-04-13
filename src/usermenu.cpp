@@ -739,7 +739,7 @@ expand_format (const WEdit * edit_widget, char c, gboolean do_quote)
 
     switch (mc_global.mc_run_mode)
     {
-    case MC_RUN_FULL:
+    case Global::RunMode::MC_RUN_FULL:
 #ifdef USE_INTERNAL_EDIT
         if (edit_widget != NULL)
             fname = edit_get_file_name (edit_widget);
@@ -760,7 +760,7 @@ expand_format (const WEdit * edit_widget, char c, gboolean do_quote)
         break;
 
 #ifdef USE_INTERNAL_EDIT
-    case MC_RUN_EDITOR:
+    case Global::RunMode::MC_RUN_EDITOR:
         fname = edit_get_file_name (edit_widget);
         break;
 #endif

@@ -989,7 +989,7 @@ save_panel_types (void)
 {
     panel_view_mode_t type;
 
-    if (mc_global.mc_run_mode != MC_RUN_FULL)
+    if (mc_global.mc_run_mode != Global::RunMode::MC_RUN_FULL)
         return;
 
     type = get_panel_type (0);

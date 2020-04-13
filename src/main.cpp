@@ -239,7 +239,7 @@ int main (int argc, char *argv[])
 
     mc_global.run_from_parent_mc = !check_sid ();
 
-    mc_global.timer = new mc_timer_t;
+    mc_global.timer = std::make_shared<Timer>();
 
     /* We had LC_CTYPE before, LC_ALL includs LC_TYPE as well */
 #ifdef HAVE_SETLOCALE
@@ -262,7 +262,6 @@ int main (int argc, char *argv[])
         g_error_free (mcerror);
       startup_exit_ok:
         str_uninit_strings ();
-        delete(mc_global.timer);
         return exit_code;
     }
 
@@ -320,7 +319,7 @@ int main (int argc, char *argv[])
      * 1. Must be done after vfs_setup_work_dir().
      * 2. Must be done after mc_setup_by_args() because of mc_run_mode.
      */
-    if (mc_global.mc_run_mode == MC_RUN_FULL)
+    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
     {
         char *buffer = mc_config_get_string (mc_global.panels_config, "Dirs", "other_dir", ".");
         vfs_path_t *vpath = vfs_path_from_str (buffer);
@@ -347,7 +346,7 @@ int main (int argc, char *argv[])
 
 #ifdef ENABLE_SUBSHELL
     /* Disallow subshell when invoked as standalone viewer or editor from running mc */
-    if (mc_global.mc_run_mode != MC_RUN_FULL && mc_global.run_from_parent_mc)
+    if (mc_global.mc_run_mode != Global::RunMode::MC_RUN_FULL && mc_global.run_from_parent_mc)
         mc_global.tty.use_subshell = FALSE;
 
     if (mc_global.tty.use_subshell)
@@ -381,7 +380,7 @@ int main (int argc, char *argv[])
     mc_skin_init (NULL, &mcerror);
     dlg_set_default_colors ();
     input_set_default_colors ();
-    if (mc_global.mc_run_mode == MC_RUN_FULL)
+    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
         command_set_default_colors ();
 
     mc_error_message (&mcerror, NULL);
@@ -479,7 +478,7 @@ int main (int argc, char *argv[])
     if (mc_global.tty.console_flag != '\0')
         handle_console (CONSOLE_DONE);
 
-    if (mc_global.mc_run_mode == MC_RUN_FULL && mc_args__last_wd_file != NULL
+    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL && mc_args__last_wd_file != NULL
         && last_wd_string != NULL && !print_last_revert)
     {
         int last_wd_fd;
@@ -519,7 +518,7 @@ int main (int argc, char *argv[])
 
     str_uninit_strings ();
 
-    if (mc_global.mc_run_mode != MC_RUN_EDITOR)
+    if (mc_global.mc_run_mode != Global::RunMode::MC_RUN_EDITOR)
         g_free (mc_run_param0);
     else
         g_list_free_full ((GList *) mc_run_param0, (GDestroyNotify) Args::mcedit_arg_free);
@@ -536,8 +535,6 @@ int main (int argc, char *argv[])
         g_error_free (mcerror);
         exit_code = EXIT_FAILURE;
     }
-
-    delete(mc_global.timer);
 
     (void) putchar ('\n');      /* Hack to make shell's prompt start at left of screen */
 

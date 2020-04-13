@@ -296,7 +296,7 @@ do_executev (const char *shell, int flags, char *const argv[])
     if (!vfs_current_is_local ())
         old_vfs_dir_vpath = vfs_path_clone (vfs_get_raw_current_dir ());
 
-    if (mc_global.mc_run_mode == MC_RUN_FULL)
+    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
         save_cwds_stat ();
     pre_exec ();
     if (mc_global.tty.console_flag != '\0')
@@ -362,7 +362,7 @@ do_executev (const char *shell, int flags, char *const argv[])
         vfs_path_free (old_vfs_dir_vpath);
     }
 
-    if (mc_global.mc_run_mode == MC_RUN_FULL)
+    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
     {
         update_panels (UP_OPTIMIZE, UP_KEEPSEL);
         update_xterm_title_path ();
@@ -542,7 +542,7 @@ void toggle_subshell ()
 #ifdef ENABLE_SUBSHELL
     if (mc_global.tty.use_subshell)
     {
-        if (mc_global.mc_run_mode == MC_RUN_FULL)
+        if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
         {
             do_load_prompt ();
             if (new_dir_vpath != NULL)
@@ -555,7 +555,7 @@ void toggle_subshell ()
     vfs_path_free (new_dir_vpath);
 #endif /* ENABLE_SUBSHELL */
 
-    if (mc_global.mc_run_mode == MC_RUN_FULL)
+    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
     {
         update_panels (UP_OPTIMIZE, UP_KEEPSEL);
         update_xterm_title_path ();
@@ -578,10 +578,10 @@ bool execute_suspend (const gchar * event_group_name, const gchar * event_name,
     (void) init_data;
     (void) data;
 
-    if (mc_global.mc_run_mode == MC_RUN_FULL)
+    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
         save_cwds_stat ();
     do_suspend_cmd ();
-    if (mc_global.mc_run_mode == MC_RUN_FULL)
+    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
         update_panels (UP_OPTIMIZE, UP_KEEPSEL);
     do_refresh ();
 

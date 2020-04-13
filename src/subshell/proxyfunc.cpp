@@ -58,7 +58,7 @@
 const vfs_path_t *
 subshell_get_cwd (void)
 {
-    if (mc_global.mc_run_mode == MC_RUN_FULL)
+    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
         return current_panel->cwd_vpath;
 
     return vfs_get_raw_current_dir ();

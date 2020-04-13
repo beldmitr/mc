@@ -51,18 +51,18 @@ public:
         if (std::strncmp (base, "mce", 3) == 0 || std::strcmp (base, "vi") == 0)
         {
             /* mce* or vi is link to mc */
-            mc_global.mc_run_mode = MC_RUN_EDITOR;
+            mc_global.mc_run_mode = Global::RunMode::MC_RUN_EDITOR;
         }
         else if (std::strncmp (base, "mcv", 3) == 0 || std::strcmp (base, "view") == 0)
         {
             /* mcv* or view is link to mc */
-            mc_global.mc_run_mode = MC_RUN_VIEWER;
+            mc_global.mc_run_mode = Global::RunMode::MC_RUN_VIEWER;
         }
 #ifdef USE_DIFF_VIEW
         else if (std::strncmp (base, "mcd", 3) == 0 || std::strcmp (base, "diff") == 0)
         {
             /* mcd* or diff is link to mc */
-            mc_global.mc_run_mode = MC_RUN_DIFFVIEWER;
+            mc_global.mc_run_mode = Global::RunMode::MC_RUN_DIFFVIEWER;
         }
 #endif /* USE_DIFF_VIEW */
     }

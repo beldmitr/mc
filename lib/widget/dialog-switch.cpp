@@ -269,7 +269,7 @@ dialog_switch_process_pending (void)
             dlg_destroy (h);
 
             /* return to panels */
-            if (mc_global.mc_run_mode == MC_RUN_FULL)
+            if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
             {
                 mc_current = g_list_find (mc_dialogs, midnight_dlg);
                 mc_event_raise (MCEVENT_GROUP_FILEMANAGER, "update_panels", NULL);
