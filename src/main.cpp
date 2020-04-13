@@ -40,6 +40,7 @@
 //#include <sys/types.h>
 #include <csignal>
 #include <unistd.h>             /* getsid() */
+#include <filesystem>
 
 #include "lib/global.hpp"
 
@@ -79,41 +80,10 @@
 #include "consaver/cons.saver.hpp"        /* cons_saver_pid */
 #include "util.hpp"
 
-/*** global variables ****************************************************************************/
-
-/*** file scope macro definitions ****************************************************************/
-
-/*** file scope type declarations ****************************************************************/
-
-/*** file scope variables ************************************************************************/
-
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-
-
-/* --------------------------------------------------------------------------------------------- */
-
-
-
-/* --------------------------------------------------------------------------------------------- */
-
-
-
-/* --------------------------------------------------------------------------------------------- */
-
-
-
-/* --------------------------------------------------------------------------------------------- */
-
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
 
 int main (int argc, char *argv[])
 {
-    char *config_migrate_msg = nullptr;
+
     int exit_code = EXIT_FAILURE;
 
     mc_global.run_from_parent_mc = !Util::CheckSid();
@@ -147,11 +117,12 @@ int main (int argc, char *argv[])
     /* do this before mc_args_show_info () to view paths in the --datadir-info output */
     Util::OS_Setup ();
 
-    if (!g_path_is_absolute (mc_config_get_home_dir ()))
+    std::filesystem::path path(mc_config_get_home_dir());
+    if (path.is_relative())
     {
         mc_propagate_error (&mcerror, 0, "%s: %s", _("Home directory path is not absolute"),
                             mc_config_get_home_dir ());
-        mc_event_deinit (NULL);
+        mc_event_deinit (nullptr);
         goto startup_exit_falure;
     }
 
@@ -165,10 +136,11 @@ int main (int argc, char *argv[])
         goto startup_exit_falure;
 
     mc_config_init_config_paths (&mcerror);
+    char *config_migrate_msg = nullptr;
     bool config_migrated = mc_config_migrate_from_old_place (&mcerror, &config_migrate_msg);
-    if (mcerror != NULL)
+    if (mcerror)
     {
-        mc_event_deinit (NULL);
+        mc_event_deinit (nullptr);
         goto startup_exit_falure;
     }
 
@@ -190,7 +162,7 @@ int main (int argc, char *argv[])
         vfs_shut ();
         done_setup ();
         g_free (saved_other_dir);
-        mc_event_deinit (NULL);
+        mc_event_deinit (nullptr);
         goto startup_exit_falure;
     }
 
@@ -256,13 +228,13 @@ int main (int argc, char *argv[])
 
     tty_init_colors (mc_global.tty.disable_colors, mc_args__force_colors);
 
-    mc_skin_init (NULL, &mcerror);
+    mc_skin_init (nullptr, &mcerror);
     dlg_set_default_colors ();
     input_set_default_colors ();
     if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL)
         command_set_default_colors ();
 
-    mc_error_message (&mcerror, NULL);
+    mc_error_message (&mcerror, nullptr);
 
 #ifdef ENABLE_SUBSHELL
     /* Done here to ensure that the subshell doesn't  */
@@ -276,7 +248,6 @@ int main (int argc, char *argv[])
         if (r == 0)
         {
             /* parent mc was found and the user wants to continue */
-            ;
         }
         else
         {
@@ -329,7 +300,7 @@ int main (int argc, char *argv[])
     disable_mouse ();
 
     /* Save the tree store */
-    (void) tree_store_save ();
+    tree_store_save ();
 
     free_keymap_defs ();
 
@@ -355,21 +326,14 @@ int main (int argc, char *argv[])
     if (mc_global.tty.console_flag != '\0')
         handle_console (CONSOLE_DONE);
 
-    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL && mc_args__last_wd_file != NULL
-        && last_wd_string != NULL && !print_last_revert)
+    if (mc_global.mc_run_mode == Global::RunMode::MC_RUN_FULL && mc_args__last_wd_file
+        && last_wd_string && !print_last_revert)
     {
-        int last_wd_fd;
-
-        last_wd_fd = open (mc_args__last_wd_file, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL,
-                           S_IRUSR | S_IWUSR);
+        int last_wd_fd = open (mc_args__last_wd_file, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL, S_IRUSR | S_IWUSR);
         if (last_wd_fd != -1)
         {
-            ssize_t ret1;
-            int ret2;
-            ret1 = write (last_wd_fd, last_wd_string, strlen (last_wd_string));
-            ret2 = close (last_wd_fd);
-            (void) ret1;
-            (void) ret2;
+            /* ssize_t ret1 = */ write(last_wd_fd, last_wd_string, strlen (last_wd_string));
+            /* int ret2 = */ close(last_wd_fd);
         }
     }
     g_free (last_wd_string);
@@ -377,16 +341,12 @@ int main (int argc, char *argv[])
     done_key ();
 
 #ifdef USE_INTERNAL_EDIT
-    if (macros_list != NULL)
+    if (macros_list)
     {
-        guint i;
-
-        for (i = 0; i < macros_list->len; i++)
+        for (size_t i = 0; i < macros_list->len; i++)
         {
-            macros_t *macros;
-
-            macros = &g_array_index (macros_list, struct macros_t, i);
-            if (macros != NULL && macros->macro != NULL)
+            macros_t *macros = &g_array_index (macros_list, struct macros_t, i);
+            if (macros && macros->macro)
                 (void) g_array_free (macros->macro, TRUE);
         }
         (void) g_array_free (macros_list, TRUE);
@@ -406,13 +366,14 @@ int main (int argc, char *argv[])
     mc_config_deinit_config_paths ();
 
     (void) mc_event_deinit (&mcerror);
-    if (mcerror != NULL)
+    if (mcerror)
     {
         fprintf (stderr, _("\nFailed while close:\n%s\n"), mcerror->message);
         g_error_free (mcerror);
         exit_code = EXIT_FAILURE;
     }
 
+    // FIXME DB: no changes when I remove this
     (void) putchar ('\n');      /* Hack to make shell's prompt start at left of screen */
 
     return exit_code;

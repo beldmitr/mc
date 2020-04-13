@@ -24,8 +24,9 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
+#include <iostream>
 
 #include "lib/global.hpp"
 #include "lib/tty/tty.hpp"
@@ -589,12 +590,11 @@ static GList* parse_mcedit_arguments (int argc, char **argv)
 
 bool mc_args_parse (int *argc, char ***argv, const char *translation_domain, GError ** mcerror)
 {
-    const gchar *_system_codepage;
-    gboolean ok = TRUE;
+    bool ok = true;
 
     mc_return_val_if_error (mcerror, FALSE);
 
-    _system_codepage = str_detect_termencoding ();
+    const char*_system_codepage = str_detect_termencoding ();
 
 #ifdef ENABLE_NLS
     if (!str_isutf8 (_system_codepage))
@@ -632,27 +632,19 @@ bool mc_args_parse (int *argc, char ***argv, const char *translation_domain, GEr
             mc_propagate_error (mcerror, 0, "%s\n", _("Arguments parse error!"));
         else
         {
-            gchar *help_str;
-
-            help_str = g_option_context_get_help (context, TRUE, NULL);
+            std::string help_str = g_option_context_get_help (context, TRUE, NULL);
 
             if (str_isutf8 (_system_codepage))
-                mc_replace_error (mcerror, (*mcerror)->code, "%s\n\n%s\n", (*mcerror)->message,
-                                  help_str);
+                mc_replace_error (mcerror, (*mcerror)->code, "%s\n\n%s\n", (*mcerror)->message, help_str.c_str());
             else
             {
-                gchar *full_help_str;
-
-                full_help_str =
-                    mc_args__convert_help_to_syscharset (_system_codepage, (*mcerror)->message,
-                                                         help_str);
-                mc_replace_error (mcerror, (*mcerror)->code, "%s", full_help_str);
-                g_free (full_help_str);
+                std::string full_help_str =
+                    mc_args__convert_help_to_syscharset (_system_codepage, (*mcerror)->message, help_str.c_str());
+                mc_replace_error (mcerror, (*mcerror)->code, "%s", full_help_str.c_str());
             }
-            g_free (help_str);
         }
 
-        ok = FALSE;
+        ok = false;
     }
 
     g_option_context_free (context);
@@ -678,7 +670,7 @@ bool mc_args_show_info ()
 
     if (mc_args__show_datadirs)
     {
-        printf ("%s (%s)\n", mc_global.sysconfig_dir, mc_global.share_data_dir);
+        std::cout << mc_global.sysconfig_dir << " (" << mc_global.share_data_dir << ")" << std::endl;
         return false;
     }
 
@@ -703,8 +695,6 @@ bool mc_args_show_info ()
 
 bool mc_setup_by_args (int argc, char **argv, GError ** mcerror)
 {
-    char *tmp;
-
     mc_return_val_if_error (mcerror, FALSE);
 
     if (mc_args__force_colors)
@@ -720,7 +710,7 @@ bool mc_setup_by_args (int argc, char **argv, GError ** mcerror)
         smbfs_set_debug (mc_args__debug_level);
 #endif /* ENABLE_VFS_SMB */
 
-    if (mc_args__netfs_logfile != NULL)
+    if (mc_args__netfs_logfile)
     {
         vfs_path_t *vpath;
 #ifdef ENABLE_VFS_FTP
@@ -733,10 +723,9 @@ bool mc_setup_by_args (int argc, char **argv, GError ** mcerror)
         mc_setctl (vpath, VFS_SETCTL_LOGFILE, (void *) mc_args__netfs_logfile);
         vfs_path_free (vpath);
 #endif /* ENABLE_VFS_SMB */
-        (void) vpath;
     }
 
-    tmp = (argc > 0) ? argv[1] : NULL;
+    char *tmp = (argc > 0) ? argv[1] : nullptr;
 
     switch (mc_global.mc_run_mode)
     {
@@ -745,7 +734,7 @@ bool mc_setup_by_args (int argc, char **argv, GError ** mcerror)
         break;
 
     case Global::RunMode::MC_RUN_VIEWER:
-        if (tmp == NULL)
+        if (!tmp)
         {
             mc_propagate_error (mcerror, 0, "%s\n", _("No arguments given to the viewer."));
             return FALSE;
@@ -769,11 +758,11 @@ bool mc_setup_by_args (int argc, char **argv, GError ** mcerror)
     default:
         /* set the current dir and the other dir for filemanager,
            or two files for diff viewer */
-        if (tmp != NULL)
+        if (tmp)
         {
             mc_run_param0 = g_strdup (tmp);
-            tmp = (argc > 1) ? argv[2] : NULL;
-            if (tmp != NULL)
+            tmp = (argc > 1) ? argv[2] : nullptr;
+            if (tmp)
                 mc_run_param1 = g_strdup (tmp);
         }
         break;

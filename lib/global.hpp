@@ -253,7 +253,7 @@ public:
 public:
     RunMode mc_run_mode = MC_RUN_FULL;
 
-    gboolean run_from_parent_mc = FALSE;
+    bool run_from_parent_mc = FALSE;
     /* global timer */
     std::shared_ptr<Timer> timer = nullptr;
     /* Used so that widgets know if they are being destroyed or shut down */

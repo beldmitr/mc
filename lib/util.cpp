@@ -1489,7 +1489,7 @@ mc_propagate_error (GError ** dest, int code, const char *format, ...)
 void
 mc_replace_error (GError ** dest, int code, const char *format, ...)
 {
-    if (dest != NULL)
+    if (dest)
     {
         GError *tmp_error;
         va_list args;
@@ -1499,7 +1499,7 @@ mc_replace_error (GError ** dest, int code, const char *format, ...)
         va_end (args);
 
         g_error_free (*dest);
-        *dest = NULL;
+        *dest = nullptr;
         g_propagate_error (dest, tmp_error);
     }
 }

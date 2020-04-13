@@ -442,21 +442,21 @@ message (int flags, const char *title, const char *text, ...)
 gboolean
 mc_error_message (GError ** mcerror, int *code)
 {
-    if (mcerror == NULL || *mcerror == NULL)
-        return FALSE;
+    if (mcerror == nullptr || *mcerror == nullptr)
+        return false;
 
     if ((*mcerror)->code == 0)
         message (D_ERROR, MSG_ERROR, "%s", (*mcerror)->message);
     else
         message (D_ERROR, MSG_ERROR, _("%s (%d)"), (*mcerror)->message, (*mcerror)->code);
 
-    if (code != NULL)
+    if (code)
         *code = (*mcerror)->code;
 
     g_error_free (*mcerror);
-    *mcerror = NULL;
+    *mcerror = nullptr;
 
-    return TRUE;
+    return true;
 }
 
 /* --------------------------------------------------------------------------------------------- */

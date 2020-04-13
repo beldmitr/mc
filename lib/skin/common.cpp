@@ -113,15 +113,14 @@ gboolean
 mc_skin_init (const gchar * skin_override, GError ** mcerror)
 {
     gboolean is_good_init = TRUE;
-    GError *error = NULL;
+    GError *error = nullptr;
 
     mc_return_val_if_error (mcerror, FALSE);
 
     mc_skin__default.have_256_colors = FALSE;
     mc_skin__default.have_true_colors = FALSE;
 
-    mc_skin__default.name =
-        skin_override != NULL ? g_strdup (skin_override) : mc_skin_get_default_name ();
+    mc_skin__default.name = skin_override ? g_strdup (skin_override) : mc_skin_get_default_name ();
 
     mc_skin__default.colors = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                      g_free, mc_skin_hash_destroy_value);
