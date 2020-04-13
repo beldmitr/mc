@@ -326,18 +326,18 @@ mcview_display_hex (WView * view)
             {
                 if (!view->utf8)
                 {
-                    c = convert_from_8bit_to_utf_c ((unsigned char) c, view->converter);
+                    c = CodepageDesc::convert_from_8bit_to_utf_c ((unsigned char) c, view->converter);
                 }
                 if (!g_unichar_isprint (c))
                     c = '.';
             }
             else if (view->utf8)
-                ch = convert_from_utf_to_current_c (ch, view->converter);
+                ch = CodepageDesc::convert_from_utf_to_current_c (ch, view->converter);
             else
 #endif
             {
 #ifdef HAVE_CHARSET
-                c = convert_to_display_c (c);
+                c = CodepageDesc::convert_to_display_c(c);
 #endif
 
                 if (!is_printable (c))

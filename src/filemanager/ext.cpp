@@ -675,7 +675,7 @@ regex_check_type (const vfs_path_t * filename_vpath, const char *ptr, gboolean c
             if (pp != NULL)
                 *pp = '\0';
 
-            cp_id = get_codepage_index (encoding_id);
+            cp_id = CodepageDesc::get_codepage_index (encoding_id);
             if (cp_id == -1)
                 cp_id = default_source_codepage;
 

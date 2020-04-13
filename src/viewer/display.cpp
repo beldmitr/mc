@@ -178,7 +178,7 @@ mcview_display_status (WView * view)
                         buffer, mcview_may_still_grow (view) ? "+" : " ",
 #ifdef HAVE_CHARSET
                         mc_global.source_codepage >= 0 ?
-                        get_codepage_id (mc_global.source_codepage) :
+                        CodepageDesc::get_codepage_id (mc_global.source_codepage) :
 #endif
                         "");
         }

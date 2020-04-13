@@ -146,7 +146,7 @@ mcview_continue_search_cmd (WView * view)
             g_list_free_full (history, g_free);
 
 #ifdef HAVE_CHARSET
-            view->search = mc_search_new (view->last_search_string, cp_source);
+            view->search = mc_search_new (view->last_search_string, CodepageDesc::cp_source);
 #else
             view->search = mc_search_new (view->last_search_string, NULL);
 #endif
@@ -605,7 +605,7 @@ mcview_handle_key (WView * view, int key)
     long command;
 
 #ifdef HAVE_CHARSET
-    key = convert_from_input_c (key);
+    key = CodepageDesc::convert_from_input_c (key);
 #endif
 
     if (view->hexedit_mode && view->mode_flags.hex

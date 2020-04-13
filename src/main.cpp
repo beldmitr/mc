@@ -95,18 +95,16 @@ static void check_codeset (void)
 
 #ifdef HAVE_CHARSET
     {
-        const char *_display_codepage;
-
-        _display_codepage = get_codepage_id (mc_global.display_codepage);
+        const char *_display_codepage = CodepageDesc::get_codepage_id (mc_global.display_codepage);
 
         if (strcmp (_display_codepage, current_system_codepage) != 0)
         {
-            mc_global.display_codepage = get_codepage_index (current_system_codepage);
+            mc_global.display_codepage = CodepageDesc::get_codepage_index (current_system_codepage);
             if (mc_global.display_codepage == -1)
                 mc_global.display_codepage = 0;
 
             mc_config_set_string (mc_global.main_config, CONFIG_MISC_SECTION, "display_codepage",
-                                  cp_display);
+                                  CodepageDesc::cp_display);
         }
     }
 #endif

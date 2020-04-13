@@ -1074,7 +1074,7 @@ load_setup (void)
 #ifdef HAVE_CHARSET
     const char *cbuffer;
 
-    load_codepages_list ();
+    CodepageDesc::load_codepages_list ();
 #endif /* HAVE_CHARSET */
 
     profile = setup_init ();
@@ -1131,13 +1131,13 @@ load_setup (void)
     /* Remove the temporal entries */
 
 #ifdef HAVE_CHARSET
-    if (codepages->len > 1)
+    if (CodepageDesc::codepages->len > 1)
     {
         char *buffer = mc_config_get_string (mc_global.main_config, CONFIG_MISC_SECTION, "display_codepage", "");
         if (buffer[0] != '\0')
         {
-            mc_global.display_codepage = get_codepage_index (buffer);
-            cp_display = get_codepage_id (mc_global.display_codepage);
+            mc_global.display_codepage = CodepageDesc::get_codepage_index (buffer);
+            CodepageDesc::cp_display = CodepageDesc::get_codepage_id (mc_global.display_codepage);
         }
         g_free (buffer);
         buffer =
@@ -1145,9 +1145,9 @@ load_setup (void)
                                   "");
         if (buffer[0] != '\0')
         {
-            default_source_codepage = get_codepage_index (buffer);
+            default_source_codepage = CodepageDesc::get_codepage_index (buffer);
             mc_global.source_codepage = default_source_codepage;        /* May be source_codepage doesn't need this */
-            cp_source = get_codepage_id (mc_global.source_codepage);
+            CodepageDesc::cp_source = CodepageDesc::get_codepage_id (mc_global.source_codepage);
         }
         g_free (buffer);
     }
@@ -1157,8 +1157,8 @@ load_setup (void)
     if ((autodetect_codeset[0] != '\0') && (strcmp (autodetect_codeset, "off") != 0))
         is_autodetect_codeset_enabled = TRUE;
 
-    g_free (init_translation_table (mc_global.source_codepage, mc_global.display_codepage));
-    cbuffer = get_codepage_id (mc_global.display_codepage);
+    g_free (CodepageDesc::init_translation_table (mc_global.source_codepage, mc_global.display_codepage));
+    cbuffer = CodepageDesc::get_codepage_id (mc_global.display_codepage);
     if (cbuffer != NULL)
         mc_global.utf8_display = str_isutf8 (cbuffer);
 #endif /* HAVE_CHARSET */
@@ -1208,9 +1208,9 @@ save_setup (bool save_options, bool save_panel_options)
 
 #ifdef HAVE_CHARSET
         mc_config_set_string (mc_global.main_config, CONFIG_MISC_SECTION, "display_codepage",
-                              get_codepage_id (mc_global.display_codepage));
+                              CodepageDesc::get_codepage_id (mc_global.display_codepage));
         mc_config_set_string (mc_global.main_config, CONFIG_MISC_SECTION, "source_codepage",
-                              get_codepage_id (default_source_codepage));
+                              CodepageDesc::get_codepage_id (default_source_codepage));
         mc_config_set_string (mc_global.main_config, CONFIG_MISC_SECTION, "autodetect_codeset",
                               autodetect_codeset);
 #endif /* HAVE_CHARSET */
@@ -1265,7 +1265,7 @@ done_setup (void)
 
 #ifdef HAVE_CHARSET
     g_free (autodetect_codeset);
-    free_codepages_list ();
+    CodepageDesc::free_codepages_list ();
 #endif
 
 #ifdef HAVE_ASPELL

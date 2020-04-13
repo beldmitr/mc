@@ -155,7 +155,7 @@ _vfs_translate_path (const char *path, int size, GIConv defcnv, GString * buffer
         memcpy (encoding, semi, ms);
         encoding[ms] = '\0';
 
-        if (is_supported_encoding (encoding))
+        if (CodepageDesc::is_supported_encoding (encoding))
             coder = str_crt_conv_to (encoding);
 
         if (coder != INVALID_CONV)

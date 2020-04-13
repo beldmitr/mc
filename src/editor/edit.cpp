@@ -2252,7 +2252,7 @@ edit_set_codeset (WEdit * edit)
     const char *cp_id;
 
     cp_id =
-        get_codepage_id (mc_global.source_codepage >=
+            CodepageDesc::get_codepage_id (mc_global.source_codepage >=
                          0 ? mc_global.source_codepage : mc_global.display_codepage);
 
     if (cp_id != NULL)
@@ -2791,7 +2791,7 @@ edit_move_forward3 (const WEdit * edit, off_t current, long cols, off_t upto)
                 col -= char_length - 1;
         }
 
-        c = convert_to_display_c (c);
+        c = CodepageDesc::convert_to_display_c (c);
 #endif
 
         if (c == '\n')
@@ -3353,7 +3353,7 @@ edit_execute_cmd (WEdit * edit, long command, int char_for_insertion)
            Encode 8-bit input as UTF-8, if display (locale) is *not* UTF-8,
            *but* source encoding *is* set to UTF-8; see ticket #3843 for the details.
         */
-        if (char_for_insertion > 127 && str_isutf8 (get_codepage_id (mc_global.source_codepage))
+        if (char_for_insertion > 127 && str_isutf8 (CodepageDesc::get_codepage_id (mc_global.source_codepage))
             && !mc_global.utf8_display)
         {
             unsigned char str[UTF8_CHAR_LEN + 1];

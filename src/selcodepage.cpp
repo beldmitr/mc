@@ -78,7 +78,7 @@ int select_charset (int center_y, int center_x, int current_charset, bool seldis
 
     /* Create listbox */
     Listbox *listbox = create_listbox_window_centered (center_y, center_x,
-                                                       codepages->len + 1, ENTRY_LEN + 2,
+                                                       CodepageDesc::codepages->len + 1, ENTRY_LEN + 2,
                                                        _("Choose codepage"),
                                                        "[Codepages Translation]");
 
@@ -86,22 +86,22 @@ int select_charset (int center_y, int center_x, int current_charset, bool seldis
         LISTBOX_APPEND_TEXT (listbox, '-', _("-  < No translation >"), NULL, FALSE);
 
     /* insert all the items found */
-    for (i = 0; i < codepages->len; i++)
+    for (i = 0; i < CodepageDesc::codepages->len; i++)
     {
-        const char *name = (static_cast<CodepageDesc*>(g_ptr_array_index (codepages, i)))->name;
+        const char *name = (static_cast<CodepageDesc*>(g_ptr_array_index (CodepageDesc::codepages, i)))->GetName();
         g_snprintf (buffer, sizeof (buffer), "%c  %s", get_hotkey (i), name);
         LISTBOX_APPEND_TEXT (listbox, get_hotkey (i), buffer, NULL, FALSE);
     }
     if (seldisplay)
     {
-        unsigned char hotkey = get_hotkey (codepages->len);
+        unsigned char hotkey = get_hotkey (CodepageDesc::codepages->len);
         g_snprintf (buffer, sizeof (buffer), "%c  %s", hotkey, _("Other 8 bit"));
         LISTBOX_APPEND_TEXT (listbox, hotkey, buffer, NULL, FALSE);
     }
 
     /* Select the default entry */
     i = (seldisplay)
-        ? ((current_charset < 0) ? codepages->len : (size_t) current_charset)
+        ? ((current_charset < 0) ? CodepageDesc::codepages->len : (size_t) current_charset)
         : ((size_t) current_charset + 1);
 
     listbox_select_entry (listbox->list, i);
@@ -119,7 +119,7 @@ int select_charset (int center_y, int center_x, int current_charset, bool seldis
         if (seldisplay)
         {
             /* charset list is finished with "Other 8 bit" item */
-            return (listbox_result >= (int) codepages->len)
+            return (listbox_result >= (int) CodepageDesc::codepages->len)
                 ? SELECT_CHARSET_OTHER_8BIT : listbox_result;
         }
         else
@@ -139,7 +139,7 @@ bool do_set_codepage (int codepage)
     bool ret;
 
     mc_global.source_codepage = codepage;
-    errmsg = init_translation_table (codepage == SELECT_CHARSET_NO_TRANSLATE ?
+    errmsg = CodepageDesc::init_translation_table (codepage == SELECT_CHARSET_NO_TRANSLATE ?
                                      mc_global.display_codepage : mc_global.source_codepage,
                                      mc_global.display_codepage);
     ret = (errmsg == NULL);

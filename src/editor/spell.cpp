@@ -451,7 +451,7 @@ aspell_set_lang (const char *lang)
 
 #ifdef HAVE_CHARSET
         if (mc_global.source_codepage > 0)
-            spell_codeset = get_codepage_id (mc_global.source_codepage);
+            spell_codeset = CodepageDesc::get_codepage_id (mc_global.source_codepage);
         else
 #endif
             spell_codeset = str_detect_termencoding ();

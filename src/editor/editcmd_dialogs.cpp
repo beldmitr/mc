@@ -147,7 +147,7 @@ editcmd_dialog_search_show (WEdit * edit)
     {
         GString *tmp;
 
-        tmp = str_convert_to_input (search_text);
+        tmp = CodepageDesc::str_convert_to_input (search_text);
         g_free (search_text);
         search_text = g_string_free (tmp, FALSE);
     }
@@ -158,7 +158,7 @@ editcmd_dialog_search_show (WEdit * edit)
     mc_search_free (edit->search);
 
 #ifdef HAVE_CHARSET
-    edit->search = mc_search_new (edit->last_search_string, cp_source);
+    edit->search = mc_search_new (edit->last_search_string, CodepageDesc::cp_source);
 #else
     edit->search = mc_search_new (edit->last_search_string, NULL);
 #endif

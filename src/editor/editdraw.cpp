@@ -154,7 +154,7 @@ status_string (WEdit * edit, char *s, int w)
                     edit->buffer.lines + 1, (long) edit->buffer.curs1, (long) edit->buffer.size,
                     byte_str,
 #ifdef HAVE_CHARSET
-                    mc_global.source_codepage >= 0 ? get_codepage_id (mc_global.source_codepage) :
+                    mc_global.source_codepage >= 0 ? CodepageDesc::get_codepage_id (mc_global.source_codepage) :
 #endif
                     "");
     else
@@ -171,7 +171,7 @@ status_string (WEdit * edit, char *s, int w)
                     edit->buffer.lines + 1, (long) edit->buffer.curs1, (long) edit->buffer.size,
                     byte_str,
 #ifdef HAVE_CHARSET
-                    mc_global.source_codepage >= 0 ? get_codepage_id (mc_global.source_codepage) :
+                    mc_global.source_codepage >= 0 ? CodepageDesc::get_codepage_id (mc_global.source_codepage) :
 #endif
                     "");
 }
@@ -728,7 +728,7 @@ edit_draw_this_line (WEdit * edit, off_t b, long row, long start_col, long end_c
                     if (mc_global.utf8_display)
                     {
                         if (!edit->utf8)
-                            c = convert_from_8bit_to_utf_c ((unsigned char) c, edit->converter);
+                            c = CodepageDesc::convert_from_8bit_to_utf_c ((unsigned char) c, edit->converter);
                         else if (g_unichar_iswide (c))
                         {
                             wide_width_char = TRUE;
@@ -736,9 +736,9 @@ edit_draw_this_line (WEdit * edit, off_t b, long row, long start_col, long end_c
                         }
                     }
                     else if (edit->utf8)
-                        c = convert_from_utf_to_current_c (c, edit->converter);
+                        c = CodepageDesc::convert_from_utf_to_current_c (c, edit->converter);
                     else
-                        c = convert_to_display_c (c);
+                        c = CodepageDesc::convert_to_display_c (c);
 #endif
 
                     /* Caret notation for control characters */

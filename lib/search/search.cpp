@@ -164,7 +164,7 @@ mc_search_new_len (const gchar * original, gsize original_len, const gchar * ori
 #ifdef HAVE_CHARSET
     lc_mc_search->original_charset =
         g_strdup (original_charset != NULL
-                  && *original_charset != '\0' ? original_charset : cp_display);
+                  && *original_charset != '\0' ? original_charset : CodepageDesc::cp_display);
 #else
     (void) original_charset;
 #endif
@@ -215,13 +215,9 @@ mc_search_prepare (mc_search_t * lc_mc_search)
     {
         gsize loop1;
 
-        for (loop1 = 0; loop1 < codepages->len; loop1++)
+        for (loop1 = 0; loop1 < CodepageDesc::codepages->len; loop1++)
         {
-            const char *id;
-            gsize recoded_str_len;
-            gchar *buffer;
-
-            id = (static_cast<CodepageDesc*>(g_ptr_array_index (codepages, loop1)))->id;
+            const char *id = (static_cast<CodepageDesc*>(g_ptr_array_index (CodepageDesc::codepages, loop1)))->GetId();
             if (g_ascii_strcasecmp (id, lc_mc_search->original_charset) == 0)
             {
                 g_ptr_array_add (ret,
@@ -231,7 +227,8 @@ mc_search_prepare (mc_search_t * lc_mc_search)
                 continue;
             }
 
-            buffer =
+            gsize recoded_str_len;
+            gchar *buffer =
                 mc_search__recode_str (lc_mc_search->original, lc_mc_search->original_len,
                                        lc_mc_search->original_charset, id, &recoded_str_len);
 

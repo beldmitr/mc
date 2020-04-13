@@ -280,7 +280,7 @@ mcview_isprint (const WView * view, int c)
 {
 #ifdef HAVE_CHARSET
     if (!view->utf8)
-        c = convert_from_8bit_to_utf_c ((unsigned char) c, view->converter);
+        c = CodepageDesc::convert_from_8bit_to_utf_c ((unsigned char) c, view->converter);
     return g_unichar_isprint (c);
 #else
     (void) view;
@@ -298,7 +298,7 @@ mcview_char_display (const WView * view, int c, char *s)
     if (mc_global.utf8_display)
     {
         if (!view->utf8)
-            c = convert_from_8bit_to_utf_c ((unsigned char) c, view->converter);
+            c = CodepageDesc::convert_from_8bit_to_utf_c ((unsigned char) c, view->converter);
         if (!g_unichar_isprint (c))
             c = '.';
         return g_unichar_to_utf8 (c, s);
@@ -313,12 +313,12 @@ mcview_char_display (const WView * view, int c, char *s)
         if (g_unichar_iszerowidth (c))
             return 0;
         /* TODO the is_printable check below will be broken for this */
-        c = convert_from_utf_to_current_c (c, view->converter);
+        c = CodepageDesc::convert_from_utf_to_current_c (c, view->converter);
     }
     else
     {
         /* TODO the is_printable check below will be broken for this */
-        c = convert_to_display_c (c);
+        c = CodepageDesc::convert_to_display_c (c);
     }
 #else
     (void) view;

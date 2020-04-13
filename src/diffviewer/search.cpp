@@ -120,7 +120,7 @@ mcdiffview_dialog_search (WDiff * dview)
     {
         GString *tmp;
 
-        tmp = str_convert_to_input (exp);
+        tmp = CodepageDesc::str_convert_to_input (exp);
         g_free (exp);
         exp = g_string_free (tmp, FALSE);
     }
@@ -246,7 +246,7 @@ dview_search_cmd (WDiff * dview)
 
     mc_search_free (dview->search.handle);
 #ifdef HAVE_CHARSET
-    dview->search.handle = mc_search_new (dview->search.last_string, cp_source);
+    dview->search.handle = mc_search_new (dview->search.last_string, CodepageDesc::cp_source);
 #else
     dview->search.handle = mc_search_new (dview->search.last_string, NULL);
 #endif

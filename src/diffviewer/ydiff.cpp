@@ -2314,7 +2314,7 @@ dview_set_codeset (WDiff * dview)
 
     dview->utf8 = TRUE;
     encoding_id =
-        get_codepage_id (mc_global.source_codepage >=
+            CodepageDesc::get_codepage_id (mc_global.source_codepage >=
                          0 ? mc_global.source_codepage : mc_global.display_codepage);
     if (encoding_id != NULL)
     {
@@ -2636,14 +2636,14 @@ dview_display_file (const WDiff * dview, diff_place_t ord, int r, int c, int hei
                                 if (!dview->utf8)
                                 {
                                     next_ch =
-                                        convert_from_8bit_to_utf_c ((unsigned char) next_ch,
+                                            CodepageDesc::convert_from_8bit_to_utf_c ((unsigned char) next_ch,
                                                                     dview->converter);
                                 }
                             }
                             else if (dview->utf8)
-                                next_ch = convert_from_utf_to_current_c (next_ch, dview->converter);
+                                next_ch = CodepageDesc::convert_from_utf_to_current_c (next_ch, dview->converter);
                             else
-                                next_ch = convert_to_display_c (next_ch);
+                                next_ch = CodepageDesc::convert_to_display_c (next_ch);
 #endif
                             tty_print_anychar (next_ch);
                             col++;
@@ -2712,13 +2712,13 @@ dview_display_file (const WDiff * dview, diff_place_t ord, int r, int c, int hei
                     if (!dview->utf8)
                     {
                         next_ch =
-                            convert_from_8bit_to_utf_c ((unsigned char) next_ch, dview->converter);
+                                CodepageDesc::convert_from_8bit_to_utf_c ((unsigned char) next_ch, dview->converter);
                     }
                 }
                 else if (dview->utf8)
-                    next_ch = convert_from_utf_to_current_c (next_ch, dview->converter);
+                    next_ch = CodepageDesc::convert_from_utf_to_current_c (next_ch, dview->converter);
                 else
-                    next_ch = convert_to_display_c (next_ch);
+                    next_ch = CodepageDesc::convert_to_display_c (next_ch);
 #endif
 
                 tty_print_anychar (next_ch);
@@ -3282,7 +3282,7 @@ dview_handle_key (WDiff * dview, int key)
     long command;
 
 #ifdef HAVE_CHARSET
-    key = convert_from_input_c (key);
+    key = CodepageDesc::convert_from_input_c (key);
 #endif
 
     command = widget_lookup_key (WIDGET (dview), key);

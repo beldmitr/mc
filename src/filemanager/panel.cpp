@@ -4387,7 +4387,7 @@ panel_sized_with_dir_new (const char *panel_name, int y, int x, int lines, int c
 #ifdef HAVE_CHARSET
     path_element = vfs_path_get_by_index (panel->cwd_vpath, -1);
     if (path_element->encoding != NULL)
-        panel->codepage = get_codepage_index (path_element->encoding);
+        panel->codepage = CodepageDesc::get_codepage_index (path_element->encoding);
 #endif
 
     if (mc_chdir (panel->cwd_vpath) != 0)
@@ -4727,7 +4727,7 @@ panel_change_encoding (WPanel * panel)
         /* No translation */
         vfs_path_t *cd_path_vpath;
 
-        g_free (init_translation_table (mc_global.display_codepage, mc_global.display_codepage));
+        g_free (CodepageDesc::init_translation_table (mc_global.display_codepage, mc_global.display_codepage));
         cd_path_vpath = remove_encoding_from_path (panel->cwd_vpath);
         do_panel_cd (panel, cd_path_vpath, cd_parse_command);
         show_dir (panel);
@@ -4735,7 +4735,7 @@ panel_change_encoding (WPanel * panel)
         return;
     }
 
-    errmsg = init_translation_table (panel->codepage, mc_global.display_codepage);
+    errmsg = CodepageDesc::init_translation_table (panel->codepage, mc_global.display_codepage);
     if (errmsg != NULL)
     {
         message (D_ERROR, MSG_ERROR, "%s", errmsg);
@@ -4743,7 +4743,7 @@ panel_change_encoding (WPanel * panel)
         return;
     }
 
-    encoding = get_codepage_id (panel->codepage);
+    encoding = CodepageDesc::get_codepage_id (panel->codepage);
     if (encoding != NULL)
     {
         vfs_path_change_encoding (panel->cwd_vpath, encoding);
@@ -5036,7 +5036,7 @@ do_cd (const vfs_path_t * new_dir_vpath, enum cd_enum exact)
 
         path_element = vfs_path_get_by_index (current_panel->cwd_vpath, -1);
         if (path_element->encoding != NULL)
-            current_panel->codepage = get_codepage_index (path_element->encoding);
+            current_panel->codepage = CodepageDesc::get_codepage_index (path_element->encoding);
         else
             current_panel->codepage = SELECT_CHARSET_NO_TRANSLATE;
     }

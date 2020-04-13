@@ -100,9 +100,9 @@ mc_search__get_one_symbol (const char *charset, const char *str, gsize str_len,
     gchar *converted_str2;
 
     if (charset == NULL)
-        charset = cp_source;
+        charset = CodepageDesc::cp_source;
 
-    converted_str = mc_search__recode_str (str, str_len, charset, cp_display, &converted_str_len);
+    converted_str = mc_search__recode_str (str, str_len, charset, CodepageDesc::cp_display, &converted_str_len);
 #else
     (void) charset;
 
@@ -117,7 +117,7 @@ mc_search__get_one_symbol (const char *charset, const char *str, gsize str_len,
 
 #ifdef HAVE_CHARSET
     converted_str2 =
-        mc_search__recode_str (converted_str, tmp_len, cp_display, charset, &converted_str_len);
+        mc_search__recode_str (converted_str, tmp_len, CodepageDesc::cp_display, charset, &converted_str_len);
 #endif
     if (just_letters != NULL)
         *just_letters = str_isalnum (converted_str) && !str_isdigit (converted_str);
@@ -141,10 +141,10 @@ mc_search__tolower_case_str (const char *charset, const char *str, gsize str_len
     gsize tmp_len;
 
     if (charset == NULL)
-        charset = cp_source;
+        charset = CodepageDesc::cp_source;
 
     tmp_str2 = converted_str =
-        mc_search__recode_str (str, str_len, charset, cp_display, &converted_str_len);
+        mc_search__recode_str (str, str_len, charset, CodepageDesc::cp_display, &converted_str_len);
 
     tmp_len = converted_str_len + 1;
 
@@ -155,7 +155,7 @@ mc_search__tolower_case_str (const char *charset, const char *str, gsize str_len
 
     g_free (tmp_str3);
     tmp_str2 =
-        mc_search__recode_str (converted_str, converted_str_len, cp_display, charset, &tmp_len);
+        mc_search__recode_str (converted_str, converted_str_len, CodepageDesc::cp_display, charset, &tmp_len);
     g_free (converted_str);
 
     ret = g_string_new_len (tmp_str2, tmp_len);
@@ -191,10 +191,10 @@ mc_search__toupper_case_str (const char *charset, const char *str, gsize str_len
     gsize tmp_len;
 
     if (charset == NULL)
-        charset = cp_source;
+        charset = CodepageDesc::cp_source;
 
     tmp_str2 = converted_str =
-        mc_search__recode_str (str, str_len, charset, cp_display, &converted_str_len);
+        mc_search__recode_str (str, str_len, charset, CodepageDesc::cp_display, &converted_str_len);
 
     tmp_len = converted_str_len + 1;
 
@@ -206,7 +206,7 @@ mc_search__toupper_case_str (const char *charset, const char *str, gsize str_len
     g_free (tmp_str3);
 
     tmp_str2 =
-        mc_search__recode_str (converted_str, converted_str_len, cp_display, charset, &tmp_len);
+        mc_search__recode_str (converted_str, converted_str_len, CodepageDesc::cp_display, charset, &tmp_len);
     g_free (converted_str);
 
     ret = g_string_new_len (tmp_str2, tmp_len);

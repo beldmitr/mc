@@ -901,7 +901,7 @@ edit_replace_cmd__conv_to_display (const char *str)
 #ifdef HAVE_CHARSET
     GString *tmp;
 
-    tmp = str_convert_to_display (str);
+    tmp = CodepageDesc::str_convert_to_display (str);
     if (tmp != NULL)
     {
         if (tmp->len != 0)
@@ -920,7 +920,7 @@ edit_replace_cmd__conv_to_input (char *str)
 #ifdef HAVE_CHARSET
     GString *tmp;
 
-    tmp = str_convert_to_input (str);
+    tmp = CodepageDesc::str_convert_to_input (str);
     if (tmp->len != 0)
         return g_string_free (tmp, FALSE);
     g_string_free (tmp, TRUE);
@@ -1219,7 +1219,7 @@ edit_collect_completions (WEdit * edit, off_t word_start, gsize word_len,
     edit_search_status_msg_t esm;
 
 #ifdef HAVE_CHARSET
-    srch = mc_search_new (match_expr, cp_source);
+    srch = mc_search_new (match_expr, CodepageDesc::cp_source);
 #else
     srch = mc_search_new (match_expr, NULL);
 #endif
@@ -1302,9 +1302,7 @@ edit_collect_completions (WEdit * edit, off_t word_start, gsize word_len,
         }
 #ifdef HAVE_CHARSET
         {
-            GString *recoded;
-
-            recoded = str_convert_to_display (temp->str);
+            GString *recoded = CodepageDesc::str_convert_to_display (temp->str);
             if (recoded->len != 0)
                 g_string_assign (temp, recoded->str);
 
@@ -1503,9 +1501,7 @@ static void
 edit_complete_word_insert_recoded_completion (WEdit * edit, char *completion, gsize word_len)
 {
 #ifdef HAVE_CHARSET
-    GString *temp;
-
-    temp = str_convert_to_input (completion);
+    GString *temp = CodepageDesc::str_convert_to_input (completion);
 
     for (completion = temp->str + word_len; *completion != '\0'; completion++)
         edit_insert (edit, *completion);
@@ -2560,7 +2556,7 @@ void edit_replace_cmd (WEdit * edit, bool again)
     if (edit->search == NULL)
     {
 #ifdef HAVE_CHARSET
-        edit->search = mc_search_new (input1, cp_source);
+        edit->search = mc_search_new (input1, CodepageDesc::cp_source);
 #else
         edit->search = mc_search_new (input1, NULL);
 #endif
@@ -2781,7 +2777,7 @@ edit_search_cmd (WEdit * edit, bool again)
             g_list_free_full (history, g_free);
 
 #ifdef HAVE_CHARSET
-            edit->search = mc_search_new (edit->last_search_string, cp_source);
+            edit->search = mc_search_new (edit->last_search_string, CodepageDesc::cp_source);
 #else
             edit->search = mc_search_new (edit->last_search_string, NULL);
 #endif
@@ -3554,9 +3550,7 @@ edit_suggest_current_word (WEdit * edit)
 #ifdef HAVE_CHARSET
     if (mc_global.source_codepage >= 0 && (mc_global.source_codepage != mc_global.display_codepage))
     {
-        GString *tmp_word;
-
-        tmp_word = str_convert_to_display (match_word->str);
+        GString *tmp_word = CodepageDesc::str_convert_to_display (match_word->str);
         g_string_free (match_word, TRUE);
         match_word = tmp_word;
     }
@@ -3591,9 +3585,7 @@ edit_suggest_current_word (WEdit * edit)
                 if (mc_global.source_codepage >= 0 &&
                     (mc_global.source_codepage != mc_global.display_codepage))
                 {
-                    GString *tmp_word;
-
-                    tmp_word = str_convert_to_input (new_word);
+                    GString *tmp_word = CodepageDesc::str_convert_to_input (new_word);
                     g_free (new_word);
                     new_word = g_string_free (tmp_word, FALSE);
                 }

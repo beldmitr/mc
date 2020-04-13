@@ -123,9 +123,7 @@ mcview_dialog_search (WView * view)
 
 #ifdef HAVE_CHARSET
     {
-        GString *tmp;
-
-        tmp = str_convert_to_input (exp);
+        GString *tmp = CodepageDesc::str_convert_to_input (exp);
         g_free (exp);
         exp = g_string_free (tmp, FALSE);
     }
@@ -137,7 +135,7 @@ mcview_dialog_search (WView * view)
     mc_search_free (view->search);
 
 #ifdef HAVE_CHARSET
-    view->search = mc_search_new (view->last_search_string, cp_source);
+    view->search = mc_search_new (view->last_search_string, CodepageDesc::cp_source);
 #else
     view->search = mc_search_new (view->last_search_string, NULL);
 #endif

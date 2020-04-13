@@ -340,12 +340,10 @@ sel_charset_button (WButton * button, int action)
 
     if (new_dcp != SELECT_CHARSET_CANCEL)
     {
-        const char *cpname;
-
         new_display_codepage = new_dcp;
-        cpname = (new_display_codepage == SELECT_CHARSET_OTHER_8BIT) ?
+        const char *cpname = (new_display_codepage == SELECT_CHARSET_OTHER_8BIT) ?
             _("Other 8 bit") :
-            (static_cast<CodepageDesc*>(g_ptr_array_index (codepages, new_display_codepage)))->name;
+            (static_cast<CodepageDesc*>(g_ptr_array_index (CodepageDesc::codepages, new_display_codepage)))->GetName();
         if (cpname != NULL)
             mc_global.utf8_display = str_isutf8 (cpname);
         else
@@ -952,12 +950,12 @@ display_bits_box (void)
 void
 display_bits_box (void)
 {
-    const char *cpname;
+
 
     new_display_codepage = mc_global.display_codepage;
 
-    cpname = (new_display_codepage < 0) ? _("Other 8 bit")
-        : (static_cast<CodepageDesc*>(g_ptr_array_index(codepages, new_display_codepage)))->name;
+    const char *cpname = (new_display_codepage < 0) ? _("Other 8 bit")
+        : (static_cast<CodepageDesc*>(g_ptr_array_index(CodepageDesc::codepages, new_display_codepage)))->GetName();
 
     {
         bool new_meta;
@@ -991,7 +989,7 @@ display_bits_box (void)
 
             mc_global.display_codepage = new_display_codepage;
 
-            errmsg = init_translation_table (mc_global.source_codepage, mc_global.display_codepage);
+            errmsg = CodepageDesc::init_translation_table (mc_global.source_codepage, mc_global.display_codepage);
             if (errmsg != NULL)
             {
                 message (D_ERROR, MSG_ERROR, "%s", errmsg);
