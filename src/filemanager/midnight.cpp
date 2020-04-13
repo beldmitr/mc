@@ -395,14 +395,11 @@ menu_cmd (void)
 static void
 sort_cmd (void)
 {
-    WPanel *p;
-    const panel_field_t *sort_order;
-
     if (!SELECTED_IS_PANEL)
         return;
 
-    p = MENU_PANEL;
-    sort_order = sort_box (&p->sort_info, p->sort_field);
+    WPanel *p = MENU_PANEL;
+    const panel_field_t *sort_order = sort_box (&p->sort_info, p->sort_field);
     panel_set_sort_order (p, sort_order);
 }
 
@@ -438,13 +435,13 @@ midnight_get_title (const WDialog * h, size_t len)
 {
     char *path;
     char *login;
-    char *p;
+
 
     (void) h;
 
     title_path_prepare (&path, &login);
 
-    p = g_strdup_printf ("%s [%s]:%s", _("Panels:"), login, path);
+    char *p = g_strdup_printf ("%s [%s]:%s", _("Panels:"), login, path);
     g_free (path);
     g_free (login);
     path = g_strdup (str_trunc (p, len - 4));
@@ -527,44 +524,45 @@ check_other_panel_timestamp (const gchar * event_group_name, const gchar * event
 /* --------------------------------------------------------------------------------------------- */
 
 /* event callback */
-static bool print_vfs_message (const gchar * event_group_name, const gchar * event_name,
-                   gpointer init_data, gpointer data)
+static bool print_vfs_message (const char* /* event_group_name */ ,
+        const char* /* event_name */, void* /* init_data */, void* data)
 {
-    ev_vfs_print_message_t *event_data = (ev_vfs_print_message_t *) data;
-
-    (void) event_group_name;
-    (void) event_name;
-    (void) init_data;
+    ev_vfs_print_message_t *event_data = static_cast<ev_vfs_print_message_t*>(data);
 
     if (mc_global.midnight_shutdown)
-        goto ret;
-
-    if (!mc_global.message_visible || the_hint == NULL || WIDGET (the_hint)->owner == NULL)
     {
-        int col, row;
+        event_data->msg.clear();
+        return true;
+    }
 
+    if (!mc_global.message_visible || the_hint == nullptr || WIDGET (the_hint)->owner == nullptr)
+    {
         if (!nice_rotating_dash || (ok_to_refresh <= 0))
-            goto ret;
+        {
+            event_data->msg.clear();
+            return true;
+        }
 
+        int col, row;
         /* Preserve current cursor position */
         tty_getyx (&row, &col);
 
         tty_gotoyx (0, 0);
         tty_setcolor (NORMAL_COLOR);
-        tty_print_string (str_fit_to_term (event_data->msg, COLS - 1, J_LEFT));
+        tty_print_string (str_fit_to_term (event_data->msg.c_str(), COLS - 1, J_LEFT));
 
         /* Restore cursor position */
         tty_gotoyx (row, col);
         mc_refresh ();
-        goto ret;
+        event_data->msg.clear();
+        return true;
     }
 
     if (mc_global.message_visible)
-        set_hintbar (event_data->msg);
+        set_hintbar (event_data->msg.c_str());
 
-  ret:
-    MC_PTR_FREE (event_data->msg);
-    return TRUE;
+    event_data->msg.clear();
+    return true;
 }
 
 /* --------------------------------------------------------------------------------------------- */

@@ -297,7 +297,7 @@ public:
     gboolean utf8_display = FALSE;
 
     /* Set if the nice message (hint) bar is visible */
-    bool message_visible = TRUE;
+    bool message_visible = true;
     /* Set if the nice and useful keybar is visible */
     bool keybar_visible = TRUE;
 

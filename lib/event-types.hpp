@@ -32,7 +32,7 @@ typedef struct
 /* MCEVENT_GROUP_CORE:vfs_print_message */
 typedef struct
 {
-    char *msg;
+    std::string msg;
 } ev_vfs_print_message_t;
 
 /* MCEVENT_GROUP_CORE:clipboard_text_from_file */
