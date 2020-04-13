@@ -739,7 +739,7 @@ ftpfs_load_no_proxy_list (void)
     /* FixMe: shouldn't be hardcoded!!! */
     char *mc_file;
 
-    mc_file = g_build_filename (mc_global.sysconfig_dir, "mc.no_proxy", (char *) NULL);
+    mc_file = g_build_filename (mc_global.sysconfig_dir.c_str(), "mc.no_proxy", (char *) NULL);
     if (exist_file (mc_file))
     {
         FILE *npf;

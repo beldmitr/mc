@@ -28,17 +28,17 @@
 /** \file main.c
  *  \brief Source: this is a main module
  */
+// TODO Remove unused headers
 
-#include <ctype.h>
-#include <errno.h>
-#include <locale.h>
+//#include <cctype>
+//#include <cerrno>
+//#include <clocale>
 #include <pwd.h>                /* for username in xterm title */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <signal.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+//#include <sys/types.h>
+#include <csignal>
 #include <unistd.h>             /* getsid() */
 
 #include "lib/global.hpp"
@@ -49,18 +49,18 @@
 #include "lib/tty/mouse.hpp"      /* init_mouse() */
 #include "lib/timer.hpp"
 #include "lib/skin.hpp"
-#include "lib/filehighlight.hpp"
-#include "lib/fileloc.hpp"
+//#include "lib/filehighlight.hpp"
+//#include "lib/fileloc.hpp"
 #include "lib/strutil.hpp"
 #include "lib/util.hpp"
 #include "lib/vfs/vfs.hpp"        /* vfs_init(), vfs_shut() */
 
 #include "filemanager/midnight.hpp"       /* current_panel */
 #include "filemanager/treestore.hpp"      /* tree_store_save */
-#include "filemanager/layout.hpp"
+//#include "filemanager/layout.hpp"
 #include "filemanager/ext.hpp"    /* flush_extension_file() */
 #include "filemanager/command.hpp"        /* cmdline */
-#include "filemanager/panel.hpp"  /* panalized_panel */
+//#include "filemanager/panel.hpp"  /* panalized_panel */
 
 #include "vfs/plugins_init.hpp"
 
@@ -71,12 +71,13 @@
 #endif
 #include "setup.hpp"              /* load_setup() */
 
-#ifdef HAVE_CHARSET
-#include "lib/charsets.hpp"
-#include "selcodepage.hpp"
-#endif /* HAVE_CHARSET */
+//#ifdef HAVE_CHARSET
+//#include "lib/charsets.hpp"
+//#include "selcodepage.hpp"
+//#endif /* HAVE_CHARSET */
 
 #include "consaver/cons.saver.hpp"        /* cons_saver_pid */
+#include "util.hpp"
 
 /*** global variables ****************************************************************************/
 
@@ -89,143 +90,22 @@
 /*** file scope functions ************************************************************************/
 /* --------------------------------------------------------------------------------------------- */
 
-static void check_codeset (void)
-{
-    const char *current_system_codepage = str_detect_termencoding ();
 
-#ifdef HAVE_CHARSET
-    {
-        const char *_display_codepage = CodepageDesc::get_codepage_id (mc_global.display_codepage);
-
-        if (strcmp (_display_codepage, current_system_codepage) != 0)
-        {
-            mc_global.display_codepage = CodepageDesc::get_codepage_index (current_system_codepage);
-            if (mc_global.display_codepage == -1)
-                mc_global.display_codepage = 0;
-
-            mc_config_set_string (mc_global.main_config, CONFIG_MISC_SECTION, "display_codepage",
-                                  CodepageDesc::cp_display);
-        }
-    }
-#endif
-
-    mc_global.utf8_display = str_isutf8 (current_system_codepage);
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/** POSIX version.  The only version we support.  */
-
-static void OS_Setup (void)
-{
-    mc_global.shell = std::make_shared<Shell>();
-
-    /* This is the directory, where MC was installed, on Unix this is DATADIR */
-    /* and can be overriden by the MC_DATADIR environment variable */
-    const char *datadir_env = g_getenv ("MC_DATADIR");
-    if (datadir_env != NULL)
-        mc_global.sysconfig_dir = g_strdup (datadir_env);
-    else
-        mc_global.sysconfig_dir = g_strdup (SYSCONFDIR);
-
-    mc_global.share_data_dir = g_strdup (DATADIR);
-}
 
 /* --------------------------------------------------------------------------------------------- */
 
-static void
-sigchld_handler_no_subshell (int sig)
-{
-#ifdef __linux__
-    int pid, status;
 
-    if (mc_global.tty.console_flag == '\0')
-        return;
-
-    /* COMMENT: if it were true that after the call to handle_console(..INIT)
-       the value of mc_global.tty.console_flag never changed, we could simply not install
-       this handler at all if (!mc_global.tty.console_flag && !mc_global.tty.use_subshell). */
-
-    /* That comment is no longer true.  We need to wait() on a sigchld
-       handler (that's at least what the tarfs code expects currently). */
-
-    pid = waitpid (cons_saver_pid, &status, WUNTRACED | WNOHANG);
-
-    if (pid == cons_saver_pid)
-    {
-        if (WIFSTOPPED (status))
-        {
-            /* Someone has stopped cons.saver - restart it */
-            kill (pid, SIGCONT);
-        }
-        else
-        {
-            /* cons.saver has died - disable console saving */
-            handle_console (CONSOLE_DONE);
-            mc_global.tty.console_flag = '\0';
-        }
-    }
-    /* If we got here, some other child exited; ignore it */
-#endif /* __linux__ */
-
-    (void) sig;
-}
 
 /* --------------------------------------------------------------------------------------------- */
 
-static void
-init_sigchld (void)
-{
-    struct sigaction sigchld_action;
 
-    memset (&sigchld_action, 0, sizeof (sigchld_action));
-    sigchld_action.sa_handler =
-#ifdef ENABLE_SUBSHELL
-        mc_global.tty.use_subshell ? sigchld_handler :
-#endif /* ENABLE_SUBSHELL */
-        sigchld_handler_no_subshell;
-
-    sigemptyset (&sigchld_action.sa_mask);
-
-#ifdef SA_RESTART
-    sigchld_action.sa_flags = SA_RESTART;
-#endif /* !SA_RESTART */
-
-    if (sigaction (SIGCHLD, &sigchld_action, NULL) == -1)
-    {
-#ifdef ENABLE_SUBSHELL
-        /*
-         * This may happen on QNX Neutrino 6, where SA_RESTART
-         * is defined but not implemented.  Fallback to no subshell.
-         */
-        mc_global.tty.use_subshell = FALSE;
-#endif /* ENABLE_SUBSHELL */
-    }
-}
 
 /* --------------------------------------------------------------------------------------------- */
-/**
- * Check MC_SID to prevent running one mc from another.
- *
- * @return true if no parent mc in our session was found, FALSE otherwise.
- */
 
-static bool check_sid()
-{
-    const char *sid_str = getenv ("MC_SID");
-    if (!sid_str)
-        return true;
 
-    pid_t old_sid = (pid_t) strtol (sid_str, NULL, 0);
-    if (old_sid == 0)
-        return true;
 
-    pid_t my_sid = getsid (0);
-    if (my_sid == -1)
-        return true;
+/* --------------------------------------------------------------------------------------------- */
 
-    /* The parent mc is in a different session, it's OK */
-    return (old_sid != my_sid);
-}
 
 /* --------------------------------------------------------------------------------------------- */
 /*** public functions ****************************************************************************/
@@ -233,11 +113,10 @@ static bool check_sid()
 
 int main (int argc, char *argv[])
 {
-    bool config_migrated = false;
     char *config_migrate_msg = nullptr;
     int exit_code = EXIT_FAILURE;
 
-    mc_global.run_from_parent_mc = !check_sid ();
+    mc_global.run_from_parent_mc = !Util::CheckSid();
 
     mc_global.timer = std::make_shared<Timer>();
 
@@ -249,7 +128,7 @@ int main (int argc, char *argv[])
     (void) textdomain (PACKAGE);
 
     /* do this before args parsing */
-    str_init_strings (NULL);
+    str_init_strings (nullptr);
 
     // set up mc_global
     Args::mc_setup_run_mode (argv[0]);   /* are we mc? editor? viewer? etc... */
@@ -266,7 +145,7 @@ int main (int argc, char *argv[])
     }
 
     /* do this before mc_args_show_info () to view paths in the --datadir-info output */
-    OS_Setup ();
+    Util::OS_Setup ();
 
     if (!g_path_is_absolute (mc_config_get_home_dir ()))
     {
@@ -286,7 +165,7 @@ int main (int argc, char *argv[])
         goto startup_exit_falure;
 
     mc_config_init_config_paths (&mcerror);
-    config_migrated = mc_config_migrate_from_old_place (&mcerror, &config_migrate_msg);
+    bool config_migrated = mc_config_migrate_from_old_place (&mcerror, &config_migrate_msg);
     if (mcerror != NULL)
     {
         mc_event_deinit (NULL);
@@ -354,7 +233,7 @@ int main (int argc, char *argv[])
 #endif /* ENABLE_SUBSHELL */
 
     /* Install the SIGCHLD handler; must be done before init_subshell() */
-    init_sigchld ();
+    Util::InitSigchld ();
 
     /* We need this, since ncurses endwin () doesn't restore the signals */
     save_stop_handler ();
@@ -364,7 +243,7 @@ int main (int argc, char *argv[])
     tty_init (!mc_args__nomouse, mc_global.tty.xterm_flag);
 
     /* start check mc_global.display_codepage and mc_global.source_codepage */
-    check_codeset ();
+    Util::check_codeset ();
 
     /* Removing this from the X code let's us type C-c */
     load_key_defs ();
@@ -390,9 +269,7 @@ int main (int argc, char *argv[])
     /* inherit the file descriptors opened below, etc */
     if (mc_global.tty.use_subshell && mc_global.run_from_parent_mc)
     {
-        int r;
-
-        r = query_dialog (_("Warning"),
+        int r = query_dialog (_("Warning"),
                           _("GNU Midnight Commander\nis already running on this terminal.\n"
                             "Subshell support will be disabled."),
                           D_ERROR, 2, _("&OK"), _("&Quit"));

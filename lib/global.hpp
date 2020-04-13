@@ -13,7 +13,7 @@
 #include <memory>
 
 #if defined(HAVE_STRING_H)
-#include <string.h>
+#include <cstring>
    /* An ANSI string.h and pre-ANSI memory.h might conflict */
 #elif defined(HAVE_MEMORY_H)
 #include <memory.h>
@@ -30,7 +30,7 @@
 #include <fcntl.h>
 
 /* for sig_atomic_t */
-#include <signal.h>
+#include <csignal>
 
 #ifdef HAVE_FUNC_ATTRIBUTE_FALLTHROUGH
 #define MC_FALLTHROUGH __attribute__((fallthrough))
@@ -252,6 +252,7 @@ public:
     };
 public:
     RunMode mc_run_mode = MC_RUN_FULL;
+
     gboolean run_from_parent_mc = FALSE;
     /* global timer */
     std::shared_ptr<Timer> timer = nullptr;
@@ -260,12 +261,12 @@ public:
 
     /* sysconfig_dir: Area for default settings from maintainers of distributuves
        default is /etc/mc or may be defined by MC_DATADIR */
-    char *sysconfig_dir = nullptr;
+    std::string sysconfig_dir;
     /* share_data_dir: Area for default settings from developers */
-    char *share_data_dir = nullptr;
+    std::string share_data_dir;
 
-    mc_config_t *main_config;
-    mc_config_t *panels_config;
+    mc_config_t *main_config = nullptr;
+    mc_config_t *panels_config = nullptr;
 
 #ifdef HAVE_CHARSET
     /* Numbers of (file I/O) and (input/display) codepages. -1 if not selected */

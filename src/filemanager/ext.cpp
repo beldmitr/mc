@@ -811,12 +811,12 @@ regex_command_for (void *target, const vfs_path_t * filename_vpath, const char *
         {
             g_free (extension_file);
           check_stock_mc_ext:
-            extension_file = mc_build_filename (mc_global.sysconfig_dir, MC_LIB_EXT, (char *) NULL);
+            extension_file = mc_build_filename (mc_global.sysconfig_dir.c_str(), MC_LIB_EXT, (char *) NULL);
             if (!exist_file (extension_file))
             {
                 g_free (extension_file);
                 extension_file =
-                    mc_build_filename (mc_global.share_data_dir, MC_LIB_EXT, (char *) NULL);
+                    mc_build_filename (mc_global.share_data_dir.c_str(), MC_LIB_EXT, (char *) NULL);
             }
             mc_user_ext = FALSE;
         }
@@ -838,12 +838,12 @@ regex_command_for (void *target, const vfs_path_t * filename_vpath, const char *
                     char *title;
 
                     title = g_strdup_printf (_(" %s%s file error"),
-                                             mc_global.sysconfig_dir, MC_LIB_EXT);
+                                             mc_global.sysconfig_dir.c_str(), MC_LIB_EXT);
                     message (D_ERROR, title, _("The format of the %smc.ext "
                                                "file has changed with version 3.0. It seems that "
                                                "the installation failed. Please fetch a fresh "
                                                "copy from the Midnight Commander package."),
-                             mc_global.sysconfig_dir);
+                             mc_global.sysconfig_dir.c_str());
                     g_free (title);
                     return 0;
                 }
@@ -864,7 +864,7 @@ regex_command_for (void *target, const vfs_path_t * filename_vpath, const char *
                      _("The format of the %s file has "
                        "changed with version 3.0. You may either want to copy "
                        "it from %smc.ext or use that file as an example of how to write it."),
-                     filebind_filename, mc_global.sysconfig_dir);
+                     filebind_filename, mc_global.sysconfig_dir.c_str());
             g_free (filebind_filename);
             g_free (title);
         }

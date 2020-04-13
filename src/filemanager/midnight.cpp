@@ -1670,7 +1670,7 @@ get_random_hint (gboolean force)
     if (!force && !mc_time_elapsed (&tv, update_period))
         return g_strdup ("");
 
-    data = load_mc_home_file (mc_global.share_data_dir, MC_HINT, NULL, &len);
+    data = load_mc_home_file (mc_global.share_data_dir.c_str(), MC_HINT, NULL, &len);
     if (data == NULL)
         return NULL;
 

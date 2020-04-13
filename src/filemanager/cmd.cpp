@@ -957,14 +957,14 @@ ext_cmd (void)
                             _("Which extension file you want to edit?"), D_NORMAL, 2,
                             _("&User"), _("&System Wide"));
 
-    extdir_vpath = vfs_path_build_filename (mc_global.sysconfig_dir, MC_LIB_EXT, (char *) NULL);
+    extdir_vpath = vfs_path_build_filename (mc_global.sysconfig_dir.c_str(), MC_LIB_EXT, (char *) NULL);
 
     if (dir == 0)
     {
         vfs_path_t *buffer_vpath;
 
         buffer_vpath = mc_config_get_full_vpath (MC_FILEBIND_FILE);
-        Util::Check_for_default (extdir_vpath, buffer_vpath);
+        Util::CheckForDefault (extdir_vpath, buffer_vpath);
         do_edit (buffer_vpath);
         vfs_path_free (buffer_vpath);
     }
@@ -974,7 +974,7 @@ ext_cmd (void)
         {
             vfs_path_free (extdir_vpath);
             extdir_vpath =
-                vfs_path_build_filename (mc_global.share_data_dir, MC_LIB_EXT, (char *) NULL);
+                vfs_path_build_filename (mc_global.share_data_dir.c_str(), MC_LIB_EXT, (char *) NULL);
         }
         do_edit (extdir_vpath);
     }
@@ -999,36 +999,36 @@ edit_mc_menu_cmd (void)
                         D_NORMAL, geteuid ()? 2 : 3, _("&Local"), _("&User"), _("&System Wide"));
 
     menufile_vpath =
-        vfs_path_build_filename (mc_global.sysconfig_dir, MC_GLOBAL_MENU, (char *) NULL);
+        vfs_path_build_filename (mc_global.sysconfig_dir.c_str(), MC_GLOBAL_MENU, (char *) NULL);
 
     if (!exist_file (vfs_path_get_last_path_str (menufile_vpath)))
     {
         vfs_path_free (menufile_vpath);
         menufile_vpath =
-            vfs_path_build_filename (mc_global.share_data_dir, MC_GLOBAL_MENU, (char *) NULL);
+            vfs_path_build_filename (mc_global.share_data_dir.c_str(), MC_GLOBAL_MENU, (char *) NULL);
     }
 
     switch (dir)
     {
     case 0:
         buffer_vpath = vfs_path_from_str (MC_LOCAL_MENU);
-        Util::Check_for_default (menufile_vpath, buffer_vpath);
+        Util::CheckForDefault (menufile_vpath, buffer_vpath);
         chmod (vfs_path_get_last_path_str (buffer_vpath), 0600);
         break;
 
     case 1:
         buffer_vpath = mc_config_get_full_vpath (MC_USERMENU_FILE);
-        Util::Check_for_default (menufile_vpath, buffer_vpath);
+        Util::CheckForDefault (menufile_vpath, buffer_vpath);
         break;
 
     case 2:
         buffer_vpath =
-            vfs_path_build_filename (mc_global.sysconfig_dir, MC_GLOBAL_MENU, (char *) NULL);
+            vfs_path_build_filename (mc_global.sysconfig_dir.c_str(), MC_GLOBAL_MENU, (char *) NULL);
         if (!exist_file (vfs_path_get_last_path_str (buffer_vpath)))
         {
             vfs_path_free (buffer_vpath);
             buffer_vpath =
-                vfs_path_build_filename (mc_global.share_data_dir, MC_GLOBAL_MENU, (char *) NULL);
+                vfs_path_build_filename (mc_global.share_data_dir.c_str(), MC_GLOBAL_MENU, (char *) NULL);
         }
         break;
 
@@ -1057,14 +1057,14 @@ edit_fhl_cmd (void)
                             _("&User"), _("&System Wide"));
 
     fhlfile_vpath =
-        vfs_path_build_filename (mc_global.sysconfig_dir, MC_FHL_INI_FILE, (char *) NULL);
+        vfs_path_build_filename (mc_global.sysconfig_dir.c_str(), MC_FHL_INI_FILE, (char *) NULL);
 
     if (dir == 0)
     {
         vfs_path_t *buffer_vpath;
 
         buffer_vpath = mc_config_get_full_vpath (MC_FHL_INI_FILE);
-        Util::Check_for_default (fhlfile_vpath, buffer_vpath);
+        Util::CheckForDefault (fhlfile_vpath, buffer_vpath);
         do_edit (buffer_vpath);
         vfs_path_free (buffer_vpath);
     }
@@ -1074,7 +1074,7 @@ edit_fhl_cmd (void)
         {
             vfs_path_free (fhlfile_vpath);
             fhlfile_vpath =
-                vfs_path_build_filename (mc_global.sysconfig_dir, MC_FHL_INI_FILE, (char *) NULL);
+                vfs_path_build_filename (mc_global.sysconfig_dir.c_str(), MC_FHL_INI_FILE, (char *) NULL);
         }
         do_edit (fhlfile_vpath);
     }

@@ -973,14 +973,14 @@ user_menu_cmd (const WEdit * edit_widget, const char *menu_file, int selected_en
             {
                 g_free (menu);
                 menu =
-                    mc_build_filename (mc_global.sysconfig_dir,
+                    mc_build_filename (mc_global.sysconfig_dir.c_str(),
                                        edit_widget != NULL ? EDIT_GLOBAL_MENU : MC_GLOBAL_MENU,
                                        (char *) NULL);
                 if (!exist_file (menu))
                 {
                     g_free (menu);
                     menu =
-                        mc_build_filename (mc_global.share_data_dir,
+                        mc_build_filename (mc_global.share_data_dir.c_str(),
                                            edit_widget != NULL ? EDIT_GLOBAL_MENU : MC_GLOBAL_MENU,
                                            (char *) NULL);
                 }

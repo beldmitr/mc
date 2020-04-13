@@ -434,7 +434,7 @@ sfs_init (struct vfs_class *me)
 
     (void) me;
 
-    mc_sfsini = g_build_filename (mc_global.sysconfig_dir, "sfs.ini", (char *) NULL);
+    mc_sfsini = g_build_filename (mc_global.sysconfig_dir.c_str(), "sfs.ini", (char *) NULL);
     cfg = fopen (mc_sfsini, "r");
 
     if (cfg == NULL)

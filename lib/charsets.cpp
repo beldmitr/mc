@@ -324,12 +324,12 @@ void CodepageDesc::load_codepages_list()
     char *fname;
 
     /* 1: try load /usr/share/mc/mc.charsets */
-    fname = g_build_filename (mc_global.share_data_dir, CHARSETS_LIST, (char *) NULL);
+    fname = g_build_filename (mc_global.share_data_dir.c_str(), CHARSETS_LIST, (char *) NULL);
     load_codepages_list_from_file (&codepages, fname);
     g_free (fname);
 
     /* 2: try load /etc/mc/mc.charsets */
-    fname = g_build_filename (mc_global.sysconfig_dir, CHARSETS_LIST, (char *) NULL);
+    fname = g_build_filename (mc_global.sysconfig_dir.c_str(), CHARSETS_LIST, (char *) NULL);
     load_codepages_list_from_file (&codepages, fname);
     g_free (fname);
 

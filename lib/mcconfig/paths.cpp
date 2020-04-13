@@ -358,9 +358,6 @@ mc_config_deinit_config_paths (void)
     g_free (mc_data_str);
 #endif /* MC_HOMEDIR_XDG */
 
-    g_free (mc_global.share_data_dir);
-    g_free (mc_global.sysconfig_dir);
-
     xdg_vars_initialized = FALSE;
 }
 

@@ -396,12 +396,12 @@ str_isutf8 (const char *codeset_name)
 
 void str_init_strings (const char *termenc)
 {
-    codeset = termenc != NULL ? g_ascii_strup (termenc, -1) : g_strdup (str_detect_termencoding ());
+    codeset = termenc != nullptr ? g_ascii_strup (termenc, -1) : g_strdup (str_detect_termencoding ());
 
     str_cnv_not_convert = g_iconv_open (codeset, codeset);
     if (str_cnv_not_convert == INVALID_CONV)
     {
-        if (termenc != NULL)
+        if (termenc != nullptr)
         {
             g_free (codeset);
             codeset = g_strdup (str_detect_termencoding ());

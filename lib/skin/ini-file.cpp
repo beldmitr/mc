@@ -133,8 +133,8 @@ mc_skin_list (void)
 
     list = g_ptr_array_new ();
     mc_skin_get_list_from_dir (mc_config_get_data_path (), list);
-    mc_skin_get_list_from_dir (mc_global.sysconfig_dir, list);
-    mc_skin_get_list_from_dir (mc_global.share_data_dir, list);
+    mc_skin_get_list_from_dir (mc_global.sysconfig_dir.c_str(), list);
+    mc_skin_get_list_from_dir (mc_global.share_data_dir.c_str(), list);
     g_ptr_array_sort (list, (GCompareFunc) string_array_comparator);
 
     return list;
@@ -166,11 +166,11 @@ mc_skin_ini_file_load (mc_skin_t * mc_skin)
         return TRUE;
 
     /* /etc/mc/skins/ */
-    if (mc_skin_ini_file_load_search_in_dir (mc_skin, mc_global.sysconfig_dir))
+    if (mc_skin_ini_file_load_search_in_dir (mc_skin, mc_global.sysconfig_dir.c_str()))
         return TRUE;
 
     /* /usr/share/mc/skins/ */
-    return mc_skin_ini_file_load_search_in_dir (mc_skin, mc_global.share_data_dir);
+    return mc_skin_ini_file_load_search_in_dir (mc_skin, mc_global.share_data_dir.c_str());
 }
 
 /* --------------------------------------------------------------------------------------------- */
