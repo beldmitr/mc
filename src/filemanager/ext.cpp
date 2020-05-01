@@ -159,7 +159,7 @@ exec_expand_format (char symbol, gboolean is_result_quoted)
 {
     char *text;
 
-    text = expand_format (NULL, symbol, TRUE);
+    text = UserMenu::ExpandFormat(NULL, symbol, TRUE);
     if (is_result_quoted && text != NULL)
     {
         char *quoted_text;
@@ -271,10 +271,9 @@ exec_make_shell_string (const char *lc_data, const vfs_path_t * filename_vpath)
                 parameter_found = TRUE;
             else
             {
-                int i;
                 char *v;
 
-                i = check_format_view (lc_data);
+                int i = UserMenu::CheckFormatView(lc_data);
                 if (i != 0)
                 {
                     lc_data += i - 1;
@@ -282,7 +281,7 @@ exec_make_shell_string (const char *lc_data, const vfs_path_t * filename_vpath)
                 }
                 else
                 {
-                    i = check_format_cd (lc_data);
+                    i = UserMenu::CheckFormatCD(lc_data);
                     if (i > 0)
                     {
                         is_cd = TRUE;
@@ -293,7 +292,7 @@ exec_make_shell_string (const char *lc_data, const vfs_path_t * filename_vpath)
                     }
                     else
                     {
-                        i = check_format_var (lc_data, &v);
+                        i = UserMenu::CheckFormatVar(lc_data, &v);
                         if (i > 0 && v != NULL)
                         {
                             g_string_append (shell_string, v);
@@ -305,7 +304,7 @@ exec_make_shell_string (const char *lc_data, const vfs_path_t * filename_vpath)
                             char *text;
 
                             if (*lc_data != 'f')
-                                text = expand_format (NULL, *lc_data, !is_cd);
+                                text = UserMenu::ExpandFormat(NULL, *lc_data, !is_cd);
                             else
                             {
                                 text = exec_get_file_name (filename_vpath);

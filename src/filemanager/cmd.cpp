@@ -1293,17 +1293,15 @@ help_cmd (void)
 
 /* --------------------------------------------------------------------------------------------- */
 
-void
-user_file_menu_cmd (void)
+void user_file_menu_cmd()
 {
-    (void) user_menu_cmd (NULL, NULL, -1);
+    (void) UserMenu::Cmd(NULL, NULL, -1);
 }
 
 /* --------------------------------------------------------------------------------------------- */
 
 #ifdef ENABLE_VFS_FTP
-void
-ftplink_cmd (void)
+void ftplink_cmd()
 {
     nice_cd (_("FTP to machine"), _(machine_str),
              "[FTP File System]", ":ftplink_cmd: FTP to machine ", "ftp://", 1, TRUE);
@@ -1313,8 +1311,7 @@ ftplink_cmd (void)
 /* --------------------------------------------------------------------------------------------- */
 
 #ifdef ENABLE_VFS_SFTP
-void
-sftplink_cmd (void)
+void sftplink_cmd()
 {
     nice_cd (_("SFTP to machine"), _(machine_str),
              "[SFTP (SSH File Transfer Protocol) filesystem]",

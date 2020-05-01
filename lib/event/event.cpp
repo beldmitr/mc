@@ -115,7 +115,7 @@ mc_event_present (const gchar * event_group_name, const gchar * event_name)
         return FALSE;
 
     GTree *event_group = mc_event_get_event_group_by_name (event_group_name, FALSE, NULL);
-    if (event_group == NULL)
+    if (event_group == nullptr)
         return FALSE;
 
     GPtrArray *callbacks = mc_event_get_event_by_name (event_group, event_name, FALSE, NULL);

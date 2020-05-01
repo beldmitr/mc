@@ -290,7 +290,7 @@ enter (WInput * lc_cmdline)
             {
                 char *s;
 
-                s = expand_format (NULL, cmd[++i], TRUE);
+                s = UserMenu::ExpandFormat(NULL, cmd[++i], TRUE);
                 g_string_append (command, s);
                 g_free (s);
             }
