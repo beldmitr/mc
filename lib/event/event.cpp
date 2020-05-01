@@ -38,7 +38,7 @@
 
 /*** file scope variables ************************************************************************/
 
-GTree *mc_event_grouplist = NULL;
+GTree *mc_event_grouplist = nullptr;
 
 /*** file scope functions ************************************************************************/
 /* --------------------------------------------------------------------------------------------- */
@@ -48,9 +48,9 @@ GTree *mc_event_grouplist = NULL;
 gboolean
 mc_event_init (GError ** mcerror)
 {
-    mc_return_val_if_error (mcerror, FALSE);
+    if (mcerror != nullptr && *mcerror != nullptr) return FALSE;
 
-    if (mc_event_grouplist != NULL)
+    if (mc_event_grouplist != nullptr)
     {
         mc_propagate_error (mcerror, 0, "%s", _("Event system already initialized"));
         return FALSE;
@@ -60,7 +60,7 @@ mc_event_init (GError ** mcerror)
         g_tree_new_full ((GCompareDataFunc) g_ascii_strcasecmp,
                          NULL, (GDestroyNotify) g_free, (GDestroyNotify) g_tree_destroy);
 
-    if (mc_event_grouplist == NULL)
+    if (mc_event_grouplist == nullptr)
     {
         mc_propagate_error (mcerror, 0, "%s", _("Failed to initialize event system"));
         return FALSE;
@@ -74,16 +74,16 @@ mc_event_init (GError ** mcerror)
 gboolean
 mc_event_deinit (GError ** mcerror)
 {
-    mc_return_val_if_error (mcerror, FALSE);
+    if (mcerror != nullptr && *mcerror != nullptr) return FALSE;
 
-    if (mc_event_grouplist == NULL)
+    if (mc_event_grouplist == nullptr)
     {
         mc_propagate_error (mcerror, 0, "%s", _("Event system not initialized"));
         return FALSE;
     }
 
     g_tree_destroy (mc_event_grouplist);
-    mc_event_grouplist = NULL;
+    mc_event_grouplist = nullptr;
     return TRUE;
 }
 
@@ -92,11 +92,9 @@ mc_event_deinit (GError ** mcerror)
 gboolean
 mc_event_mass_add (const event_init_t * events, GError ** mcerror)
 {
-    size_t array_index;
+    if (mcerror != nullptr && *mcerror != nullptr) return FALSE;
 
-    mc_return_val_if_error (mcerror, FALSE);
-
-    for (array_index = 0; events[array_index].event_group_name != NULL; array_index++)
+    for (size_t array_index = 0; events[array_index].event_group_name != nullptr; array_index++)
     {
         if (!mc_event_add (events[array_index].event_group_name,
                            events[array_index].event_name,
@@ -113,18 +111,15 @@ mc_event_mass_add (const event_init_t * events, GError ** mcerror)
 gboolean
 mc_event_present (const gchar * event_group_name, const gchar * event_name)
 {
-    GTree *event_group;
-    GPtrArray *callbacks;
-
-    if (mc_event_grouplist == NULL || event_group_name == NULL || event_name == NULL)
+    if (mc_event_grouplist == nullptr || event_group_name == nullptr || event_name == nullptr)
         return FALSE;
 
-    event_group = mc_event_get_event_group_by_name (event_group_name, FALSE, NULL);
+    GTree *event_group = mc_event_get_event_group_by_name (event_group_name, FALSE, NULL);
     if (event_group == NULL)
         return FALSE;
 
-    callbacks = mc_event_get_event_by_name (event_group, event_name, FALSE, NULL);
-    if (callbacks == NULL)
+    GPtrArray *callbacks = mc_event_get_event_by_name (event_group, event_name, FALSE, NULL);
+    if (callbacks == nullptr)
         return FALSE;
 
     return TRUE;
