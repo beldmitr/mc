@@ -569,8 +569,7 @@ static bool print_vfs_message (const char* /* event_group_name */ ,
 
 /* --------------------------------------------------------------------------------------------- */
 
-static void
-create_panels (void)
+static void create_panels ()
 {
     int current_index, other_index;
     panel_view_mode_t current_mode, other_mode;
@@ -601,22 +600,22 @@ create_panels (void)
         current_mode = startup_left_mode;
         other_mode = startup_right_mode;
 
-        if (mc_run_param0 == NULL && mc_run_param1 == NULL)
+        if (Args::mc_run_param0 == nullptr && Args::mc_run_param1 == nullptr)
         {
             /* no arguments */
-            current_dir = NULL; /* assume current dir */
+            current_dir = nullptr; /* assume current dir */
             other_dir = saved_other_dir;        /* from ini */
         }
-        else if (mc_run_param0 != NULL && mc_run_param1 != NULL)
+        else if (Args::mc_run_param0 != nullptr && Args::mc_run_param1 != nullptr)
         {
             /* two arguments */
-            current_dir = (char *) mc_run_param0;
-            other_dir = mc_run_param1;
+            current_dir = (char *) Args::mc_run_param0;
+            other_dir = Args::mc_run_param1;
         }
         else                    /* mc_run_param0 != NULL && mc_run_param1 == NULL */
         {
             /* one argument */
-            current_dir = (char *) mc_run_param0;
+            current_dir = (char *) Args::mc_run_param0;
             other_dir = saved_other_dir;        /* from ini */
         }
     }
@@ -628,22 +627,22 @@ create_panels (void)
         current_mode = startup_right_mode;
         other_mode = startup_left_mode;
 
-        if (mc_run_param0 == NULL && mc_run_param1 == NULL)
+        if (Args::mc_run_param0 == nullptr && Args::mc_run_param1 == nullptr)
         {
             /* no arguments */
-            current_dir = NULL; /* assume current dir */
+            current_dir = nullptr; /* assume current dir */
             other_dir = saved_other_dir;        /* from ini */
         }
-        else if (mc_run_param0 != NULL && mc_run_param1 != NULL)
+        else if (Args::mc_run_param0 != nullptr && Args::mc_run_param1 != nullptr)
         {
             /* two arguments */
-            current_dir = (char *) mc_run_param0;
-            other_dir = mc_run_param1;
+            current_dir = (char *) Args::mc_run_param0;
+            other_dir = Args::mc_run_param1;
         }
         else                    /* mc_run_param0 != NULL && mc_run_param1 == NULL */
         {
             /* one argument */
-            current_dir = (char *) mc_run_param0;
+            current_dir = (char *) Args::mc_run_param0;
             other_dir = saved_other_dir;        /* from ini */
         }
     }
@@ -962,8 +961,7 @@ prepend_cwd_on_local (const char *filename)
 /** Invoke the internal view/edit routine with:
  * the default processing and forcing the internal viewer/editor
  */
-static gboolean
-mc_maybe_editor_or_viewer (void)
+static gboolean mc_maybe_editor_or_viewer()
 {
     gboolean ret;
 
@@ -971,15 +969,15 @@ mc_maybe_editor_or_viewer (void)
     {
 #ifdef USE_INTERNAL_EDIT
     case Global::RunMode::MC_RUN_EDITOR:
-        ret = edit_files ((GList *) mc_run_param0);
+        ret = edit_files ((GList *) Args::mc_run_param0);
         break;
 #endif /* USE_INTERNAL_EDIT */
     case Global::RunMode::MC_RUN_VIEWER:
         {
-            vfs_path_t *vpath = NULL;
+            vfs_path_t *vpath = nullptr;
 
-            if (mc_run_param0 != NULL && *(char *) mc_run_param0 != '\0')
-                vpath = prepend_cwd_on_local ((char *) mc_run_param0);
+            if (Args::mc_run_param0 != nullptr && *(char *) Args::mc_run_param0 != '\0')
+                vpath = prepend_cwd_on_local ((char *) Args::mc_run_param0);
 
             ret = view_file (vpath, FALSE, TRUE);
             vfs_path_free (vpath);
@@ -987,7 +985,7 @@ mc_maybe_editor_or_viewer (void)
         }
 #ifdef USE_DIFF_VIEW
     case Global::RunMode::MC_RUN_DIFFVIEWER:
-        ret = dview_diff_cmd (mc_run_param0, mc_run_param1);
+        ret = dview_diff_cmd (Args::mc_run_param0, Args::mc_run_param1);
         break;
 #endif /* USE_DIFF_VIEW */
     default:
@@ -1825,7 +1823,7 @@ do_nc (void)
         ret = TRUE;
 
         /* dlg_destroy destroys even current_panel->cwd_vpath, so we have to save a copy :) */
-        if (mc_args__last_wd_file != NULL && vfs_current_is_local ())
+        if (Args::last_wd_file != NULL && vfs_current_is_local ())
             last_wd_string = g_strdup (vfs_path_as_str (current_panel->cwd_vpath));
 
         /* don't handle VFS timestamps for dirs opened in panels */

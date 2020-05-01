@@ -101,10 +101,10 @@ int main (int argc, char *argv[])
     str_init_strings (nullptr);
 
     // set up mc_global
-    mc_global.SetRunMode(Args::mc_setup_run_mode (argv[0]));   /* are we mc? editor? viewer? etc... */
+    mc_global.SetRunMode(Args::SetupRunMode(argv[0]));   /* are we mc? editor? viewer? etc... */
 
     GError *mcerror = nullptr;
-    if (!mc_args_parse (&argc, &argv, "mc", &mcerror))
+    if (!Args::Parse (&argc, &argv, "mc", &mcerror))
     {
       startup_exit_falure:
         fprintf (stderr, _("Failed to run:\n%s\n"), mcerror->message);
@@ -115,18 +115,17 @@ int main (int argc, char *argv[])
     }
 
     /* do this before mc_args_show_info () to view paths in the --datadir-info output */
-    Util::OS_Setup ();
+    Util::OS_Setup();
 
     std::filesystem::path path(mc_config_get_home_dir());
     if (path.is_relative())
     {
-        mc_propagate_error (&mcerror, 0, "%s: %s", _("Home directory path is not absolute"),
-                            mc_config_get_home_dir ());
-        mc_event_deinit (nullptr);
+        mc_propagate_error(&mcerror, 0, "%s: %s", _("Home directory path is not absolute"), mc_config_get_home_dir());
+        mc_event_deinit(nullptr);
         goto startup_exit_falure;
     }
 
-    if (!mc_args_show_info ())
+    if (!Args::ShowInfo())
     {
         exit_code = EXIT_SUCCESS;
         goto startup_exit_ok;
@@ -135,9 +134,9 @@ int main (int argc, char *argv[])
     if (!events_init (&mcerror))
         goto startup_exit_falure;
 
-    mc_config_init_config_paths (&mcerror);
+    mc_config_init_config_paths(&mcerror);
     char *config_migrate_msg = nullptr;
-    bool config_migrated = mc_config_migrate_from_old_place (&mcerror, &config_migrate_msg);
+    bool config_migrated = mc_config_migrate_from_old_place(&mcerror, &config_migrate_msg);
     if (mcerror)
     {
         mc_event_deinit (nullptr);
@@ -157,7 +156,7 @@ int main (int argc, char *argv[])
 
     /* do this after vfs initialization and vfs working directory setup
        due to mc_setctl() and mcedit_arg_vpath_new() calls in mc_setup_by_args() */
-    if (!mc_setup_by_args (argc, argv, &mcerror))
+    if (!Args::MCSetupByArgs(argc, argv, &mcerror))
     {
         vfs_shut ();
         done_setup ();
@@ -186,7 +185,7 @@ int main (int argc, char *argv[])
      * mc_global.tty.xterm_flag is used in init_key() and tty_init()
      * Do this after mc_args_handle() where mc_args__force_xterm is set up.
      */
-    mc_global.tty.xterm_flag = tty_check_term (mc_args__force_xterm);
+    mc_global.tty.xterm_flag = tty_check_term (Args::bForceXterm);
 
     /* NOTE: This has to be called before tty_init or whatever routine
        calls any define_sequence */
@@ -212,7 +211,7 @@ int main (int argc, char *argv[])
 
     /* Must be done before init_subshell, to set up the terminal size: */
     /* FIXME: Should be removed and LINES and COLS computed on subshell */
-    tty_init (!mc_args__nomouse, mc_global.tty.xterm_flag);
+    tty_init (!Args::bNoMouse, mc_global.tty.xterm_flag);
 
     /* start check mc_global.display_codepage and mc_global.source_codepage */
     Util::check_codeset ();
@@ -220,13 +219,13 @@ int main (int argc, char *argv[])
     /* Removing this from the X code let's us type C-c */
     load_key_defs ();
 
-    load_keymap_defs (!mc_args__nokeymap);
+    load_keymap_defs (!Args::bNoKeymap);
 
 #ifdef USE_INTERNAL_EDIT
     macros_list = g_array_new (TRUE, FALSE, sizeof (macros_t));
 #endif /* USE_INTERNAL_EDIT */
 
-    tty_init_colors (mc_global.tty.disable_colors, mc_args__force_colors);
+    tty_init_colors (mc_global.tty.disable_colors, Args::bForceColors);
 
     mc_skin_init (nullptr, &mcerror);
     dlg_set_default_colors ();
@@ -326,10 +325,10 @@ int main (int argc, char *argv[])
     if (mc_global.tty.console_flag != '\0')
         handle_console (CONSOLE_DONE);
 
-    if (mc_global.GetRunMode() == Global::RunMode::MC_RUN_FULL && mc_args__last_wd_file
+    if (mc_global.GetRunMode() == Global::RunMode::MC_RUN_FULL && Args::last_wd_file
         && last_wd_string && !print_last_revert)
     {
-        int last_wd_fd = open (mc_args__last_wd_file, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL, S_IRUSR | S_IWUSR);
+        int last_wd_fd = open (Args::last_wd_file, O_WRONLY | O_CREAT | O_TRUNC | O_EXCL, S_IRUSR | S_IWUSR);
         if (last_wd_fd != -1)
         {
             /* ssize_t ret1 = */ write(last_wd_fd, last_wd_string, strlen (last_wd_string));
@@ -356,11 +355,11 @@ int main (int argc, char *argv[])
     str_uninit_strings ();
 
     if (mc_global.GetRunMode() != Global::RunMode::MC_RUN_EDITOR)
-        g_free (mc_run_param0);
+        g_free (Args::mc_run_param0);
     else
-        g_list_free_full ((GList *) mc_run_param0, (GDestroyNotify) Args::mcedit_arg_free);
+        g_list_free_full ((GList *) Args::mc_run_param0, (GDestroyNotify) Args::Free);
 
-    g_free (mc_run_param1);
+    g_free (Args::mc_run_param1);
     g_free (saved_other_dir);
 
     mc_config_deinit_config_paths ();
