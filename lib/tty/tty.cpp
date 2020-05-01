@@ -91,17 +91,14 @@ sigintr_handler (int signo)
 gboolean
 tty_check_term (gboolean force_xterm)
 {
-    const char *termvalue;
-    const char *xdisplay;
-
-    termvalue = std::getenv("TERM");
+    const char *termvalue = std::getenv("TERM");
     if (termvalue == NULL || *termvalue == '\0')
     {
         fputs (_("The TERM environment variable is unset!\n"), stderr);
         exit (EXIT_FAILURE);
     }
 
-    xdisplay = getenv ("DISPLAY");
+    const char *xdisplay = getenv ("DISPLAY");
     if (xdisplay != NULL && *xdisplay == '\0')
         xdisplay = NULL;
 

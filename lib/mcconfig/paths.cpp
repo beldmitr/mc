@@ -170,8 +170,7 @@ mc_config_init_one_config_path (const char *path_base, const char *subdir, GErro
 
 /* --------------------------------------------------------------------------------------------- */
 
-static char *
-mc_config_get_deprecated_path (void)
+static char* mc_config_get_deprecated_path ()
 {
     return g_build_filename (mc_config_get_home_dir (), MC_OLD_USERCONF_DIR, (char *) NULL);
 }
@@ -260,14 +259,10 @@ mc_config_fix_migrated_rules (void)
 
 /* --------------------------------------------------------------------------------------------- */
 
-static gboolean
-mc_config_deprecated_dir_present (void)
+static gboolean mc_config_deprecated_dir_present ()
 {
-    char *old_dir;
-    gboolean is_present;
-
-    old_dir = mc_config_get_deprecated_path ();
-    is_present = g_file_test (old_dir, static_cast<GFileTest>(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR));
+    char *old_dir = mc_config_get_deprecated_path ();
+    gboolean is_present = g_file_test (old_dir, static_cast<GFileTest>(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR));
     g_free (old_dir);
 
     return is_present && !config_dir_present;
@@ -396,7 +391,7 @@ mc_config_get_home_dir (void)
          * we read it ourselves. As that function's documentation explains,
          * using $HOME is good for compatibility with other programs and
          * for running from test frameworks. */
-        homedir = g_getenv ("HOME");
+        homedir = std::getenv ("HOME");
         if (homedir == NULL || *homedir == '\0')
             homedir = g_get_home_dir ();
     }
