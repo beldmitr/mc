@@ -964,7 +964,7 @@ ext_cmd (void)
         vfs_path_t *buffer_vpath;
 
         buffer_vpath = mc_config_get_full_vpath (MC_FILEBIND_FILE);
-        check_for_default (extdir_vpath, buffer_vpath);
+        Util::check_for_default (extdir_vpath, buffer_vpath);
         do_edit (buffer_vpath);
         vfs_path_free (buffer_vpath);
     }
@@ -1012,13 +1012,13 @@ edit_mc_menu_cmd (void)
     {
     case 0:
         buffer_vpath = vfs_path_from_str (MC_LOCAL_MENU);
-        check_for_default (menufile_vpath, buffer_vpath);
+        Util::check_for_default (menufile_vpath, buffer_vpath);
         chmod (vfs_path_get_last_path_str (buffer_vpath), 0600);
         break;
 
     case 1:
         buffer_vpath = mc_config_get_full_vpath (MC_USERMENU_FILE);
-        check_for_default (menufile_vpath, buffer_vpath);
+        Util::check_for_default (menufile_vpath, buffer_vpath);
         break;
 
     case 2:
@@ -1064,7 +1064,7 @@ edit_fhl_cmd (void)
         vfs_path_t *buffer_vpath;
 
         buffer_vpath = mc_config_get_full_vpath (MC_FHL_INI_FILE);
-        check_for_default (fhlfile_vpath, buffer_vpath);
+        Util::check_for_default (fhlfile_vpath, buffer_vpath);
         do_edit (buffer_vpath);
         vfs_path_free (buffer_vpath);
     }

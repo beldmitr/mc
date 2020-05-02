@@ -2145,7 +2145,7 @@ edit_load_syntax_file (WDialog * h)
         vfs_path_t *user_syntax_file_vpath;
 
         user_syntax_file_vpath = mc_config_get_full_vpath (EDIT_SYNTAX_FILE);
-        check_for_default (extdir_vpath, user_syntax_file_vpath);
+        Util::check_for_default (extdir_vpath, user_syntax_file_vpath);
         ret = edit_load_file_from_filename (h, user_syntax_file_vpath);
         vfs_path_free (user_syntax_file_vpath);
     }
@@ -2190,13 +2190,13 @@ edit_load_menu_file (WDialog * h)
     {
     case 0:
         buffer_vpath = vfs_path_from_str (EDIT_LOCAL_MENU);
-        check_for_default (menufile_vpath, buffer_vpath);
+        Util::check_for_default (menufile_vpath, buffer_vpath);
         chmod (vfs_path_get_last_path_str (buffer_vpath), 0600);
         break;
 
     case 1:
         buffer_vpath = mc_config_get_full_vpath (EDIT_HOME_MENU);
-        check_for_default (menufile_vpath, buffer_vpath);
+        Util::check_for_default (menufile_vpath, buffer_vpath);
         break;
 
     case 2:
