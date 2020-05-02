@@ -2336,7 +2336,7 @@ dview_set_codeset (WDiff * dview)
 static void
 dview_select_encoding (WDiff * dview)
 {
-    if (do_select_codepage ())
+    if (SelCodePage::do_select_codepage ())
         dview_set_codeset (dview);
     dview_reread (dview);
     tty_touch_screen ();

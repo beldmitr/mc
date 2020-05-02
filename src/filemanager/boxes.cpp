@@ -336,12 +336,12 @@ sel_charset_button (WButton * button, int action)
 
     (void) action;
 
-    new_dcp = select_charset (-1, -1, new_display_codepage, TRUE);
+    new_dcp = SelCodePage::select_charset (-1, -1, new_display_codepage, TRUE);
 
-    if (new_dcp != SELECT_CHARSET_CANCEL)
+    if (new_dcp != SelCodePage::SELECT_CHARSET_CANCEL)
     {
         new_display_codepage = new_dcp;
-        const char *cpname = (new_display_codepage == SELECT_CHARSET_OTHER_8BIT) ?
+        const char *cpname = (new_display_codepage == SelCodePage::SELECT_CHARSET_OTHER_8BIT) ?
             _("Other 8 bit") :
             (static_cast<CodepageDesc*>(g_ptr_array_index (CodepageDesc::codepages, new_display_codepage)))->GetName();
         if (cpname != NULL)
