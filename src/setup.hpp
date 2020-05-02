@@ -1,7 +1,7 @@
 /** \file setup.h
  *  \brief Header: setup loading/saving
  */
-
+// TODO DB: C => CPP
 #pragma once
 
 #include "lib/global.hpp"         /* GError */

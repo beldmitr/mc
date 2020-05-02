@@ -285,7 +285,7 @@ mcview_set_codeset (WView * view)
 void
 mcview_select_encoding (WView * view)
 {
-    if (do_select_codepage ())
+    if (SelCodePage::do_select_codepage ())
         mcview_set_codeset (view);
 }
 #endif /* HAVE_CHARSET */

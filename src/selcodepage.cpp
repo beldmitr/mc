@@ -40,38 +40,7 @@
 
 #include "selcodepage.hpp"
 
-/*** global variables ****************************************************************************/
-
-/*** file scope macro definitions ****************************************************************/
-
-#define ENTRY_LEN 30
-
-/*** file scope type declarations ****************************************************************/
-
-/*** file scope variables ************************************************************************/
-
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-
-static unsigned char
-get_hotkey (int n)
-{
-    return (n <= 9) ? '0' + n : 'a' + n - 10;
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-/* Return value:
- *   -2 (SELECT_CHARSET_CANCEL)       : Cancel
- *   -1 (SELECT_CHARSET_OTHER_8BIT)   : "Other 8 bit"    if seldisplay == TRUE
- *   -1 (SELECT_CHARSET_NO_TRANSLATE) : "No translation" if seldisplay == FALSE
- *   >= 0                             : charset number
- */
-int
-select_charset (int center_y, int center_x, int current_charset, gboolean seldisplay)
+int SelCodePage::select_charset (int center_y, int center_x, int current_charset, gboolean seldisplay)
 {
     size_t i;
     int listbox_result;
@@ -121,7 +90,7 @@ select_charset (int center_y, int center_x, int current_charset, gboolean seldis
         {
             /* charset list is finished with "Other 8 bit" item */
             return (listbox_result >= (int) codepages->len)
-                ? SELECT_CHARSET_OTHER_8BIT : listbox_result;
+                   ? SELECT_CHARSET_OTHER_8BIT : listbox_result;
         }
         else
         {
@@ -131,20 +100,13 @@ select_charset (int center_y, int center_x, int current_charset, gboolean seldis
     }
 }
 
-
-/* --------------------------------------------------------------------------------------------- */
-/** Set codepage */
-gboolean
-do_set_codepage (int codepage)
+gboolean SelCodePage::do_set_codepage(int codepage)
 {
-    char *errmsg;
-    gboolean ret;
-
     mc_global.source_codepage = codepage;
-    errmsg = init_translation_table (codepage == SELECT_CHARSET_NO_TRANSLATE ?
+    char *errmsg = init_translation_table (codepage == SELECT_CHARSET_NO_TRANSLATE ?
                                      mc_global.display_codepage : mc_global.source_codepage,
                                      mc_global.display_codepage);
-    ret = errmsg == NULL;
+    gboolean ret = (errmsg == nullptr);
 
     if (!ret)
     {
@@ -155,11 +117,7 @@ do_set_codepage (int codepage)
     return ret;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-/** Show menu selecting codepage */
-
-gboolean
-do_select_codepage (void)
+gboolean SelCodePage::do_select_codepage()
 {
     int r;
 
@@ -170,5 +128,3 @@ do_select_codepage (void)
     default_source_codepage = r;
     return do_set_codepage (default_source_codepage);
 }
-
-/* --------------------------------------------------------------------------------------------- */

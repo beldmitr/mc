@@ -679,7 +679,7 @@ regex_check_type (const vfs_path_t * filename_vpath, const char *ptr, gboolean c
             if (cp_id == -1)
                 cp_id = default_source_codepage;
 
-            do_set_codepage (cp_id);
+            SelCodePage::do_set_codepage (cp_id);
         }
 #endif /* HAVE_CHARSET */
 

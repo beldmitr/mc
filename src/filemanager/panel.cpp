@@ -4323,7 +4323,7 @@ panel_sized_empty_new (const char *panel_name, int y, int x, int lines, int cols
         panel->user_status_format[i] = g_strdup (DEFAULT_USER_FORMAT);
 
 #ifdef HAVE_CHARSET
-    panel->codepage = SELECT_CHARSET_NO_TRANSLATE;
+    panel->codepage = SelCodePage::SELECT_CHARSET_NO_TRANSLATE;
 #endif
 
     panel->frame_size = frame_half;
@@ -4397,7 +4397,7 @@ panel_sized_with_dir_new (const char *panel_name, int y, int x, int lines, int c
     if (mc_chdir (panel->cwd_vpath) != 0)
     {
 #ifdef HAVE_CHARSET
-        panel->codepage = SELECT_CHARSET_NO_TRANSLATE;
+        panel->codepage = SelCodePage::SELECT_CHARSET_NO_TRANSLATE;
 #endif
         vfs_setup_cwd ();
         vfs_path_free (panel->cwd_vpath);
@@ -4719,14 +4719,14 @@ panel_change_encoding (WPanel * panel)
     char *errmsg;
     int r;
 
-    r = select_charset (-1, -1, panel->codepage, FALSE);
+    r = SelCodePage::select_charset (-1, -1, panel->codepage, FALSE);
 
-    if (r == SELECT_CHARSET_CANCEL)
+    if (r == SelCodePage::SELECT_CHARSET_CANCEL)
         return;                 /* Cancel */
 
     panel->codepage = r;
 
-    if (panel->codepage == SELECT_CHARSET_NO_TRANSLATE)
+    if (panel->codepage == SelCodePage::SELECT_CHARSET_NO_TRANSLATE)
     {
         /* No translation */
         vfs_path_t *cd_path_vpath;
@@ -5042,7 +5042,7 @@ do_cd (const vfs_path_t * new_dir_vpath, enum cd_enum exact)
         if (path_element->encoding != NULL)
             current_panel->codepage = get_codepage_index (path_element->encoding);
         else
-            current_panel->codepage = SELECT_CHARSET_NO_TRANSLATE;
+            current_panel->codepage = SelCodePage::SELECT_CHARSET_NO_TRANSLATE;
     }
 #endif /* HAVE_CHARSET */
 
