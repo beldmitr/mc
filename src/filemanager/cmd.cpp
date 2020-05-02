@@ -1296,7 +1296,7 @@ help_cmd (void)
 void
 user_file_menu_cmd (void)
 {
-    (void) user_menu_cmd (NULL, NULL, -1);
+    (void) UserMenu::user_menu_cmd (NULL, NULL, -1);
 }
 
 /* --------------------------------------------------------------------------------------------- */
