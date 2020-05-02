@@ -4,19 +4,21 @@
 
 #pragma once
 
-/*** typedefs(not structures) and defined constants **********************************************/
+class TextConf
+{
+public:
+    static void show_version();
 
-/*** enums ***************************************************************************************/
+    static void show_datadirs_extended();
 
-/*** structures declarations (and typedefs of structures)*****************************************/
+#ifdef ENABLE_CONFIGURE_ARGS
+    static void show_configure_options();
+#endif
 
-/*** global variables defined in .c file *********************************************************/
+private:
+#ifdef ENABLE_VFS
+    static const char *const vfs_supported[];
+#endif /* ENABLE_VFS */
 
-/*** declarations of public functions ************************************************************/
-
-extern void show_version (void);
-extern void show_datadirs_extended (void);
-extern void show_configure_options (void);
-
-/*** inline functions ****************************************************************************/
-
+    static const char *const features[];
+};

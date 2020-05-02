@@ -36,16 +36,8 @@
 
 #include "src/textconf.hpp"
 
-/*** global variables ****************************************************************************/
-
-/*** file scope macro definitions ****************************************************************/
-
-/*** file scope type declarations ****************************************************************/
-
-/*** file scope variables ************************************************************************/
-
 #ifdef ENABLE_VFS
-static const char *const vfs_supported[] = {
+const char* const TextConf::vfs_supported[] = {
 #ifdef ENABLE_VFS_CPIO
     "cpiofs",
 #endif
@@ -77,58 +69,50 @@ static const char *const vfs_supported[] = {
 };
 #endif /* ENABLE_VFS */
 
-static const char *const features[] = {
+const char* const TextConf::features[] = {
 
 #ifdef USE_INTERNAL_EDIT
 #ifdef HAVE_ASPELL
-    N_("With builtin Editor and Aspell support"),
+        N_("With builtin Editor and Aspell support"),
 #else
-    N_("With builtin Editor"),
+        N_("With builtin Editor"),
 #endif /* HAVE_ASPELL */
 #endif /* USE_INTERNAL_EDIT */
 
 #ifdef ENABLE_SUBSHELL
 #ifdef SUBSHELL_OPTIONAL
-    N_("With optional subshell support"),
+        N_("With optional subshell support"),
 #else
-    N_("With subshell support as default"),
+        N_("With subshell support as default"),
 #endif
 #endif /* !ENABLE_SUBSHELL */
 
 #ifdef ENABLE_BACKGROUND
-    N_("With support for background operations"),
+        N_("With support for background operations"),
 #endif
 
 #ifdef HAVE_LIBGPM
-    N_("With mouse support on xterm and Linux console"),
+        N_("With mouse support on xterm and Linux console"),
 #else
-    N_("With mouse support on xterm"),
+        N_("With mouse support on xterm"),
 #endif
 
 #ifdef HAVE_TEXTMODE_X11_SUPPORT
-    N_("With support for X11 events"),
+        N_("With support for X11 events"),
 #endif
 
 #ifdef ENABLE_NLS
-    N_("With internationalization support"),
+        N_("With internationalization support"),
 #endif
 
 #ifdef HAVE_CHARSET
-    N_("With multiple codepages support"),
+        N_("With multiple codepages support"),
 #endif
 
-    NULL
+        NULL
 };
 
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-void
-show_version (void)
+void TextConf::show_version()
 {
     size_t i;
 
@@ -140,7 +124,7 @@ show_version (void)
 #ifdef HAVE_SLANG
     printf (_("Built with S-Lang %s with terminfo database\n"), SLANG_VERSION_STRING);
 #elif defined(USE_NCURSES)
-#ifdef NCURSES_VERSION
+    #ifdef NCURSES_VERSION
     printf (_("Built with ncurses %s\n"), NCURSES_VERSION);
 #else
     puts (_("Built with ncurses (unknown version)"));
@@ -178,7 +162,6 @@ show_version (void)
     (void) puts ("");
 }
 
-/* --------------------------------------------------------------------------------------------- */
 #define PRINTF_GROUP(a) \
     (void) printf ("[%s]\n", a)
 #define PRINTF_SECTION(a,b) \
@@ -190,8 +173,7 @@ show_version (void)
 #define PRINTF2(a, b, c) \
     (void) printf ("\t%-15s %s%s\n", a, b, c)
 
-void
-show_datadirs_extended (void)
+void TextConf::show_datadirs_extended (void)
 {
     (void) printf ("%s %s\n", _("Home directory:"), mc_config_get_home_dir ());
     (void) printf ("%s %s\n", _("Profile root directory:"), mc_get_profile_root ());
@@ -237,14 +219,10 @@ show_datadirs_extended (void)
 #undef PRINTF_SECTION
 #undef PRINTF_GROUP
 
-/* --------------------------------------------------------------------------------------------- */
 
 #ifdef ENABLE_CONFIGURE_ARGS
-void
-show_configure_options (void)
+void TextConf::show_configure_options()
 {
     (void) puts (MC_CONFIGURE_ARGS);
 }
 #endif
-
-/* --------------------------------------------------------------------------------------------- */

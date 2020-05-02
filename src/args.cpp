@@ -745,7 +745,7 @@ mc_args_show_info (void)
 {
     if (mc_args__show_version)
     {
-        show_version ();
+        TextConf::show_version();
         return FALSE;
     }
 
@@ -757,14 +757,14 @@ mc_args_show_info (void)
 
     if (mc_args__show_datadirs_extended)
     {
-        show_datadirs_extended ();
+        TextConf::show_datadirs_extended ();
         return FALSE;
     }
 
 #ifdef ENABLE_CONFIGURE_ARGS
     if (mc_args__show_configure_opts)
     {
-        show_configure_options ();
+        TextConf::show_configure_options ();
         return FALSE;
     }
 #endif
