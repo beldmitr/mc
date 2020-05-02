@@ -605,7 +605,7 @@ mcview_handle_key (WView * view, int key)
     long command;
 
 #ifdef HAVE_CHARSET
-    key = CodepageDesc::convert_from_input_c (key);
+    key = CodepageDesc::ConvertFromInputC(key);
 #endif
 
     if (view->hexedit_mode && view->mode_flags.hex

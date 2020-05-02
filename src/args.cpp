@@ -116,7 +116,7 @@ bool Args::ShowInfo()
 {
     if (bShowVersion)
     {
-        show_version ();
+        TextConf::show_version ();
         return false;
     }
 
@@ -128,14 +128,14 @@ bool Args::ShowInfo()
 
     if (bShowDatadirsExtended)
     {
-        show_datadirs_extended ();
+        TextConf::show_datadirs_extended ();
         return false;
     }
 
 #ifdef ENABLE_CONFIGURE_ARGS
     if (bShowConfigureOpts)
     {
-        show_configure_options ();
+        TextConf::show_configure_options ();
         return false;
     }
 #endif

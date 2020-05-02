@@ -337,7 +337,7 @@ mcview_display_hex (WView * view)
 #endif
             {
 #ifdef HAVE_CHARSET
-                c = CodepageDesc::convert_to_display_c(c);
+                c = CodepageDesc::ConvertToDisplayC(c);
 #endif
 
                 if (!is_printable (c))

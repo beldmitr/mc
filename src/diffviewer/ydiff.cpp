@@ -2643,7 +2643,7 @@ dview_display_file (const WDiff * dview, diff_place_t ord, int r, int c, int hei
                             else if (dview->utf8)
                                 next_ch = CodepageDesc::convert_from_utf_to_current_c (next_ch, dview->converter);
                             else
-                                next_ch = CodepageDesc::convert_to_display_c (next_ch);
+                                next_ch = CodepageDesc::ConvertToDisplayC(next_ch);
 #endif
                             tty_print_anychar (next_ch);
                             col++;
@@ -2718,7 +2718,7 @@ dview_display_file (const WDiff * dview, diff_place_t ord, int r, int c, int hei
                 else if (dview->utf8)
                     next_ch = CodepageDesc::convert_from_utf_to_current_c (next_ch, dview->converter);
                 else
-                    next_ch = CodepageDesc::convert_to_display_c (next_ch);
+                    next_ch = CodepageDesc::ConvertToDisplayC(next_ch);
 #endif
 
                 tty_print_anychar (next_ch);
@@ -3282,7 +3282,7 @@ dview_handle_key (WDiff * dview, int key)
     long command;
 
 #ifdef HAVE_CHARSET
-    key = CodepageDesc::convert_from_input_c (key);
+    key = CodepageDesc::ConvertFromInputC(key);
 #endif
 
     command = widget_lookup_key (WIDGET (dview), key);

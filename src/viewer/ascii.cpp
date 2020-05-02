@@ -318,7 +318,7 @@ mcview_char_display (const WView * view, int c, char *s)
     else
     {
         /* TODO the is_printable check below will be broken for this */
-        c = CodepageDesc::convert_to_display_c (c);
+        c = CodepageDesc::ConvertToDisplayC(c);
     }
 #else
     (void) view;

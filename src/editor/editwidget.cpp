@@ -520,7 +520,7 @@ edit_translate_key (WEdit * edit, long x_key, int *cmd, int *ch)
         if (!mc_global.utf8_display)
         {
             /* source in 8-bit codeset */
-            c = CodepageDesc::convert_from_input_c (x_key);
+            c = CodepageDesc::ConvertFromInputC(x_key);
 
             if (is_printable (c))
             {

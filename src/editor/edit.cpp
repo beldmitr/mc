@@ -2791,7 +2791,7 @@ edit_move_forward3 (const WEdit * edit, off_t current, long cols, off_t upto)
                 col -= char_length - 1;
         }
 
-        c = CodepageDesc::convert_to_display_c (c);
+        c = CodepageDesc::ConvertToDisplayC(c);
 #endif
 
         if (c == '\n')

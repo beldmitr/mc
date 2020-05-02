@@ -45,7 +45,7 @@ public:
 
 public:
     /* Convert single characters */
-    static inline int convert_to_display_c (int c)
+    static inline int ConvertToDisplayC (int c)
     {
         if (c < 0 || c >= 256)
             return c;
@@ -53,7 +53,7 @@ public:
     }
 
     /* Convert single characters */
-    static inline int convert_from_input_c (int c)
+    static inline int ConvertFromInputC(int c)
     {
         if (c < 0 || c >= 256)
             return c;

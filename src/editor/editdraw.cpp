@@ -738,7 +738,7 @@ edit_draw_this_line (WEdit * edit, off_t b, long row, long start_col, long end_c
                     else if (edit->utf8)
                         c = CodepageDesc::convert_from_utf_to_current_c (c, edit->converter);
                     else
-                        c = CodepageDesc::convert_to_display_c (c);
+                        c = CodepageDesc::ConvertToDisplayC(c);
 #endif
 
                     /* Caret notation for control characters */
