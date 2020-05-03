@@ -892,7 +892,7 @@ edit_dialog_mouse_callback (Widget * w, mouse_msg_t msg, mouse_event_t * event)
             }
 
             if (unhandled)
-                menubar_activate (b, drop_menus, -1);
+                menubar_activate (b, Setup::drop_menus, -1);
         }
     }
 
@@ -949,7 +949,7 @@ edit_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm, void *da
             cb_ret_t ret = MSG_NOT_HANDLED;
 
             /* The user may override the access-keys for the menu bar. */
-            if (macro_index == -1 && edit_execute_macro (e, parm))
+            if (Setup::macro_index == -1 && edit_execute_macro (e, parm))
             {
                 edit_update_screen (e);
                 ret = MSG_HANDLED;

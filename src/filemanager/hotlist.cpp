@@ -1147,12 +1147,12 @@ remove_from_hotlist (struct hotlist *entry)
     if (entry->type == HL_TYPE_DOTDOT)
         return;
 
-    if (confirm_directory_hotlist_delete)
+    if (Setup::confirm_directory_hotlist_delete)
     {
         char text[BUF_MEDIUM];
         int result;
 
-        if (safe_delete)
+        if (Setup::safe_delete)
             query_set_sel (1);
 
         g_snprintf (text, sizeof (text), _("Are you sure you want to remove entry \"%s\"?"),
@@ -1510,7 +1510,7 @@ load_hotlist (void)
 
         clean_up_hotlist_groups ("Hotlist");
         if (!mc_config_save_file (mc_global.main_config, &mcerror))
-            setup_save_config_show_error (mc_global.main_config->ini_path, &mcerror);
+            Setup::setup_save_config_show_error (mc_global.main_config->ini_path, &mcerror);
 
         mc_error_message (&mcerror, NULL);
     }

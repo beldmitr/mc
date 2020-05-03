@@ -133,7 +133,7 @@ do_view_cmd (gboolean normal)
     {
         vfs_path_t *fname_vpath;
 
-        if (confirm_view_dir && (current_panel->marked != 0 || current_panel->dirs_marked != 0) &&
+        if (Setup::confirm_view_dir && (current_panel->marked != 0 || current_panel->dirs_marked != 0) &&
             query_dialog (_("Confirmation"), _("Files tagged, want to cd?"), D_NORMAL, 2,
                           _("&Yes"), _("&No")) != 0)
             return;
@@ -150,7 +150,7 @@ do_view_cmd (gboolean normal)
 
         file_idx = current_panel->selected;
         filename_vpath = vfs_path_from_str (current_panel->dir.list[file_idx].fname);
-        view_file (filename_vpath, normal, use_internal_view);
+        view_file (filename_vpath, normal, Setup::use_internal_view);
         vfs_path_free (filename_vpath);
     }
 
@@ -162,7 +162,7 @@ do_view_cmd (gboolean normal)
 static inline void
 do_edit (const vfs_path_t * what_vpath)
 {
-    edit_file_at_line (what_vpath, use_internal_edit, 0);
+    edit_file_at_line (what_vpath, Setup::use_internal_edit, 0);
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -189,7 +189,7 @@ set_panel_filter (WPanel * p)
     char *reg_exp;
     const char *x;
 
-    x = p->filter != NULL ? p->filter : easy_patterns ? "*" : ".";
+    x = p->filter != NULL ? p->filter : Setup::easy_patterns ? "*" : ".";
 
     reg_exp = input_dialog_help (_("Filter"),
                                  _("Set expression for filtering filenames"),
@@ -632,7 +632,7 @@ view_file_cmd (void)
 
     vpath = vfs_path_from_str (filename);
     g_free (filename);
-    view_file (vpath, FALSE, use_internal_view);
+    view_file (vpath, FALSE, Setup::use_internal_view);
     vfs_path_free (vpath);
 }
 
@@ -701,7 +701,7 @@ edit_file_at_line (const vfs_path_t * what_vpath, gboolean internal, long start_
         update_panels (UP_OPTIMIZE, UP_KEEPSEL);
 
 #ifdef USE_INTERNAL_EDIT
-    if (use_internal_edit)
+    if (Setup::use_internal_edit)
         dialog_switch_process_pending ();
     else
 #endif /* USE_INTERNAL_EDIT */
@@ -743,7 +743,7 @@ edit_cmd_new (void)
 {
     vfs_path_t *fname_vpath = NULL;
 
-    if (editor_ask_filename_before_edit)
+    if (Setup::editor_ask_filename_before_edit)
     {
         char *fname;
 
@@ -759,7 +759,7 @@ edit_cmd_new (void)
     }
 
 #ifdef HAVE_CHARSET
-    mc_global.source_codepage = default_source_codepage;
+    mc_global.source_codepage = Setup::default_source_codepage;
 #endif
     do_edit (fname_vpath);
 
@@ -835,7 +835,7 @@ mkdir_cmd (void)
     const char *name = "";
 
     /* If 'on' then automatically fills name with current selected item name */
-    if (auto_fill_mkdir_name && !DIR_IS_DOTDOT (selection (current_panel)->fname))
+    if (Setup::auto_fill_mkdir_name && !DIR_IS_DOTDOT (selection (current_panel)->fname))
         name = selection (current_panel)->fname;
 
     dir =
@@ -1434,7 +1434,7 @@ single_dirsize_cmd (void)
         status_msg_deinit (STATUS_MSG (&dsm));
     }
 
-    if (panels_options.mark_moves_down)
+    if (Setup::panels_options.mark_moves_down)
         send_message (panel, NULL, MSG_ACTION, CK_Down, NULL);
 
     recalculate_panel_summary (panel);
@@ -1500,7 +1500,7 @@ save_setup_cmd (void)
     vpath = vfs_path_from_str_flags (mc_config_get_path (), VPF_STRIP_HOME);
     path = vfs_path_as_str (vpath);
 
-    if (save_setup (TRUE, TRUE))
+    if (Setup::save_setup (TRUE, TRUE))
         message (D_NORMAL, _("Setup"), _("Setup saved to %s"), path);
     else
         message (D_ERROR, _("Setup"), _("Unable to save setup to %s"), path);

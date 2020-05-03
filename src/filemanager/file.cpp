@@ -749,7 +749,7 @@ panel_operate_init_totals (const WPanel * panel, const vfs_path_t * source,
         return FILE_CONT;
 #endif
 
-    if (verbose && compute_totals)
+    if (Setup::verbose && compute_totals)
     {
         dirsize_status_msg_t dsm;
 
@@ -819,7 +819,7 @@ progress_update_one (file_op_total_context_t * tctx, file_op_context_t * ctx, of
     gettimeofday (&tv_current, (struct timezone *) NULL);
     if ((tv_current.tv_sec - tv_start.tv_sec) > FILEOP_UPDATE_INTERVAL)
     {
-        if (verbose && ctx->dialog_type == FILEGUI_DIALOG_MULTI_ITEM)
+        if (Setup::verbose && ctx->dialog_type == FILEGUI_DIALOG_MULTI_ITEM)
         {
             file_progress_show_count (ctx, tctx->progress_count, ctx->progress_count);
             file_progress_show_total (tctx, ctx, tctx->progress_bytes, TRUE);
@@ -960,7 +960,7 @@ real_query_recursive (file_op_context_t * ctx, enum OperationMode mode, const ch
             : _("Background process:\nDirectory \"%s\" not empty.\nDelete it recursively?");
         text = g_strdup_printf (msg, path_trunc (s, 30));
 
-        if (safe_delete)
+        if (Setup::safe_delete)
             query_set_sel (1);
 
         ctx->recursive_result =
@@ -1247,7 +1247,7 @@ move_file_file (const WPanel * panel, file_op_total_context_t * tctx, file_op_co
             goto ret;
         }
 
-        if (confirm_overwrite)
+        if (Setup::confirm_overwrite)
         {
             return_status = query_replace (ctx, s, &src_stat, d, &dst_stat);
             if (return_status != FILE_CONT)
@@ -1961,7 +1961,7 @@ do_confirm_erase (const WPanel * panel, const char *source, struct stat *src_sta
 
     g_free (format);
 
-    if (safe_delete)
+    if (Setup::safe_delete)
         query_set_sel (1);
 
     i = query_dialog (op_names[OP_DELETE], fmd_buf, D_ERROR, 2, _("&Yes"), _("&No"));
@@ -2647,7 +2647,7 @@ copy_file_file (file_op_total_context_t * tctx, file_op_context_t * ctx,
                 force_update =
                     (tv_current.tv_sec - tctx->transfer_start.tv_sec) > FILEOP_UPDATE_INTERVAL;
 
-                if (verbose && ctx->dialog_type == FILEGUI_DIALOG_MULTI_ITEM)
+                if (Setup::verbose && ctx->dialog_type == FILEGUI_DIALOG_MULTI_ITEM)
                 {
                     file_progress_show_count (ctx, tctx->progress_count, ctx->progress_count);
                     file_progress_show_total (tctx, ctx, tctx->copied_bytes, force_update);
@@ -3150,7 +3150,7 @@ dirsize_status_update_cb (status_msg_t * sm)
 
     /* update second (longer label) */
     label_set_textv (dsm->count_size, _("Directories: %zu, total size: %s"),
-                     dsm->dir_count, size_trunc_sep (dsm->total_size, panels_options.kilobyte_si));
+                     dsm->dir_count, size_trunc_sep (dsm->total_size, Setup::panels_options.kilobyte_si));
 
     /* enlarge dialog if required */
     if (WIDGET (dsm->count_size)->cols + 6 > wd->cols)
@@ -3275,7 +3275,7 @@ panel_operate (void *source_panel, FileOperation operation, gboolean force_singl
 
         dest_vpath = vfs_path_from_str (dest);
     }
-    else if (confirm_delete && !do_confirm_erase (panel, source, &src_stat))
+    else if (Setup::confirm_delete && !do_confirm_erase (panel, source, &src_stat))
     {
         ret_val = FALSE;
         goto ret_fast;
@@ -3388,7 +3388,7 @@ panel_operate (void *source_panel, FileOperation operation, gboolean force_singl
          * some directory movements can be a cross-filesystem and directory scanning is useful
          * for those directories only. */
 
-        if (panel_operate_init_totals (panel, NULL, NULL, ctx, file_op_compute_totals, dialog_type)
+        if (panel_operate_init_totals (panel, NULL, NULL, ctx, Setup::file_op_compute_totals, dialog_type)
             == FILE_CONT)
         {
             /* Loop for every file, perform the actual copy operation */
@@ -3410,7 +3410,7 @@ panel_operate (void *source_panel, FileOperation operation, gboolean force_singl
                 if (value == FILE_CONT)
                     do_file_mark (panel, i, 0);
 
-                if (verbose && ctx->dialog_type == FILEGUI_DIALOG_MULTI_ITEM)
+                if (Setup::verbose && ctx->dialog_type == FILEGUI_DIALOG_MULTI_ITEM)
                 {
                     file_progress_show_count (ctx, tctx->progress_count, ctx->progress_count);
                     file_progress_show_total (tctx, ctx, tctx->progress_bytes, FALSE);

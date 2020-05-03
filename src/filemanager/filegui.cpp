@@ -162,7 +162,7 @@ statfs (char const *filename, struct fs_info *buf)
 
 /*** global variables ****************************************************************************/
 
-gboolean classic_progressbar = TRUE;
+
 
 /*** file scope macro definitions ****************************************************************/
 
@@ -523,7 +523,7 @@ overwrite_query_dialog (file_op_context_t * ctx, enum OperationMode mode)
     vfs_path_free (p);
     g_free (s1);
     /* new file size */
-    size_trunc_len (s2, sizeof (s2), ui->src_stat->st_size, 0, panels_options.kilobyte_si);
+    size_trunc_len (s2, sizeof (s2), ui->src_stat->st_size, 0, Setup::panels_options.kilobyte_si);
     NEW_LABEL (2, s2);
     /* new file modification date & time */
     s1 = (char *) file_date (ui->src_stat->st_mtime);
@@ -538,7 +538,7 @@ overwrite_query_dialog (file_op_context_t * ctx, enum OperationMode mode)
     vfs_path_free (p);
     g_free (s1);
     /* existing file size */
-    size_trunc_len (s2, sizeof (s2), ui->dst_stat->st_size, 0, panels_options.kilobyte_si);
+    size_trunc_len (s2, sizeof (s2), ui->dst_stat->st_size, 0, Setup::panels_options.kilobyte_si);
     NEW_LABEL (6, s2);
     /* existing file modification date & time */
     s1 = (char *) file_date (ui->dst_stat->st_mtime);
@@ -661,7 +661,7 @@ overwrite_query_dialog (file_op_context_t * ctx, enum OperationMode mode)
 
     ADD_BUTTON (20);            /* Abort */
 
-    group_select_widget_by_id (g, safe_overwrite ? no_id : yes_id);
+    group_select_widget_by_id (g, Setup::safe_overwrite ? no_id : yes_id);
 
     result = dlg_run (ui->replace_dlg);
 
@@ -846,7 +846,7 @@ file_op_context_create_ui (file_op_context_t * ctx, gboolean with_eta,
         group_add_widget (g, ui->tgt_file);
 
         ui->progress_file_gauge = gauge_new (y++, x + 3, dlg_width - (x + 3) * 2, FALSE, 100, 0);
-        if (!classic_progressbar && (current_panel == right_panel))
+        if (!Setup::classic_progressbar && (current_panel == right_panel))
             ui->progress_file_gauge->from_left_to_right = FALSE;
         group_add_widget_autopos (g, ui->progress_file_gauge,
                                   static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_KEEP_HORZ), NULL);
@@ -854,7 +854,7 @@ file_op_context_create_ui (file_op_context_t * ctx, gboolean with_eta,
         ui->progress_file_label = label_new (y++, x, "");
         group_add_widget (g, ui->progress_file_label);
 
-        if (verbose && dialog_type == FILEGUI_DIALOG_MULTI_ITEM)
+        if (Setup::verbose && dialog_type == FILEGUI_DIALOG_MULTI_ITEM)
         {
             ui->total_bytes_label = hline_new (y++, -1, -1);
             group_add_widget (g, ui->total_bytes_label);
@@ -863,7 +863,7 @@ file_op_context_create_ui (file_op_context_t * ctx, gboolean with_eta,
             {
                 ui->progress_total_gauge =
                     gauge_new (y++, x + 3, dlg_width - (x + 3) * 2, FALSE, 100, 0);
-                if (!classic_progressbar && (current_panel == right_panel))
+                if (!Setup::classic_progressbar && (current_panel == right_panel))
                     ui->progress_total_gauge->from_left_to_right = FALSE;
                 group_add_widget_autopos (g, ui->progress_total_gauge,
                                           static_cast<widget_pos_flags_t>(WPOS_KEEP_TOP | WPOS_KEEP_HORZ), NULL);
@@ -964,7 +964,7 @@ file_progress_show (file_op_context_t * ctx, off_t done, off_t total,
     file_op_context_ui_t *ui;
     char buffer[BUF_TINY];
 
-    if (!verbose || ctx == NULL || ctx->ui == NULL)
+    if (!Setup::verbose || ctx == NULL || ctx->ui == NULL)
         return;
 
     ui = static_cast<file_op_context_ui_t *>(ctx->ui);
@@ -1091,13 +1091,13 @@ file_progress_show_total (file_op_total_context_t * tctx, file_op_context_t * ct
 
     if (ui->total_bytes_label != NULL)
     {
-        size_trunc_len (buffer2, 5, tctx->copied_bytes, 0, panels_options.kilobyte_si);
+        size_trunc_len (buffer2, 5, tctx->copied_bytes, 0, Setup::panels_options.kilobyte_si);
 
         if (!ctx->progress_totals_computed)
             g_snprintf (buffer, sizeof (buffer), _(" Total: %s "), buffer2);
         else
         {
-            size_trunc_len (buffer3, 5, ctx->progress_bytes, 0, panels_options.kilobyte_si);
+            size_trunc_len (buffer3, 5, ctx->progress_bytes, 0, Setup::panels_options.kilobyte_si);
             g_snprintf (buffer, sizeof (buffer), _(" Total: %s/%s "), buffer2, buffer3);
         }
 
@@ -1281,7 +1281,7 @@ file_mask_dialog (file_op_context_t * ctx, FileOperation operation,
 {
     size_t fmd_xlen;
     vfs_path_t *vpath;
-    gboolean source_easy_patterns = easy_patterns;
+    gboolean source_easy_patterns = Setup::easy_patterns;
     char fmd_buf[BUF_MEDIUM];
     char *dest_dir, *tmp;
     char *def_text_secure;
@@ -1290,7 +1290,7 @@ file_mask_dialog (file_op_context_t * ctx, FileOperation operation,
         return NULL;
 
     /* unselect checkbox if target filesystem doesn't support attributes */
-    ctx->op_preserve = copymove_persistent_attr && filegui__check_attrs_on_fs (def_text);
+    ctx->op_preserve = Setup::copymove_persistent_attr && filegui__check_attrs_on_fs (def_text);
     ctx->stable_symlinks = FALSE;
     *do_bg = FALSE;
 
@@ -1342,7 +1342,7 @@ file_mask_dialog (file_op_context_t * ctx, FileOperation operation,
         quick_widget_t quick_widgets[] = {
             /* *INDENT-OFF* */
             QUICK_LABELED_INPUT (fmd_buf, input_label_above,
-                                 easy_patterns ? "*" : "^(.*)$", "input-def", &source_mask,
+                                 Setup::easy_patterns ? "*" : "^(.*)$", "input-def", &source_mask,
                                  NULL, FALSE, FALSE, INPUT_COMPLETE_FILENAMES),
             QUICK_START_COLUMNS,
                 QUICK_SEPARATOR (FALSE),

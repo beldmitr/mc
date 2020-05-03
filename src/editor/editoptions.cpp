@@ -131,7 +131,7 @@ edit_options_dialog (WDialog * h)
 #endif /* ENABLE_NLS */
 
     g_snprintf (wrap_length, sizeof (wrap_length), "%d", option_word_wrap_line_length);
-    g_snprintf (tab_spacing, sizeof (tab_spacing), "%d", option_tab_spacing);
+    g_snprintf (tab_spacing, sizeof (tab_spacing), "%d", Setup::option_tab_spacing);
 
     if (option_auto_para_formatting)
         wrap_mode = 1;
@@ -207,9 +207,9 @@ edit_options_dialog (WDialog * h)
 
     if (q != NULL)
     {
-        option_tab_spacing = atoi (q);
-        if (option_tab_spacing <= 0)
-            option_tab_spacing = DEFAULT_TAB_SPACING;
+        Setup::option_tab_spacing = atoi (q);
+        if (Setup::option_tab_spacing <= 0)
+            Setup::option_tab_spacing = DEFAULT_TAB_SPACING;
         g_free (q);
     }
 

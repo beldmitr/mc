@@ -59,8 +59,8 @@
 #define KEY_PRESS       1500000000
 
 /* Tabs spaces: (sofar only HALF_TAB_SIZE is used: */
-#define TAB_SIZE      option_tab_spacing
-#define HALF_TAB_SIZE ((int) option_tab_spacing / 2)
+#define TAB_SIZE      Setup::option_tab_spacing
+#define HALF_TAB_SIZE ((int) Setup::option_tab_spacing / 2)
 
 /* max count stack files */
 #define MAX_HISTORY_MOVETO     50

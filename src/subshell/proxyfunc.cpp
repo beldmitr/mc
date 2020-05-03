@@ -97,7 +97,7 @@ subshell_handle_cons_saver (void)
 int
 subshell_get_mainloop_quit (void)
 {
-    return quit;
+    return Setup::quit;
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -105,7 +105,7 @@ subshell_get_mainloop_quit (void)
 void
 subshell_set_mainloop_quit (const int param_quit)
 {
-    quit = param_quit;
+    Setup::quit = param_quit;
 }
 
 /* --------------------------------------------------------------------------------------------- */

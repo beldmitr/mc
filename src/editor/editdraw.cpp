@@ -147,7 +147,7 @@ status_string (WEdit * edit, char *s, int w)
                     "%c%c%c%c %3ld %5ld/%ld %6ld/%ld %s %s",
                     edit->mark1 != edit->mark2 ? (edit->column_highlight ? 'C' : 'B') : '-',
                     edit->modified ? 'M' : '-',
-                    macro_index < 0 ? '-' : 'R',
+                    Setup::macro_index < 0 ? '-' : 'R',
                     edit->overwrite == 0 ? '-' : 'O',
                     edit->curs_col + edit->over_col,
                     edit->buffer.curs_line + 1,
@@ -162,7 +162,7 @@ status_string (WEdit * edit, char *s, int w)
                     "[%c%c%c%c] %2ld L:[%3ld+%2ld %3ld/%3ld] *(%-4ld/%4ldb) %s  %s",
                     edit->mark1 != edit->mark2 ? (edit->column_highlight ? 'C' : 'B') : '-',
                     edit->modified ? 'M' : '-',
-                    macro_index < 0 ? '-' : 'R',
+                    Setup::macro_index < 0 ? '-' : 'R',
                     edit->overwrite == 0 ? '-' : 'O',
                     edit->curs_col + edit->over_col,
                     edit->start_line + 1,
@@ -286,7 +286,7 @@ edit_status_window (WEdit * edit)
         tty_printf ("[%c%c%c%c]",
                     edit->mark1 != edit->mark2 ? (edit->column_highlight ? 'C' : 'B') : '-',
                     edit->modified ? 'M' : '-',
-                    macro_index < 0 ? '-' : 'R', edit->overwrite == 0 ? '-' : 'O');
+                    Setup::macro_index < 0 ? '-' : 'R', edit->overwrite == 0 ? '-' : 'O');
     }
 
     if (cols > 30)

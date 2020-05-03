@@ -122,7 +122,7 @@ edit_search_status_update_cb (status_msg_t * sm)
     edit_search_status_msg_t *esm = (edit_search_status_msg_t *) sm;
     Widget *wd = WIDGET (sm->dlg);
 
-    if (verbose)
+    if (Setup::verbose)
         label_set_textv (ssm->label, _("Searching %s: %3d%%"), esm->edit->last_search_string,
                          edit_buffer_calc_percent (&esm->edit->buffer, esm->offset));
     else
@@ -1387,8 +1387,8 @@ edit_insert_column_of_text (WEdit * edit, unsigned char *data, off_t size, long 
 static int
 edit_macro_comparator (gconstpointer * macro1, gconstpointer * macro2)
 {
-    const macros_t *m1 = (const macros_t *) macro1;
-    const macros_t *m2 = (const macros_t *) macro2;
+    const Setup::macros_t *m1 = (const Setup::macros_t *) macro1;
+    const Setup::macros_t *m2 = (const Setup::macros_t *) macro2;
 
     return m1->hotkey - m2->hotkey;
 }
@@ -1398,24 +1398,24 @@ edit_macro_comparator (gconstpointer * macro1, gconstpointer * macro2)
 static void
 edit_macro_sort_by_hotkey (void)
 {
-    if (macros_list != NULL && macros_list->len != 0)
-        g_array_sort (macros_list, (GCompareFunc) edit_macro_comparator);
+    if (Setup::macros_list != NULL && Setup::macros_list->len != 0)
+        g_array_sort (Setup::macros_list, (GCompareFunc) edit_macro_comparator);
 }
 
 /* --------------------------------------------------------------------------------------------- */
 
 static gboolean
-edit_get_macro (WEdit * edit, int hotkey, const macros_t ** macros, guint * indx)
+edit_get_macro (WEdit * edit, int hotkey, const Setup::macros_t ** macros, guint * indx)
 {
-    const macros_t *array_start = &g_array_index (macros_list, struct macros_t, 0);
+    const Setup::macros_t *array_start = &g_array_index (Setup::macros_list, struct Setup::macros_t, 0);
 
-    macros_t search_macro;
+    Setup::macros_t search_macro;
 
     (void) edit;
 
     search_macro.hotkey = hotkey;
-    macros_t *result = static_cast<macros_t*>(bsearch (&search_macro, macros_list->data, macros_list->len,
-                      sizeof (macros_t), (GCompareFunc) edit_macro_comparator));
+    Setup::macros_t *result = static_cast<Setup::macros_t*>(bsearch (&search_macro, Setup::macros_list->data, Setup::macros_list->len,
+                      sizeof (Setup::macros_t), (GCompareFunc) edit_macro_comparator));
 
     if (result != NULL && result->macro != NULL)
     {
@@ -1438,7 +1438,7 @@ edit_delete_macro (WEdit * edit, int hotkey)
     gchar *macros_fname;
     guint indx;
     char *skeyname;
-    const macros_t *macros = NULL;
+    const Setup::macros_t *macros = NULL;
 
     /* clear array of actions for current hotkey */
     while (edit_get_macro (edit, hotkey, &macros, &indx))
@@ -1446,7 +1446,7 @@ edit_delete_macro (WEdit * edit, int hotkey)
         if (macros->macro != NULL)
             g_array_free (macros->macro, TRUE);
         macros = NULL;
-        g_array_remove_index (macros_list, indx);
+        g_array_remove_index (Setup::macros_list, indx);
         edit_macro_sort_by_hotkey ();
     }
 
@@ -1791,7 +1791,7 @@ edit_execute_macro (WEdit * edit, int hotkey)
 
     if (hotkey != 0)
     {
-        const macros_t *macros;
+        const Setup::macros_t *macros;
         guint indx;
 
         if (edit_get_macro (edit, hotkey, &macros, &indx) &&
@@ -1803,9 +1803,9 @@ edit_execute_macro (WEdit * edit, int hotkey)
 
             for (i = 0; i < macros->macro->len; i++)
             {
-                const macro_action_t *m_act;
+                const Setup::macro_action_t *m_act;
 
-                m_act = &g_array_index (macros->macro, struct macro_action_t, i);
+                m_act = &g_array_index (macros->macro, struct Setup::macro_action_t, i);
                 edit_execute_cmd (edit, m_act->action, m_act->ch);
                 res = TRUE;
             }
@@ -1856,33 +1856,33 @@ edit_store_macro_cmd (WEdit * edit)
     edit_push_undo_action (edit, KEY_PRESS + edit->start_display);
 
     marcros_string = g_string_sized_new (250);
-    macros = g_array_new (TRUE, FALSE, sizeof (macro_action_t));
+    macros = g_array_new (TRUE, FALSE, sizeof (Setup::macro_action_t));
 
     skeyname = lookup_key_by_code (hotkey);
 
-    for (i = 0; i < macro_index; i++)
+    for (i = 0; i < Setup::macro_index; i++)
     {
-        macro_action_t m_act;
+        Setup::macro_action_t m_act;
         const char *action_name;
 
-        action_name = keybind_lookup_actionname (record_macro_buf[i].action);
+        action_name = keybind_lookup_actionname (Setup::record_macro_buf[i].action);
 
         if (action_name == NULL)
             break;
 
-        m_act.action = record_macro_buf[i].action;
-        m_act.ch = record_macro_buf[i].ch;
+        m_act.action = Setup::record_macro_buf[i].action;
+        m_act.ch = Setup::record_macro_buf[i].ch;
         g_array_append_val (macros, m_act);
         have_macro = TRUE;
         g_string_append_printf (marcros_string, "%s:%i;", action_name,
-                                (int) record_macro_buf[i].ch);
+                                (int) Setup::record_macro_buf[i].ch);
     }
     if (have_macro)
     {
-        macros_t macro;
+        Setup::macros_t macro;
         macro.hotkey = hotkey;
         macro.macro = macros;
-        g_array_append_val (macros_list, macro);
+        g_array_append_val (Setup::macros_list, macro);
         mc_config_set_string (macros_config, section_name, skeyname, marcros_string->str);
     }
     else
@@ -1929,8 +1929,8 @@ edit_repeat_macro_cmd (WEdit * edit)
     edit->force |= REDRAW_PAGE;
 
     for (j = 0; j < count_repeat; j++)
-        for (i = 0; i < macro_index; i++)
-            edit_execute_cmd (edit, record_macro_buf[i].action, record_macro_buf[i].ch);
+        for (i = 0; i < Setup::macro_index; i++)
+            edit_execute_cmd (edit, Setup::record_macro_buf[i].action, Setup::record_macro_buf[i].ch);
     edit_update_screen (edit);
     return TRUE;
 }
@@ -1949,7 +1949,7 @@ edit_load_macro_cmd (WEdit * edit)
 
     (void) edit;
 
-    if (macros_list == NULL || macros_list->len != 0)
+    if (Setup::macros_list == NULL || Setup::macros_list->len != 0)
         return FALSE;
 
     macros_fname = mc_config_get_full_path (MC_MACRO_FILE);
@@ -1966,9 +1966,9 @@ edit_load_macro_cmd (WEdit * edit)
         int hotkey;
         gboolean have_macro = FALSE;
         GArray *macros;
-        macros_t macro;
+        Setup::macros_t macro;
 
-        macros = g_array_new (TRUE, FALSE, sizeof (macro_action_t));
+        macros = g_array_new (TRUE, FALSE, sizeof (Setup::macro_action_t));
         values = mc_config_get_string_list (macros_config, section_name, *profile_keys, NULL);
         hotkey = lookup_key (*profile_keys, NULL);
 
@@ -1979,7 +1979,7 @@ edit_load_macro_cmd (WEdit * edit)
             macro_pair = g_strsplit (*curr_values, ":", 2);
             if (macro_pair != NULL)
             {
-                macro_action_t m_act;
+                Setup::macro_action_t m_act;
                 if (macro_pair[0] == NULL || macro_pair[0][0] == '\0')
                     m_act.action = 0;
                 else
@@ -2013,7 +2013,7 @@ edit_load_macro_cmd (WEdit * edit)
         {
             macro.hotkey = hotkey;
             macro.macro = macros;
-            g_array_append_val (macros_list, macro);
+            g_array_append_val (Setup::macros_list, macro);
         }
         g_strfreev (values);
     }
@@ -3420,7 +3420,7 @@ edit_begin_end_macro_cmd (WEdit * edit)
     /* edit is a pointer to the widget */
     if (edit != NULL)
     {
-        long command = macro_index < 0 ? CK_MacroStartRecord : CK_MacroStopRecord;
+        long command = Setup::macro_index < 0 ? CK_MacroStartRecord : CK_MacroStopRecord;
         edit_execute_key_command (edit, command, -1);
     }
 }
@@ -3433,7 +3433,7 @@ edit_begin_end_repeat_cmd (WEdit * edit)
     /* edit is a pointer to the widget */
     if (edit != NULL)
     {
-        long command = macro_index < 0 ? CK_RepeatStartRecord : CK_RepeatStopRecord;
+        long command = Setup::macro_index < 0 ? CK_RepeatStartRecord : CK_RepeatStopRecord;
         edit_execute_key_command (edit, command, -1);
     }
 }

@@ -119,12 +119,10 @@ gboolean SelCodePage::do_set_codepage(int codepage)
 
 gboolean SelCodePage::do_select_codepage()
 {
-    int r;
-
-    r = select_charset (-1, -1, default_source_codepage, FALSE);
+    int r = select_charset (-1, -1, Setup::default_source_codepage, FALSE);
     if (r == SELECT_CHARSET_CANCEL)
         return FALSE;
 
-    default_source_codepage = r;
-    return do_set_codepage (default_source_codepage);
+    Setup::default_source_codepage = r;
+    return do_set_codepage (Setup::default_source_codepage);
 }

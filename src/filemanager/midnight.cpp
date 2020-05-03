@@ -372,7 +372,7 @@ init_menu (void)
 static void
 menu_last_selected_cmd (void)
 {
-    menubar_activate (the_menubar, drop_menus, -1);
+    menubar_activate (the_menubar, Setup::drop_menus, -1);
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -387,7 +387,7 @@ menu_cmd (void)
     else
         selected = g_list_length (the_menubar->menu) - 1;
 
-    menubar_activate (the_menubar, drop_menus, selected);
+    menubar_activate (the_menubar, Setup::drop_menus, selected);
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -594,19 +594,19 @@ create_panels (void)
      */
 
     /* Set up panel directories */
-    if (boot_current_is_left)
+    if (Setup::boot_current_is_left)
     {
         /* left panel is active */
         current_index = 0;
         other_index = 1;
-        current_mode = startup_left_mode;
-        other_mode = startup_right_mode;
+        current_mode = Setup::startup_left_mode;
+        other_mode = Setup::startup_right_mode;
 
         if (mc_run_param0 == NULL && mc_run_param1 == NULL)
         {
             /* no arguments */
             current_dir = NULL; /* assume current dir */
-            other_dir = saved_other_dir;        /* from ini */
+            other_dir = Setup::saved_other_dir;        /* from ini */
         }
         else if (mc_run_param0 != NULL && mc_run_param1 != NULL)
         {
@@ -618,7 +618,7 @@ create_panels (void)
         {
             /* one argument */
             current_dir = (char *) mc_run_param0;
-            other_dir = saved_other_dir;        /* from ini */
+            other_dir = Setup::saved_other_dir;        /* from ini */
         }
     }
     else
@@ -626,14 +626,14 @@ create_panels (void)
         /* right panel is active */
         current_index = 1;
         other_index = 0;
-        current_mode = startup_right_mode;
-        other_mode = startup_left_mode;
+        current_mode = Setup::startup_right_mode;
+        other_mode = Setup::startup_left_mode;
 
         if (mc_run_param0 == NULL && mc_run_param1 == NULL)
         {
             /* no arguments */
             current_dir = NULL; /* assume current dir */
-            other_dir = saved_other_dir;        /* from ini */
+            other_dir = Setup::saved_other_dir;        /* from ini */
         }
         else if (mc_run_param0 != NULL && mc_run_param1 != NULL)
         {
@@ -645,7 +645,7 @@ create_panels (void)
         {
             /* one argument */
             current_dir = (char *) mc_run_param0;
-            other_dir = saved_other_dir;        /* from ini */
+            other_dir = Setup::saved_other_dir;        /* from ini */
         }
     }
 
@@ -682,7 +682,7 @@ create_panels (void)
     }
     create_panel (current_index, current_mode);
 
-    if (startup_left_mode == view_listing)
+    if (Setup::startup_left_mode == view_listing)
         current_panel = left_panel;
     else if (right_panel != NULL)
         current_panel = right_panel;
@@ -863,7 +863,7 @@ setup_mc (void)
 #endif /* !ENABLE_SUBSHELL */
 
     if ((tty_baudrate () < 9600) || mc_global.tty.slow_terminal)
-        verbose = FALSE;
+        Setup::verbose = FALSE;
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -895,7 +895,7 @@ done_mc (void)
      * we only change the setup data if we have the auto save feature set
      */
 
-    save_setup (auto_save_setup, panels_options.auto_save_setup);
+    Setup::save_setup (Setup::auto_save_setup, Setup::panels_options.auto_save_setup);
 
     vfs_stamp_path (vfs_get_raw_current_dir ());
 }
@@ -1016,12 +1016,12 @@ show_editor_viewer_history (void)
         {
         case CK_Edit:
             s_vpath = vfs_path_from_str (s);
-            edit_file_at_line (s_vpath, use_internal_edit, 0);
+            edit_file_at_line (s_vpath, Setup::use_internal_edit, 0);
             break;
 
         case CK_View:
             s_vpath = vfs_path_from_str (s);
-            view_file (s_vpath, use_internal_view, 0);
+            view_file (s_vpath, Setup::use_internal_view, 0);
             break;
 
         default:
@@ -1046,7 +1046,7 @@ show_editor_viewer_history (void)
 static gboolean
 quit_cmd_internal (int quiet)
 {
-    int q = quit;
+    int q = Setup::quit;
     size_t n;
 
     n = dialog_switch_num () - 1;
@@ -1062,7 +1062,7 @@ quit_cmd_internal (int quiet)
             return FALSE;
         q = 1;
     }
-    else if (quiet || !confirm_exit)
+    else if (quiet || !Setup::confirm_exit)
         q = 1;
     else if (query_dialog (_("The Midnight Commander"),
                            _("Do you really want to quit the Midnight Commander?"),
@@ -1080,8 +1080,8 @@ quit_cmd_internal (int quiet)
     }
 
     if (q != 0)
-        quit |= 1;
-    return (quit != 0);
+        Setup::quit |= 1;
+    return (Setup::quit != 0);
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -1116,7 +1116,7 @@ update_dirty_panels (void)
 static void
 toggle_show_hidden (void)
 {
-    panels_options.show_dot_files = !panels_options.show_dot_files;
+    Setup::panels_options.show_dot_files = !Setup::panels_options.show_dot_files;
     update_panels (UP_RELOAD, UP_KEEPSEL);
     /* redraw panels forced */
     update_dirty_panels ();
@@ -1515,12 +1515,12 @@ midnight_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm, void
         /* We only need the first idle event to show user menu after start */
         widget_idle (w, FALSE);
 
-        if (boot_current_is_left)
+        if (Setup::boot_current_is_left)
             widget_select (get_panel_widget (0));
         else
             widget_select (get_panel_widget (1));
 
-        if (auto_menu)
+        if (Setup::auto_menu)
             midnight_execute_cmd (NULL, CK_UserMenu);
         return MSG_HANDLED;
 
@@ -1547,7 +1547,7 @@ midnight_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm, void
              || !(mc_global.tty.console_flag != '\0' || mc_global.tty.xterm_flag)) && !quote
             && !current_panel->searching)
         {
-            if (!only_leading_plus_minus)
+            if (!Setup::only_leading_plus_minus)
             {
                 /* Special treatement, since the input line will eat them */
                 if (parm == '+')
@@ -1775,7 +1775,7 @@ change_panel (void)
 void
 save_cwds_stat (void)
 {
-    if (panels_options.fast_reload)
+    if (Setup::panels_options.fast_reload)
     {
         mc_stat (current_panel->cwd_vpath, &(current_panel->dir_stat));
         if (get_other_type () == view_listing)
@@ -1788,7 +1788,7 @@ save_cwds_stat (void)
 gboolean
 quiet_quit_cmd (void)
 {
-    print_last_revert = TRUE;
+    Setup::print_last_revert = TRUE;
     return quit_cmd_internal (1);
 }
 
@@ -1830,7 +1830,7 @@ do_nc (void)
 
         /* dlg_destroy destroys even current_panel->cwd_vpath, so we have to save a copy :) */
         if (mc_args__last_wd_file != NULL && vfs_current_is_local ())
-            last_wd_string = g_strdup (vfs_path_as_str (current_panel->cwd_vpath));
+            Setup::last_wd_string = g_strdup (vfs_path_as_str (current_panel->cwd_vpath));
 
         /* don't handle VFS timestamps for dirs opened in panels */
         mc_event_destroy (MCEVENT_GROUP_CORE, "vfs_timestamp");
@@ -1849,7 +1849,7 @@ do_nc (void)
     edit_stack_free ();
 #endif
 
-    if ((quit & SUBSHELL_EXIT) == 0)
+    if ((Setup::quit & SUBSHELL_EXIT) == 0)
         clr_scr ();
 
     return ret;

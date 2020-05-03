@@ -292,7 +292,7 @@ aspell_init (void)
 {
     AspellCanHaveError *error = NULL;
 
-    if (strcmp (spell_language, "NONE") == 0)
+    if (strcmp (Setup::spell_language, "NONE") == 0)
         return;
 
     if (global_speller != NULL)
@@ -311,8 +311,8 @@ aspell_init (void)
     global_speller->config = mc_new_aspell_config ();
     global_speller->speller = NULL;
 
-    if (spell_language != NULL)
-        mc_aspell_config_replace (global_speller->config, "lang", spell_language);
+    if (Setup::spell_language != NULL)
+        mc_aspell_config_replace (global_speller->config, "lang", Setup::spell_language);
 
     error = mc_new_aspell_speller (global_speller->config);
 
@@ -446,8 +446,8 @@ aspell_set_lang (const char *lang)
         AspellCanHaveError *error;
         const char *spell_codeset;
 
-        g_free (spell_language);
-        spell_language = g_strdup (lang);
+        g_free (Setup::spell_language);
+        Setup::spell_language = g_strdup (lang);
 
 #ifdef HAVE_CHARSET
         if (mc_global.source_codepage > 0)

@@ -1318,7 +1318,7 @@ do_search (WDialog * h)
                                                   ignore_count), ignore_count);
                             status_update (msg);
                         }
-                        if (verbose)
+                        if (Setup::verbose)
                             find_rotate_dash (h, FALSE);
                         stop_idle (h);
                         return 0;
@@ -1340,7 +1340,7 @@ do_search (WDialog * h)
                 g_free (directory);
                 directory = g_strdup (vfs_path_as_str (tmp_vpath));
 
-                if (verbose)
+                if (Setup::verbose)
                 {
                     char buffer[BUF_MEDIUM];
 
@@ -1405,7 +1405,7 @@ do_search (WDialog * h)
             ;
     }                           /* for */
 
-    if (verbose)
+    if (Setup::verbose)
         find_rotate_dash (h, TRUE);
 
     return 1;
@@ -1450,9 +1450,9 @@ find_do_view_edit (gboolean unparsed_view, gboolean edit, char *dir, char *file,
 
     fullname_vpath = vfs_path_build_filename (dir, filename, (char *) NULL);
     if (edit)
-        edit_file_at_line (fullname_vpath, use_internal_edit, line);
+        edit_file_at_line (fullname_vpath, Setup::use_internal_edit, line);
     else
-        view_file_at_line (fullname_vpath, unparsed_view, use_internal_view, line, search_start,
+        view_file_at_line (fullname_vpath, unparsed_view, Setup::use_internal_view, line, search_start,
                            search_end);
     vfs_path_free (fullname_vpath);
 }

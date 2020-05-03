@@ -310,7 +310,7 @@ main (int argc, char *argv[])
     vfs_init ();
     vfs_plugins_init ();
 
-    load_setup ();
+    Setup::load_setup ();
 
     /* Must be done after load_setup because depends on mc_global.vfs.cd_symlinks */
     vfs_setup_work_dir ();
@@ -323,8 +323,8 @@ main (int argc, char *argv[])
     if (!mc_setup_by_args (argc, argv, &mcerror))
     {
         vfs_shut ();
-        done_setup ();
-        g_free (saved_other_dir);
+        Setup::done_setup ();
+        g_free (Setup::saved_other_dir);
         mc_event_deinit (NULL);
         goto startup_exit_falure;
     }
@@ -341,7 +341,7 @@ main (int argc, char *argv[])
         buffer = mc_config_get_string (mc_global.panels_config, "Dirs", "other_dir", ".");
         vpath = vfs_path_from_str (buffer);
         if (vfs_file_is_local (vpath))
-            saved_other_dir = buffer;
+            Setup::saved_other_dir = buffer;
         else
             g_free (buffer);
         vfs_path_free (vpath);
@@ -384,12 +384,12 @@ main (int argc, char *argv[])
     check_codeset ();
 
     /* Removing this from the X code let's us type C-c */
-    load_key_defs ();
+    Setup::load_key_defs ();
 
-    load_keymap_defs (!mc_args__nokeymap);
+    Setup::load_keymap_defs (!mc_args__nokeymap);
 
 #ifdef USE_INTERNAL_EDIT
-    macros_list = g_array_new (TRUE, FALSE, sizeof (macros_t));
+    Setup::macros_list = g_array_new (TRUE, FALSE, sizeof (Setup::macros_t));
 #endif /* USE_INTERNAL_EDIT */
 
     tty_init_colors (mc_global.tty.disable_colors, mc_args__force_colors);
@@ -471,7 +471,7 @@ main (int argc, char *argv[])
     /* Save the tree store */
     (void) tree_store_save ();
 
-    free_keymap_defs ();
+    Setup::free_keymap_defs ();
 
     /* Virtual File System shutdown */
     vfs_shut ();
@@ -483,9 +483,9 @@ main (int argc, char *argv[])
 
     tty_shutdown ();
 
-    done_setup ();
+    Setup::done_setup ();
 
-    if (mc_global.tty.console_flag != '\0' && (quit & SUBSHELL_EXIT) == 0)
+    if (mc_global.tty.console_flag != '\0' && (Setup::quit & SUBSHELL_EXIT) == 0)
         handle_console (CONSOLE_RESTORE);
     if (mc_global.tty.alternate_plus_minus)
         numeric_keypad_mode ();
@@ -496,7 +496,7 @@ main (int argc, char *argv[])
         handle_console (CONSOLE_DONE);
 
     if (mc_global.mc_run_mode == MC_RUN_FULL && mc_args__last_wd_file != NULL
-        && last_wd_string != NULL && !print_last_revert)
+        && Setup::last_wd_string != NULL && !Setup::print_last_revert)
     {
         int last_wd_fd;
 
@@ -506,32 +506,32 @@ main (int argc, char *argv[])
         {
             ssize_t ret1;
             int ret2;
-            ret1 = write (last_wd_fd, last_wd_string, strlen (last_wd_string));
+            ret1 = write (last_wd_fd, Setup::last_wd_string, strlen (Setup::last_wd_string));
             ret2 = close (last_wd_fd);
             (void) ret1;
             (void) ret2;
         }
     }
-    g_free (last_wd_string);
+    g_free (Setup::last_wd_string);
 
     mc_shell_deinit ();
 
     done_key ();
 
 #ifdef USE_INTERNAL_EDIT
-    if (macros_list != NULL)
+    if (Setup::macros_list != NULL)
     {
         guint i;
 
-        for (i = 0; i < macros_list->len; i++)
+        for (i = 0; i < Setup::macros_list->len; i++)
         {
-            macros_t *macros;
+            Setup::macros_t *macros;
 
-            macros = &g_array_index (macros_list, struct macros_t, i);
+            macros = &g_array_index (Setup::macros_list, struct Setup::macros_t, i);
             if (macros != NULL && macros->macro != NULL)
                 (void) g_array_free (macros->macro, TRUE);
         }
-        (void) g_array_free (macros_list, TRUE);
+        (void) g_array_free (Setup::macros_list, TRUE);
     }
 #endif /* USE_INTERNAL_EDIT */
 
@@ -543,7 +543,7 @@ main (int argc, char *argv[])
         g_list_free_full ((GList *) mc_run_param0, (GDestroyNotify) mcedit_arg_free);
 
     g_free (mc_run_param1);
-    g_free (saved_other_dir);
+    g_free (Setup::saved_other_dir);
 
     mc_config_deinit_config_paths ();
 

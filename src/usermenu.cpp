@@ -136,7 +136,7 @@ gboolean UserMenu::user_menu_cmd (const WEdit * edit_widget, const char *menu_fi
     entries = NULL;
 
     /* Parse the menu file */
-    old_patterns = easy_patterns;
+    old_patterns = Setup::easy_patterns;
     p = check_patterns (data);
     for (menu_lines = col = 0; *p != '\0'; str_next_char (&p))
     {
@@ -268,7 +268,7 @@ gboolean UserMenu::user_menu_cmd (const WEdit * edit_widget, const char *menu_fi
         do_refresh ();
     }
 
-    easy_patterns = old_patterns;
+    Setup::easy_patterns = old_patterns;
     MC_PTR_FREE (menu);
     g_free (entries);
     g_free (data);
@@ -567,7 +567,7 @@ gboolean UserMenu::menu_file_own (char *path)
         && ((st.st_mode & (S_IWGRP | S_IWOTH)) == 0))
         return TRUE;
 
-    if (verbose)
+    if (Setup::verbose)
         message (D_NORMAL, _("Warning -- ignoring file"),
                  _("File %s is not owned by root or you or is world writable.\n"
                    "Using it may compromise your security"), path);
@@ -834,7 +834,7 @@ void UserMenu::debug_out (char *start, char *end, gboolean condition)
 char* UserMenu::test_condition (const WEdit * edit_widget, char *p, gboolean * condition)
 {
     char arg[256];
-    const mc_search_type_t search_type = easy_patterns ? MC_SEARCH_T_GLOB : MC_SEARCH_T_REGEX;
+    const mc_search_type_t search_type = Setup::easy_patterns ? MC_SEARCH_T_GLOB : MC_SEARCH_T_REGEX;
 
     /* Handle one condition */
     for (; *p != '\n' && *p != '&' && *p != '|'; p++)
@@ -997,9 +997,9 @@ char* UserMenu::check_patterns (char *p)
 
     p += sizeof (def_name) - 1;
     if (*p == '1')
-        easy_patterns = TRUE;
+        Setup::easy_patterns = TRUE;
     else if (*p == '0')
-        easy_patterns = FALSE;
+        Setup::easy_patterns = FALSE;
     else
         return p0;
 

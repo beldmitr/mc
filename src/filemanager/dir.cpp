@@ -150,9 +150,9 @@ handle_dirent (struct dirent *dp, const char *fltr, struct stat *buf1, gboolean 
 
     if (DIR_IS_DOT (dp->d_name) || DIR_IS_DOTDOT (dp->d_name))
         return FALSE;
-    if (!panels_options.show_dot_files && (dp->d_name[0] == '.'))
+    if (!Setup::panels_options.show_dot_files && (dp->d_name[0] == '.'))
         return FALSE;
-    if (!panels_options.show_backups && dp->d_name[strlen (dp->d_name) - 1] == '~')
+    if (!Setup::panels_options.show_backups && dp->d_name[strlen (dp->d_name) - 1] == '~')
         return FALSE;
 
     vpath = vfs_path_from_str (dp->d_name);
@@ -326,7 +326,7 @@ sort_name (file_entry_t * a, file_entry_t * b)
     int ad = MY_ISDIR (a);
     int bd = MY_ISDIR (b);
 
-    if (ad == bd || panels_options.mix_all_files)
+    if (ad == bd || Setup::panels_options.mix_all_files)
     {
         /* create key if does not exist, key will be freed after sorting */
         if (a->sort_key == NULL)
@@ -348,7 +348,7 @@ sort_vers (file_entry_t * a, file_entry_t * b)
     int ad = MY_ISDIR (a);
     int bd = MY_ISDIR (b);
 
-    if (ad == bd || panels_options.mix_all_files)
+    if (ad == bd || Setup::panels_options.mix_all_files)
         return filevercmp (a->fname, b->fname) * reverse;
 
     return bd - ad;
@@ -362,7 +362,7 @@ sort_ext (file_entry_t * a, file_entry_t * b)
     int ad = MY_ISDIR (a);
     int bd = MY_ISDIR (b);
 
-    if (ad == bd || panels_options.mix_all_files)
+    if (ad == bd || Setup::panels_options.mix_all_files)
     {
         int r;
 
@@ -389,7 +389,7 @@ sort_time (file_entry_t * a, file_entry_t * b)
     int ad = MY_ISDIR (a);
     int bd = MY_ISDIR (b);
 
-    if (ad == bd || panels_options.mix_all_files)
+    if (ad == bd || Setup::panels_options.mix_all_files)
     {
         int result = a->st.st_mtime < b->st.st_mtime ? -1 : a->st.st_mtime > b->st.st_mtime;
 
@@ -410,7 +410,7 @@ sort_ctime (file_entry_t * a, file_entry_t * b)
     int ad = MY_ISDIR (a);
     int bd = MY_ISDIR (b);
 
-    if (ad == bd || panels_options.mix_all_files)
+    if (ad == bd || Setup::panels_options.mix_all_files)
     {
         int result = a->st.st_ctime < b->st.st_ctime ? -1 : a->st.st_ctime > b->st.st_ctime;
 
@@ -431,7 +431,7 @@ sort_atime (file_entry_t * a, file_entry_t * b)
     int ad = MY_ISDIR (a);
     int bd = MY_ISDIR (b);
 
-    if (ad == bd || panels_options.mix_all_files)
+    if (ad == bd || Setup::panels_options.mix_all_files)
     {
         int result = a->st.st_atime < b->st.st_atime ? -1 : a->st.st_atime > b->st.st_atime;
 
@@ -452,7 +452,7 @@ sort_inode (file_entry_t * a, file_entry_t * b)
     int ad = MY_ISDIR (a);
     int bd = MY_ISDIR (b);
 
-    if (ad == bd || panels_options.mix_all_files)
+    if (ad == bd || Setup::panels_options.mix_all_files)
         return (a->st.st_ino - b->st.st_ino) * reverse;
 
     return bd - ad;
@@ -466,7 +466,7 @@ sort_size (file_entry_t * a, file_entry_t * b)
     int ad = MY_ISDIR (a);
     int bd = MY_ISDIR (b);
 
-    if (ad == bd || panels_options.mix_all_files)
+    if (ad == bd || Setup::panels_options.mix_all_files)
     {
         int result = a->st.st_size < b->st.st_size ? -1 : a->st.st_size > b->st.st_size;
 

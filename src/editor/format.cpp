@@ -58,7 +58,7 @@ char *option_stop_format_chars = NULL;
 
 /*** file scope macro definitions ****************************************************************/
 
-#define tab_width option_tab_spacing
+#define tab_width Setup::option_tab_spacing
 
 #define FONT_MEAN_WIDTH 1
 

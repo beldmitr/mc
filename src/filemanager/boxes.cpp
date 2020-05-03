@@ -514,10 +514,10 @@ configure_box (void)
             /* *INDENT-OFF* */
             QUICK_START_COLUMNS,
                 QUICK_START_GROUPBOX (N_("File operations")),
-                    QUICK_CHECKBOX (N_("&Verbose operation"), &verbose, NULL),
-                    QUICK_CHECKBOX (N_("Compute tota&ls"), &file_op_compute_totals, NULL),
-                    QUICK_CHECKBOX (N_("Classic pro&gressbar"), &classic_progressbar, NULL),
-                    QUICK_CHECKBOX (N_("Mkdi&r autoname"), &auto_fill_mkdir_name, NULL),
+                    QUICK_CHECKBOX (N_("&Verbose operation"), &Setup::verbose, NULL),
+                    QUICK_CHECKBOX (N_("Compute tota&ls"), &Setup::file_op_compute_totals, NULL),
+                    QUICK_CHECKBOX (N_("Classic pro&gressbar"), &Setup::classic_progressbar, NULL),
+                    QUICK_CHECKBOX (N_("Mkdi&r autoname"), &Setup::auto_fill_mkdir_name, NULL),
                     QUICK_CHECKBOX (N_("&Preallocate space"), &mc_global.vfs.preallocate_space,
                                     NULL),
                 QUICK_STOP_GROUPBOX,
@@ -533,20 +533,20 @@ configure_box (void)
                 QUICK_STOP_GROUPBOX,
             QUICK_NEXT_COLUMN,
                 QUICK_START_GROUPBOX (N_("Other options")),
-                    QUICK_CHECKBOX (N_("Use internal edi&t"), &use_internal_edit, NULL),
-                    QUICK_CHECKBOX (N_("Use internal vie&w"), &use_internal_view, NULL),
+                    QUICK_CHECKBOX (N_("Use internal edi&t"), &Setup::use_internal_edit, NULL),
+                    QUICK_CHECKBOX (N_("Use internal vie&w"), &Setup::use_internal_view, NULL),
                     QUICK_CHECKBOX (N_("A&sk new file name"),
-                                    &editor_ask_filename_before_edit, NULL),
-                    QUICK_CHECKBOX (N_("Auto m&enus"), &auto_menu, NULL),
-                    QUICK_CHECKBOX (N_("&Drop down menus"), &drop_menus, NULL),
-                    QUICK_CHECKBOX (N_("S&hell patterns"), &easy_patterns, NULL),
+                                    &Setup::editor_ask_filename_before_edit, NULL),
+                    QUICK_CHECKBOX (N_("Auto m&enus"), &Setup::auto_menu, NULL),
+                    QUICK_CHECKBOX (N_("&Drop down menus"), &Setup::drop_menus, NULL),
+                    QUICK_CHECKBOX (N_("S&hell patterns"), &Setup::easy_patterns, NULL),
                     QUICK_CHECKBOX (N_("Co&mplete: show all"),
                                     &mc_global.widget.show_all_if_ambiguous, NULL),
                     QUICK_CHECKBOX (N_("Rotating d&ash"), &nice_rotating_dash, NULL),
                     QUICK_CHECKBOX (N_("Cd follows lin&ks"), &mc_global.vfs.cd_symlinks, NULL),
-                    QUICK_CHECKBOX (N_("Sa&fe delete"), &safe_delete, NULL),
-                    QUICK_CHECKBOX (N_("Safe overwrite"), &safe_overwrite, NULL),       /* w/o hotkey */
-                    QUICK_CHECKBOX (N_("A&uto save setup"), &auto_save_setup, NULL),
+                    QUICK_CHECKBOX (N_("Sa&fe delete"), &Setup::safe_delete, NULL),
+                    QUICK_CHECKBOX (N_("Safe overwrite"), &Setup::safe_overwrite, NULL),       /* w/o hotkey */
+                    QUICK_CHECKBOX (N_("A&uto save setup"), &Setup::auto_save_setup, NULL),
                     QUICK_SEPARATOR (FALSE),
                     QUICK_SEPARATOR (FALSE),
                 QUICK_STOP_GROUPBOX,
@@ -643,17 +643,17 @@ panel_options_box (void)
             /* *INDENT-OFF* */
             QUICK_START_COLUMNS,
                 QUICK_START_GROUPBOX (N_("Main options")),
-                    QUICK_CHECKBOX (N_("Show mi&ni-status"), &panels_options.show_mini_info, NULL),
-                    QUICK_CHECKBOX (N_("Use SI si&ze units"), &panels_options.kilobyte_si, NULL),
-                    QUICK_CHECKBOX (N_("Mi&x all files"), &panels_options.mix_all_files, NULL),
-                    QUICK_CHECKBOX (N_("Show &backup files"), &panels_options.show_backups, NULL),
-                    QUICK_CHECKBOX (N_("Show &hidden files"), &panels_options.show_dot_files, NULL),
-                    QUICK_CHECKBOX (N_("&Fast dir reload"), &panels_options.fast_reload, NULL),
-                    QUICK_CHECKBOX (N_("Ma&rk moves down"), &panels_options.mark_moves_down, NULL),
-                    QUICK_CHECKBOX (N_("Re&verse files only"), &panels_options.reverse_files_only,
+                    QUICK_CHECKBOX (N_("Show mi&ni-status"), &Setup::panels_options.show_mini_info, NULL),
+                    QUICK_CHECKBOX (N_("Use SI si&ze units"), &Setup::panels_options.kilobyte_si, NULL),
+                    QUICK_CHECKBOX (N_("Mi&x all files"), &Setup::panels_options.mix_all_files, NULL),
+                    QUICK_CHECKBOX (N_("Show &backup files"), &Setup::panels_options.show_backups, NULL),
+                    QUICK_CHECKBOX (N_("Show &hidden files"), &Setup::panels_options.show_dot_files, NULL),
+                    QUICK_CHECKBOX (N_("&Fast dir reload"), &Setup::panels_options.fast_reload, NULL),
+                    QUICK_CHECKBOX (N_("Ma&rk moves down"), &Setup::panels_options.mark_moves_down, NULL),
+                    QUICK_CHECKBOX (N_("Re&verse files only"), &Setup::panels_options.reverse_files_only,
                                     NULL),
                     QUICK_CHECKBOX (N_("Simple s&wap"), &simple_swap, NULL),
-                    QUICK_CHECKBOX (N_("A&uto save panels setup"), &panels_options.auto_save_setup,
+                    QUICK_CHECKBOX (N_("A&uto save panels setup"), &Setup::panels_options.auto_save_setup,
                                     NULL),
                     QUICK_SEPARATOR (FALSE),
                     QUICK_SEPARATOR (FALSE),
@@ -661,19 +661,19 @@ panel_options_box (void)
                 QUICK_STOP_GROUPBOX,
             QUICK_NEXT_COLUMN,
                 QUICK_START_GROUPBOX (N_("Navigation")),
-                    QUICK_CHECKBOX (N_("L&ynx-like motion"), &panels_options.navigate_with_arrows,
+                    QUICK_CHECKBOX (N_("L&ynx-like motion"), &Setup::panels_options.navigate_with_arrows,
                                     NULL),
-                    QUICK_CHECKBOX (N_("Pa&ge scrolling"), &panels_options.scroll_pages, NULL),
-                    QUICK_CHECKBOX (N_("Center &scrolling"), &panels_options.scroll_center, NULL),
-                    QUICK_CHECKBOX (N_("&Mouse page scrolling"), &panels_options.mouse_move_pages,
+                    QUICK_CHECKBOX (N_("Pa&ge scrolling"), &Setup::panels_options.scroll_pages, NULL),
+                    QUICK_CHECKBOX (N_("Center &scrolling"), &Setup::panels_options.scroll_center, NULL),
+                    QUICK_CHECKBOX (N_("&Mouse page scrolling"), &Setup::panels_options.mouse_move_pages,
                                     NULL),
                 QUICK_STOP_GROUPBOX,
                 QUICK_START_GROUPBOX (N_("File highlight")),
-                    QUICK_CHECKBOX (N_("File &types"), &panels_options.filetype_mode, NULL),
-                    QUICK_CHECKBOX (N_("&Permissions"), &panels_options.permission_mode, NULL),
+                    QUICK_CHECKBOX (N_("File &types"), &Setup::panels_options.filetype_mode, NULL),
+                    QUICK_CHECKBOX (N_("&Permissions"), &Setup::panels_options.permission_mode, NULL),
                 QUICK_STOP_GROUPBOX,
                 QUICK_START_GROUPBOX (N_("Quick search")),
-                    QUICK_RADIO (QSEARCH_NUM, qsearch_options, (int *) &panels_options.qsearch_mode,
+                    QUICK_RADIO (Setup::QSEARCH_NUM, qsearch_options, (int *) &Setup::panels_options.qsearch_mode,
                                  NULL),
                 QUICK_STOP_GROUPBOX,
             QUICK_STOP_COLUMNS,
@@ -694,13 +694,13 @@ panel_options_box (void)
 
     mc_config_set_bool (mc_global.main_config, CONFIG_PANELS_SECTION, "simple_swap", simple_swap);
 
-    if (!panels_options.fast_reload_msg_shown && panels_options.fast_reload)
+    if (!Setup::panels_options.fast_reload_msg_shown && Setup::panels_options.fast_reload)
     {
         message (D_NORMAL, _("Information"),
                  _("Using the fast reload option may not reflect the exact\n"
                    "directory contents. In this case you'll need to do a\n"
                    "manual reload of the directory. See the man page for\n" "the details."));
-        panels_options.fast_reload_msg_shown = TRUE;
+        Setup::panels_options.fast_reload_msg_shown = TRUE;
     }
 
     update_panels (UP_RELOAD, UP_KEEPSEL);
@@ -874,12 +874,12 @@ confirm_box (void)
     quick_widget_t quick_widgets[] = {
         /* *INDENT-OFF* */
         /* TRANSLATORS: no need to translate 'Confirmation', it's just a context prefix */
-        QUICK_CHECKBOX (Q_("Confirmation|&Delete"), &confirm_delete, NULL),
-        QUICK_CHECKBOX (Q_("Confirmation|O&verwrite"), &confirm_overwrite, NULL),
-        QUICK_CHECKBOX (Q_("Confirmation|&Execute"), &confirm_execute, NULL),
-        QUICK_CHECKBOX (Q_("Confirmation|E&xit"), &confirm_exit, NULL),
+        QUICK_CHECKBOX (Q_("Confirmation|&Delete"), &Setup::confirm_delete, NULL),
+        QUICK_CHECKBOX (Q_("Confirmation|O&verwrite"), &Setup::confirm_overwrite, NULL),
+        QUICK_CHECKBOX (Q_("Confirmation|&Execute"), &Setup::confirm_execute, NULL),
+        QUICK_CHECKBOX (Q_("Confirmation|E&xit"), &Setup::confirm_exit, NULL),
         QUICK_CHECKBOX (Q_("Confirmation|Di&rectory hotlist delete"),
-                        &confirm_directory_hotlist_delete, NULL),
+                        &Setup::confirm_directory_hotlist_delete, NULL),
         QUICK_CHECKBOX (Q_("Confirmation|&History cleanup"),
                         &mc_global.widget.confirm_history_cleanup, NULL),
         QUICK_BUTTONS_OK_CANCEL,

@@ -73,7 +73,7 @@ mcview_search_status_update_cb (status_msg_t * sm)
     Widget *wd = WIDGET (sm->dlg);
     int percent = -1;
 
-    if (verbose)
+    if (Setup::verbose)
         percent = mcview_calc_percent (vsm->view, vsm->offset);
 
     if (percent >= 0)

@@ -602,7 +602,7 @@ get_file_encoding_local (const vfs_path_t * filename_vpath, char *buf, int bufle
     int ret;
 
     tmp = name_quote (vfs_path_get_last_path_str (filename_vpath), FALSE);
-    lang = name_quote (autodetect_codeset, FALSE);
+    lang = name_quote (Setup::autodetect_codeset, FALSE);
     args = g_strconcat (" -L", lang, " -i ", tmp, (char *) NULL);
 
     ret = get_popen_information ("enca", args, buf, buflen);
@@ -636,7 +636,7 @@ regex_check_type (const vfs_path_t * filename_vpath, const char *ptr, gboolean c
 
     mc_return_val_if_error (mcerror, FALSE);
 
-    if (!use_file_to_check_type)
+    if (!Setup::use_file_to_check_type)
         return FALSE;
 
     if (!*have_type)
@@ -663,7 +663,7 @@ regex_check_type (const vfs_path_t * filename_vpath, const char *ptr, gboolean c
         realname = vfs_path_get_last_path_str (localfile_vpath);
 
 #ifdef HAVE_CHARSET
-        got_encoding_data = is_autodetect_codeset_enabled
+        got_encoding_data = Setup::is_autodetect_codeset_enabled
             ? get_file_encoding_local (localfile_vpath, encoding_id, sizeof (encoding_id)) : 0;
 
         if (got_encoding_data > 0)
@@ -677,7 +677,7 @@ regex_check_type (const vfs_path_t * filename_vpath, const char *ptr, gboolean c
 
             cp_id = get_codepage_index (encoding_id);
             if (cp_id == -1)
-                cp_id = default_source_codepage;
+                cp_id = Setup::default_source_codepage;
 
             SelCodePage::do_set_codepage (cp_id);
         }

@@ -567,9 +567,9 @@ should_skip_directory (const vfs_path_t * vpath)
     {
         const char *profile_name;
 
-        profile_name = setup_init ();
+        profile_name = Setup::setup_init ();
         process_special_dirs (&special_dirs, profile_name);
-        process_special_dirs (&special_dirs, global_profile_name);
+        process_special_dirs (&special_dirs, Setup::global_profile_name);
 
         loaded = TRUE;
     }

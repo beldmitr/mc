@@ -438,7 +438,7 @@ chown_cmd (void)
         chown_label (0, str_trunc (fname, GW - 4));
         chown_label (1, str_trunc (get_owner (sf_stat.st_uid), GW - 4));
         chown_label (2, str_trunc (get_group (sf_stat.st_gid), GW - 4));
-        size_trunc_len (buffer, GW - 4, sf_stat.st_size, 0, panels_options.kilobyte_si);
+        size_trunc_len (buffer, GW - 4, sf_stat.st_size, 0, Setup::panels_options.kilobyte_si);
         chown_label (3, buffer);
         chown_label (4, string_perm (sf_stat.st_mode));
 

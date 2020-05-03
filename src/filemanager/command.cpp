@@ -301,12 +301,12 @@ enter (WInput * lc_cmdline)
         g_string_free (command, TRUE);
 
 #ifdef ENABLE_SUBSHELL
-        if ((quit & SUBSHELL_EXIT) != 0)
+        if ((Setup::quit & SUBSHELL_EXIT) != 0)
         {
             if (quiet_quit_cmd ())
                 return MSG_HANDLED;
 
-            quit = 0;
+            Setup::quit = 0;
             /* restart subshell */
             if (mc_global.tty.use_subshell)
                 init_subshell ();

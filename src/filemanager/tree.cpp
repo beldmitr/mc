@@ -81,7 +81,7 @@ gboolean xtree_mode = FALSE;
 /*** file scope macro definitions ****************************************************************/
 
 #define tlines(t) (t->is_panel ? WIDGET (t)->lines - 2 - \
-                    (panels_options.show_mini_info ? 2 : 0) : WIDGET (t)->lines)
+                    (Setup::panels_options.show_mini_info ? 2 : 0) : WIDGET (t)->lines)
 
 /*** file scope type declarations ****************************************************************/
 
@@ -223,7 +223,7 @@ tree_show_mini_info (WTree * tree, int tree_lines, int tree_cols)
     /* Show mini info */
     if (tree->is_panel)
     {
-        if (!panels_options.show_mini_info)
+        if (!Setup::panels_options.show_mini_info)
             return;
         line = tree_lines + 2;
     }
@@ -822,7 +822,7 @@ tree_rmdir (void *data)
     if (tree->selected_ptr == NULL)
         return;
 
-    if (confirm_delete)
+    if (Setup::confirm_delete)
     {
         char *buf;
         int result;
@@ -1133,7 +1133,7 @@ tree_frame (WDialog * h, WTree * tree)
         widget_gotoyx (w, 0, (w->cols - len - 2) / 2);
         tty_printf (" %s ", title);
 
-        if (panels_options.show_mini_info)
+        if (Setup::panels_options.show_mini_info)
         {
             int y;
 

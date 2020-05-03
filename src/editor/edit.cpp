@@ -147,7 +147,7 @@ edit_load_status_update_cb (status_msg_t * sm)
     edit_buffer_read_file_status_msg_t *rsm = (edit_buffer_read_file_status_msg_t *) sm;
     Widget *wd = WIDGET (sm->dlg);
 
-    if (verbose)
+    if (Setup::verbose)
         label_set_textv (ssm->label, _("Loading: %3d%%"),
                          edit_buffer_calc_percent (rsm->buf, rsm->loaded));
     else
@@ -1422,7 +1422,7 @@ insert_spaces_tab (WEdit * edit, gboolean half)
     long i;
 
     edit_update_curs_col (edit);
-    i = option_tab_spacing * space_width;
+    i = Setup::option_tab_spacing * space_width;
     if (half)
         i /= 2;
     if (i != 0)
@@ -1638,7 +1638,7 @@ edit_move_block_to_left (WEdit * edit)
         if (option_fake_half_tabs)
             del_tab_width = HALF_TAB_SIZE;
         else
-            del_tab_width = option_tab_spacing;
+            del_tab_width = Setup::option_tab_spacing;
 
         next_char = edit_buffer_get_current_byte (&edit->buffer);
         if (next_char == '\t')
@@ -3197,34 +3197,34 @@ void
 edit_execute_key_command (WEdit * edit, long command, int char_for_insertion)
 {
     if (command == CK_MacroStartRecord || command == CK_RepeatStartRecord
-        || (macro_index < 0
+        || (Setup::macro_index < 0
             && (command == CK_MacroStartStopRecord || command == CK_RepeatStartStopRecord)))
     {
-        macro_index = 0;
+        Setup::macro_index = 0;
         edit->force |= REDRAW_CHAR_ONLY | REDRAW_LINE;
         return;
     }
-    if (macro_index != -1)
+    if (Setup::macro_index != -1)
     {
         edit->force |= REDRAW_COMPLETELY;
         if (command == CK_MacroStopRecord || command == CK_MacroStartStopRecord)
         {
             edit_store_macro_cmd (edit);
-            macro_index = -1;
+            Setup::macro_index = -1;
             return;
         }
         if (command == CK_RepeatStopRecord || command == CK_RepeatStartStopRecord)
         {
             edit_repeat_macro_cmd (edit);
-            macro_index = -1;
+            Setup::macro_index = -1;
             return;
         }
     }
 
-    if (macro_index >= 0 && macro_index < MAX_MACRO_LENGTH - 1)
+    if (Setup::macro_index >= 0 && Setup::macro_index < MAX_MACRO_LENGTH - 1)
     {
-        record_macro_buf[macro_index].action = command;
-        record_macro_buf[macro_index++].ch = char_for_insertion;
+        Setup::record_macro_buf[Setup::macro_index].action = command;
+        Setup::record_macro_buf[Setup::macro_index++].ch = char_for_insertion;
     }
     /* record the beginning of a set of editing actions initiated by a key press */
     if (command != CK_Undo && command != CK_ExtendedKeyMap)

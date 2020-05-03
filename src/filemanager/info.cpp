@@ -176,8 +176,8 @@ info_show_info (WInfo * info)
         {
             char buffer1[6], buffer2[6];
 
-            size_trunc_len (buffer1, 5, myfs_stats.avail, 1, panels_options.kilobyte_si);
-            size_trunc_len (buffer2, 5, myfs_stats.total, 1, panels_options.kilobyte_si);
+            size_trunc_len (buffer1, 5, myfs_stats.avail, 1, Setup::panels_options.kilobyte_si);
+            size_trunc_len (buffer2, 5, myfs_stats.total, 1, Setup::panels_options.kilobyte_si);
             tty_printf (_("Free space: %s/%s (%d%%)"), buffer1, buffer2,
                         myfs_stats.total == 0 ? 0 :
                         (int) (100 * (long double) myfs_stats.avail / myfs_stats.total));
@@ -235,7 +235,7 @@ info_show_info (WInfo * info)
 #endif
         {
             char buffer[10];
-            size_trunc_len (buffer, 9, st.st_size, 0, panels_options.kilobyte_si);
+            size_trunc_len (buffer, 9, st.st_size, 0, Setup::panels_options.kilobyte_si);
             tty_printf (_("Size:       %s"), buffer);
 #ifdef HAVE_STRUCT_STAT_ST_BLOCKS
             tty_printf (ngettext (" (%lu block)", " (%lu blocks)",

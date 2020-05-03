@@ -175,7 +175,7 @@ create_command_menu (void)
                         menu_entry_create (_("Record/Repeat &actions"), CK_RepeatStartStopRecord));
     entries = g_list_prepend (entries, menu_separator_create ());
 #ifdef HAVE_ASPELL
-    if (strcmp (spell_language, "NONE") != 0)
+    if (strcmp (Setup::spell_language, "NONE") != 0)
     {
         entries = g_list_prepend (entries, menu_entry_create (_("S&pell check"), CK_SpellCheck));
         entries =
@@ -267,7 +267,7 @@ edit_drop_menu_cmd (WDialog * h, int which)
     WMenuBar *menubar;
 
     menubar = find_menubar (h);
-    menubar_activate (menubar, drop_menus, which);
+    menubar_activate (menubar, Setup::drop_menus, which);
 }
 
 /* --------------------------------------------------------------------------------------------- */

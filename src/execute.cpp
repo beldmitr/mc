@@ -96,7 +96,7 @@ edition_post_exec (void)
 static void
 edition_pre_exec (void)
 {
-    if (clear_before_exec)
+    if (Setup::clear_before_exec)
         clr_scr ();
     else
     {
@@ -238,7 +238,7 @@ execute_get_opts_from_cfg (const char *command, const char *default_str)
     {
         mc_config_t *cfg;
 
-        cfg = mc_config_init (global_profile_name, TRUE);
+        cfg = mc_config_init (Setup::global_profile_name, TRUE);
         if (cfg == NULL)
             return g_strdup (default_str);
 
@@ -326,7 +326,7 @@ do_executev (const char *shell, int flags, char *const argv[])
     {
         if ((pause_after_run == pause_always
              || (pause_after_run == pause_on_dumb_terminals && !mc_global.tty.xterm_flag
-                 && mc_global.tty.console_flag == '\0')) && quit == 0
+                 && mc_global.tty.console_flag == '\0')) && Setup::quit == 0
 #ifdef ENABLE_SUBSHELL
             && subshell_state != RUNNING_COMMAND
 #endif /* ENABLE_SUBSHELL */
@@ -455,7 +455,7 @@ toggle_subshell (void)
     SIG_ATOMIC_VOLATILE_T was_sigwinch = 0;
 
     if (!(mc_global.tty.xterm_flag || mc_global.tty.console_flag != '\0'
-          || mc_global.tty.use_subshell || output_starts_shell))
+          || mc_global.tty.use_subshell || Setup::output_starts_shell))
     {
         if (message_flag)
             message (D_ERROR, MSG_ERROR,
@@ -467,7 +467,7 @@ toggle_subshell (void)
     channels_down ();
     disable_mouse ();
     disable_bracketed_paste ();
-    if (clear_before_exec)
+    if (Setup::clear_before_exec)
         clr_scr ();
     if (mc_global.tty.alternate_plus_minus)
         numeric_keypad_mode ();
@@ -496,7 +496,7 @@ toggle_subshell (void)
     else
 #endif /* ENABLE_SUBSHELL */
     {
-        if (output_starts_shell)
+        if (Setup::output_starts_shell)
         {
             fputs (_("Type 'exit' to return to the Midnight Commander"), stderr);
             fputs ("\n\r\n\r", stderr);
@@ -517,13 +517,13 @@ toggle_subshell (void)
 
     /* Prevent screen flash when user did 'exit' or 'logout' within
        subshell */
-    if ((quit & SUBSHELL_EXIT) != 0)
+    if ((Setup::quit & SUBSHELL_EXIT) != 0)
     {
         /* User did 'exit' or 'logout': quit MC */
         if (quiet_quit_cmd ())
             return;
 
-        quit = 0;
+        Setup::quit = 0;
 #ifdef ENABLE_SUBSHELL
         /* restart subshell */
         if (mc_global.tty.use_subshell)

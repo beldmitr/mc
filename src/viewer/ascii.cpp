@@ -650,7 +650,7 @@ mcview_display_line (WView * view, mcview_state_machine_t * state, int row,
          * attributes (although currently it can't have a special color). */
         if (cs[0] == '\t')
         {
-            charwidth = option_tab_spacing - state->unwrapped_column % option_tab_spacing;
+            charwidth = Setup::option_tab_spacing - state->unwrapped_column % Setup::option_tab_spacing;
             state->print_lonely_combining = TRUE;
         }
         else
