@@ -837,7 +837,7 @@ sort_box (dir_sort_options_t * op, const panel_field_t * sort_field)
         quick_widget_t quick_widgets[] = {
             /* *INDENT-OFF* */
             QUICK_START_COLUMNS,
-                QUICK_RADIO (sort_names_num, (const char **) sort_orders_names, &sort_idx, NULL),
+                QUICK_RADIO (static_cast<int>(sort_names_num), (const char **) sort_orders_names, &sort_idx, NULL),
             QUICK_NEXT_COLUMN,
                 QUICK_CHECKBOX (N_("Executable &first"), &op->exec_first, NULL),
                 QUICK_CHECKBOX (N_("Cas&e sensitive"), &op->case_sensitive, NULL),

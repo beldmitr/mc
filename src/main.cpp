@@ -310,7 +310,7 @@ main (int argc, char *argv[])
     vfs_init ();
     vfs_plugins_init ();
 
-    Setup::load_setup ();
+    Setup::load_setup();
 
     /* Must be done after load_setup because depends on mc_global.vfs.cd_symlinks */
     vfs_setup_work_dir ();
@@ -323,7 +323,7 @@ main (int argc, char *argv[])
     if (!mc_setup_by_args (argc, argv, &mcerror))
     {
         vfs_shut ();
-        Setup::done_setup ();
+        Setup::done_setup();
         g_free (Setup::saved_other_dir);
         mc_event_deinit (NULL);
         goto startup_exit_falure;
@@ -384,12 +384,12 @@ main (int argc, char *argv[])
     check_codeset ();
 
     /* Removing this from the X code let's us type C-c */
-    Setup::load_key_defs ();
+    Setup::load_key_defs();
 
-    Setup::load_keymap_defs (!mc_args__nokeymap);
+    Setup::load_keymap_defs(!mc_args__nokeymap);
 
 #ifdef USE_INTERNAL_EDIT
-    Setup::macros_list = g_array_new (TRUE, FALSE, sizeof (Setup::macros_t));
+    Setup::macros_list = g_array_new (TRUE, FALSE, sizeof (Setup::macros_t));   // FIXME std::vector instead ???
 #endif /* USE_INTERNAL_EDIT */
 
     tty_init_colors (mc_global.tty.disable_colors, mc_args__force_colors);
@@ -471,7 +471,7 @@ main (int argc, char *argv[])
     /* Save the tree store */
     (void) tree_store_save ();
 
-    Setup::free_keymap_defs ();
+    Setup::free_keymap_defs();
 
     /* Virtual File System shutdown */
     vfs_shut ();
@@ -483,7 +483,7 @@ main (int argc, char *argv[])
 
     tty_shutdown ();
 
-    Setup::done_setup ();
+    Setup::done_setup();
 
     if (mc_global.tty.console_flag != '\0' && (Setup::quit & SUBSHELL_EXIT) == 0)
         handle_console (CONSOLE_RESTORE);
@@ -525,9 +525,7 @@ main (int argc, char *argv[])
 
         for (i = 0; i < Setup::macros_list->len; i++)
         {
-            Setup::macros_t *macros;
-
-            macros = &g_array_index (Setup::macros_list, struct Setup::macros_t, i);
+            Setup::macros_t *macros = &g_array_index (Setup::macros_list, struct Setup::macros_t, i);
             if (macros != NULL && macros->macro != NULL)
                 (void) g_array_free (macros->macro, TRUE);
         }

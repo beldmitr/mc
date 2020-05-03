@@ -1274,6 +1274,7 @@ show_dir (const WPanel * panel)
     widget_gotoyx (w, 0, 1);
     tty_print_string (panel_history_prev_item_char);
 
+    // FIXME tmp assignment after the previous assigning ???
     tmp = Setup::panels_options.show_dot_files ? panel_hiddenfiles_show_char : panel_hiddenfiles_hide_char;
     tmp = g_strdup_printf ("%s[%s]%s", tmp, panel_history_show_list_char,
                            panel_history_next_item_char);
@@ -2684,15 +2685,15 @@ do_search (WPanel * panel, int c_code)
 
     switch (Setup::panels_options.qsearch_mode)
     {
-    case Setup::QSEARCH_CASE_SENSITIVE:
-        search->is_case_sensitive = TRUE;
-        break;
-    case Setup::QSEARCH_CASE_INSENSITIVE:
-        search->is_case_sensitive = FALSE;
-        break;
-    default:
-        search->is_case_sensitive = panel->sort_info.case_sensitive;
-        break;
+        case Setup::QSEARCH_CASE_SENSITIVE:
+          search->is_case_sensitive = TRUE;
+          break;
+        case Setup::QSEARCH_CASE_INSENSITIVE:
+          search->is_case_sensitive = FALSE;
+          break;
+        default:
+          search->is_case_sensitive = panel->sort_info.case_sensitive;
+          break;
     }
 
     sel = panel->selected;

@@ -1419,10 +1419,8 @@ edit_double_newline (WEdit * edit)
 static void
 insert_spaces_tab (WEdit * edit, gboolean half)
 {
-    long i;
-
     edit_update_curs_col (edit);
-    i = Setup::option_tab_spacing * space_width;
+    long i = Setup::option_tab_spacing * space_width;
     if (half)
         i /= 2;
     if (i != 0)
@@ -3221,7 +3219,7 @@ edit_execute_key_command (WEdit * edit, long command, int char_for_insertion)
         }
     }
 
-    if (Setup::macro_index >= 0 && Setup::macro_index < MAX_MACRO_LENGTH - 1)
+    if (Setup::macro_index >= 0 && Setup::macro_index < Setup::MAX_MACRO_LENGTH - 1)
     {
         Setup::record_macro_buf[Setup::macro_index].action = command;
         Setup::record_macro_buf[Setup::macro_index++].ch = char_for_insertion;

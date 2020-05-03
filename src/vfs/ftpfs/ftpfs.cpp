@@ -2674,7 +2674,7 @@ ftpfs_netrc_lookup (const char *host, char **login, char **pass)
 void
 ftpfs_init_passwd (void)
 {
-    ftpfs_anonymous_passwd = Setup::load_anon_passwd ();
+    ftpfs_anonymous_passwd = Setup::load_anon_passwd();
 
     if (ftpfs_anonymous_passwd == NULL)
     {

@@ -268,7 +268,7 @@ mc_config_save_to_file (mc_config_t * mc_config, const gchar * ini_path, GError 
 {
     mc_return_val_if_error (mcerror, FALSE);
 
-    if (mc_config == NULL)
+    if (mc_config == nullptr)
         return FALSE;
 
     return mc_config_new_or_override_file (mc_config, ini_path, mcerror);

@@ -209,7 +209,7 @@ edit_options_dialog (WDialog * h)
     {
         Setup::option_tab_spacing = atoi (q);
         if (Setup::option_tab_spacing <= 0)
-            Setup::option_tab_spacing = DEFAULT_TAB_SPACING;
+            Setup::option_tab_spacing = Setup::DEFAULT_TAB_SPACING;
         g_free (q);
     }
 

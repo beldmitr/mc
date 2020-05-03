@@ -1803,9 +1803,7 @@ edit_execute_macro (WEdit * edit, int hotkey)
 
             for (i = 0; i < macros->macro->len; i++)
             {
-                const Setup::macro_action_t *m_act;
-
-                m_act = &g_array_index (macros->macro, struct Setup::macro_action_t, i);
+                const Setup::macro_action_t *m_act = &g_array_index (macros->macro, struct Setup::macro_action_t, i);
                 edit_execute_cmd (edit, m_act->action, m_act->ch);
                 res = TRUE;
             }
@@ -1862,14 +1860,13 @@ edit_store_macro_cmd (WEdit * edit)
 
     for (i = 0; i < Setup::macro_index; i++)
     {
-        Setup::macro_action_t m_act;
-        const char *action_name;
 
-        action_name = keybind_lookup_actionname (Setup::record_macro_buf[i].action);
+        const char *action_name = keybind_lookup_actionname (Setup::record_macro_buf[i].action);
 
         if (action_name == NULL)
             break;
 
+        Setup::macro_action_t m_act;
         m_act.action = Setup::record_macro_buf[i].action;
         m_act.ch = Setup::record_macro_buf[i].ch;
         g_array_append_val (macros, m_act);
