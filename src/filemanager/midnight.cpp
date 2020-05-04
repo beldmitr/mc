@@ -1291,7 +1291,7 @@ midnight_execute_cmd (Widget * sender, long command)
         appearance_box ();
         break;
     case CK_LearnKeys:
-        learn_keys ();
+        Learn::learn_keys ();
         break;
     case CK_Link:
         link_cmd (LINK_HARDLINK);

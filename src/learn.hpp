@@ -4,17 +4,52 @@
 
 #pragma once
 
-/*** typedefs(not structures) and defined constants **********************************************/
+class Learn
+{
+private:
+    static const int UX = 4;
+    static const int UY = 2;
 
-/*** enums ***************************************************************************************/
+    static const int ROWS = 13;
+    static const int COLSHIFT = 23;
 
-/*** structures declarations (and typedefs of structures)*****************************************/
+private:
+    struct learnkey_t
+    {
+        Widget *button;
+        Widget *label;
+        gboolean ok;
+        char *sequence;
+    };
 
-/*** global variables defined in .c file *********************************************************/
+private:
+    static WDialog* learn_dlg;
+    static const char *learn_title;
 
-/*** declarations of public functions ************************************************************/
+    static learnkey_t *learnkeys;
+    static int learn_total;
+    static int learnok;
+    static gboolean learnchanged;
 
-void learn_keys (void);
+public:
+    static void learn_keys();
 
-/*** inline functions ****************************************************************************/
+private:
+    static void learn_save();
+
+    static void learn_done();
+
+    static void init_learn();
+
+    static cb_ret_t learn_callback(Widget * w, Widget * sender, widget_msg_t msg, int parm, void *data);
+
+    static gboolean learn_check_key(int c);
+
+    static gboolean learn_move(gboolean right);
+
+    static int learn_button(WButton * button, int action);
+};
+
+
+
 

@@ -403,7 +403,7 @@ edit_dialog_command_execute (WDialog * h, long command)
     case CK_Close:
         /* if there are no opened files anymore, close MC editor */
         if (edit_widget_is_editor (CONST_WIDGET (g->current->data)) &&
-            edit_close_cmd ((WEdit *) g->current->data) && find_editor (h) == NULL)
+            edit_close_cmd ((WEdit *) g->current->data) && find_editor (h) == nullptr)
             dlg_stop (h);
         break;
     case CK_Help:
@@ -419,58 +419,58 @@ edit_dialog_command_execute (WDialog * h, long command)
         {
             Widget *w = WIDGET (g->current->data);
 
-            if (edit_widget_is_editor (w) && ((WEdit *) w)->drag_state != MCEDIT_DRAG_NONE)
+            if (edit_widget_is_editor (w) && ((WEdit *) w)->drag_state != MCEDIT_DRAG_NONE) // TODO DB static cast
                 edit_restore_size ((WEdit *) w);
             else if (command == CK_Quit)
                 dlg_stop (h);
         }
         break;
     case CK_About:
-        edit_about ();
+        edit_about();
         break;
     case CK_SyntaxOnOff:
-        edit_syntax_onoff_cmd (h);
+        edit_syntax_onoff_cmd(h);
         break;
     case CK_ShowTabTws:
-        edit_show_tabs_tws_cmd (h);
+        edit_show_tabs_tws_cmd(h);
         break;
     case CK_ShowMargin:
-        edit_show_margin_cmd (h);
+        edit_show_margin_cmd(h);
         break;
     case CK_ShowNumbers:
-        edit_show_numbers_cmd (h);
+        edit_show_numbers_cmd(h);
         break;
     case CK_Refresh:
-        edit_refresh_cmd ();
+        edit_refresh_cmd();
         break;
     case CK_Shell:
-        toggle_subshell ();
+        toggle_subshell();
         break;
     case CK_LearnKeys:
-        learn_keys ();
+        Learn::learn_keys();
         break;
     case CK_WindowMove:
     case CK_WindowResize:
-        if (edit_widget_is_editor (CONST_WIDGET (g->current->data)))
-            edit_handle_move_resize ((WEdit *) g->current->data, command);
+        if (edit_widget_is_editor(CONST_WIDGET (g->current->data)))
+            edit_handle_move_resize((WEdit *) g->current->data, command);   // FIXME DB static cast instead
         break;
     case CK_WindowList:
-        edit_window_list (h);
+        edit_window_list(h);
         break;
     case CK_WindowNext:
-        group_select_next_widget (g);
+        group_select_next_widget(g);
         break;
     case CK_WindowPrev:
-        group_select_prev_widget (g);
+        group_select_prev_widget(g);
         break;
     case CK_Options:
-        edit_options_dialog (h);
+        edit_options_dialog(h);
         break;
     case CK_OptionsSaveMode:
-        edit_save_mode_cmd ();
+        edit_save_mode_cmd();
         break;
     case CK_SaveSetup:
-        save_setup_cmd ();
+        save_setup_cmd();
         break;
     default:
         ret = MSG_NOT_HANDLED;

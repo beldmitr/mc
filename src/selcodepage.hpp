@@ -7,10 +7,6 @@
 
 #include "lib/global.hpp"
 
-/*** typedefs(not structures) and defined constants **********************************************/
-
-
-
 class SelCodePage
 {
 public:
