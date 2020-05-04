@@ -81,10 +81,10 @@ mcdiffview_dialog_search (WDiff * dview)
         quick_widget_t quick_widgets[] = {
             /* *INDENT-OFF* */
             QUICK_LABELED_INPUT (N_("Enter search string:"), input_label_above, INPUT_LAST_TEXT,
-            MC_HISTORY_SHARED_SEARCH, &exp, NULL, FALSE, FALSE, INPUT_COMPLETE_NONE),
+            History::MC_HISTORY_SHARED_SEARCH, &exp, NULL, FALSE, FALSE, INPUT_COMPLETE_NONE),
             QUICK_SEPARATOR (TRUE),
             QUICK_START_COLUMNS,
-                QUICK_RADIO (num_of_types, (const char **) list_of_types,
+                QUICK_RADIO (static_cast<int>(num_of_types), (const char **) list_of_types,
                              (int *) &mcdiffview_search_options.type, NULL),
             QUICK_NEXT_COLUMN,
                 QUICK_CHECKBOX (N_("Cas&e sensitive"), &mcdiffview_search_options.case_sens, NULL),

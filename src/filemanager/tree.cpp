@@ -720,7 +720,7 @@ tree_copy (WTree * tree, const char *default_dest)
     g_snprintf (msg, sizeof (msg), _("Copy \"%s\" directory to:"),
                 str_trunc (vfs_path_as_str (tree->selected_ptr->name), 50));
     dest = input_expand_dialog (Q_ ("DialogTitle|Copy"),
-                                msg, MC_HISTORY_FM_TREE_COPY, default_dest,
+                                msg, History::MC_HISTORY_FM_TREE_COPY, default_dest,
                                 static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD));
 
     if (dest != NULL && *dest != '\0')
@@ -759,7 +759,7 @@ tree_move (WTree * tree, const char *default_dest)
     g_snprintf (msg, sizeof (msg), _("Move \"%s\" directory to:"),
                 str_trunc (vfs_path_as_str (tree->selected_ptr->name), 50));
     dest =
-        input_expand_dialog (Q_ ("DialogTitle|Move"), msg, MC_HISTORY_FM_TREE_MOVE, default_dest,
+        input_expand_dialog (Q_ ("DialogTitle|Move"), msg, History::MC_HISTORY_FM_TREE_MOVE, default_dest,
                              static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD));
 
     if (dest == NULL || *dest == '\0')

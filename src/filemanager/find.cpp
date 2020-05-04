@@ -713,7 +713,7 @@ find_parameters (char **start_dir, ssize_t * start_dir_len,
     group_add_widget (g, content_label);
     in_with =
         input_new (y2++, x2, input_colors, cw, content_is_empty ? "" : INPUT_LAST_TEXT,
-                   MC_HISTORY_SHARED_SEARCH, INPUT_COMPLETE_NONE);
+                   History::MC_HISTORY_SHARED_SEARCH, INPUT_COMPLETE_NONE);
     in_with->label = content_label;
     group_add_widget (g, in_with);
 

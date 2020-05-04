@@ -138,7 +138,7 @@ mcview_continue_search_cmd (WView * view)
         /* find last search string in history */
         GList *history;
 
-        history = mc_config_history_get (MC_HISTORY_SHARED_SEARCH);
+        history = mc_config_history_get (History::MC_HISTORY_SHARED_SEARCH);
         if (history != NULL && history->data != NULL)
         {
             view->last_search_string = (gchar *) g_strdup (static_cast<const gchar*>(history->data));

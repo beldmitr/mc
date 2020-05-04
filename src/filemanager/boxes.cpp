@@ -524,7 +524,7 @@ configure_box (void)
                 QUICK_START_GROUPBOX (N_("Esc key mode")),
                     QUICK_CHECKBOX (N_("S&ingle press"), &old_esc_mode, &configure_old_esc_mode_id),
                     QUICK_LABELED_INPUT (N_("Timeout:"), input_label_left,
-                                         (const char *) time_out, MC_HISTORY_ESC_TIMEOUT,
+                                         (const char *) time_out, History::MC_HISTORY_ESC_TIMEOUT,
                                          &time_out_new, &configure_time_out_id, FALSE, FALSE,
                                          INPUT_COMPLETE_NONE),
                 QUICK_STOP_GROUPBOX,

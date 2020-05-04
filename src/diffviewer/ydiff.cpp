@@ -2927,7 +2927,7 @@ dview_goto_cmd (WDiff * dview, diff_place_t ord)
     char *input;
 
     input =
-        input_dialog (_(title[ord]), _("Enter line:"), MC_HISTORY_YDIFF_GOTO_LINE,
+        input_dialog (_(title[ord]), _("Enter line:"), History::MC_HISTORY_YDIFF_GOTO_LINE,
                       first_run ? NULL : INPUT_LAST_TEXT, INPUT_COMPLETE_NONE);
     if (input != NULL)
     {

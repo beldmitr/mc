@@ -1612,7 +1612,7 @@ add2hotlist_cmd (void)
     label_string = vfs_path_to_str_flags (current_panel->cwd_vpath, 0, VPF_STRIP_PASSWORD);
     lc_prompt = g_strdup_printf (cp, str_trunc (label_string, COLS - 2 * UX - (l + 8)));
     label =
-        input_dialog (_("Add to hotlist"), lc_prompt, MC_HISTORY_HOTLIST_ADD, label_string,
+        input_dialog (_("Add to hotlist"), lc_prompt, History::MC_HISTORY_HOTLIST_ADD, label_string,
                       INPUT_COMPLETE_NONE);
     g_free (lc_prompt);
 

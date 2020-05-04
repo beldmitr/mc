@@ -193,7 +193,7 @@ set_panel_filter (WPanel * p)
 
     reg_exp = input_dialog_help (_("Filter"),
                                  _("Set expression for filtering filenames"),
-                                 "[Filter...]", MC_HISTORY_FM_PANEL_FILTER, x, FALSE,
+                                 "[Filter...]", History::MC_HISTORY_FM_PANEL_FILTER, x, FALSE,
                                  INPUT_COMPLETE_FILENAMES);
     if (reg_exp != NULL)
         set_panel_filter_to (p, reg_exp);
@@ -352,7 +352,7 @@ do_link (link_type_t link_type, const char *fname)
 
         src = g_strdup_printf (_("Link %s to:"), str_trunc (fname, 46));
         dest =
-            input_expand_dialog (_("Link"), src, MC_HISTORY_FM_LINK, "", INPUT_COMPLETE_FILENAMES);
+            input_expand_dialog (_("Link"), src, History::MC_HISTORY_FM_LINK, "", INPUT_COMPLETE_FILENAMES);
         if (dest == NULL || *dest == '\0')
             goto cleanup;
 
@@ -625,7 +625,7 @@ view_file_cmd (void)
 
     filename =
         input_expand_dialog (_("View file"), _("Filename:"),
-                             MC_HISTORY_FM_VIEW_FILE, selection (current_panel)->fname,
+                             History::MC_HISTORY_FM_VIEW_FILE, selection (current_panel)->fname,
                              INPUT_COMPLETE_FILENAMES);
     if (filename == NULL)
         return;
@@ -660,7 +660,7 @@ view_filtered_cmd (void)
     command =
         input_dialog (_("Filtered view"),
                       _("Filter command and arguments:"),
-                      MC_HISTORY_FM_FILTERED_VIEW, initial_command,
+                      History::MC_HISTORY_FM_FILTERED_VIEW, initial_command,
                       static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_COMMANDS));
 
     if (command != NULL)
@@ -748,7 +748,7 @@ edit_cmd_new (void)
         char *fname;
 
         fname = input_expand_dialog (_("Edit file"), _("Enter file name:"),
-                                     MC_HISTORY_EDIT_LOAD, "", INPUT_COMPLETE_FILENAMES);
+                                     History::MC_HISTORY_EDIT_LOAD, "", INPUT_COMPLETE_FILENAMES);
         if (fname == NULL)
             return;
 
@@ -840,7 +840,7 @@ mkdir_cmd (void)
 
     dir =
         input_expand_dialog (_("Create a new Directory"),
-                             _("Enter directory name:"), MC_HISTORY_FM_MKDIR, name,
+                             _("Enter directory name:"), History::MC_HISTORY_FM_MKDIR, name,
                              INPUT_COMPLETE_FILENAMES);
 
     if (dir != NULL && *dir != '\0')
@@ -1239,7 +1239,7 @@ edit_symlink_cmd (void)
 
             q = g_strdup_printf (_("Symlink '%s\' points to:"), str_trunc (p, 32));
             dest =
-                input_expand_dialog (_("Edit symlink"), q, MC_HISTORY_FM_EDIT_LINK, buffer,
+                input_expand_dialog (_("Edit symlink"), q, History::MC_HISTORY_FM_EDIT_LINK, buffer,
                                      INPUT_COMPLETE_FILENAMES);
             g_free (q);
 

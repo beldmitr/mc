@@ -1904,7 +1904,7 @@ edit_repeat_macro_cmd (WEdit * edit)
     long count_repeat;
     char *error = NULL;
 
-    f = input_dialog (_("Repeat last commands"), _("Repeat times:"), MC_HISTORY_EDIT_REPEAT, NULL,
+    f = input_dialog (_("Repeat last commands"), _("Repeat times:"), History::MC_HISTORY_EDIT_REPEAT, NULL,
                       INPUT_COMPLETE_NONE);
     if (f == NULL || *f == '\0')
     {
@@ -2063,7 +2063,7 @@ edit_load_cmd (WDialog * h)
     gboolean ret = TRUE;        /* possible cancel */
 
     exp = input_expand_dialog (_("Load"), _("Enter file name:"),
-                               MC_HISTORY_EDIT_LOAD, INPUT_LAST_TEXT,
+                               History::MC_HISTORY_EDIT_LOAD, INPUT_LAST_TEXT,
                                static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_CD));
 
     if (exp != NULL && *exp != '\0')
@@ -2782,7 +2782,7 @@ edit_search_cmd (WEdit * edit, gboolean again)
         /* find last search string in history */
         GList *history;
 
-        history = mc_config_history_get (MC_HISTORY_SHARED_SEARCH);
+        history = mc_config_history_get (History::MC_HISTORY_SHARED_SEARCH);
         if (history != NULL && history->data != NULL)
         {
             edit->last_search_string = (char *) history->data;
@@ -3040,7 +3040,7 @@ edit_goto_cmd (WEdit * edit)
     long l;
     char *error;
 
-    f = input_dialog (_("Goto line"), _("Enter line:"), MC_HISTORY_EDIT_GOTO_LINE,
+    f = input_dialog (_("Goto line"), _("Enter line:"), History::MC_HISTORY_EDIT_GOTO_LINE,
                       first_run ? NULL : INPUT_LAST_TEXT, INPUT_COMPLETE_NONE);
     if (f == NULL || *f == '\0')
     {
@@ -3082,7 +3082,7 @@ edit_save_block_cmd (WEdit * edit)
     tmp = mc_config_get_full_path (EDIT_CLIP_FILE);
     exp =
         input_expand_dialog (_("Save block"), _("Enter file name:"),
-                             MC_HISTORY_EDIT_SAVE_BLOCK, tmp, INPUT_COMPLETE_FILENAMES);
+                             History::MC_HISTORY_EDIT_SAVE_BLOCK, tmp, INPUT_COMPLETE_FILENAMES);
     g_free (tmp);
     edit_push_undo_action (edit, KEY_PRESS + edit->start_display);
 
@@ -3114,7 +3114,7 @@ edit_insert_file_cmd (WEdit * edit)
 
     tmp = mc_config_get_full_path (EDIT_CLIP_FILE);
     exp = input_expand_dialog (_("Insert file"), _("Enter file name:"),
-                               MC_HISTORY_EDIT_INSERT_FILE, tmp, INPUT_COMPLETE_FILENAMES);
+                               History::MC_HISTORY_EDIT_INSERT_FILE, tmp, INPUT_COMPLETE_FILENAMES);
     g_free (tmp);
 
     edit_push_undo_action (edit, KEY_PRESS + edit->start_display);
@@ -3159,7 +3159,7 @@ edit_sort_cmd (WEdit * edit)
 
     exp = input_dialog (_("Run sort"),
                         _("Enter sort options (see manpage) separated by whitespace:"),
-                        MC_HISTORY_EDIT_SORT, INPUT_LAST_TEXT, INPUT_COMPLETE_NONE);
+                        History::MC_HISTORY_EDIT_SORT, INPUT_LAST_TEXT, INPUT_COMPLETE_NONE);
 
     if (exp == NULL)
         return 1;
@@ -3220,7 +3220,7 @@ edit_ext_cmd (WEdit * edit)
 
     exp =
         input_dialog (_("Paste output of external command"),
-                      _("Enter shell command(s):"), MC_HISTORY_EDIT_PASTE_EXTCMD, INPUT_LAST_TEXT,
+                      _("Enter shell command(s):"), History::MC_HISTORY_EDIT_PASTE_EXTCMD, INPUT_LAST_TEXT,
                       static_cast<input_complete_t>(INPUT_COMPLETE_FILENAMES | INPUT_COMPLETE_VARIABLES |
                                                     INPUT_COMPLETE_USERNAMES
                                                     | INPUT_COMPLETE_HOSTNAMES | INPUT_COMPLETE_CD |

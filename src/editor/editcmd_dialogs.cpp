@@ -99,12 +99,12 @@ editcmd_dialog_search_show (WEdit * edit)
     {
         quick_widget_t quick_widgets[] = {
             /* *INDENT-OFF* */
-            QUICK_LABELED_INPUT (N_("Enter search string:"), input_label_above, INPUT_LAST_TEXT, 
-                                 MC_HISTORY_SHARED_SEARCH, &search_text, NULL, FALSE, FALSE,
+            QUICK_LABELED_INPUT (N_("Enter search string:"), input_label_above, INPUT_LAST_TEXT,
+                                 History::MC_HISTORY_SHARED_SEARCH, &search_text, NULL, FALSE, FALSE,
                                  INPUT_COMPLETE_NONE),
             QUICK_SEPARATOR (TRUE),
             QUICK_START_COLUMNS,
-                QUICK_RADIO (num_of_types, (const char **) list_of_types,
+                QUICK_RADIO (static_cast<int>(num_of_types), (const char **) list_of_types,
                              (int *) &edit_search_options.type, NULL),
             QUICK_NEXT_COLUMN,
                 QUICK_CHECKBOX (N_("Cas&e sensitive"), &edit_search_options.case_sens, NULL),
@@ -195,13 +195,13 @@ editcmd_dialog_replace_show (WEdit * edit, const char *search_default, const cha
         quick_widget_t quick_widgets[] = {
             /* *INDENT-OFF* */
             QUICK_LABELED_INPUT (N_("Enter search string:"), input_label_above, search_default,
-                                 MC_HISTORY_SHARED_SEARCH, search_text, NULL, FALSE, FALSE,
+                                 History::MC_HISTORY_SHARED_SEARCH, search_text, NULL, FALSE, FALSE,
                                  INPUT_COMPLETE_NONE),
             QUICK_LABELED_INPUT (N_("Enter replacement string:"), input_label_above, replace_default,
                                  "replace", replace_text, NULL, FALSE, FALSE, INPUT_COMPLETE_NONE),
             QUICK_SEPARATOR (TRUE),
             QUICK_START_COLUMNS,
-                QUICK_RADIO (num_of_types, (const char **) list_of_types,
+                QUICK_RADIO (static_cast<int>(num_of_types), (const char **) list_of_types,
                              (int *) &edit_search_options.type, NULL),
             QUICK_NEXT_COLUMN,
                 QUICK_CHECKBOX (N_("Cas&e sensitive"), &edit_search_options.case_sens, NULL),
