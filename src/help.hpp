@@ -29,10 +29,6 @@
 
 #include "lib/widget.hpp"
 
-/*** typedefs(not structures) and defined constants **********************************************/
-
-
-
 class Help
 {
 private:
@@ -59,29 +55,29 @@ private:
 
 public:
     /* event callback */
-    static gboolean help_interactive_display(const gchar * event_group_name, const gchar * event_name, gpointer init_data, gpointer data);
+    static gboolean help_interactive_display(const char* event_group_name, const char* event_name, void* init_data, void* data);
 
 private:
     /** returns the position where text was found in the start buffer
      * or 0 if not found
      */
-    static const char* search_string (const char *start, const char *text);
+    static const char* search_string (const char* start, const char* text);
 
     /** Searches text in the buffer pointed by start.  Search ends
      * if the CHAR_NODE_END is found in the text.
      * @return NULL on failure
      */
-    static const char* search_string_node (const char *start, const char *text);
+    static const char* search_string_node (const char* start, const char* text);
 
     /** Searches the_char in the buffer pointer by start and searches
      * it can search forward (direction = 1) or backward (direction = -1)
      */
-    static const char* search_char_node (const char *start, char the_char, int direction);
+    static const char* search_char_node (const char* start, char the_char, int direction);
 
     /** Returns the new current pointer when moved lines lines */
-    static const char* move_forward2 (const char *c, int lines);
+    static const char* move_forward2 (const char* c, int lines);
 
-    static const char* move_backward2 (const char *c, int lines);
+    static const char* move_backward2 (const char* c, int lines);
 
     static void move_forward (int i);
 
@@ -91,28 +87,28 @@ private:
 
     static void move_to_bottom();
 
-    static const char* help_follow_link (const char *start, const char *lc_selected_item);
+    static const char* help_follow_link (const char* start, const char* lc_selected_item);
 
-    static const char* select_next_link (const char *current_link);
+    static const char* select_next_link (const char* current_link);
 
-    static const char* select_prev_link (const char *current_link);
+    static const char* select_prev_link (const char* current_link);
 
-    static void start_link_area (int x, int y, const char *link_name);
+    static void start_link_area (int x, int y, const char* link_name);
 
     static void end_link_area (int x, int y);
 
     static void clear_link_areas();
 
-    static void help_print_word(WDialog * h, GString * word, int *col, int *line, gboolean add_space);
+    static void help_print_word(WDialog* h, GString* word, int* col, int* line, gboolean add_space);
 
-    static void help_show(WDialog * h, const char *paint_start);
+    static void help_show(WDialog* h, const char* paint_start);
 
     /** show help */
     static void help_help(WDialog* h);
 
     static void help_index(WDialog * h);
 
-    static void help_back (WDialog * h);
+    static void help_back (WDialog* h);
 
     static void help_next_link(gboolean move_down);
 
@@ -126,22 +122,22 @@ private:
 
     static cb_ret_t help_execute_cmd(long command);
 
-    static cb_ret_t help_handle_key (WDialog * h, int key);
+    static cb_ret_t help_handle_key(WDialog* h, int key);
 
-    static cb_ret_t help_bg_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm, void *data);
+    static cb_ret_t help_bg_callback(Widget* w, Widget* sender, widget_msg_t msg, int parm, void* data);
 
-    static cb_ret_t help_resize (WDialog * h);
+    static cb_ret_t help_resize (WDialog* h);
 
-    static cb_ret_t help_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm, void *data);
+    static cb_ret_t help_callback (Widget* w, Widget* sender, widget_msg_t msg, int parm, void* data);
 
     static void interactive_display_finish();
 
     /** translate help file into terminal encoding */
     static void translate_file(char* filedata);
 
-    static cb_ret_t md_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm, void *data);
+    static cb_ret_t md_callback (Widget* w, Widget* sender, widget_msg_t msg, int parm, void* data);
 
-    static void help_mouse_callback (Widget * w, mouse_msg_t msg, mouse_event_t * event);
+    static void help_mouse_callback (Widget* w, mouse_msg_t msg, mouse_event_t* event);
 
     static Widget* mousedispatch_new (int y, int x, int yl, int xl);
 private:
@@ -154,24 +150,24 @@ private:
 
     struct history_t
     {
-        const char *page;           /* Pointer to the selected page */
-        const char *link;           /* Pointer to the selected link */
+        const char* page;           /* Pointer to the selected page */
+        const char* link;           /* Pointer to the selected link */
     };
 private:
-    static char *fdata;             /* Pointer to the loaded data file */
+    static char* fdata;             /* Pointer to the loaded data file */
     static int help_lines;          /* Lines in help viewer */
     static int history_ptr;         /* For the history queue */
-    static const char *main_node;   /* The main node */
-    static const char *last_shown;  /* Last byte shown in a screen */
+    static const char* main_node;   /* The main node */
+    static const char* last_shown;  /* Last byte shown in a screen */
     static gboolean end_of_node;    /* Flag: the last character of the node shown? */
-    static const char *currentpoint;
-    static const char *selected_item;
+    static const char* currentpoint;
+    static const char* selected_item;
 
     /* The widget variables */
-    static WDialog *whelp;
+    static WDialog* whelp;
 
     static history_t history[HISTORY_SIZE];
 
-    static GSList *link_area;
+    static GSList* link_area;
     static gboolean inside_link_area;
 };

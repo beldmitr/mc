@@ -63,29 +63,28 @@
 #include "keybind-defaults.hpp"
 #include "help.hpp"
 
+// FIXME DB make an inline function
 #define HELP_WINDOW_WIDTH MIN(80, COLS - 16)
 
 
 char* Help::fdata = NULL;      /* Pointer to the loaded data file */
 int Help::help_lines;          /* Lines in help viewer */
 int Help::history_ptr;         /* For the history queue */
-const char *Help::main_node;   /* The main node */
-const char *Help::last_shown = NULL;   /* Last byte shown in a screen */
+const char* Help::main_node;   /* The main node */
+const char* Help::last_shown = NULL;   /* Last byte shown in a screen */
 gboolean Help::end_of_node = FALSE;    /* Flag: the last character of the node shown? */
-const char *Help::currentpoint;
-const char *Help::selected_item;
+const char* Help::currentpoint;
+const char* Help::selected_item;
 
 /* The widget variables */
-WDialog *Help::whelp;
+WDialog* Help::whelp;
 
 Help::history_t Help::history[HISTORY_SIZE];
 
 GSList* Help::link_area = NULL;
 gboolean Help::inside_link_area = FALSE;
 
-//static cb_ret_t help_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm, void *data);
-
-gboolean Help::help_interactive_display(const gchar * event_group_name, const gchar * event_name, gpointer init_data, gpointer data)
+gboolean Help::help_interactive_display(const char*, const char*, void*, void* data)
 {
     const dlg_colors_t help_colors = {
         HELP_NORMAL_COLOR,      /* common text color */
@@ -95,17 +94,13 @@ gboolean Help::help_interactive_display(const gchar * event_group_name, const gc
         HELP_TITLE_COLOR        /* title color */
     };
 
-    Widget *wh;
-    WGroup *g;
-    WButtonBar *help_bar;
-    Widget *md;
-    char *hlpfile = nullptr;
-    char *filedata;
-    ev_help_t *event_data = (ev_help_t *) data; // FIXME DB: static_cast
-
-    (void) event_group_name;
-    (void) event_name;
-    (void) init_data;
+    Widget* wh;
+    WGroup* g;
+    WButtonBar* help_bar;
+    Widget* md;
+    char* hlpfile = nullptr;
+    char* filedata;
+    auto* event_data = static_cast<ev_help_t*>(data);
 
     if (event_data->filename != nullptr)
         g_file_get_contents (event_data->filename, &filedata, NULL, NULL);
@@ -195,12 +190,12 @@ gboolean Help::help_interactive_display(const gchar * event_group_name, const gc
     return TRUE;
 }
 
-const char* Help::search_string (const char *start, const char *text)
+const char* Help::search_string (const char* start, const char* text)
 {
-    const char *result = nullptr;
-    char *local_text = g_strdup (text);
-    char *d = local_text;
-    const char *e = start;
+    const char* result = nullptr;
+    char* local_text = g_strdup (text);
+    char* d = local_text;
+    const char* e = start;
 
     /* fmt sometimes replaces a space with a newline in the help file */
     /* Replace the newlines in the link name with spaces to correct the situation */
@@ -229,10 +224,10 @@ const char* Help::search_string (const char *start, const char *text)
     return result;
 }
 
-const char* Help::search_string_node(const char *start, const char *text)
+const char* Help::search_string_node(const char* start, const char* text)
 {
-    const char *d = text;
-    const char *e = start;
+    const char* d = text;
+    const char* e = start;
 
     if (start != nullptr)
         for (; *e && *e != CHAR_NODE_END; e++)
@@ -248,7 +243,7 @@ const char* Help::search_string_node(const char *start, const char *text)
     return NULL;
 }
 
-const char* Help::search_char_node(const char *start, char the_char, int direction)
+const char* Help::search_char_node(const char* start, char the_char, int direction)
 {
     const char *e;
 
@@ -259,7 +254,7 @@ const char* Help::search_char_node(const char *start, char the_char, int directi
     return NULL;
 }
 
-const char* Help::move_forward2 (const char *c, int lines)
+const char* Help::move_forward2 (const char* c, int lines)
 {
     const char *p;
     int line;
@@ -276,7 +271,7 @@ const char* Help::move_forward2 (const char *c, int lines)
     return currentpoint = c;
 }
 
-const char* Help::move_backward2 (const char *c, int lines)
+const char* Help::move_backward2 (const char* c, int lines)
 {
     const char *p;
     int line;
@@ -331,9 +326,9 @@ void Help::move_to_bottom()
     move_backward (1);
 }
 
-const char* Help::help_follow_link(const char *start, const char *lc_selected_item)
+const char* Help::help_follow_link(const char* start, const char* lc_selected_item)
 {
-    const char *p;
+    const char* p;
 
     if (lc_selected_item == nullptr)
         return start;
@@ -362,9 +357,9 @@ const char* Help::help_follow_link(const char *start, const char *lc_selected_it
     return _("Help file format error\n");
 }
 
-const char* Help::select_next_link (const char *current_link)
+const char* Help::select_next_link (const char* current_link)
 {
-    const char *p;
+    const char* p;
 
     if (current_link == nullptr)
         return NULL;
@@ -383,15 +378,13 @@ const char* Help::select_prev_link (const char *current_link)
     return current_link == nullptr ? NULL : search_char_node (current_link - 1, CHAR_LINK_START, -1);
 }
 
-void Help::start_link_area(int x, int y, const char *link_name)
+void Help::start_link_area(int x, int y, const char* link_name)
 {
-    Link_Area *la;
-
     if (inside_link_area)
         message (D_NORMAL, _("Warning"), "%s", _("Internal bug: Double start of link area"));
 
     /* Allocate memory for a new link area */
-    la = g_new (Link_Area, 1);
+    Link_Area* la = g_new (Link_Area, 1);
     /* Save the beginning coordinates of the link area */
     la->x1 = x;
     la->y1 = y;
@@ -406,7 +399,7 @@ void Help::end_link_area(int x, int y)
 {
     if (inside_link_area)
     {
-        Link_Area *la = (Link_Area *) link_area->data;  // FIXME DB: static_cast
+        auto* la = static_cast<Link_Area*>(link_area->data);
         /* Save the end coordinates of the link area */
         la->x2 = x;
         la->y2 = y;
@@ -420,15 +413,13 @@ void Help::clear_link_areas()
     inside_link_area = FALSE;
 }
 
-void Help::help_print_word(WDialog * h, GString * word, int *col, int *line, gboolean add_space)
+void Help::help_print_word(WDialog* h, GString* word, int* col, int* line, gboolean add_space)
 {
     if (*line >= help_lines)
         g_string_set_size (word, 0);
     else
     {
-        int w;
-
-        w = str_term_width1 (word->str);
+        int w = str_term_width1 (word->str);
         if (*col + w >= HELP_WINDOW_WIDTH)
         {
             *col = 0;
@@ -461,7 +452,7 @@ void Help::help_print_word(WDialog * h, GString * word, int *col, int *line, gbo
     }
 }
 
-void Help::help_show(WDialog * h, const char *paint_start)
+void Help::help_show(WDialog* h, const char* paint_start)
 {
     const char *p, *n;
     int col, line, c;
@@ -470,9 +461,7 @@ void Help::help_show(WDialog * h, const char *paint_start)
     gboolean repeat_paint;
     int active_col, active_line;        /* Active link position */
     char buff[MB_LEN_MAX + 1];
-    GString *word;
-
-    word = g_string_sized_new (32);
+    GString* word = g_string_sized_new (32);
 
     tty_setcolor (HELP_NORMAL_COLOR);
     do
@@ -619,13 +608,11 @@ void Help::help_show(WDialog * h, const char *paint_start)
 
 void Help::help_help(WDialog* h)
 {
-    const char *p;
-
     history_ptr = (history_ptr + 1) % HISTORY_SIZE;
     history[history_ptr].page = currentpoint;
     history[history_ptr].link = selected_item;
 
-    p = search_string (fdata, "[How to use help]");
+    const char* p = search_string (fdata, "[How to use help]");
     if (p != nullptr)
     {
         currentpoint = p + 1;   /* Skip the newline following the start of the node */
@@ -634,12 +621,9 @@ void Help::help_help(WDialog* h)
     }
 }
 
-void Help::help_index(WDialog * h)
+void Help::help_index(WDialog* h)
 {
-    const char *new_item;
-
-    new_item = search_string (fdata, "[Contents]");
-
+    const char* new_item = search_string (fdata, "[Contents]");
     if (new_item == nullptr)
         message (D_ERROR, MSG_ERROR, _("Cannot find node %s in help file"), "[Contents]");
     else
@@ -654,7 +638,7 @@ void Help::help_index(WDialog * h)
     }
 }
 
-void Help::help_back(WDialog * h)
+void Help::help_back(WDialog* h)
 {
     currentpoint = history[history_ptr].page;
     selected_item = history[history_ptr].link;
@@ -667,9 +651,7 @@ void Help::help_back(WDialog * h)
 
 void Help::help_next_link(gboolean move_down)
 {
-    const char *new_item;
-
-    new_item = select_next_link (selected_item);
+    const char* new_item = select_next_link(selected_item);
     if (new_item != nullptr)
     {
         selected_item = new_item;
@@ -689,9 +671,7 @@ void Help::help_next_link(gboolean move_down)
 
 void Help::help_prev_link(gboolean move_up)
 {
-    const char *new_item;
-
-    new_item = select_prev_link (selected_item);
+    const char* new_item = select_prev_link(selected_item);
     selected_item = new_item;
     if ((selected_item == nullptr) || (selected_item < currentpoint))
     {
@@ -706,9 +686,7 @@ void Help::help_prev_link(gboolean move_up)
 
 void Help::help_next_node()
 {
-    const char *new_item;
-
-    new_item = currentpoint;
+    const char* new_item = currentpoint;
     while ((*new_item != '\0') && (*new_item != CHAR_NODE_END))
         new_item++;
 
@@ -724,9 +702,7 @@ void Help::help_next_node()
 
 void Help::help_prev_node()
 {
-    const char *new_item;
-
-    new_item = currentpoint;
+    const char* new_item = currentpoint;
     while (((int) (new_item - fdata) > 1) && (*new_item != CHAR_NODE_END))
         new_item--;
     new_item--;
@@ -832,12 +808,10 @@ cb_ret_t Help::help_execute_cmd(long command)
     return ret;
 }
 
-cb_ret_t Help::help_handle_key(WDialog * h, int key)
+cb_ret_t Help::help_handle_key(WDialog* h, int key)
 {
-    Widget *w = WIDGET (h);
-    long command;
-
-    command = widget_lookup_key (w, key);
+    Widget* w = WIDGET (h);
+    long command = widget_lookup_key (w, key);
     if ((command == CK_IgnoreKey) || (help_execute_cmd (command) == MSG_NOT_HANDLED))
         return MSG_NOT_HANDLED;
 
@@ -846,7 +820,7 @@ cb_ret_t Help::help_handle_key(WDialog * h, int key)
     return MSG_HANDLED;
 }
 
-cb_ret_t Help::help_bg_callback(Widget * w, Widget * sender, widget_msg_t msg, int parm, void *data)
+cb_ret_t Help::help_bg_callback(Widget* w, Widget* sender, widget_msg_t msg, int parm, void* data)
 {
     switch (msg)
     {
@@ -860,24 +834,24 @@ cb_ret_t Help::help_bg_callback(Widget * w, Widget * sender, widget_msg_t msg, i
     }
 }
 
-cb_ret_t Help::help_resize(WDialog * h)
+cb_ret_t Help::help_resize(WDialog* h)
 {
-    Widget *w = WIDGET (h);
-    WButtonBar *bb;
+    Widget* w = WIDGET (h);
     WRect r;
 
     help_lines = MIN (LINES - 4, MAX (2 * LINES / 3, 18));
     rect_init (&r, w->y, w->x, help_lines + 4, HELP_WINDOW_WIDTH + 4);
     dlg_default_callback (w, NULL, MSG_RESIZE, 0, &r);
-    bb = find_buttonbar (h);
+
+    WButtonBar* bb = find_buttonbar (h);
     widget_set_size (WIDGET (bb), LINES - 1, 0, 1, COLS);
 
     return MSG_HANDLED;
 }
 
-cb_ret_t Help::help_callback(Widget * w, Widget * sender, widget_msg_t msg, int parm, void *data)
+cb_ret_t Help::help_callback(Widget* w, Widget* sender, widget_msg_t msg, int parm, void* data)
 {
-    WDialog *h = DIALOG (w);
+    WDialog* h = DIALOG (w);
 
     switch (msg)
     {
@@ -903,13 +877,10 @@ void Help::interactive_display_finish()
 
 void Help::translate_file(char* filedata)
 {
-    GIConv conv;
-    GString *translated_data;
-
     /* initial allocation for largest whole help file */
-    translated_data = g_string_sized_new (32 * 1024);
+    GString* translated_data = g_string_sized_new (32 * 1024);
 
-    conv = str_crt_conv_from ("UTF-8");
+    GIConv conv = str_crt_conv_from ("UTF-8");
 
     if (conv == INVALID_CONV)
         g_string_free (translated_data, TRUE);
@@ -928,7 +899,7 @@ void Help::translate_file(char* filedata)
     }
 }
 
-cb_ret_t Help::md_callback(Widget * w, Widget * sender, widget_msg_t msg, int parm, void *data)
+cb_ret_t Help::md_callback(Widget* w, Widget* sender, widget_msg_t msg, int parm, void* data)
 {
     switch (msg)
     {
@@ -942,10 +913,10 @@ cb_ret_t Help::md_callback(Widget * w, Widget * sender, widget_msg_t msg, int pa
     }
 }
 
-void Help::help_mouse_callback(Widget * w, mouse_msg_t msg, mouse_event_t * event)
+void Help::help_mouse_callback(Widget* w, mouse_msg_t msg, mouse_event_t* event)
 {
     int x, y;
-    GSList *current_area;
+    GSList* current_area;
 
     if (msg != MSG_MOUSE_CLICK)
         return;
@@ -966,7 +937,7 @@ void Help::help_mouse_callback(Widget * w, mouse_msg_t msg, mouse_event_t * even
     /* Test whether the mouse click is inside one of the link areas */
     for (current_area = link_area; current_area != nullptr; current_area = g_slist_next (current_area))
     {
-        Link_Area *la = (Link_Area *) current_area->data;   // FIXME DB: static_cast
+        auto* la = static_cast<Link_Area*>(current_area->data);
 
         /* Test one line link area */
         if (y == la->y1 && x >= la->x1 && y == la->y2 && x <= la->x2)
@@ -985,7 +956,7 @@ void Help::help_mouse_callback(Widget * w, mouse_msg_t msg, mouse_event_t * even
     /* Test whether a link area was found */
     if (current_area != nullptr)
     {
-        Link_Area *la = (Link_Area *) current_area->data;   // FIXME DB Static Cast
+        auto* la = static_cast<Link_Area*>(current_area->data);   // FIXME DB Static Cast
 
         /* The click was inside a link area -> follow the link */
         history_ptr = (history_ptr + 1) % HISTORY_SIZE;
@@ -1009,9 +980,7 @@ void Help::help_mouse_callback(Widget * w, mouse_msg_t msg, mouse_event_t * even
 
 Widget* Help::mousedispatch_new (int y, int x, int yl, int xl)
 {
-    Widget *w;
-
-    w = g_new0 (Widget, 1);
+    Widget* w = g_new0 (Widget, 1);
     widget_init (w, y, x, yl, xl, md_callback, help_mouse_callback);
     w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE | WOP_WANT_CURSOR);
 
