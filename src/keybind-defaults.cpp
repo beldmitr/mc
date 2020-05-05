@@ -26,7 +26,6 @@
  */
 
 #include "lib/global.hpp"
-#include "lib/widget.hpp"         /* dialog_map, input_map, listbox_map, menu_map */
 
 #include "keybind-defaults.hpp"
 

@@ -63,7 +63,7 @@ events_init (GError ** mcerror)
         {MCEVENT_GROUP_CORE, "clipboard_text_to_file", clipboard_text_to_file, NULL},
         {MCEVENT_GROUP_CORE, "clipboard_text_from_file", clipboard_text_from_file, NULL},
 
-        {MCEVENT_GROUP_CORE, "help", help_interactive_display, NULL},
+        {MCEVENT_GROUP_CORE, "help", Help::help_interactive_display, NULL},
         {MCEVENT_GROUP_CORE, "suspend", execute_suspend, NULL},
 
 #ifdef ENABLE_BACKGROUND
