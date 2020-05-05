@@ -30,58 +30,42 @@
 
 #include "keybind-defaults.hpp"
 
-/*** global variables ****************************************************************************/
-
-GArray *main_keymap = NULL;
-GArray *main_x_keymap = NULL;
-GArray *panel_keymap = NULL;
-GArray *dialog_keymap = NULL;
-GArray *menu_keymap = NULL;
-GArray *input_keymap = NULL;
-GArray *listbox_keymap = NULL;
-GArray *tree_keymap = NULL;
-GArray *help_keymap = NULL;
+GArray* KeyBindDefaults::main_keymap = nullptr;
+GArray* KeyBindDefaults::main_x_keymap = nullptr;
+GArray* KeyBindDefaults::panel_keymap = nullptr;
+GArray* KeyBindDefaults::dialog_keymap = nullptr;
+GArray* KeyBindDefaults::menu_keymap = nullptr;
+GArray* KeyBindDefaults::input_keymap = nullptr;
+GArray* KeyBindDefaults::listbox_keymap = nullptr;
+GArray* KeyBindDefaults::tree_keymap = nullptr;
+GArray* KeyBindDefaults::help_keymap = nullptr;
 #ifdef USE_INTERNAL_EDIT
-GArray *editor_keymap = NULL;
-GArray *editor_x_keymap = NULL;
+GArray* KeyBindDefaults::editor_keymap = nullptr;
+GArray* KeyBindDefaults::editor_x_keymap = nullptr;
 #endif
-GArray *viewer_keymap = NULL;
-GArray *viewer_hex_keymap = NULL;
+GArray* KeyBindDefaults::viewer_keymap = nullptr;
+GArray* KeyBindDefaults::viewer_hex_keymap = nullptr;
 #ifdef USE_DIFF_VIEW
-GArray *diff_keymap = NULL;
+GArray* KeyBindDefaults::diff_keymap = nullptr;
 #endif
 
-const global_keymap_t *main_map = NULL;
-const global_keymap_t *main_x_map = NULL;
-const global_keymap_t *panel_map = NULL;
-const global_keymap_t *tree_map = NULL;
-const global_keymap_t *help_map = NULL;
+const global_keymap_t* KeyBindDefaults::main_map = nullptr;
+const global_keymap_t* KeyBindDefaults::main_x_map = nullptr;
+const global_keymap_t* KeyBindDefaults::panel_map = nullptr;
+const global_keymap_t* KeyBindDefaults::tree_map = nullptr;
+const global_keymap_t* KeyBindDefaults::help_map = nullptr;
 
 #ifdef USE_INTERNAL_EDIT
-const global_keymap_t *editor_map = NULL;
-const global_keymap_t *editor_x_map = NULL;
+const global_keymap_t* KeyBindDefaults::editor_map = nullptr;
+const global_keymap_t* KeyBindDefaults::editor_x_map = nullptr;
 #endif
-const global_keymap_t *viewer_map = NULL;
-const global_keymap_t *viewer_hex_map = NULL;
+const global_keymap_t* KeyBindDefaults::viewer_map = nullptr;
+const global_keymap_t* KeyBindDefaults::viewer_hex_map = nullptr;
 #ifdef USE_DIFF_VIEW
-const global_keymap_t *diff_map = NULL;
+const global_keymap_t* KeyBindDefaults::diff_map = nullptr;
 #endif
 
-/*** file scope macro definitions ****************************************************************/
-
-/*** file scope type declarations ****************************************************************/
-
-/* default keymaps in ini (key=value) format */
-typedef struct global_keymap_ini_t
-{
-    const char *key;
-    const char *value;
-} global_keymap_ini_t;
-
-/*** file scope variables ************************************************************************/
-
-/* midnight */
-static const global_keymap_ini_t default_main_keymap[] = {
+const KeyBindDefaults::global_keymap_ini_t KeyBindDefaults::default_main_keymap[] = {
     {"ChangePanel", "tab"},
     {"Help", "f1"},
     {"UserMenu", "f2"},
@@ -132,10 +116,10 @@ static const global_keymap_ini_t default_main_keymap[] = {
     {"SelectInvert", "kpasterisk"},
     /* List of screens */
     {"ScreenList", "alt-prime"},
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 
-static const global_keymap_ini_t default_main_x_keymap[] = {
+const KeyBindDefaults::global_keymap_ini_t KeyBindDefaults::default_main_x_keymap[] = {
     {"CompareDirs", "d"},
 #ifdef USE_DIFF_VIEW
     {"CompareFiles", "ctrl-d"},
@@ -162,11 +146,10 @@ static const global_keymap_ini_t default_main_x_keymap[] = {
     {"Jobs", "j"},
 #endif /* ENABLE_BACKGROUND */
     {"ExternalPanelize", "!"},
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 
-/* panel */
-static const global_keymap_ini_t default_panel_keymap[] = {
+const KeyBindDefaults::global_keymap_ini_t KeyBindDefaults::default_panel_keymap[] = {
     {"CycleListingFormat", "alt-t"},
     {"PanelOtherCd", "alt-o"},
     {"PanelOtherCdLink", "alt-l"},
@@ -203,11 +186,10 @@ static const global_keymap_ini_t default_panel_keymap[] = {
 #endif
     {"Search", "ctrl-s; alt-s"},
     {"PanelOtherSync", "alt-i"},
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 
-/* dialog */
-static const global_keymap_ini_t default_dialog_keymap[] = {
+const KeyBindDefaults::global_keymap_ini_t KeyBindDefaults::default_dialog_keymap[] = {
     {"Ok", "enter"},
     {"Cancel", "f10; esc; ctrl-g"},
     {"Up", "up; left"},
@@ -222,11 +204,10 @@ static const global_keymap_ini_t default_dialog_keymap[] = {
     {"ScreenList", "alt-prime"},
     {"ScreenNext", "alt-rbrace"},
     {"ScreenPrev", "alt-lbrace"},
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 
-/* menubar */
-static const global_keymap_ini_t default_menu_keymap[] = {
+const KeyBindDefaults::global_keymap_ini_t KeyBindDefaults::default_menu_keymap[] = {
     {"Help", "f1"},
     {"Left", "left; ctrl-b"},
     {"Right", "right; ctrl-f"},
@@ -236,11 +217,10 @@ static const global_keymap_ini_t default_menu_keymap[] = {
     {"End", "end; alt-gt; ctrl-e"},
     {"Enter", "enter"},
     {"Quit", "f10; ctrl-g; esc"},
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 
-/* input line */
-static const global_keymap_ini_t default_input_keymap[] = {
+const KeyBindDefaults::global_keymap_ini_t KeyBindDefaults::default_input_keymap[] = {
     /* Motion */
     {"Home", "ctrl-a; alt-lt; home; a1"},
     {"End", "ctrl-e; alt-gt; end; c1"},
@@ -271,11 +251,10 @@ static const global_keymap_ini_t default_input_keymap[] = {
     {"HistoryNext", "alt-n; ctrl-up"},
     /* Completion */
     {"Complete", "alt-tab"},
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 
-/* listbox */
-static const global_keymap_ini_t default_listbox_keymap[] = {
+const KeyBindDefaults::global_keymap_ini_t KeyBindDefaults::default_listbox_keymap[] = {
     {"Up", "up; ctrl-p"},
     {"Down", "down; ctrl-n"},
     {"Top", "home; alt-lt; a1"},
@@ -287,11 +266,10 @@ static const global_keymap_ini_t default_listbox_keymap[] = {
     {"View", "f3"},
     {"Edit", "f4"},
     {"Enter", "enter"},
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 
-/* tree */
-static const global_keymap_ini_t default_tree_keymap[] = {
+const KeyBindDefaults::global_keymap_ini_t KeyBindDefaults::default_tree_keymap[] = {
     {"Help", "f1"},
     {"Rescan", "f2; ctrl-r"},
     {"Forget", "f3"},
@@ -312,11 +290,10 @@ static const global_keymap_ini_t default_tree_keymap[] = {
     {"PageDown", "pgdn; ctrl-v"},
     {"Enter", "enter"},
     {"Search", "ctrl-s; alt-s"},
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 
-/* help */
-static const global_keymap_ini_t default_help_keymap[] = {
+const KeyBindDefaults::global_keymap_ini_t KeyBindDefaults::default_help_keymap[] = {
     {"Help", "f1"},
     {"Index", "f2; c"},
     {"Back", "f3; left; l"},
@@ -334,11 +311,11 @@ static const global_keymap_ini_t default_help_keymap[] = {
     {"LinkPrev", "alt-tab"},
     {"NodeNext", "n"},
     {"NodePrev", "p"},
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 
 #ifdef USE_INTERNAL_EDIT
-static const global_keymap_ini_t default_editor_keymap[] = {
+const KeyBindDefaults::global_keymap_ini_t KeyBindDefaults::default_editor_keymap[] = {
     {"Enter", "enter"},
     {"Return", "shift-enter; ctrl-enter; ctrl-shift-enter"},    /* useful for pasting multiline text */
     {"Tab", "tab; shift-tab; ctrl-tab; ctrl-shift-tab"},        /* ditto */
@@ -439,17 +416,15 @@ static const global_keymap_ini_t default_editor_keymap[] = {
     {"SpellCheckCurrentWord", "ctrl-p"},
 #endif
     {"ExtendedKeyMap", "ctrl-x"},
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 
-/* emacs keyboard layout emulation */
-static const global_keymap_ini_t default_editor_x_keymap[] = {
-    {NULL, NULL}
+const KeyBindDefaults::global_keymap_ini_t KeyBindDefaults::default_editor_x_keymap[] = {
+    {nullptr, nullptr}
 };
 #endif /* USE_INTERNAL_EDIT */
 
-/* viewer */
-static const global_keymap_ini_t default_viewer_keymap[] = {
+const KeyBindDefaults::global_keymap_ini_t KeyBindDefaults::default_viewer_keymap[] = {
     {"Help", "f1"},
     {"WrapMode", "f2"},
     {"Quit", "f3; f10; q; esc"},
@@ -488,11 +463,10 @@ static const global_keymap_ini_t default_viewer_keymap[] = {
     {"SearchBackwardContinue", "ctrl-r"},
     {"SearchOppositeContinue", "shift-n"},
     {"History", "alt-shift-e"},
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 
-/* hex viewer */
-static const global_keymap_ini_t default_viewer_hex_keymap[] = {
+const KeyBindDefaults::global_keymap_ini_t KeyBindDefaults::default_viewer_hex_keymap[] = {
     {"Help", "f1"},
     {"HexEditMode", "f2"},
     {"Quit", "f3; f10; q; esc"},
@@ -524,12 +498,11 @@ static const global_keymap_ini_t default_viewer_hex_keymap[] = {
     {"SearchBackwardContinue", "ctrl-r"},
     {"SearchOppositeContinue", "shift-n"},
     {"History", "alt-shift-e"},
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 
 #ifdef  USE_DIFF_VIEW
-/* diff viewer */
-static const global_keymap_ini_t default_diff_keymap[] = {
+const KeyBindDefaults::global_keymap_ini_t KeyBindDefaults::default_diff_keymap[] = {
     {"ShowSymbols", "alt-s; s"},
     {"ShowNumbers", "alt-n; l"},
     {"SplitFull", "f"},
@@ -571,39 +544,14 @@ static const global_keymap_ini_t default_diff_keymap[] = {
     {"SelectCodepage", "alt-e"},
 #endif
     {"Shell", "ctrl-o"},
-    {NULL, NULL}
+    {nullptr, nullptr}
 };
 #endif
 
-/*** file scope macro definitions ****************************************************************/
 
-/*** file scope type declarations ****************************************************************/
-
-/*** file scope variables ************************************************************************/
-
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-static void
-create_default_keymap_section (mc_config_t * keymap, const char *section,
-                               const global_keymap_ini_t * k)
+mc_config_t* KeyBindDefaults::create_default_keymap()
 {
-    size_t i;
-
-    for (i = 0; k[i].key != NULL; i++)
-        mc_config_set_string_raw (keymap, section, k[i].key, k[i].value);
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-mc_config_t *
-create_default_keymap (void)
-{
-    mc_config_t *keymap;
-
-    keymap = mc_config_init (NULL, TRUE);
+    mc_config_t* keymap = mc_config_init (nullptr, TRUE);
 
     create_default_keymap_section (keymap, KEYMAP_SECTION_MAIN, default_main_keymap);
     create_default_keymap_section (keymap, KEYMAP_SECTION_MAIN_EXT, default_main_x_keymap);
@@ -625,4 +573,11 @@ create_default_keymap (void)
 #endif
 
     return keymap;
+}
+
+void KeyBindDefaults::create_default_keymap_section(mc_config_t* keymap, const char* section, const global_keymap_ini_t* k)
+{
+    for (size_t i = 0; k[i].key != nullptr; i++) {
+        mc_config_set_string_raw(keymap, section, k[i].key, k[i].value);
+    }
 }

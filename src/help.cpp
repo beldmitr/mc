@@ -1130,7 +1130,7 @@ help_interactive_display (const gchar * event_group_name, const gchar * event_na
                     FALSE, help_colors, help_callback, NULL, "[Help]", _("Help"));
     wh = WIDGET (whelp);
     g = GROUP (whelp);
-    wh->keymap = help_map;
+    wh->keymap = KeyBindDefaults::help_map;
     widget_want_tab (wh, TRUE);
     /* draw background */
     whelp->bg->callback = help_bg_callback;

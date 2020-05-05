@@ -2103,8 +2103,8 @@ edit_init (WEdit * edit, int y, int x, int lines, int cols, const vfs_path_t * f
         w = WIDGET (edit);
         widget_init (w, y, x, lines, cols, NULL, NULL);
         w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE | WOP_TOP_SELECT | WOP_WANT_CURSOR);
-        w->keymap = editor_map;
-        w->ext_keymap = editor_x_map;
+        w->keymap = KeyBindDefaults::editor_map;
+        w->ext_keymap = KeyBindDefaults::editor_x_map;
         edit->fullscreen = TRUE;
         edit_save_size (edit);
     }

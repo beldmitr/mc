@@ -338,13 +338,13 @@ edit_get_shortcut (long command)
     const char *ext_map;
     const char *shortcut = NULL;
 
-    shortcut = keybind_lookup_keymap_shortcut (editor_map, command);
+    shortcut = keybind_lookup_keymap_shortcut (KeyBindDefaults::editor_map, command);
     if (shortcut != NULL)
         return g_strdup (shortcut);
 
-    ext_map = keybind_lookup_keymap_shortcut (editor_map, CK_ExtendedKeyMap);
+    ext_map = keybind_lookup_keymap_shortcut (KeyBindDefaults::editor_map, CK_ExtendedKeyMap);
     if (ext_map != NULL)
-        shortcut = keybind_lookup_keymap_shortcut (editor_x_map, command);
+        shortcut = keybind_lookup_keymap_shortcut (KeyBindDefaults::editor_x_map, command);
     if (shortcut != NULL)
         return g_strdup_printf ("%s %s", ext_map, shortcut);
 
@@ -1234,8 +1234,8 @@ edit_files (const GList * files)
                     edit_dialog_mouse_callback, "[Internal File Editor]", NULL);
     wd = WIDGET (edit_dlg);
     widget_want_tab (wd, TRUE);
-    wd->keymap = editor_map;
-    wd->ext_keymap = editor_x_map;
+    wd->keymap = KeyBindDefaults::editor_map;
+    wd->ext_keymap = KeyBindDefaults::editor_x_map;
 
     edit_dlg->get_shortcut = edit_get_shortcut;
     edit_dlg->get_title = edit_get_title;

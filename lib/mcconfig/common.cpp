@@ -116,7 +116,7 @@ mc_config_init (const gchar * ini_path, gboolean read_only)
         return NULL;
     }
 
-    if (ini_path == NULL)
+    if (ini_path == nullptr)
         return mc_config;
 
     if (exist_file (ini_path))

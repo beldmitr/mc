@@ -4304,7 +4304,7 @@ panel_sized_empty_new (const char *panel_name, int y, int x, int lines, int cols
     w = WIDGET (panel);
     widget_init (w, y, x, lines, cols, panel_callback, panel_mouse_callback);
     w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE | WOP_TOP_SELECT);
-    w->keymap = panel_map;
+    w->keymap = KeyBindDefaults::panel_map;
 
     panel->dir.size = DIR_LIST_MIN_SIZE;
     panel->dir.list = g_new (file_entry_t, panel->dir.size);

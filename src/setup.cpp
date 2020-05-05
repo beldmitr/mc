@@ -532,105 +532,105 @@ void Setup::load_keymap_defs(gboolean load_from_file)
     mc_global_keymap = load_setup_get_keymap_profile_config(load_from_file);
 
     if (mc_global_keymap != nullptr) {
-        main_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
-        load_keymap_from_section(KEYMAP_SECTION_MAIN, main_keymap, mc_global_keymap);
-        main_x_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
-        load_keymap_from_section(KEYMAP_SECTION_MAIN_EXT, main_x_keymap, mc_global_keymap);
+        KeyBindDefaults::main_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
+        load_keymap_from_section(KEYMAP_SECTION_MAIN, KeyBindDefaults::main_keymap, mc_global_keymap);
+        KeyBindDefaults::main_x_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
+        load_keymap_from_section(KEYMAP_SECTION_MAIN_EXT, KeyBindDefaults::main_x_keymap, mc_global_keymap);
 
-        panel_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
-        load_keymap_from_section(KEYMAP_SECTION_PANEL, panel_keymap, mc_global_keymap);
+        KeyBindDefaults::panel_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
+        load_keymap_from_section(KEYMAP_SECTION_PANEL, KeyBindDefaults::panel_keymap, mc_global_keymap);
 
-        dialog_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
-        load_keymap_from_section(KEYMAP_SECTION_DIALOG, dialog_keymap, mc_global_keymap);
+        KeyBindDefaults::dialog_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
+        load_keymap_from_section(KEYMAP_SECTION_DIALOG, KeyBindDefaults::dialog_keymap, mc_global_keymap);
 
-        menu_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
-        load_keymap_from_section(KEYMAP_SECTION_MENU, menu_keymap, mc_global_keymap);
+        KeyBindDefaults::menu_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
+        load_keymap_from_section(KEYMAP_SECTION_MENU, KeyBindDefaults::menu_keymap, mc_global_keymap);
 
-        input_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
-        load_keymap_from_section(KEYMAP_SECTION_INPUT, input_keymap, mc_global_keymap);
+        KeyBindDefaults::input_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
+        load_keymap_from_section(KEYMAP_SECTION_INPUT, KeyBindDefaults::input_keymap, mc_global_keymap);
 
-        listbox_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
-        load_keymap_from_section(KEYMAP_SECTION_LISTBOX, listbox_keymap, mc_global_keymap);
+        KeyBindDefaults::listbox_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
+        load_keymap_from_section(KEYMAP_SECTION_LISTBOX, KeyBindDefaults::listbox_keymap, mc_global_keymap);
 
-        tree_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
-        load_keymap_from_section(KEYMAP_SECTION_TREE, tree_keymap, mc_global_keymap);
+        KeyBindDefaults::tree_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
+        load_keymap_from_section(KEYMAP_SECTION_TREE, KeyBindDefaults::tree_keymap, mc_global_keymap);
 
-        help_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
-        load_keymap_from_section(KEYMAP_SECTION_HELP, help_keymap, mc_global_keymap);
+        KeyBindDefaults::help_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
+        load_keymap_from_section(KEYMAP_SECTION_HELP, KeyBindDefaults::help_keymap, mc_global_keymap);
 
 #ifdef USE_INTERNAL_EDIT
-        editor_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
-        load_keymap_from_section(KEYMAP_SECTION_EDITOR, editor_keymap, mc_global_keymap);
-        editor_x_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
-        load_keymap_from_section(KEYMAP_SECTION_EDITOR_EXT, editor_x_keymap, mc_global_keymap);
+        KeyBindDefaults::editor_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
+        load_keymap_from_section(KEYMAP_SECTION_EDITOR, KeyBindDefaults::editor_keymap, mc_global_keymap);
+        KeyBindDefaults::editor_x_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
+        load_keymap_from_section(KEYMAP_SECTION_EDITOR_EXT, KeyBindDefaults::editor_x_keymap, mc_global_keymap);
 #endif
 
-        viewer_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
-        load_keymap_from_section(KEYMAP_SECTION_VIEWER, viewer_keymap, mc_global_keymap);
-        viewer_hex_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
-        load_keymap_from_section(KEYMAP_SECTION_VIEWER_HEX, viewer_hex_keymap, mc_global_keymap);
+        KeyBindDefaults::viewer_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
+        load_keymap_from_section(KEYMAP_SECTION_VIEWER, KeyBindDefaults::viewer_keymap, mc_global_keymap);
+        KeyBindDefaults::viewer_hex_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
+        load_keymap_from_section(KEYMAP_SECTION_VIEWER_HEX, KeyBindDefaults::viewer_hex_keymap, mc_global_keymap);
 
 #ifdef USE_DIFF_VIEW
-        diff_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
-        load_keymap_from_section(KEYMAP_SECTION_DIFFVIEWER, diff_keymap, mc_global_keymap);
+        KeyBindDefaults::diff_keymap = g_array_new(TRUE, FALSE, sizeof(global_keymap_t));
+        load_keymap_from_section(KEYMAP_SECTION_DIFFVIEWER, KeyBindDefaults::diff_keymap, mc_global_keymap);
 #endif
 
         mc_config_deinit(mc_global_keymap);
     }
 
-    main_map = (global_keymap_t *) main_keymap->data;
-    main_x_map = (global_keymap_t *) main_x_keymap->data;
-    panel_map = (global_keymap_t *) panel_keymap->data;
-    dialog_map = (global_keymap_t *) dialog_keymap->data;
-    menu_map = (global_keymap_t *) menu_keymap->data;
-    input_map = (global_keymap_t *) input_keymap->data;
-    listbox_map = (global_keymap_t *) listbox_keymap->data;
-    tree_map = (global_keymap_t *) tree_keymap->data;
-    help_map = (global_keymap_t *) help_keymap->data;
+    KeyBindDefaults::main_map = (global_keymap_t *) KeyBindDefaults::main_keymap->data;
+    KeyBindDefaults::main_x_map = (global_keymap_t *) KeyBindDefaults::main_x_keymap->data;
+    KeyBindDefaults::panel_map = (global_keymap_t *) KeyBindDefaults::panel_keymap->data;
+    dialog_map = (global_keymap_t *) KeyBindDefaults::dialog_keymap->data;
+    menu_map = (global_keymap_t *) KeyBindDefaults::menu_keymap->data;
+    input_map = (global_keymap_t *) KeyBindDefaults::input_keymap->data;
+    listbox_map = (global_keymap_t *) KeyBindDefaults::listbox_keymap->data;
+    KeyBindDefaults::tree_map = (global_keymap_t *) KeyBindDefaults::tree_keymap->data;
+    KeyBindDefaults::help_map = (global_keymap_t *) KeyBindDefaults::help_keymap->data;
 #ifdef USE_INTERNAL_EDIT
-    editor_map = (global_keymap_t *) editor_keymap->data;
-    editor_x_map = (global_keymap_t *) editor_x_keymap->data;
+    KeyBindDefaults::editor_map = (global_keymap_t *) KeyBindDefaults::editor_keymap->data;
+    KeyBindDefaults::editor_x_map = (global_keymap_t *) KeyBindDefaults::editor_x_keymap->data;
 #endif
-    viewer_map = (global_keymap_t *) viewer_keymap->data;
-    viewer_hex_map = (global_keymap_t *) viewer_hex_keymap->data;
+    KeyBindDefaults::viewer_map = (global_keymap_t *) KeyBindDefaults::viewer_keymap->data;
+    KeyBindDefaults::viewer_hex_map = (global_keymap_t *) KeyBindDefaults::viewer_hex_keymap->data;
 #ifdef USE_DIFF_VIEW
-    diff_map = (global_keymap_t *) diff_keymap->data;
+    KeyBindDefaults::diff_map = (global_keymap_t *) KeyBindDefaults::diff_keymap->data;
 #endif
 }
 
 void Setup::free_keymap_defs()
 {
-    if (main_keymap != nullptr)
-        g_array_free(main_keymap, TRUE);
-    if (main_x_keymap != nullptr)
-        g_array_free(main_x_keymap, TRUE);
-    if (panel_keymap != nullptr)
-        g_array_free(panel_keymap, TRUE);
-    if (dialog_keymap != nullptr)
-        g_array_free(dialog_keymap, TRUE);
-    if (menu_keymap != nullptr)
-        g_array_free(menu_keymap, TRUE);
-    if (input_keymap != nullptr)
-        g_array_free(input_keymap, TRUE);
-    if (listbox_keymap != nullptr)
-        g_array_free(listbox_keymap, TRUE);
-    if (tree_keymap != nullptr)
-        g_array_free(tree_keymap, TRUE);
-    if (help_keymap != nullptr)
-        g_array_free(help_keymap, TRUE);
+    if (KeyBindDefaults::main_keymap != nullptr)
+        g_array_free(KeyBindDefaults::main_keymap, TRUE);
+    if (KeyBindDefaults::main_x_keymap != nullptr)
+        g_array_free(KeyBindDefaults::main_x_keymap, TRUE);
+    if (KeyBindDefaults::panel_keymap != nullptr)
+        g_array_free(KeyBindDefaults::panel_keymap, TRUE);
+    if (KeyBindDefaults::dialog_keymap != nullptr)
+        g_array_free(KeyBindDefaults::dialog_keymap, TRUE);
+    if (KeyBindDefaults::menu_keymap != nullptr)
+        g_array_free(KeyBindDefaults::menu_keymap, TRUE);
+    if (KeyBindDefaults::input_keymap != nullptr)
+        g_array_free(KeyBindDefaults::input_keymap, TRUE);
+    if (KeyBindDefaults::listbox_keymap != nullptr)
+        g_array_free(KeyBindDefaults::listbox_keymap, TRUE);
+    if (KeyBindDefaults::tree_keymap != nullptr)
+        g_array_free(KeyBindDefaults::tree_keymap, TRUE);
+    if (KeyBindDefaults::help_keymap != nullptr)
+        g_array_free(KeyBindDefaults::help_keymap, TRUE);
 #ifdef USE_INTERNAL_EDIT
-    if (editor_keymap != nullptr)
-        g_array_free(editor_keymap, TRUE);
-    if (editor_x_keymap != nullptr)
-        g_array_free(editor_x_keymap, TRUE);
+    if (KeyBindDefaults::editor_keymap != nullptr)
+        g_array_free(KeyBindDefaults::editor_keymap, TRUE);
+    if (KeyBindDefaults::editor_x_keymap != nullptr)
+        g_array_free(KeyBindDefaults::editor_x_keymap, TRUE);
 #endif
-    if (viewer_keymap != nullptr)
-        g_array_free(viewer_keymap, TRUE);
-    if (viewer_hex_keymap != nullptr)
-        g_array_free(viewer_hex_keymap, TRUE);
+    if (KeyBindDefaults::viewer_keymap != nullptr)
+        g_array_free(KeyBindDefaults::viewer_keymap, TRUE);
+    if (KeyBindDefaults::viewer_hex_keymap != nullptr)
+        g_array_free(KeyBindDefaults::viewer_hex_keymap, TRUE);
 #ifdef USE_DIFF_VIEW
-    if (diff_keymap != nullptr)
-        g_array_free(diff_keymap, TRUE);
+    if (KeyBindDefaults::diff_keymap != nullptr)
+        g_array_free(KeyBindDefaults::diff_keymap, TRUE);
 #endif
 }
 
@@ -1037,7 +1037,7 @@ mc_config_t* Setup::load_setup_get_keymap_profile_config(gboolean load_from_file
     char *fname, *fname2;
 
     /* 0) Create default keymap */
-    keymap_config = create_default_keymap();
+    keymap_config = KeyBindDefaults::create_default_keymap();
     if (!load_from_file)
         return keymap_config;
 

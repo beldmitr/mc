@@ -1289,7 +1289,7 @@ tree_new (int y, int x, int lines, int cols, gboolean is_panel)
     w = WIDGET (tree);
     widget_init (w, y, x, lines, cols, tree_callback, tree_mouse_callback);
     w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE | WOP_TOP_SELECT);
-    w->keymap = tree_map;
+    w->keymap = KeyBindDefaults::tree_map;
 
     tree->is_panel = is_panel;
     tree->selected_ptr = NULL;

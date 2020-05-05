@@ -3453,7 +3453,7 @@ diff_view (const char *file1, const char *file2, const char *label1, const char 
     w = WIDGET (dview);
     widget_init (w, dw->y, dw->x, dw->lines - 1, dw->cols, dview_callback, dview_mouse_callback);
     w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE);
-    w->keymap = diff_map;
+    w->keymap = KeyBindDefaults::diff_map;
     group_add_widget_autopos (g, w, WPOS_KEEP_ALL, NULL);
 
     w = WIDGET (buttonbar_new (TRUE));

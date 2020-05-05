@@ -414,17 +414,17 @@ midnight_get_shortcut (long command)
     const char *ext_map;
     const char *shortcut = NULL;
 
-    shortcut = keybind_lookup_keymap_shortcut (main_map, command);
+    shortcut = keybind_lookup_keymap_shortcut (KeyBindDefaults::main_map, command);
     if (shortcut != NULL)
         return g_strdup (shortcut);
 
-    shortcut = keybind_lookup_keymap_shortcut (panel_map, command);
+    shortcut = keybind_lookup_keymap_shortcut (KeyBindDefaults::panel_map, command);
     if (shortcut != NULL)
         return g_strdup (shortcut);
 
-    ext_map = keybind_lookup_keymap_shortcut (main_map, CK_ExtendedKeyMap);
+    ext_map = keybind_lookup_keymap_shortcut (KeyBindDefaults::main_map, CK_ExtendedKeyMap);
     if (ext_map != NULL)
-        shortcut = keybind_lookup_keymap_shortcut (main_x_map, command);
+        shortcut = keybind_lookup_keymap_shortcut (KeyBindDefaults::main_x_map, command);
     if (shortcut != NULL)
         return g_strdup_printf ("%s %s", ext_map, shortcut);
 
@@ -908,8 +908,8 @@ create_file_manager (void)
     Widget *w = WIDGET (midnight_dlg);
     WGroup *g = GROUP (midnight_dlg);
 
-    w->keymap = main_map;
-    w->ext_keymap = main_x_map;
+    w->keymap = KeyBindDefaults::main_map;
+    w->ext_keymap = KeyBindDefaults::main_x_map;
 
     midnight_dlg->get_shortcut = midnight_get_shortcut;
     midnight_dlg->get_title = midnight_get_title;
