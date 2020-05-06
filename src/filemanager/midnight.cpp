@@ -1007,7 +1007,7 @@ show_editor_viewer_history (void)
     char *s;
     int act;
 
-    s = show_file_history (WIDGET (midnight_dlg), &act);
+    s = FileHistory::show_file_history (WIDGET (midnight_dlg), &act);
     if (s != NULL)
     {
         vfs_path_t *s_vpath;

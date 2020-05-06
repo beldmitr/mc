@@ -395,7 +395,7 @@ mcview_load_file_from_history (WView * view)
     char *filename;
     int action;
 
-    filename = show_file_history (CONST_WIDGET (view), &action);
+    filename = FileHistory::show_file_history(CONST_WIDGET (view), &action);
 
     if (filename != NULL && (action == CK_View || action == CK_Enter))
     {

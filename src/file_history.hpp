@@ -2,18 +2,37 @@
 
 #include "lib/widget.hpp"
 
-/*** typedefs(not structures) and defined constants **********************************************/
+class FileHistory
+{
+private:
+    static constexpr const char* TMP_SUFFIX = ".tmp";
 
-/*** enums ***************************************************************************************/
+private:
+    struct file_history_data_t
+    {
+        char* file_name;
+        char* file_pos;
+    };
 
-/*** structures declarations (and typedefs of structures)*****************************************/
+public:
+    /**
+     * Show file history and return the selected file
+     *
+     * @param w widget used for positioning of history window
+     * @param action to do with file (edit, view, etc)
+     *
+     * @return name of selected file, A newly allocated string.
+     */
+    static char* show_file_history(const Widget* w, int* action);
 
-/*** global variables defined in .c file *********************************************************/
+private:
+    static GList* file_history_list_read();
 
-char *show_file_history (const Widget * w, int *action);
+    static void file_history_list_write(const GList* file_list);
 
-/*** declarations of public functions ************************************************************/
+    static void file_history_create_item(history_descriptor_t* hd, void* data);
 
-/*** inline functions ****************************************************************************/
+    static void* file_history_release_item(history_descriptor_t* hd, WLEntry* le);
 
-
+    static void file_history_free_item(void* data);
+};

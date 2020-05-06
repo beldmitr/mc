@@ -2094,7 +2094,7 @@ edit_load_file_from_history (WDialog * h)
     int action;
     gboolean ret = TRUE;        /* possible cancel */
 
-    exp = show_file_history (CONST_WIDGET (h), &action);
+    exp = FileHistory::show_file_history (CONST_WIDGET (h), &action);
     if (exp != NULL && (action == CK_Edit || action == CK_Enter))
     {
         vfs_path_t *exp_vpath;
