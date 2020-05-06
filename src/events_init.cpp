@@ -36,49 +36,30 @@
 
 #include "events_init.hpp"
 
-/*** global variables ****************************************************************************/
-
-/*** file scope macro definitions ****************************************************************/
-
-/*** file scope type declarations ****************************************************************/
-
-/*** file scope variables ************************************************************************/
-
-
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-gboolean
-events_init (GError ** mcerror)
+gboolean EventsInit::events_init(GError** mcerror)
 {
     /* *INDENT-OFF* */
     static const event_init_t standard_events[] =
-    {
-        {MCEVENT_GROUP_CORE, "clipboard_file_to_ext_clip", clipboard_file_to_ext_clip, NULL},
-        {MCEVENT_GROUP_CORE, "clipboard_file_from_ext_clip", clipboard_file_from_ext_clip, NULL},
-        {MCEVENT_GROUP_CORE, "clipboard_text_to_file", clipboard_text_to_file, NULL},
-        {MCEVENT_GROUP_CORE, "clipboard_text_from_file", clipboard_text_from_file, NULL},
+        {
+            {MCEVENT_GROUP_CORE, "clipboard_file_to_ext_clip", clipboard_file_to_ext_clip, NULL},
+            {MCEVENT_GROUP_CORE, "clipboard_file_from_ext_clip", clipboard_file_from_ext_clip, NULL},
+            {MCEVENT_GROUP_CORE, "clipboard_text_to_file", clipboard_text_to_file, NULL},
+            {MCEVENT_GROUP_CORE, "clipboard_text_from_file", clipboard_text_from_file, NULL},
 
-        {MCEVENT_GROUP_CORE, "help", Help::help_interactive_display, NULL},
-        {MCEVENT_GROUP_CORE, "suspend", Execute::execute_suspend, NULL},
+            {MCEVENT_GROUP_CORE, "help", Help::help_interactive_display, NULL},
+            {MCEVENT_GROUP_CORE, "suspend", Execute::execute_suspend, NULL},
 
 #ifdef ENABLE_BACKGROUND
-        {MCEVENT_GROUP_CORE, "background_parent_call", background_parent_call, NULL},
-        {MCEVENT_GROUP_CORE, "background_parent_call_string", background_parent_call_string, NULL},
+            {MCEVENT_GROUP_CORE, "background_parent_call", background_parent_call, NULL},
+            {MCEVENT_GROUP_CORE, "background_parent_call_string", background_parent_call_string, NULL},
 #endif /* ENABLE_BACKGROUND */
 
-        {NULL, NULL, NULL, NULL}
-    };
+            {NULL, NULL, NULL, NULL}
+        };
     /* *INDENT-ON* */
 
-    if (!mc_event_init (mcerror))
+    if (!mc_event_init(mcerror))
         return FALSE;
 
-    return mc_event_mass_add (standard_events, mcerror);
+    return mc_event_mass_add(standard_events, mcerror);
 }
-
-/* --------------------------------------------------------------------------------------------- */

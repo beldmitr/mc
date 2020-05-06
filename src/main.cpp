@@ -296,7 +296,7 @@ main (int argc, char *argv[])
         goto startup_exit_ok;
     }
 
-    if (!events_init (&mcerror))
+    if (!EventsInit::events_init (&mcerror))
         goto startup_exit_falure;
 
     mc_config_init_config_paths (&mcerror);
