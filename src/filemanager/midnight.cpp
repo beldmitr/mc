@@ -1362,7 +1362,7 @@ midnight_execute_cmd (Widget * sender, long command)
         res = send_message (current_panel, midnight_dlg, MSG_ACTION, command, NULL);
         break;
     case CK_Shell:
-        toggle_subshell ();
+        Execute::toggle_subshell ();
         break;
     case CK_DirSize:
         smart_dirsize_cmd ();

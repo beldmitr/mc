@@ -3249,7 +3249,7 @@ dview_execute_cmd (WDiff * dview, long command)
         dview->skip_cols = 0;
         break;
     case CK_Shell:
-        toggle_subshell ();
+        Execute::toggle_subshell ();
         break;
     case CK_Quit:
         dview->view_quit = TRUE;

@@ -544,7 +544,7 @@ mcview_execute_cmd (WView * view, long command)
         mcview_moveto_bottom (view);
         break;
     case CK_Shell:
-        toggle_subshell ();
+        Execute::toggle_subshell ();
         break;
     case CK_Ruler:
         mcview_display_toggle_ruler (view);

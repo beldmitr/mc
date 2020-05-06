@@ -297,7 +297,7 @@ enter (WInput * lc_cmdline)
         }
 
         input_clean (lc_cmdline);
-        shell_execute (command->str, 0);
+        Execute::shell_execute (command->str, 0);
         g_string_free (command, TRUE);
 
 #ifdef ENABLE_SUBSHELL

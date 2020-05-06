@@ -711,7 +711,7 @@ void UserMenu::execute_menu_command (const WEdit * edit_widget, const char *comm
         cmd = g_strconcat ("/bin/sh ", vfs_path_as_str (file_name_vpath), (char *) NULL);
 
         if (show_prompt)
-            shell_execute (cmd, EXECUTE_HIDE);
+            Execute::shell_execute (cmd, EXECUTE_HIDE);
         else if (system (cmd) == -1)
             message (D_ERROR, MSG_ERROR, "%s", _("Error calling program"));
 

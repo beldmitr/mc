@@ -582,7 +582,7 @@ view_file_at_line (const vfs_path_t * filename_vpath, gboolean plain_view, gbool
                 viewer = "view";
         }
 
-        execute_external_editor_or_viewer (viewer, filename_vpath, start_line);
+        Execute::execute_external_editor_or_viewer (viewer, filename_vpath, start_line);
     }
 
     return ret;
@@ -694,7 +694,7 @@ edit_file_at_line (const vfs_path_t * what_vpath, gboolean internal, long start_
                 editor = get_default_editor ();
         }
 
-        execute_external_editor_or_viewer (editor, what_vpath, start_line);
+        Execute::execute_external_editor_or_viewer (editor, what_vpath, start_line);
     }
 
     if (mc_global.mc_run_mode == MC_RUN_FULL)

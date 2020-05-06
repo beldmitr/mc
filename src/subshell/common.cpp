@@ -1087,7 +1087,7 @@ invoke_subshell (const char *command, int how, vfs_path_t ** new_dir_vpath)
     tcsetattr (STDOUT_FILENO, TCSANOW, &raw_mode);
 
     /* Make the subshell change to MC's working directory */
-    if (new_dir_vpath != NULL)
+    if (new_dir_vpath != nullptr)
         do_subshell_chdir (subshell_get_cwd (), TRUE);
 
     if (command == NULL)        /* The user has done "C-o" from MC */

@@ -852,7 +852,7 @@ extfs_run (const vfs_path_t * vpath)
         g_strconcat (info->path, info->prefix, " run ", quoted_archive_name, " ", q, (char *) NULL);
     g_free (quoted_archive_name);
     g_free (q);
-    shell_execute (cmd, 0);
+    Execute::shell_execute (cmd, 0);
     g_free (cmd);
 }
 

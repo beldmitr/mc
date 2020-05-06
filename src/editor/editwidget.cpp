@@ -444,7 +444,7 @@ edit_dialog_command_execute (WDialog * h, long command)
         edit_refresh_cmd();
         break;
     case CK_Shell:
-        toggle_subshell();
+        Execute::toggle_subshell();
         break;
     case CK_LearnKeys:
         Learn::learn_keys();

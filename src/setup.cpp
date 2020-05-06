@@ -199,7 +199,7 @@ const struct Setup::bool_options_t Setup::bool_options[] = {
 };
 
 const Setup::int_options_t Setup::int_options[] = {
-    {"pause_after_run", &pause_after_run},
+    {"pause_after_run", &Execute::pause_after_run},
     {"mouse_repeat_rate", &mou_auto_repeat},
     {"double_click_speed", &double_click_speed},
     {"old_esc_mode_timeout", &old_esc_mode_timeout},

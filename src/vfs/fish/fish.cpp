@@ -605,7 +605,7 @@ fish_open_archive_int (struct vfs_class *me, struct vfs_s_super *super)
     gboolean ftalk;
 
     /* hide panels */
-    pre_exec ();
+    Execute::pre_exec ();
 
     /* open pipe */
     fish_open_archive_pipeopen (super);
@@ -614,7 +614,7 @@ fish_open_archive_int (struct vfs_class *me, struct vfs_s_super *super)
     ftalk = fish_open_archive_talk (me, super);
 
     /* show panels */
-    post_exec ();
+    Execute::post_exec ();
 
     if (!ftalk)
         ERRNOR (E_PROTO, -1);

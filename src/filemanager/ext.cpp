@@ -503,7 +503,7 @@ exec_extension (void *target, const vfs_path_t * filename_vpath, const char *lc_
     }
     else
     {
-        shell_execute (cmd, EXECUTE_INTERNAL);
+        Execute::shell_execute (cmd, EXECUTE_INTERNAL);
         if (mc_global.tty.console_flag != '\0')
         {
             handle_console (CONSOLE_SAVE);

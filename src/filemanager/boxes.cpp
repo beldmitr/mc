@@ -529,7 +529,7 @@ configure_box (void)
                                          INPUT_COMPLETE_NONE),
                 QUICK_STOP_GROUPBOX,
                 QUICK_START_GROUPBOX (N_("Pause after run")),
-                    QUICK_RADIO (pause_options_num, pause_options, &pause_after_run, NULL),
+                    QUICK_RADIO (pause_options_num, pause_options, &Execute::pause_after_run, NULL),
                 QUICK_STOP_GROUPBOX,
             QUICK_NEXT_COLUMN,
                 QUICK_START_GROUPBOX (N_("Other options")),
