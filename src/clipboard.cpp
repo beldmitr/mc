@@ -40,49 +40,20 @@
 
 #include "clipboard.hpp"
 
-/*** global variables ****************************************************************************/
-
-/* path to X clipboard utility */
-char *clipboard_store_path = NULL;
-char *clipboard_paste_path = NULL;
-
-/*** file scope macro definitions ****************************************************************/
-
-/*** file scope type declarations ****************************************************************/
-
-/*** file scope variables ************************************************************************/
-
-static const int clip_open_flags = O_CREAT | O_WRONLY | O_TRUNC | O_BINARY;
-static const mode_t clip_open_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-
-/* --------------------------------------------------------------------------------------------- */
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-/* event callback */
-gboolean
-clipboard_file_to_ext_clip (const gchar * event_group_name, const gchar * event_name,
-                            gpointer init_data, gpointer data)
+gboolean Clipboard::clipboard_file_to_ext_clip(const char*, const char*, void*, void*)
 {
-    char *tmp, *cmd;
+
+
     const char *d = getenv ("DISPLAY");
 
-    (void) event_group_name;
-    (void) event_name;
-    (void) init_data;
-    (void) data;
 
-    if (d == NULL || clipboard_store_path == NULL || clipboard_store_path[0] == '\0')
+    if (d == nullptr || clipboard_store_path == nullptr || clipboard_store_path[0] == '\0')
         return TRUE;
 
-    tmp = mc_config_get_full_path (EDIT_CLIP_FILE);
-    cmd = g_strconcat (clipboard_store_path, " ", tmp, " 2>/dev/null", (char *) NULL);
+    char *tmp = mc_config_get_full_path (EDIT_CLIP_FILE);
+    char *cmd = g_strconcat (clipboard_store_path, " ", tmp, " 2>/dev/null", (char *) NULL);
 
-    if (cmd != NULL)
+    if (cmd != nullptr)
         my_system (EXECUTE_AS_SHELL, mc_global.shell->path, cmd);
 
     g_free (cmd);
@@ -90,45 +61,33 @@ clipboard_file_to_ext_clip (const gchar * event_group_name, const gchar * event_
     return TRUE;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-/* event callback */
-gboolean
-clipboard_file_from_ext_clip (const gchar * event_group_name, const gchar * event_name,
-                              gpointer init_data, gpointer data)
+gboolean Clipboard::clipboard_file_from_ext_clip(const char*, const char*, void*, void*)
 {
-    mc_pipe_t *p;
-    int file = -1;
     const char *d = getenv ("DISPLAY");
 
-    (void) event_group_name;
-    (void) event_name;
-    (void) init_data;
-    (void) data;
-
-    if (d == NULL || clipboard_paste_path == NULL || clipboard_paste_path[0] == '\0')
+    if (d == nullptr || clipboard_paste_path == nullptr || clipboard_paste_path[0] == '\0')
         return TRUE;
 
-    p = mc_popen (clipboard_paste_path, NULL);
-    if (p == NULL)
+    mc_pipe_t *p = mc_popen(clipboard_paste_path, nullptr);
+    if (p == nullptr)
         return TRUE;            /* don't show error message */
 
     p->out.null_term = FALSE;
     p->err.null_term = TRUE;
 
+    int file = -1;
     while (TRUE)
     {
-        GError *error = NULL;
-
         p->out.len = MC_PIPE_BUFSIZE;
         p->err.len = MC_PIPE_BUFSIZE;
 
-        mc_pread (p, &error);
+        GError *error = nullptr;
+        mc_pread(p, &error);
 
-        if (error != NULL)
+        if (error != nullptr)
         {
             /* don't show error message */
-            g_error_free (error);
+            g_error_free(error);
             break;
         }
 
@@ -138,104 +97,72 @@ clipboard_file_from_ext_clip (const gchar * event_group_name, const gchar * even
 
         if (p->out.len > 0)
         {
-            ssize_t nwrite;
-
             if (file < 0)
             {
-                vfs_path_t *fname_vpath;
-
-                fname_vpath = mc_config_get_full_vpath (EDIT_CLIP_FILE);
-                file = mc_open (fname_vpath, clip_open_flags, clip_open_mode);
-                vfs_path_free (fname_vpath);
+                vfs_path_t *fname_vpath = mc_config_get_full_vpath (EDIT_CLIP_FILE);
+                file = mc_open(fname_vpath, clip_open_flags, clip_open_mode);
+                vfs_path_free(fname_vpath);
 
                 if (file < 0)
                     break;
             }
 
-            nwrite = mc_write (file, p->out.buf, p->out.len);
-            (void) nwrite;
+            mc_write(file, p->out.buf, p->out.len);
         }
     }
 
     if (file >= 0)
-        mc_close (file);
+        mc_close(file);
 
-    mc_pclose (p, NULL);
+    mc_pclose(p, nullptr);
 
     return TRUE;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-/* event callback */
-gboolean
-clipboard_text_to_file (const gchar * event_group_name, const gchar * event_name,
-                        gpointer init_data, gpointer data)
+gboolean Clipboard::clipboard_text_to_file(const char*, const char*, void*, void* data)
 {
-    int file;
-    vfs_path_t *fname_vpath = NULL;
-    size_t str_len;
-    const char *text = (const char *) data;
+    const char *text = static_cast<const char*>(data);
 
-    (void) event_group_name;
-    (void) event_name;
-    (void) init_data;
-
-    if (text == NULL)
+    if (text == nullptr)
         return FALSE;
 
-    fname_vpath = mc_config_get_full_vpath (EDIT_CLIP_FILE);
-    file = mc_open (fname_vpath, clip_open_flags, clip_open_mode);
-    vfs_path_free (fname_vpath);
+    vfs_path_t *fname_vpath = mc_config_get_full_vpath(EDIT_CLIP_FILE);
+    int file = mc_open(fname_vpath, clip_open_flags, clip_open_mode);
+    vfs_path_free(fname_vpath);
 
     if (file == -1)
         return TRUE;
 
-    str_len = strlen (text);
-    {
-        ssize_t ret;
+    size_t str_len = strlen(text);
+    mc_write(file, text, str_len);
 
-        ret = mc_write (file, text, str_len);
-        (void) ret;
-    }
-    mc_close (file);
+    mc_close(file);
     return TRUE;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-/* event callback */
-gboolean
-clipboard_text_from_file (const gchar * event_group_name, const gchar * event_name,
-                          gpointer init_data, gpointer data)
+gboolean Clipboard::clipboard_text_from_file(const char*, const char*, void*, void* data)
 {
     char buf[BUF_LARGE];
-    FILE *f;
-    char *fname = NULL;
     gboolean first = TRUE;
-    ev_clipboard_text_from_file_t *event_data = (ev_clipboard_text_from_file_t *) data;
+    auto* event_data = static_cast<ev_clipboard_text_from_file_t*>(data);
 
-    (void) event_group_name;
-    (void) event_name;
-    (void) init_data;
+    char* fname = mc_config_get_full_path(EDIT_CLIP_FILE);
+    FILE* f = fopen(fname, "r");
+    g_free(fname);
 
-    fname = mc_config_get_full_path (EDIT_CLIP_FILE);
-    f = fopen (fname, "r");
-    g_free (fname);
-
-    if (f == NULL)
+    if (f == nullptr)
     {
         event_data->ret = FALSE;
         return TRUE;
     }
 
-    *(event_data->text) = NULL;
+    *(event_data->text) = nullptr;
 
-    while (fgets (buf, sizeof (buf), f))
+    while (fgets(buf, sizeof(buf), f))
     {
         size_t len;
 
-        len = strlen (buf);
+        len = strlen(buf);
         if (len > 0)
         {
             if (buf[len - 1] == '\n')
@@ -244,23 +171,21 @@ clipboard_text_from_file (const gchar * event_group_name, const gchar * event_na
             if (first)
             {
                 first = FALSE;
-                *(event_data->text) = g_strdup (buf);
+                *(event_data->text) = g_strdup(buf);
             }
             else
             {
                 /* remove \n on EOL */
                 char *tmp;
 
-                tmp = g_strconcat (*(event_data->text), " ", buf, (char *) NULL);
-                g_free (*(event_data->text));
+                tmp = g_strconcat(*(event_data->text), " ", buf, (char *) nullptr);
+                g_free(*(event_data->text));
                 *(event_data->text) = tmp;
             }
         }
     }
 
     fclose (f);
-    event_data->ret = (*(event_data->text) != NULL);
+    event_data->ret = (*(event_data->text) != nullptr);
     return TRUE;
 }
-
-/* --------------------------------------------------------------------------------------------- */

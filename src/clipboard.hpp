@@ -2,32 +2,27 @@
  *  \brief Header: Util for external clipboard
  */
 
-#ifndef MC__CLIPBOARD_H
-#define MC__CLIPBOARD_H
+#pragma once
 
-/*** typedefs(not structures) and defined constants **********************************************/
+class Clipboard
+{
+public:
+    /* path to X clipboard utility */
+    static inline char *clipboard_store_path = nullptr;
+    static inline char *clipboard_paste_path = nullptr;
+public:
+    /* event callback */
+    static gboolean clipboard_file_to_ext_clip (const char* event_group_name, const char* event_name, void* init_data, void* data);
 
-/*** enums ***************************************************************************************/
+    /* event callback */
+    static gboolean clipboard_file_from_ext_clip (const char* event_group_name, const char* event_name, void* init_data, void* data);
 
-/*** structures declarations (and typedefs of structures)*****************************************/
+    /* event callback */
+    static gboolean clipboard_text_to_file (const char* event_group_name, const char* event_name, void* init_data, void* data);
 
-/*** global variables defined in .c file *********************************************************/
-
-extern char *clipboard_store_path;
-extern char *clipboard_paste_path;
-
-/*** declarations of public functions ************************************************************/
-
-gboolean clipboard_file_to_ext_clip (const gchar * event_group_name, const gchar * event_name,
-                                     gpointer init_data, gpointer data);
-gboolean clipboard_file_from_ext_clip (const gchar * event_group_name, const gchar * event_name,
-                                       gpointer init_data, gpointer data);
-
-gboolean clipboard_text_to_file (const gchar * event_group_name, const gchar * event_name,
-                                 gpointer init_data, gpointer data);
-gboolean clipboard_text_from_file (const gchar * event_group_name, const gchar * event_name,
-                                   gpointer init_data, gpointer data);
-
-/*** inline functions ****************************************************************************/
-
-#endif /* MC__CLIPBOARD_H */
+    /* event callback */
+    static gboolean clipboard_text_from_file (const char* event_group_name, const char* event_name, void* init_data, void* data);
+private:
+    static const int clip_open_flags = O_CREAT | O_WRONLY | O_TRUNC | O_BINARY;
+    static const mode_t clip_open_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+};

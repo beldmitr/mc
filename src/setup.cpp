@@ -384,9 +384,9 @@ void Setup::load_setup()
         mc_config_get_string(mc_global.main_config, CONFIG_MISC_SECTION, "spell_language", "en");
 #endif /* HAVE_ASPELL */
 
-    clipboard_store_path =
+    Clipboard::clipboard_store_path =
         mc_config_get_string(mc_global.main_config, CONFIG_MISC_SECTION, "clipboard_store", "");
-    clipboard_paste_path =
+    Clipboard::clipboard_paste_path =
         mc_config_get_string(mc_global.main_config, CONFIG_MISC_SECTION, "clipboard_paste", "");
 }
 
@@ -433,9 +433,9 @@ gboolean Setup::save_setup(gboolean save_options, gboolean save_panel_options)
 #endif /* HAVE_ASPELL */
 
         mc_config_set_string(mc_global.main_config, CONFIG_MISC_SECTION, "clipboard_store",
-                             clipboard_store_path);
+                             Clipboard::clipboard_store_path);
         mc_config_set_string(mc_global.main_config, CONFIG_MISC_SECTION, "clipboard_paste",
-                             clipboard_paste_path);
+                             Clipboard::clipboard_paste_path);
 
         tmp_profile = mc_config_get_full_path(MC_CONFIG_FILE);
         ret = mc_config_save_to_file(mc_global.main_config, tmp_profile, nullptr);
@@ -451,8 +451,8 @@ void Setup::done_setup()
 {
     size_t i;
 
-    g_free(clipboard_store_path);
-    g_free(clipboard_paste_path);
+    g_free(Clipboard::clipboard_store_path);
+    g_free(Clipboard::clipboard_paste_path);
     g_free(global_profile_name);
     g_free(mc_global.tty.color_terminal_string);
     g_free(mc_global.tty.term_color_string);

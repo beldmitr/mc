@@ -41,10 +41,10 @@ gboolean EventsInit::events_init(GError** mcerror)
     /* *INDENT-OFF* */
     static const event_init_t standard_events[] =
         {
-            {MCEVENT_GROUP_CORE, "clipboard_file_to_ext_clip", clipboard_file_to_ext_clip, NULL},
-            {MCEVENT_GROUP_CORE, "clipboard_file_from_ext_clip", clipboard_file_from_ext_clip, NULL},
-            {MCEVENT_GROUP_CORE, "clipboard_text_to_file", clipboard_text_to_file, NULL},
-            {MCEVENT_GROUP_CORE, "clipboard_text_from_file", clipboard_text_from_file, NULL},
+            {MCEVENT_GROUP_CORE, "clipboard_file_to_ext_clip", Clipboard::clipboard_file_to_ext_clip, NULL},
+            {MCEVENT_GROUP_CORE, "clipboard_file_from_ext_clip", Clipboard::clipboard_file_from_ext_clip, NULL},
+            {MCEVENT_GROUP_CORE, "clipboard_text_to_file", Clipboard::clipboard_text_to_file, NULL},
+            {MCEVENT_GROUP_CORE, "clipboard_text_from_file", Clipboard::clipboard_text_from_file, NULL},
 
             {MCEVENT_GROUP_CORE, "help", Help::help_interactive_display, NULL},
             {MCEVENT_GROUP_CORE, "suspend", Execute::execute_suspend, NULL},
