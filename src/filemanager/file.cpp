@@ -866,8 +866,7 @@ warn_same_file (const char *fmt, const char *a, const char *b)
     pntr.f = real_warn_same_file;
 
     if (mc_global.we_are_background)
-        return static_cast<FileProgressStatus>(parent_call(pntr.p, NULL, 3, strlen(fmt), fmt, strlen(a), a, strlen(b),
-                                                           b));
+        return static_cast<FileProgressStatus>(Background::parent_call(pntr.p, NULL, 3, strlen(fmt), fmt, strlen(a), a, strlen(b), b));
 #endif
     return real_warn_same_file (Foreground, fmt, a, b);
 }
@@ -1006,7 +1005,7 @@ do_file_error (gboolean allow_retry, const char *str)
     pntr.f = real_do_file_error;
 
     if (mc_global.we_are_background)
-        return static_cast<FileProgressStatus>(parent_call(pntr.p, NULL, 2, sizeof(allow_retry), allow_retry,
+        return static_cast<FileProgressStatus>(Background::parent_call(pntr.p, NULL, 2, sizeof(allow_retry), allow_retry,
                                                            strlen(str), str));
     else
         return real_do_file_error (Foreground, allow_retry, str);
@@ -1028,7 +1027,7 @@ query_recursive (file_op_context_t * ctx, const char *s)
     pntr.f = real_query_recursive;
 
     if (mc_global.we_are_background)
-        return static_cast<FileProgressStatus>(parent_call(pntr.p, ctx, 1, strlen(s), s));
+        return static_cast<FileProgressStatus>(Background::parent_call(pntr.p, ctx, 1, strlen(s), s));
     else
         return real_query_recursive (ctx, Foreground, s);
 }
@@ -1051,7 +1050,7 @@ query_replace (file_op_context_t * ctx, const char *src, struct stat *src_stat, 
     pntr.f = file_progress_real_query_replace;
 
     if (mc_global.we_are_background)
-        return static_cast<FileProgressStatus>(parent_call(pntr.p, ctx, 4, strlen(src), src, sizeof(struct stat),
+        return static_cast<FileProgressStatus>(Background::parent_call(pntr.p, ctx, 4, strlen(src), src, sizeof(struct stat),
                                                            src_stat,
                                                            strlen(dst), dst, sizeof(struct stat), dst_stat));
     else
@@ -2153,7 +2152,7 @@ end_bg_process (file_op_context_t * ctx, enum OperationMode mode)
     (void) mode;
     ctx->pid = 0;
 
-    unregister_task_with_pid (pid);
+    Background::unregister_task_with_pid (pid);
     /*     file_op_context_destroy(ctx); */
     return 1;
 }
@@ -3290,7 +3289,7 @@ panel_operate (void *source_panel, FileOperation operation, gboolean force_singl
     {
         int v;
 
-        v = do_background (ctx,
+        v = Background::do_background (ctx,
                            g_strconcat (op_names[operation], ": ",
                                         vfs_path_as_str (panel->cwd_vpath), (char *) NULL));
         if (v == -1)
@@ -3459,7 +3458,7 @@ panel_operate (void *source_panel, FileOperation operation, gboolean force_singl
         /* Send pid to parent with child context, it is fork and
            don't modify real parent ctx */
         ctx->pid = cur_pid;
-        parent_call ((void *) end_bg_process, ctx, 0);
+        Background::parent_call ((void *) end_bg_process, ctx, 0);
 
         vfs_shut ();
         my_exit (EXIT_SUCCESS);

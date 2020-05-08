@@ -425,7 +425,7 @@ static void
 jobs_fill_listbox (WListbox * list)
 {
     static const char *state_str[2] = { "", "" };
-    TaskList *tl;
+    Background::TaskList *tl;
 
     if (state_str[0][0] == '\0')
     {
@@ -433,7 +433,7 @@ jobs_fill_listbox (WListbox * list)
         state_str[1] = _("Stopped");
     }
 
-    for (tl = task_list; tl != NULL; tl = tl->next)
+    for (tl = Background::task_list; tl != NULL; tl = tl->next)
     {
         char *s;
 
@@ -448,7 +448,7 @@ jobs_fill_listbox (WListbox * list)
 static int
 task_cb (WButton * button, int action)
 {
-    TaskList *tl;
+    Background::TaskList *tl;
     int sig = 0;
 
     (void) button;
@@ -463,12 +463,12 @@ task_cb (WButton * button, int action)
     if (action == B_STOP)
     {
         sig = SIGSTOP;
-        tl->state = Task_Stopped;
+        tl->state = Background::Task_Stopped;
     }
     else if (action == B_RESUME)
     {
         sig = SIGCONT;
-        tl->state = Task_Running;
+        tl->state = Background::Task_Running;
     }
     else
 #endif
@@ -476,7 +476,7 @@ task_cb (WButton * button, int action)
         sig = SIGKILL;
 
     if (sig == SIGKILL)
-        unregister_task_running (tl->pid, tl->fd);
+        Background::unregister_task_running (tl->pid, tl->fd);
 
     kill (tl->pid, sig);
     listbox_remove_list (bg_list);
