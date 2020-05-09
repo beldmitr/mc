@@ -47,3 +47,5 @@ make.gcc
 make.tcc
 tests/src/editor/test-data.txt
 tests/src/vfs/extfs/helpers-list/data/config.sh
+.idea
+cmake-build-debug
