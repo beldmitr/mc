@@ -1055,7 +1055,7 @@ mc_config_t* Setup::load_setup_get_keymap_profile_config(gboolean load_from_file
     /* then load and merge one of user-defined keymap */
 
     /* 3) --keymap=<keymap> */
-    fname = load_setup_get_full_config_name(NULL, mc_args__keymap_file);
+    fname = load_setup_get_full_config_name(NULL, Args::mc_args__keymap_file);
     if (fname != nullptr && strcmp(fname, sysconfig_keymap) != 0 && strcmp(fname, share_keymap) != 0) { // TODO DB: strcmp
         load_setup_init_config_from_file(&keymap_config, fname, TRUE);
         goto done;

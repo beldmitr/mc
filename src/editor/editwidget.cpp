@@ -1187,7 +1187,7 @@ edit_mouse_callback (Widget * w, mouse_msg_t msg, mouse_event_t * event)
 gboolean
 edit_file (const vfs_path_t * file_vpath, long line)
 {
-    mcedit_arg_t arg = { (vfs_path_t *) file_vpath, line };
+    Args::mcedit_arg_t arg = { (vfs_path_t *) file_vpath, line };
     GList *files;
     gboolean ok;
 
@@ -1257,7 +1257,7 @@ edit_files (const GList * files)
 
     for (file = files; file != NULL; file = g_list_next (file))
     {
-        mcedit_arg_t *f = (mcedit_arg_t *) file->data;
+        Args::mcedit_arg_t *f = (Args::mcedit_arg_t *) file->data;
         gboolean f_ok;
 
         f_ok = edit_add_window (edit_dlg, wd->y + 1, wd->x, wd->lines - 2, wd->cols, f->file_vpath,

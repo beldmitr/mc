@@ -191,6 +191,7 @@ add_compile_definitions(USE_INTERNAL_EDIT)
 add_compile_definitions(HAVE_CHARSET)
 add_compile_definitions(ENABLE_CONFIGURE_ARGS)
 add_compile_definitions(MC_CONFIGURE_ARGS="")
+#add_compile_definitions(ENABLE_NLS)    # FIXME enable and try to compile
 
 #curses
 #add_compile_definitions(HAVE_NCURSES_H)

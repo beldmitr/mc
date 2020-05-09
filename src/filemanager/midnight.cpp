@@ -602,22 +602,22 @@ create_panels (void)
         current_mode = Setup::startup_left_mode;
         other_mode = Setup::startup_right_mode;
 
-        if (mc_run_param0 == NULL && mc_run_param1 == NULL)
+        if (Args::mc_run_param0 == NULL && Args::mc_run_param1 == NULL)
         {
             /* no arguments */
             current_dir = NULL; /* assume current dir */
             other_dir = Setup::saved_other_dir;        /* from ini */
         }
-        else if (mc_run_param0 != NULL && mc_run_param1 != NULL)
+        else if (Args::mc_run_param0 != NULL && Args::mc_run_param1 != NULL)
         {
             /* two arguments */
-            current_dir = (char *) mc_run_param0;
-            other_dir = mc_run_param1;
+            current_dir = (char *) Args::mc_run_param0;
+            other_dir = Args::mc_run_param1;
         }
         else                    /* mc_run_param0 != NULL && mc_run_param1 == NULL */
         {
             /* one argument */
-            current_dir = (char *) mc_run_param0;
+            current_dir = (char *) Args::mc_run_param0;
             other_dir = Setup::saved_other_dir;        /* from ini */
         }
     }
@@ -629,22 +629,22 @@ create_panels (void)
         current_mode = Setup::startup_right_mode;
         other_mode = Setup::startup_left_mode;
 
-        if (mc_run_param0 == NULL && mc_run_param1 == NULL)
+        if (Args::mc_run_param0 == NULL && Args::mc_run_param1 == NULL)
         {
             /* no arguments */
             current_dir = NULL; /* assume current dir */
             other_dir = Setup::saved_other_dir;        /* from ini */
         }
-        else if (mc_run_param0 != NULL && mc_run_param1 != NULL)
+        else if (Args::mc_run_param0 != NULL && Args::mc_run_param1 != NULL)
         {
             /* two arguments */
-            current_dir = (char *) mc_run_param0;
-            other_dir = mc_run_param1;
+            current_dir = (char *) Args::mc_run_param0;
+            other_dir = Args::mc_run_param1;
         }
         else                    /* mc_run_param0 != NULL && mc_run_param1 == NULL */
         {
             /* one argument */
-            current_dir = (char *) mc_run_param0;
+            current_dir = (char *) Args::mc_run_param0;
             other_dir = Setup::saved_other_dir;        /* from ini */
         }
     }
@@ -973,15 +973,15 @@ mc_maybe_editor_or_viewer (void)
     {
 #ifdef USE_INTERNAL_EDIT
     case MC_RUN_EDITOR:
-        ret = edit_files ((GList *) mc_run_param0);
+        ret = edit_files ((GList *) Args::mc_run_param0);
         break;
 #endif /* USE_INTERNAL_EDIT */
     case MC_RUN_VIEWER:
         {
             vfs_path_t *vpath = NULL;
 
-            if (mc_run_param0 != NULL && *(char *) mc_run_param0 != '\0')
-                vpath = prepend_cwd_on_local ((char *) mc_run_param0);
+            if (Args::mc_run_param0 != NULL && *(char *) Args::mc_run_param0 != '\0')
+                vpath = prepend_cwd_on_local ((char *) Args::mc_run_param0);
 
             ret = view_file (vpath, FALSE, TRUE);
             vfs_path_free (vpath);
@@ -989,7 +989,7 @@ mc_maybe_editor_or_viewer (void)
         }
 #ifdef USE_DIFF_VIEW
     case MC_RUN_DIFFVIEWER:
-        ret = dview_diff_cmd (mc_run_param0, mc_run_param1);
+        ret = dview_diff_cmd (Args::mc_run_param0, Args::mc_run_param1);
         break;
 #endif /* USE_DIFF_VIEW */
     default:
@@ -1829,7 +1829,7 @@ do_nc (void)
         ret = TRUE;
 
         /* dlg_destroy destroys even current_panel->cwd_vpath, so we have to save a copy :) */
-        if (mc_args__last_wd_file != NULL && vfs_current_is_local ())
+        if (Args::mc_args__last_wd_file != NULL && vfs_current_is_local ())
             Setup::last_wd_string = g_strdup (vfs_path_as_str (current_panel->cwd_vpath));
 
         /* don't handle VFS timestamps for dirs opened in panels */
