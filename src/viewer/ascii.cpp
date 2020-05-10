@@ -901,12 +901,12 @@ mcview_display_text (WView * view)
     view->dpy_state_bottom = state;
 
     tty_setcolor (VIEW_NORMAL_COLOR);
-    if (mcview_show_eof != NULL && mcview_show_eof[0] != '\0')
+    if (McViewer::mcview_show_eof != NULL && McViewer::mcview_show_eof[0] != '\0')
         while (row < (int) height)
         {
             widget_gotoyx (view, top + row, left);
             /* TODO: should make it no wider than the viewport */
-            tty_print_string (mcview_show_eof);
+            tty_print_string (McViewer::mcview_show_eof);
             row++;
         }
 }

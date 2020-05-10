@@ -209,7 +209,7 @@ mcview_hook (void *v)
 
     mcview_done (view);
     mcview_init (view);
-    mcview_load (view, 0, panel->dir.list[panel->selected].fname, 0, 0, 0);
+    McViewer::mcview_load (view, 0, panel->dir.list[panel->selected].fname, 0, 0, 0);
     mcview_display (view);
 }
 
@@ -377,7 +377,7 @@ mcview_load_next_prev (WView * view, int direction)
     mcview_remove_ext_script (view);
     mcview_init (view);
     if (regex_command_for (view, vfile, "View", &ext_script) == 0)
-        mcview_load (view, NULL, vfs_path_as_str (vfile), 0, 0, 0);
+        McViewer::mcview_load (view, NULL, vfs_path_as_str (vfile), 0, 0, 0);
     vfs_path_free (vfile);
     view->dir = dir;
     view->dir_idx = dir_idx;
@@ -402,7 +402,7 @@ mcview_load_file_from_history (WView * view)
         mcview_done (view);
         mcview_init (view);
 
-        mcview_load (view, NULL, filename, 0, 0, 0);
+        McViewer::mcview_load (view, NULL, filename, 0, 0, 0);
 
         view->dpy_bbar_dirty = FALSE;   /* FIXME */
         view->dirty++;

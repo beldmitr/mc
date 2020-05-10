@@ -484,22 +484,22 @@ int UserMenu::check_format_view (const char *p)
             {
                 if (strncmp (q, DEFAULT_CHARSET, 5) == 0)
                 {
-                    mcview_global_flags.hex = FALSE;
+                    McViewer::mcview_global_flags.hex = FALSE;
                     q += 4;
                 }
                 else if (strncmp (q, "hex", 3) == 0)
                 {
-                    mcview_global_flags.hex = TRUE;
+                    McViewer::mcview_global_flags.hex = TRUE;
                     q += 2;
                 }
                 else if (strncmp (q, "nroff", 5) == 0)
                 {
-                    mcview_global_flags.nroff = TRUE;
+                    McViewer::mcview_global_flags.nroff = TRUE;
                     q += 4;
                 }
                 else if (strncmp (q, "unform", 6) == 0)
                 {
-                    mcview_global_flags.nroff = FALSE;
+                    McViewer::mcview_global_flags.nroff = FALSE;
                     q += 5;
                 }
             }
@@ -699,7 +699,7 @@ void UserMenu::execute_menu_command (const WEdit * edit_widget, const char *comm
 
     if (run_view)
     {
-        mcview_viewer (vfs_path_as_str (file_name_vpath), NULL, 0, 0, 0);
+        McViewer::mcview_viewer (vfs_path_as_str (file_name_vpath), NULL, 0, 0, 0);
         dialog_switch_process_pending ();
     }
     else

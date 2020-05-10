@@ -133,7 +133,7 @@ struct WView
                                    growing buffer */
     gboolean growbuf_finished;  /* TRUE when all data has been read. */
 
-    mcview_mode_flags_t mode_flags;
+    McViewer::mcview_mode_flags_t mode_flags;
 
     /* Hex editor modes */
     gboolean hexedit_mode;      /* Hexview or Hexedit */

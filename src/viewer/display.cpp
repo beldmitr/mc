@@ -215,8 +215,8 @@ mcview_update (WView * view)
         view->dirty = 0;
         /* Raise the update skipping limit */
         dirt_limit++;
-        if (dirt_limit > mcview_max_dirt_limit)
-            dirt_limit = mcview_max_dirt_limit;
+        if (dirt_limit > McViewer::mcview_max_dirt_limit)
+            dirt_limit = McViewer::mcview_max_dirt_limit;
     }
     else if (view->dirty > 0)
     {
@@ -324,7 +324,7 @@ mcview_update_bytes_per_line (WView * view)
     g_assert (bytes != 0);
 
     view->bytes_per_line = bytes;
-    view->dirty = mcview_max_dirt_limit + 1;    /* To force refresh */
+    view->dirty = McViewer::mcview_max_dirt_limit + 1;    /* To force refresh */
 }
 
 /* --------------------------------------------------------------------------------------------- */

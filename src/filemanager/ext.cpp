@@ -351,34 +351,34 @@ exec_make_shell_string (const char *lc_data, const vfs_path_t * filename_vpath)
 static void
 exec_extension_view (void *target, char *cmd, const vfs_path_t * filename_vpath, int start_line)
 {
-    mcview_mode_flags_t def_flags = {
+    McViewer::mcview_mode_flags_t def_flags = {
         /* *INDENT-OFF* */
         .wrap = FALSE,
-        .hex = mcview_global_flags.hex,
+        .hex = McViewer::mcview_global_flags.hex,
         .magic = FALSE,
-        .nroff = mcview_global_flags.nroff
+        .nroff = McViewer::mcview_global_flags.nroff
         /* *INDENT-ON* */
     };
 
-    mcview_mode_flags_t changed_flags;
+    McViewer::mcview_mode_flags_t changed_flags;
 
-    mcview_clear_mode_flags (&changed_flags);
-    mcview_altered_flags.hex = FALSE;
-    mcview_altered_flags.nroff = FALSE;
-    if (def_flags.hex != mcview_global_flags.hex)
+    McViewer::mcview_clear_mode_flags (&changed_flags);
+    McViewer::mcview_altered_flags.hex = FALSE;
+    McViewer::mcview_altered_flags.nroff = FALSE;
+    if (def_flags.hex != McViewer::mcview_global_flags.hex)
         changed_flags.hex = TRUE;
-    if (def_flags.nroff != mcview_global_flags.nroff)
+    if (def_flags.nroff != McViewer::mcview_global_flags.nroff)
         changed_flags.nroff = TRUE;
 
     if (target == NULL)
-        mcview_viewer (cmd, filename_vpath, start_line, 0, 0);
+        McViewer::mcview_viewer (cmd, filename_vpath, start_line, 0, 0);
     else
-        mcview_load ((WView *) target, cmd, vfs_path_as_str (filename_vpath), start_line, 0, 0);
+        McViewer::mcview_load ((WView *) target, cmd, vfs_path_as_str (filename_vpath), start_line, 0, 0);
 
-    if (changed_flags.hex && !mcview_altered_flags.hex)
-        mcview_global_flags.hex = def_flags.hex;
-    if (changed_flags.nroff && !mcview_altered_flags.nroff)
-        mcview_global_flags.nroff = def_flags.nroff;
+    if (changed_flags.hex && !McViewer::mcview_altered_flags.hex)
+        McViewer::mcview_global_flags.hex = def_flags.hex;
+    if (changed_flags.nroff && !McViewer::mcview_altered_flags.nroff)
+        McViewer::mcview_global_flags.nroff = def_flags.nroff;
 
     dialog_switch_process_pending ();
 }

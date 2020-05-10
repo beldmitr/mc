@@ -49,160 +49,40 @@
 
 /*** global variables ****************************************************************************/
 
-mcview_mode_flags_t mcview_global_flags = {
+McViewer::mcview_mode_flags_t McViewer::mcview_global_flags = {
     .wrap = TRUE,
     .hex = FALSE,
     .magic = TRUE,
     .nroff = FALSE
 };
 
-mcview_mode_flags_t mcview_altered_flags = {
+McViewer::mcview_mode_flags_t McViewer::mcview_altered_flags = {
     .wrap = FALSE,
     .hex = FALSE,
     .magic = FALSE,
     .nroff = FALSE
 };
 
-gboolean mcview_remember_file_position = FALSE;
+gboolean McViewer::mcview_remember_file_position = FALSE;
 
 /* Maxlimit for skipping updates */
-int mcview_max_dirt_limit = 10;
+int McViewer::mcview_max_dirt_limit = 10;
 
 /* Scrolling is done in pages or line increments */
-gboolean mcview_mouse_move_pages = TRUE;
+gboolean McViewer::mcview_mouse_move_pages = TRUE;
 
 /* end of file will be showen from mcview_show_eof */
-char *mcview_show_eof = NULL;
+char* McViewer::mcview_show_eof = nullptr;
 
-/*** file scope macro definitions ****************************************************************/
-
-/*** file scope type declarations ****************************************************************/
-
-/*** file scope variables ************************************************************************/
-
-/* --------------------------------------------------------------------------------------------- */
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-static void
-mcview_mouse_callback (Widget * w, mouse_msg_t msg, mouse_event_t * event)
+WView* McViewer::mcview_new(int y, int x, int lines, int cols, gboolean is_panel)
 {
-    WView *view = (WView *) w;
-    gboolean ok = TRUE;
-
-    switch (msg)
-    {
-    case MSG_MOUSE_DOWN:
-        if (mcview_is_in_panel (view))
-        {
-            if (event->y == WIDGET (w->owner)->y)
-            {
-                /* return MOU_UNHANDLED */
-                event->result.abort = TRUE;
-                /* don't draw viewer over menu */
-                ok = FALSE;
-                break;
-            }
-
-            if (!widget_get_state (w, WST_FOCUSED))
-            {
-                /* Grab focus */
-                change_panel ();
-            }
-        }
-        MC_FALLTHROUGH;
-
-    case MSG_MOUSE_CLICK:
-        if (!view->mode_flags.wrap)
-        {
-            /* Scrolling left and right */
-            screen_dimen x;
-
-            x = event->x + 1;   /* FIXME */
-
-            if (x < view->data_area.width * 1 / 4)
-            {
-                mcview_move_left (view, 1);
-                event->result.repeat = msg == MSG_MOUSE_DOWN;
-            }
-            else if (x < view->data_area.width * 3 / 4)
-            {
-                /* ignore the click */
-                ok = FALSE;
-            }
-            else
-            {
-                mcview_move_right (view, 1);
-                event->result.repeat = msg == MSG_MOUSE_DOWN;
-            }
-        }
-        else
-        {
-            /* Scrolling up and down */
-            screen_dimen y;
-
-            y = event->y + 1;   /* FIXME */
-
-            if (y < view->data_area.top + view->data_area.height * 1 / 3)
-            {
-                if (mcview_mouse_move_pages)
-                    mcview_move_up (view, view->data_area.height / 2);
-                else
-                    mcview_move_up (view, 1);
-
-                event->result.repeat = msg == MSG_MOUSE_DOWN;
-            }
-            else if (y < view->data_area.top + view->data_area.height * 2 / 3)
-            {
-                /* ignore the click */
-                ok = FALSE;
-            }
-            else
-            {
-                if (mcview_mouse_move_pages)
-                    mcview_move_down (view, view->data_area.height / 2);
-                else
-                    mcview_move_down (view, 1);
-
-                event->result.repeat = msg == MSG_MOUSE_DOWN;
-            }
-        }
-        break;
-
-    case MSG_MOUSE_SCROLL_UP:
-        mcview_move_up (view, 2);
-        break;
-
-    case MSG_MOUSE_SCROLL_DOWN:
-        mcview_move_down (view, 2);
-        break;
-
-    default:
-        ok = FALSE;
-        break;
-    }
-
-    if (ok)
-        mcview_update (view);
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-WView *
-mcview_new (int y, int x, int lines, int cols, gboolean is_panel)
-{
-    WView *view;
-    Widget *w;
-
-    view = g_new0 (WView, 1);
-    w = WIDGET (view);
-    widget_init (w, y, x, lines, cols, mcview_callback, mcview_mouse_callback);
+    WView *view = g_new0(WView, 1);
+    Widget *w = WIDGET(view);
+    widget_init(w, y, x, lines, cols, mcview_callback, mcview_mouse_callback);
     w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE | WOP_TOP_SELECT);
     w->keymap = KeyBindDefaults::viewer_map;
 
-    mcview_clear_mode_flags (&view->mode_flags);
+    mcview_clear_mode_flags(&view->mode_flags);
     view->hexedit_mode = FALSE;
     view->hex_keymap = KeyBindDefaults::viewer_hex_map;
     view->hexview_in_text = FALSE;
@@ -211,115 +91,91 @@ mcview_new (int y, int x, int lines, int cols, gboolean is_panel)
     view->dpy_frame_size = is_panel ? 1 : 0;
     view->converter = str_cnv_from_term;
 
-    mcview_init (view);
+    mcview_init(view);
 
-    if (mcview_global_flags.hex)
-        mcview_toggle_hex_mode (view);
-    if (mcview_global_flags.nroff)
-        mcview_toggle_nroff_mode (view);
-    if (mcview_global_flags.wrap)
-        mcview_toggle_wrap_mode (view);
-    if (mcview_global_flags.magic)
-        mcview_toggle_magic_mode (view);
+    if (McViewer::mcview_global_flags.hex)
+        mcview_toggle_hex_mode(view);
+    if (McViewer::mcview_global_flags.nroff)
+        mcview_toggle_nroff_mode(view);
+    if (McViewer::mcview_global_flags.wrap)
+        mcview_toggle_wrap_mode(view);
+    if (McViewer::mcview_global_flags.magic)
+        mcview_toggle_magic_mode(view);
 
     return view;
 }
 
-/* --------------------------------------------------------------------------------------------- */
 /** Real view only */
-
-gboolean
-mcview_viewer (const char *command, const vfs_path_t * file_vpath, int start_line,
-               off_t search_start, off_t search_end)
+gboolean McViewer::mcview_viewer(const char* command, const vfs_path_t* file_vpath, int start_line, off_t search_start, off_t search_end)
 {
-    gboolean succeeded;
-    WView *lc_mcview;
-    WDialog *view_dlg;
-    Widget *vw, *b;
-    WGroup *g;
-
     /* Create dialog and widgets, put them on the dialog */
-    view_dlg = dlg_create (FALSE, 0, 0, 1, 1, WPOS_FULLSCREEN, FALSE, NULL, mcview_dialog_callback,
-                           NULL, "[Internal File Viewer]", NULL);
-    vw = WIDGET (view_dlg);
-    widget_want_tab (vw, TRUE);
+    WDialog* view_dlg = dlg_create(FALSE, 0, 0, 1, 1, WPOS_FULLSCREEN, FALSE, nullptr, mcview_dialog_callback, nullptr, "[Internal File Viewer]", nullptr);
+    Widget* vw = WIDGET(view_dlg);
+    widget_want_tab(vw, TRUE);
 
-    g = GROUP (view_dlg);
+    WGroup* g = GROUP(view_dlg);
 
-    lc_mcview = mcview_new (vw->y, vw->x, vw->lines - 1, vw->cols, FALSE);
-    group_add_widget_autopos (g, lc_mcview, WPOS_KEEP_ALL, NULL);
+    WView* lc_mcview = mcview_new(vw->y, vw->x, vw->lines - 1, vw->cols, FALSE);
+    group_add_widget_autopos(g, lc_mcview, WPOS_KEEP_ALL, nullptr);
 
-    b = WIDGET (buttonbar_new (TRUE));
-    group_add_widget_autopos (g, b, b->pos_flags, NULL);
+    Widget* b = WIDGET(buttonbar_new (TRUE));
+    group_add_widget_autopos(g, b, b->pos_flags, nullptr);
 
     view_dlg->get_title = mcview_get_title;
 
-    succeeded =
-        mcview_load (lc_mcview, command, vfs_path_as_str (file_vpath), start_line, search_start,
-                     search_end);
+    gboolean succeeded = mcview_load(lc_mcview, command, vfs_path_as_str (file_vpath), start_line, search_start, search_end);
 
     if (succeeded)
-        dlg_run (view_dlg);
+        dlg_run(view_dlg);
     else
-        dlg_stop (view_dlg);
+        dlg_stop(view_dlg);
 
-    if (widget_get_state (vw, WST_CLOSED))
-        dlg_destroy (view_dlg);
+    if (widget_get_state(vw, WST_CLOSED))
+        dlg_destroy(view_dlg);
 
     return succeeded;
 }
 
-/* {{{ Miscellaneous functions }}} */
-
-/* --------------------------------------------------------------------------------------------- */
-
-gboolean
-mcview_load (WView * view, const char *command, const char *file, int start_line,
-             off_t search_start, off_t search_end)
+gboolean McViewer::mcview_load(WView* view, const char* command, const char* file, int start_line, off_t search_start, off_t search_end)
 {
     gboolean retval = FALSE;
-    vfs_path_t *vpath = NULL;
+    vfs_path_t* vpath = nullptr;
 
-    g_assert (view->bytes_per_line != 0);
+    g_assert(view->bytes_per_line != 0);
 
-    view->filename_vpath = vfs_path_from_str (file);
+    view->filename_vpath = vfs_path_from_str(file);
 
     /* get working dir */
-    if (file != NULL && file[0] != '\0')
+    if (file != nullptr && file[0] != '\0')
     {
-        vfs_path_free (view->workdir_vpath);
+        vfs_path_free(view->workdir_vpath);
 
-        if (!g_path_is_absolute (file))
+        if (!g_path_is_absolute(file))
         {
-            vfs_path_t *p;
-
-            p = vfs_path_clone (vfs_get_raw_current_dir ());
-            view->workdir_vpath = vfs_path_append_new (p, file, (char *) NULL);
-            vfs_path_free (p);
+            vfs_path_t* p = vfs_path_clone(vfs_get_raw_current_dir ());
+            view->workdir_vpath = vfs_path_append_new(p, file, (char *)nullptr);
+            vfs_path_free(p);
         }
         else
         {
             /* try extract path from filename */
-            const char *fname;
-            char *dir;
-
-            fname = x_basename (file);
-            dir = g_strndup (file, (size_t) (fname - file));
-            view->workdir_vpath = vfs_path_from_str (dir);
-            g_free (dir);
+            const char *fname = x_basename(file);
+            char *dir = g_strndup (file, (size_t) (fname - file));
+            view->workdir_vpath = vfs_path_from_str(dir);
+            g_free(dir);
         }
     }
 
-    if (!mcview_is_in_panel (view))
+    if (!mcview_is_in_panel(view))
         view->dpy_text_column = 0;
 
 #ifdef HAVE_CHARSET
-    mcview_set_codeset (view);
+    mcview_set_codeset(view);
 #endif
 
-    if (command != NULL && (view->mode_flags.magic || file == NULL || file[0] == '\0'))
+    if (command != nullptr && (view->mode_flags.magic || file == nullptr || file[0] == '\0'))
         retval = mcview_load_command_output (view, command);
-    else if (file != NULL && file[0] != '\0')
+    else if (file != nullptr && file[0] != '\0')
     {
         int fd;
         char tmp[BUF_MEDIUM];
@@ -335,9 +191,9 @@ mcview_load (WView * view, const char *command, const char *file, int start_line
             mcview_close_datasource (view);
             mcview_show_error (view, tmp);
             vfs_path_free (view->filename_vpath);
-            view->filename_vpath = NULL;
+            view->filename_vpath = nullptr;
             vfs_path_free (view->workdir_vpath);
-            view->workdir_vpath = NULL;
+            view->workdir_vpath = nullptr;
             goto finish;
         }
 
@@ -350,9 +206,9 @@ mcview_load (WView * view, const char *command, const char *file, int start_line
             mcview_close_datasource (view);
             mcview_show_error (view, tmp);
             vfs_path_free (view->filename_vpath);
-            view->filename_vpath = NULL;
+            view->filename_vpath = nullptr;
             vfs_path_free (view->workdir_vpath);
-            view->workdir_vpath = NULL;
+            view->workdir_vpath = nullptr;
             goto finish;
         }
 
@@ -362,9 +218,9 @@ mcview_load (WView * view, const char *command, const char *file, int start_line
             mcview_close_datasource (view);
             mcview_show_error (view, _("Cannot view: not a regular file"));
             vfs_path_free (view->filename_vpath);
-            view->filename_vpath = NULL;
+            view->filename_vpath = nullptr;
             vfs_path_free (view->workdir_vpath);
-            view->workdir_vpath = NULL;
+            view->workdir_vpath = nullptr;
             goto finish;
         }
 
@@ -387,7 +243,7 @@ mcview_load (WView * view, const char *command, const char *file, int start_line
                     vfs_path_t *vpath1;
                     int fd1;
 
-                    tmp_filename = g_strconcat (file, decompress_extension (type), (char *) NULL);
+                    tmp_filename = g_strconcat (file, decompress_extension (type), (char *) nullptr);
                     vpath1 = vfs_path_from_str (tmp_filename);
                     g_free (tmp_filename);
                     fd1 = mc_open (vpath1, O_RDONLY | O_NONBLOCK);
@@ -414,7 +270,7 @@ mcview_load (WView * view, const char *command, const char *file, int start_line
         retval = TRUE;
     }
 
-  finish:
+    finish:
     view->command = g_strdup (command);
     view->dpy_start = 0;
     view->dpy_paragraph_skip_lines = 0;
@@ -426,17 +282,19 @@ mcview_load (WView * view, const char *command, const char *file, int start_line
     mcview_compute_areas (view);
     mcview_update_bytes_per_line (view);
 
-    if (mcview_remember_file_position && view->filename_vpath != NULL && start_line == 0)
+    if (McViewer::mcview_remember_file_position && view->filename_vpath != nullptr && start_line == 0)
     {
-        long line, col;
-        off_t new_offset, max_offset;
+        long line;
+        long col;
+        off_t new_offset;
 
-        load_file_position (view->filename_vpath, &line, &col, &new_offset, &view->saved_bookmarks);
-        max_offset = mcview_get_filesize (view) - 1;
+        load_file_position(view->filename_vpath, &line, &col, &new_offset, &view->saved_bookmarks);
+        off_t max_offset = mcview_get_filesize(view) - 1;
         if (max_offset < 0)
             new_offset = 0;
         else
             new_offset = MIN (new_offset, max_offset);
+
         if (!view->mode_flags.hex)
         {
             view->dpy_start = mcview_bol (view, new_offset, 0);
@@ -455,9 +313,113 @@ mcview_load (WView * view, const char *command, const char *file, int start_line
     view->search_end = search_end;
     view->hexedit_lownibble = FALSE;
     view->hexview_in_text = FALSE;
-    view->change_list = NULL;
+    view->change_list = nullptr;
     vfs_path_free (vpath);
     return retval;
 }
 
-/* --------------------------------------------------------------------------------------------- */
+void McViewer::mcview_clear_mode_flags (mcview_mode_flags_t* flags)
+{
+    memset(flags, 0, sizeof(*flags));
+}
+
+void McViewer::mcview_mouse_callback (Widget* w, mouse_msg_t msg, mouse_event_t* event)
+{
+    auto* view = reinterpret_cast<WView*>(w);
+    gboolean ok = TRUE;
+
+    switch (msg)
+    {
+        case MSG_MOUSE_DOWN:
+            if (mcview_is_in_panel (view))
+            {
+                if (event->y == WIDGET (w->owner)->y)
+                {
+                    /* return MOU_UNHANDLED */
+                    event->result.abort = TRUE;
+                    /* don't draw viewer over menu */
+                    ok = FALSE;
+                    break;
+                }
+
+                if (!widget_get_state (w, WST_FOCUSED))
+                {
+                    /* Grab focus */
+                    change_panel ();
+                }
+            }
+            MC_FALLTHROUGH;
+
+        case MSG_MOUSE_CLICK:
+            if (!view->mode_flags.wrap)
+            {
+                /* Scrolling left and right */
+                screen_dimen x;
+
+                x = event->x + 1;   /* FIXME */
+
+                if (x < view->data_area.width * 1 / 4)
+                {
+                    mcview_move_left (view, 1);
+                    event->result.repeat = msg == MSG_MOUSE_DOWN;
+                }
+                else if (x < view->data_area.width * 3 / 4)
+                {
+                    /* ignore the click */
+                    ok = FALSE;
+                }
+                else
+                {
+                    mcview_move_right (view, 1);
+                    event->result.repeat = msg == MSG_MOUSE_DOWN;
+                }
+            }
+            else
+            {
+                /* Scrolling up and down */
+                screen_dimen y;
+
+                y = event->y + 1;   /* FIXME */
+
+                if (y < view->data_area.top + view->data_area.height * 1 / 3)
+                {
+                    if (McViewer::mcview_mouse_move_pages)
+                        mcview_move_up (view, view->data_area.height / 2);
+                    else
+                        mcview_move_up (view, 1);
+
+                    event->result.repeat = msg == MSG_MOUSE_DOWN;
+                }
+                else if (y < view->data_area.top + view->data_area.height * 2 / 3)
+                {
+                    /* ignore the click */
+                    ok = FALSE;
+                }
+                else
+                {
+                    if (McViewer::mcview_mouse_move_pages)
+                        mcview_move_down (view, view->data_area.height / 2);
+                    else
+                        mcview_move_down (view, 1);
+
+                    event->result.repeat = msg == MSG_MOUSE_DOWN;
+                }
+            }
+            break;
+
+        case MSG_MOUSE_SCROLL_UP:
+            mcview_move_up (view, 2);
+            break;
+
+        case MSG_MOUSE_SCROLL_DOWN:
+            mcview_move_down (view, 2);
+            break;
+
+        default:
+            ok = FALSE;
+            break;
+    }
+
+    if (ok)
+        mcview_update (view);
+}

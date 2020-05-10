@@ -1167,14 +1167,14 @@ create_panel (int num, panel_view_mode_t type)
         break;
 
     case view_quick:
-        new_widget = WIDGET (mcview_new (y, x, lines, cols, TRUE));
+        new_widget = WIDGET (McViewer::mcview_new (y, x, lines, cols, TRUE));
         the_other_panel = PANEL (panels[the_other].widget);
         if (the_other_panel != NULL)
             file_name = the_other_panel->dir.list[the_other_panel->selected].fname;
         else
             file_name = "";
 
-        mcview_load ((WView *) new_widget, 0, file_name, 0, 0, 0);
+            McViewer::mcview_load ((WView *) new_widget, 0, file_name, 0, 0, 0);
         break;
 
     default:

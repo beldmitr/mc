@@ -73,7 +73,7 @@ mcview_toggle_magic_mode (WView * view)
     dir_list *dir;
     int *dir_idx;
 
-    mcview_altered_flags.magic = TRUE;
+    McViewer::mcview_altered_flags.magic = TRUE;
     view->mode_flags.magic = !view->mode_flags.magic;
 
     /* reinit view */
@@ -85,7 +85,7 @@ mcview_toggle_magic_mode (WView * view)
     view->dir_idx = NULL;
     mcview_done (view);
     mcview_init (view);
-    mcview_load (view, command, filename, 0, 0, 0);
+    McViewer::mcview_load (view, command, filename, 0, 0, 0);
     view->dir = dir;
     view->dir_idx = dir_idx;
     g_free (filename);
@@ -112,7 +112,7 @@ void
 mcview_toggle_nroff_mode (WView * view)
 {
     view->mode_flags.nroff = !view->mode_flags.nroff;
-    mcview_altered_flags.nroff = TRUE;
+    McViewer::mcview_altered_flags.nroff = TRUE;
     view->dpy_wrap_dirty = TRUE;
     view->dpy_bbar_dirty = TRUE;
     view->dirty++;
@@ -137,7 +137,7 @@ mcview_toggle_hex_mode (WView * view)
         view->hex_cursor = view->dpy_start;
         widget_want_cursor (WIDGET (view), FALSE);
     }
-    mcview_altered_flags.hex = TRUE;
+    McViewer::mcview_altered_flags.hex = TRUE;
     view->dpy_paragraph_skip_lines = 0;
     view->dpy_wrap_dirty = TRUE;
     view->dpy_bbar_dirty = TRUE;
@@ -202,7 +202,7 @@ void
 mcview_done (WView * view)
 {
     /* Save current file position */
-    if (mcview_remember_file_position && view->filename_vpath != NULL)
+    if (McViewer::mcview_remember_file_position && view->filename_vpath != NULL)
     {
         save_file_position (view->filename_vpath, -1, 0,
                             view->mode_flags.hex ? view->hex_cursor : view->dpy_start,
@@ -211,7 +211,7 @@ mcview_done (WView * view)
     }
 
     /* Write back the global viewer mode */
-    mcview_global_flags = view->mode_flags;
+    McViewer::mcview_global_flags = view->mode_flags;
 
     /* Free memory used by the viewer */
     /* view->widget needs no destructor */
@@ -394,26 +394,24 @@ mcview_get_title (const WDialog * h, size_t len)
 
 /* --------------------------------------------------------------------------------------------- */
 
-int
-mcview_calc_percent (WView * view, off_t p)
+int mcview_calc_percent (WView * view, off_t p)
 {
     const screen_dimen right = view->status_area.left + view->status_area.width;
     const screen_dimen height = view->status_area.height;
-    off_t filesize;
-    int percent;
 
     if (height < 1 || right < 4)
         return (-1);
     if (mcview_may_still_grow (view))
         return (-1);
 
-    filesize = mcview_get_filesize (view);
+    off_t filesize = mcview_get_filesize (view);
     if (view->mode_flags.hex && filesize > 0)
     {
         /* p can't be beyond the last char, only over that. Compensate for this. */
         filesize--;
     }
 
+    int percent;
     if (filesize == 0 || p >= filesize)
         percent = 100;
     else if (p > (INT_MAX / 100))
@@ -426,10 +424,3 @@ mcview_calc_percent (WView * view, off_t p)
 
 /* --------------------------------------------------------------------------------------------- */
 
-void
-mcview_clear_mode_flags (mcview_mode_flags_t * flags)
-{
-    memset (flags, 0, sizeof (*flags));
-}
-
-/* --------------------------------------------------------------------------------------------- */

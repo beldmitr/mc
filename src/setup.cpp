@@ -141,11 +141,11 @@ const struct Setup::bool_options_t Setup::bool_options[] = {
     { "full_eight_bits", &mc_global.full_eight_bits },
 #endif /* !HAVE_CHARSET */
     {"use_8th_bit_as_meta", &use_8th_bit_as_meta},
-    {"mouse_move_pages_viewer", &mcview_mouse_move_pages},
+    {"mouse_move_pages_viewer", &McViewer::mcview_mouse_move_pages},
     {"mouse_close_dialog", &mouse_close_dialog},
     {"fast_refresh", &fast_refresh},
     {"drop_menus", &drop_menus},
-    {"wrap_mode", &mcview_global_flags.wrap},
+    {"wrap_mode", &McViewer::mcview_global_flags.wrap},
     {"old_esc_mode", &old_esc_mode},
     {"cd_symlinks", &mc_global.vfs.cd_symlinks},
     {"show_all_if_ambiguous", &mc_global.widget.show_all_if_ambiguous},
@@ -192,7 +192,7 @@ const struct Setup::bool_options_t Setup::bool_options[] = {
 #endif /* USE_INTERNAL_EDIT */
     {"editor_ask_filename_before_edit", &editor_ask_filename_before_edit},
     {"nice_rotating_dash", &nice_rotating_dash},
-    {"mcview_remember_file_position", &mcview_remember_file_position},
+    {"mcview_remember_file_position", &McViewer::mcview_remember_file_position},
     {"auto_fill_mkdir_name", &auto_fill_mkdir_name},
     {"copymove_persistent_attr", &copymove_persistent_attr},
     {nullptr, nullptr}
@@ -203,7 +203,7 @@ const Setup::int_options_t Setup::int_options[] = {
     {"mouse_repeat_rate", &mou_auto_repeat},
     {"double_click_speed", &double_click_speed},
     {"old_esc_mode_timeout", &old_esc_mode_timeout},
-    {"max_dirt_limit", &mcview_max_dirt_limit},
+    {"max_dirt_limit", &McViewer::mcview_max_dirt_limit},
     {"num_history_items_recorded", &num_history_items_recorded},
 #ifdef ENABLE_VFS
     { "vfs_timeout", &vfs_timeout },
@@ -230,7 +230,7 @@ const Setup::str_options_t Setup::str_options[] = {
     {"editor_filesize_threshold", &option_filesize_threshold, "64M"},
     {"editor_stop_format_chars", &option_stop_format_chars, "-+*\\,.;:&>"},
 #endif
-    {"mcview_eof", &mcview_show_eof, ""},
+    {"mcview_eof", &McViewer::mcview_show_eof, ""},
     {nullptr, nullptr, nullptr}
 };
 
