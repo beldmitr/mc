@@ -67,7 +67,7 @@ mcview_nroff_get_char (mcview_nroff_t * nroff, int *ret_val, off_t nroff_index)
         {
             /* we need got symbol in any case */
             nroff->char_length = 1;
-            if (!mcview_get_byte (nroff->view, nroff_index, &c) || !g_ascii_isprint (c))
+            if (!Inlines::mcview_get_byte (nroff->view, nroff_index, &c) || !g_ascii_isprint (c))
                 return FALSE;
         }
     }
@@ -75,7 +75,7 @@ mcview_nroff_get_char (mcview_nroff_t * nroff, int *ret_val, off_t nroff_index)
 #endif
     {
         nroff->char_length = 1;
-        if (!mcview_get_byte (nroff->view, nroff_index, &c))
+        if (!Inlines::mcview_get_byte (nroff->view, nroff_index, &c))
             return FALSE;
     }
 
@@ -172,7 +172,7 @@ mcview_nroff_seq_info (mcview_nroff_t * nroff)
     if (!mcview_nroff_get_char (nroff, &nroff->current_char, nroff->index))
         return nroff->type;
 
-    if (!mcview_get_byte (nroff->view, nroff->index + nroff->char_length, &next) || next != '\b')
+    if (!Inlines::mcview_get_byte (nroff->view, nroff->index + nroff->char_length, &next) || next != '\b')
         return nroff->type;
 
     if (!mcview_nroff_get_char (nroff, &next2, nroff->index + 1 + nroff->char_length))
@@ -261,7 +261,7 @@ mcview_nroff_seq_prev (mcview_nroff_t * nroff)
 
     prev_index--;
 
-    if (!mcview_get_byte (nroff->view, prev_index, &prev) || prev != '\b')
+    if (!Inlines::mcview_get_byte (nroff->view, prev_index, &prev) || prev != '\b')
     {
         nroff->index = prev_index;
         mcview_nroff_seq_info (nroff);

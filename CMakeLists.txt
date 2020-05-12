@@ -206,7 +206,6 @@ add_compile_definitions(SIG_ATOMIC_VOLATILE_T=sig_atomic_t)
 
 add_compile_definitions(HAVE_SYS_UCRED_H)
 
-
 add_compile_definitions(SAVERDIR="/usr/local/libexec/mc/")
 add_compile_definitions(SYSCONFDIR="/usr/local/etc/mc/")
 add_compile_definitions(DATADIR="/usr/local/share/mc/")

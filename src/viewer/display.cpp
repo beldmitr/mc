@@ -112,7 +112,7 @@ mcview_set_buttonbar (WView * view)
     buttonbar_set_label (b, 8, view->mode_flags.magic ? Q_ ("ButtonBar|Raw")
                          : Q_ ("ButtonBar|Parse"), keymap, w);
 
-    if (!mcview_is_in_panel (view))     /* don't override some panel buttonbar keys  */
+    if (!Inlines::mcview_is_in_panel (view))     /* don't override some panel buttonbar keys  */
     {
         buttonbar_set_label (b, 3, Q_ ("ButtonBar|Quit"), keymap, w);
         buttonbar_set_label (b, 9, view->mode_flags.nroff ? Q_ ("ButtonBar|Unform")
@@ -175,7 +175,7 @@ mcview_display_status (WView * view)
             size_trunc_len (buffer, BUF_TRUNC_LEN, mcview_get_filesize (view), 0,
                             Setup::panels_options.kilobyte_si);
             tty_printf ("%9" PRIuMAX "/%s%s %s", (uintmax_t) view->dpy_end,
-                        buffer, mcview_may_still_grow (view) ? "+" : " ",
+                        buffer, Inlines::mcview_may_still_grow (view) ? "+" : " ",
 #ifdef HAVE_CHARSET
                         mc_global.source_codepage >= 0 ?
                         get_codepage_id (mc_global.source_codepage) :
@@ -267,8 +267,8 @@ mcview_compute_areas (WView * view)
 
     view_area.top = view->dpy_frame_size;
     view_area.left = view->dpy_frame_size;
-    view_area.height = mcview_dimen_doz (WIDGET (view)->lines, 2 * view->dpy_frame_size);
-    view_area.width = mcview_dimen_doz (WIDGET (view)->cols, 2 * view->dpy_frame_size);
+    view_area.height = Inlines::diff_or_zero<screen_dimen>(WIDGET (view)->lines, 2 * view->dpy_frame_size);
+    view_area.width = Inlines::diff_or_zero<screen_dimen>(WIDGET (view)->cols, 2 * view->dpy_frame_size);
 
     /* Most coordinates of the areas equal those of the whole viewer */
     view->status_area = view_area;

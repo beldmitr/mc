@@ -128,7 +128,7 @@ mcview_toggle_hex_mode (WView * view)
     if (view->mode_flags.hex)
     {
         view->hex_cursor = view->dpy_start;
-        view->dpy_start = mcview_offset_rounddown (view->dpy_start, view->bytes_per_line);
+        view->dpy_start = Inlines::mcview_offset_rounddown (view->dpy_start, view->bytes_per_line);
         widget_want_cursor (WIDGET (view), TRUE);
     }
     else
@@ -295,7 +295,7 @@ mcview_select_encoding (WView * view)
 void
 mcview_show_error (WView * view, const char *msg)
 {
-    if (mcview_is_in_panel (view))
+    if (Inlines::mcview_is_in_panel (view))
         mcview_set_datasource_string (view, msg);
     else
         message (D_ERROR, MSG_ERROR, "%s", msg);
@@ -316,18 +316,18 @@ mcview_bol (WView * view, off_t current, off_t limit)
         return 0;
     if (current > filesize)
         return filesize;
-    if (!mcview_get_byte (view, current, &c))
+    if (!Inlines::mcview_get_byte (view, current, &c))
         return current;
     if (c == '\n')
     {
-        if (!mcview_get_byte (view, current - 1, &c))
+        if (!Inlines::mcview_get_byte (view, current - 1, &c))
             return current;
         if (c == '\r')
             current--;
     }
     while (current > 0 && current > limit)
     {
-        if (!mcview_get_byte (view, current - 1, &c))
+        if (!Inlines::mcview_get_byte (view, current - 1, &c))
             break;
         if (c == '\r' || c == '\n')
             break;
@@ -351,7 +351,7 @@ mcview_eol (WView * view, off_t current)
 
     while (TRUE)
     {
-        if (!mcview_get_byte (view, current, &c))
+        if (!Inlines::mcview_get_byte (view, current, &c))
             break;
         if (c == '\n')
         {
@@ -401,7 +401,7 @@ int mcview_calc_percent (WView * view, off_t p)
 
     if (height < 1 || right < 4)
         return (-1);
-    if (mcview_may_still_grow (view))
+    if (Inlines::mcview_may_still_grow (view))
         return (-1);
 
     off_t filesize = mcview_get_filesize (view);

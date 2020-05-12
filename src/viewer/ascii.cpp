@@ -366,7 +366,7 @@ mcview_get_next_char (WView * view, mcview_state_machine_t * state, int *c)
         return TRUE;
     }
 #endif /* HAVE_CHARSET */
-    if (!mcview_get_byte (view, state->offset, c))
+    if (!Inlines::mcview_get_byte (view, state->offset, c))
         return FALSE;
     state->offset++;
     return TRUE;
@@ -1042,7 +1042,7 @@ mcview_ascii_moveto_eol (WView * view)
         /* Get the width of the topmost paragraph. */
         mcview_state_machine_init (&state, view->dpy_start);
         mcview_display_line (view, &state, -1, NULL, &linewidth);
-        view->dpy_text_column = mcview_offset_doz (linewidth, (off_t) view->data_area.width);
+        view->dpy_text_column = Inlines::diff_or_zero<off_t>(linewidth, (off_t) view->data_area.width);
     }
 }
 

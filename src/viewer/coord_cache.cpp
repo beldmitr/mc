@@ -336,7 +336,7 @@ mcview_ccache_lookup (WView * view, coord_cache_entry_t * coord, enum ccache_typ
     {
         int c;
 
-        if (!mcview_get_byte (view, current.cc_offset, &c))
+        if (!Inlines::mcview_get_byte (view, current.cc_offset, &c))
             break;
 
         if (!cmp_func (&current, coord))
@@ -363,7 +363,7 @@ mcview_ccache_lookup (WView * view, coord_cache_entry_t * coord, enum ccache_typ
         {
             int nextc = -1;
 
-            mcview_get_byte_indexed (view, current.cc_offset, 1, &nextc);
+            Inlines::mcview_get_byte_indexed (view, current.cc_offset, 1, &nextc);
 
             /* Ignore '\r' if it is followed by '\r' or '\n'. If it is
              * followed by anything else, it is a Mac line ending and
@@ -389,8 +389,8 @@ mcview_ccache_lookup (WView * view, coord_cache_entry_t * coord, enum ccache_typ
         }
         else if (c == '\t')
         {
-            next.cc_column = mcview_offset_rounddown (current.cc_column, 8) + 8;
-            next.cc_nroff_column = mcview_offset_rounddown (current.cc_nroff_column, 8) + 8;
+            next.cc_column = Inlines::mcview_offset_rounddown (current.cc_column, 8) + 8;
+            next.cc_nroff_column = Inlines::mcview_offset_rounddown (current.cc_nroff_column, 8) + 8;
 
         }
         else if (c == '\n')
@@ -409,7 +409,7 @@ mcview_ccache_lookup (WView * view, coord_cache_entry_t * coord, enum ccache_typ
         {
         case NROFF_START:
         case NROFF_CONTINUATION:
-            nroff_state = mcview_is_nroff_sequence (view, current.cc_offset)
+            nroff_state = Inlines::mcview_is_nroff_sequence (view, current.cc_offset)
                 ? NROFF_BACKSPACE : NROFF_START;
             break;
         case NROFF_BACKSPACE:

@@ -243,7 +243,7 @@ mcview_handle_editkey (WView * view, int key)
         if (node != NULL)
             byte_val = node->value;
         else
-            mcview_get_byte (view, view->hex_cursor, &byte_val);
+            Inlines::mcview_get_byte (view, view->hex_cursor, &byte_val);
 
         if (view->hexedit_lownibble)
             byte_val = (byte_val & 0xf0) | (hexvalue);
@@ -567,14 +567,14 @@ mcview_execute_cmd (WView * view, long command)
     case CK_FileNext:
     case CK_FilePrev:
         /* Does not work in panel mode */
-        if (!mcview_is_in_panel (view))
+        if (!Inlines::mcview_is_in_panel (view))
             mcview_load_next_prev (view, command == CK_FileNext ? 1 : -1);
         break;
     case CK_History:
         mcview_load_file_from_history (view);
         break;
     case CK_Quit:
-        if (!mcview_is_in_panel (view))
+        if (!Inlines::mcview_is_in_panel (view))
             dlg_stop (DIALOG (WIDGET (view)->owner));
         break;
     case CK_Cancel:
@@ -696,7 +696,7 @@ mcview_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm, void *
     switch (msg)
     {
     case MSG_INIT:
-        if (mcview_is_in_panel (view))
+        if (Inlines::mcview_is_in_panel (view))
             add_hook (&select_file_hook, mcview_hook, view);
         else
             view->dpy_bbar_dirty = TRUE;
@@ -733,7 +733,7 @@ mcview_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm, void *
         return MSG_HANDLED;
 
     case MSG_DESTROY:
-        if (mcview_is_in_panel (view))
+        if (Inlines::mcview_is_in_panel (view))
         {
             delete_hook (&select_file_hook, mcview_hook);
 

@@ -135,7 +135,7 @@ mcview_get_ptr_file (WView * view, off_t byte_index)
     g_assert (view->datasource == DS_FILE);
 
     mcview_file_load_data (view, byte_index);
-    if (mcview_already_loaded (view->ds_file_offset, byte_index, view->ds_file_datalen))
+    if (Inlines::mcview_already_loaded (view->ds_file_offset, byte_index, view->ds_file_datalen))
         return (char *) (view->ds_file_data + (byte_index - view->ds_file_offset));
     return NULL;
 }
@@ -182,7 +182,7 @@ mcview_get_utf (WView * view, off_t byte_index, int *ch, int *ch_len)
 
         for (i = 0; i < UTF8_CHAR_LEN; i++)
         {
-            if (mcview_get_byte (view, byte_index + i, &res))
+            if (Inlines::mcview_get_byte (view, byte_index + i, &res))
                 utf8buf[i] = res;
             else
             {
@@ -285,13 +285,13 @@ mcview_file_load_data (WView * view, off_t byte_index)
 
     g_assert (view->datasource == DS_FILE);
 
-    if (mcview_already_loaded (view->ds_file_offset, byte_index, view->ds_file_datalen))
+    if (Inlines::mcview_already_loaded (view->ds_file_offset, byte_index, view->ds_file_datalen))
         return;
 
     if (byte_index >= view->ds_file_filesize)
         return;
 
-    blockoffset = mcview_offset_rounddown (byte_index, view->ds_file_datasize);
+    blockoffset = Inlines::mcview_offset_rounddown (byte_index, view->ds_file_datasize);
     if (mc_lseek (view->ds_file_fd, blockoffset, SEEK_SET) == -1)
         goto error;
 
@@ -393,7 +393,7 @@ mcview_load_command_output (WView * view, const char *command)
 
     /* Check if filter produced any output */
     mcview_set_datasource_stdio_pipe (view, p);
-    if (!mcview_get_byte (view, 0, NULL))
+    if (!Inlines::mcview_get_byte (view, 0, NULL))
     {
         mcview_close_datasource (view);
         mcview_display (view);

@@ -166,7 +166,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
         }
     }
 
-    if (!mcview_is_in_panel(view))
+    if (!Inlines::mcview_is_in_panel(view))
         view->dpy_text_column = 0;
 
 #ifdef HAVE_CHARSET
@@ -331,7 +331,7 @@ void McViewer::mcview_mouse_callback (Widget* w, mouse_msg_t msg, mouse_event_t*
     switch (msg)
     {
         case MSG_MOUSE_DOWN:
-            if (mcview_is_in_panel (view))
+            if (Inlines::mcview_is_in_panel (view))
             {
                 if (event->y == WIDGET (w->owner)->y)
                 {

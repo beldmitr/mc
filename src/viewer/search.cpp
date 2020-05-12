@@ -204,7 +204,7 @@ mcview_search_cmd_callback (const void *user_data, gsize char_offset, int *curre
     /*    view_read_continue (view, &view->search_onechar_info); *//* AB:FIXME */
     if (!view->mode_flags.nroff)
     {
-        mcview_get_byte (view, char_offset, current_char);
+        Inlines::mcview_get_byte (view, char_offset, current_char);
         return MC_SEARCH_CB_OK;
     }
 
@@ -373,7 +373,7 @@ mcview_do_search (WView * view, off_t want_search_start)
 
         search_start = growbufsize - view->search->original_len;
     }
-    while (search_start > 0 && mcview_may_still_grow (view));
+    while (search_start > 0 && Inlines::mcview_may_still_grow (view));
 
     /* After mcview_may_still_grow (view) == FALSE we have remained last chunk. Search there. */
     if (view->growbuf_in_use && !found && view->search->error == MC_SEARCH_E_NOTFOUND

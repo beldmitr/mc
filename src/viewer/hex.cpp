@@ -147,7 +147,7 @@ mcview_display_hex (WView * view)
         curr = curr->next;
     }
 
-    for (; mcview_get_byte (view, from, NULL) && row < (int) height; row++)
+    for (; Inlines::mcview_get_byte (view, from, NULL) && row < (int) height; row++)
     {
         screen_dimen col = 0;
         int bytes;              /* Number of bytes already printed on the line */
@@ -196,7 +196,7 @@ mcview_display_hex (WView * view)
 
                     for (j = 0; j < UTF8_CHAR_LEN; j++)
                     {
-                        if (mcview_get_byte (view, from + j, &res))
+                        if (Inlines::mcview_get_byte (view, from + j, &res))
                             utf8buf[j] = res;
                         else
                         {
@@ -245,7 +245,7 @@ mcview_display_hex (WView * view)
                 continue;
             }
 
-            if (!mcview_get_byte (view, from, &c))
+            if (!Inlines::mcview_get_byte (view, from, &c))
                 break;
 
             /* Save the cursor position for mcview_place_cursor() */

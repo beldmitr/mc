@@ -77,9 +77,9 @@ mcview_scroll_to_cursor (WView * view)
 
         displaysize = view->data_area.height * bytes;
         if (topleft + displaysize <= cursor)
-            topleft = mcview_offset_rounddown (cursor, bytes) - (displaysize - bytes);
+            topleft = Inlines::mcview_offset_rounddown (cursor, bytes) - (displaysize - bytes);
         if (cursor < topleft)
-            topleft = mcview_offset_rounddown (cursor, bytes);
+            topleft = Inlines::mcview_offset_rounddown (cursor, bytes);
         view->dpy_start = topleft;
         view->dpy_paragraph_skip_lines = 0;
         view->dpy_wrap_dirty = TRUE;
@@ -116,7 +116,7 @@ mcview_move_up (WView * view, off_t lines)
             view->hex_cursor -= bytes;
             if (view->hex_cursor < view->dpy_start)
             {
-                view->dpy_start = mcview_offset_doz (view->dpy_start, bytes);
+                view->dpy_start = Inlines::diff_or_zero<off_t>(view->dpy_start, bytes);
                 view->dpy_paragraph_skip_lines = 0;
                 view->dpy_wrap_dirty = TRUE;
             }
@@ -146,7 +146,7 @@ mcview_move_down (WView * view, off_t lines)
     {
         off_t i, limit;
 
-        limit = mcview_offset_doz (last_byte, (off_t) view->bytes_per_line);
+        limit = Inlines::diff_or_zero<off_t>(last_byte, (off_t) view->bytes_per_line);
 
         for (i = 0; i < lines && view->hex_cursor < limit; i++)
         {
@@ -187,7 +187,7 @@ mcview_move_left (WView * view, off_t columns)
                 view->hexedit_lownibble = !view->hexedit_lownibble;
     }
     else if (!view->mode_flags.wrap)
-        view->dpy_text_column = mcview_offset_doz (view->dpy_text_column, columns);
+        view->dpy_text_column = Inlines::diff_or_zero<off_t>(view->dpy_text_column, columns);
     mcview_movement_fixups (view, FALSE);
 }
 
@@ -201,7 +201,7 @@ mcview_move_right (WView * view, off_t columns)
         off_t last_byte;
         off_t old_cursor = view->hex_cursor;
 
-        last_byte = mcview_offset_doz (mcview_get_filesize (view), 1);
+        last_byte = Inlines::diff_or_zero<off_t>(mcview_get_filesize (view), 1);
 
         g_assert (columns == 1);
 
@@ -244,13 +244,13 @@ mcview_moveto_bottom (WView * view)
     mcview_update_filesize (view);
 
     if (view->growbuf_in_use)
-        mcview_growbuf_read_all_data (view);
+        Inlines::mcview_growbuf_read_all_data (view);
 
     filesize = mcview_get_filesize (view);
 
     if (view->mode_flags.hex)
     {
-        view->hex_cursor = mcview_offset_doz (filesize, 1);
+        view->hex_cursor = Inlines::diff_or_zero<off_t>(filesize, 1);
         mcview_movement_fixups (view, TRUE);
     }
     else
@@ -292,15 +292,15 @@ mcview_moveto_eol (WView * view)
     {
         off_t filesize;
 
-        bol = mcview_offset_rounddown (view->hex_cursor, view->bytes_per_line);
-        if (mcview_get_byte_indexed (view, bol, view->bytes_per_line - 1, NULL) == TRUE)
+        bol = Inlines::mcview_offset_rounddown (view->hex_cursor, view->bytes_per_line);
+        if (Inlines::mcview_get_byte_indexed (view, bol, view->bytes_per_line - 1, NULL) == TRUE)
         {
             view->hex_cursor = bol + view->bytes_per_line - 1;
         }
         else
         {
             filesize = mcview_get_filesize (view);
-            view->hex_cursor = mcview_offset_doz (filesize, 1);
+            view->hex_cursor = Inlines::diff_or_zero<off_t>(filesize, 1);
         }
     }
     else
