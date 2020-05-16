@@ -307,7 +307,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
         }
     }
     else if (start_line > 0)
-        mcview_moveto (view, start_line - 1, 0);
+        Move::mcview_moveto (view, start_line - 1, 0);
 
     view->search_start = search_start;
     view->search_end = search_end;
@@ -360,7 +360,7 @@ void McViewer::mcview_mouse_callback (Widget* w, mouse_msg_t msg, mouse_event_t*
 
                 if (x < view->data_area.width * 1 / 4)
                 {
-                    mcview_move_left (view, 1);
+                    Move::mcview_move_left (view, 1);
                     event->result.repeat = msg == MSG_MOUSE_DOWN;
                 }
                 else if (x < view->data_area.width * 3 / 4)
@@ -370,7 +370,7 @@ void McViewer::mcview_mouse_callback (Widget* w, mouse_msg_t msg, mouse_event_t*
                 }
                 else
                 {
-                    mcview_move_right (view, 1);
+                    Move::mcview_move_right (view, 1);
                     event->result.repeat = msg == MSG_MOUSE_DOWN;
                 }
             }
@@ -384,9 +384,9 @@ void McViewer::mcview_mouse_callback (Widget* w, mouse_msg_t msg, mouse_event_t*
                 if (y < view->data_area.top + view->data_area.height * 1 / 3)
                 {
                     if (McViewer::mcview_mouse_move_pages)
-                        mcview_move_up (view, view->data_area.height / 2);
+                        Move::mcview_move_up (view, view->data_area.height / 2);
                     else
-                        mcview_move_up (view, 1);
+                        Move::mcview_move_up (view, 1);
 
                     event->result.repeat = msg == MSG_MOUSE_DOWN;
                 }
@@ -398,9 +398,9 @@ void McViewer::mcview_mouse_callback (Widget* w, mouse_msg_t msg, mouse_event_t*
                 else
                 {
                     if (McViewer::mcview_mouse_move_pages)
-                        mcview_move_down (view, view->data_area.height / 2);
+                        Move::mcview_move_down (view, view->data_area.height / 2);
                     else
-                        mcview_move_down (view, 1);
+                        Move::mcview_move_down (view, 1);
 
                     event->result.repeat = msg == MSG_MOUSE_DOWN;
                 }
@@ -408,11 +408,11 @@ void McViewer::mcview_mouse_callback (Widget* w, mouse_msg_t msg, mouse_event_t*
             break;
 
         case MSG_MOUSE_SCROLL_UP:
-            mcview_move_up (view, 2);
+            Move::mcview_move_up (view, 2);
             break;
 
         case MSG_MOUSE_SCROLL_DOWN:
-            mcview_move_down (view, 2);
+            Move::mcview_move_down (view, 2);
             break;
 
         default:

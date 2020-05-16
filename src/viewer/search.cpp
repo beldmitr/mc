@@ -286,7 +286,7 @@ void Search::mcview_search_show_result(WView* view, std::size_t match_len)
                                                              match_len) : 0;
     view->search_end = view->search_start + match_len + nroff_len;
 
-    mcview_moveto_match (view);
+    Move::mcview_moveto_match (view);
 }
 
 gboolean Search::mcview_find(mcview_search_status_msg_t* ssm, off_t search_start, off_t search_end, std::size_t* len)

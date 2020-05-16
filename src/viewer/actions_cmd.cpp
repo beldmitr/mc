@@ -275,7 +275,7 @@ mcview_handle_editkey (WView * view, int key)
         node->value = byte_val;
 
     view->dirty++;
-    mcview_move_right (view, 1);
+    Move::mcview_move_right (view, 1);
 
     return MSG_HANDLED;
 }
@@ -440,11 +440,11 @@ mcview_execute_cmd (WView * view, long command)
         break;
     case CK_LeftQuick:
         if (!view->mode_flags.hex)
-            mcview_move_left (view, 10);
+            Move::mcview_move_left (view, 10);
         break;
     case CK_RightQuick:
         if (!view->mode_flags.hex)
-            mcview_move_right (view, 10);
+            Move::mcview_move_right (view, 10);
         break;
     case CK_Goto:
         {
@@ -453,7 +453,7 @@ mcview_execute_cmd (WView * view, long command)
             if (mcview_dialog_goto (view, &addr))
             {
                 if (addr >= 0)
-                    mcview_moveto_offset (view, addr);
+                    Move::mcview_moveto_offset (view, addr);
                 else
                 {
                     message (D_ERROR, _("Warning"), "%s", _("Invalid value"));
@@ -508,40 +508,40 @@ mcview_execute_cmd (WView * view, long command)
         mcview_toggle_nroff_mode (view);
         break;
     case CK_Home:
-        mcview_moveto_bol (view);
+        Move::mcview_moveto_bol (view);
         break;
     case CK_End:
-        mcview_moveto_eol (view);
+        Move::mcview_moveto_eol (view);
         break;
     case CK_Left:
-        mcview_move_left (view, 1);
+        Move::mcview_move_left (view, 1);
         break;
     case CK_Right:
-        mcview_move_right (view, 1);
+        Move::mcview_move_right (view, 1);
         break;
     case CK_Up:
-        mcview_move_up (view, 1);
+        Move::mcview_move_up (view, 1);
         break;
     case CK_Down:
-        mcview_move_down (view, 1);
+        Move::mcview_move_down (view, 1);
         break;
     case CK_HalfPageUp:
-        mcview_move_up (view, (view->data_area.height + 1) / 2);
+        Move::mcview_move_up (view, (view->data_area.height + 1) / 2);
         break;
     case CK_HalfPageDown:
-        mcview_move_down (view, (view->data_area.height + 1) / 2);
+        Move::mcview_move_down (view, (view->data_area.height + 1) / 2);
         break;
     case CK_PageUp:
-        mcview_move_up (view, view->data_area.height);
+        Move::mcview_move_up (view, view->data_area.height);
         break;
     case CK_PageDown:
-        mcview_move_down (view, view->data_area.height);
+        Move::mcview_move_down (view, view->data_area.height);
         break;
     case CK_Top:
-        mcview_moveto_top (view);
+        Move::mcview_moveto_top (view);
         break;
     case CK_Bottom:
-        mcview_moveto_bottom (view);
+        Move::mcview_moveto_bottom (view);
         break;
     case CK_Shell:
         Execute::toggle_subshell ();
@@ -708,7 +708,7 @@ mcview_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm, void *
 
     case MSG_CURSOR:
         if (view->mode_flags.hex)
-            mcview_place_cursor (view);
+            Move::mcview_place_cursor (view);
         return MSG_HANDLED;
 
     case MSG_KEY:

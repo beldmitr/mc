@@ -368,7 +368,7 @@ mcview_display_hex (WView * view)
     /* Be polite to the other functions */
     tty_setcolor (VIEW_NORMAL_COLOR);
 
-    mcview_place_cursor (view);
+    Move::mcview_place_cursor (view);
     view->dpy_end = from;
 }
 

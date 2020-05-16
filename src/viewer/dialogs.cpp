@@ -236,7 +236,7 @@ mcview_dialog_goto (WView * view, off_t * offset)
                 /* Line number entered by user is 1-based. */
                 if (addr > 0)
                     addr--;
-                mcview_coord_to_offset (view, offset, addr, 0);
+                Move::mcview_coord_to_offset (view, offset, addr, 0);
                 *offset = mcview_bol (view, *offset, 0);
                 break;
             case MC_VIEW_GOTO_PERCENT:
