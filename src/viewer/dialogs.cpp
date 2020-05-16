@@ -150,8 +150,8 @@ mcview_dialog_search (WView * view)
 #endif
         view->search->is_case_sensitive = mcview_search_options.case_sens;
         view->search->whole_words = mcview_search_options.whole_words;
-        view->search->search_fn = mcview_search_cmd_callback;
-        view->search->update_fn = mcview_search_update_cmd_callback;
+        view->search->search_fn = Search::mcview_search_cmd_callback;
+        view->search->update_fn = Search::mcview_search_update_cmd_callback;
     }
 
     return (view->search != NULL);

@@ -107,7 +107,7 @@ mcview_search (WView * view, gboolean start_search)
             if (view->mode_flags.hex)
                 want_search_start = view->hex_cursor;
 
-            mcview_do_search (view, want_search_start);
+            Search::mcview_do_search (view, want_search_start);
         }
     }
     else
@@ -122,7 +122,7 @@ mcview_search (WView * view, gboolean start_search)
                 want_search_start = 0;
         }
 
-        mcview_do_search (view, want_search_start);
+        Search::mcview_do_search (view, want_search_start);
     }
 }
 
@@ -166,8 +166,8 @@ mcview_continue_search_cmd (WView * view)
 #endif
                 view->search->is_case_sensitive = mcview_search_options.case_sens;
                 view->search->whole_words = mcview_search_options.whole_words;
-                view->search->search_fn = mcview_search_cmd_callback;
-                view->search->update_fn = mcview_search_update_cmd_callback;
+                view->search->search_fn = Search::mcview_search_cmd_callback;
+                view->search->update_fn = Search::mcview_search_update_cmd_callback;
 
                 mcview_search (view, FALSE);
             }
