@@ -133,7 +133,7 @@ mcview_dialog_search (WView * view)
 
     g_free (view->last_search_string);
     view->last_search_string = exp;
-    mcview_nroff_seq_free (&view->search_nroff_seq);
+    Nroff::mcview_nroff_seq_free (&view->search_nroff_seq);
     mc_search_free (view->search);
 
 #ifdef HAVE_CHARSET
@@ -141,7 +141,7 @@ mcview_dialog_search (WView * view)
 #else
     view->search = mc_search_new (view->last_search_string, NULL);
 #endif
-    view->search_nroff_seq = mcview_nroff_seq_new (view);
+    view->search_nroff_seq = Nroff::mcview_nroff_seq_new (view);
     if (view->search != NULL)
     {
         view->search->search_type = mcview_search_options.type;

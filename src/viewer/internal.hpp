@@ -328,13 +328,27 @@ void mcview_place_cursor (WView *);
 void mcview_moveto_match (WView *);
 
 /* nroff.c: */
-int mcview__get_nroff_real_len (WView * view, off_t, off_t p);
-mcview_nroff_t *mcview_nroff_seq_new_num (WView * view, off_t p);
-mcview_nroff_t *mcview_nroff_seq_new (WView * view);
-void mcview_nroff_seq_free (mcview_nroff_t **);
-nroff_type_t mcview_nroff_seq_info (mcview_nroff_t *);
-int mcview_nroff_seq_next (mcview_nroff_t *);
-int mcview_nroff_seq_prev (mcview_nroff_t *);
+class Nroff
+{
+public:
+    static int mcview__get_nroff_real_len (WView* view, off_t start, off_t length);
+
+    static mcview_nroff_t* mcview_nroff_seq_new_num(WView* view, off_t lc_index);
+
+    static mcview_nroff_t* mcview_nroff_seq_new(WView* view);
+
+    static void mcview_nroff_seq_free(mcview_nroff_t** nroff);
+
+    static nroff_type_t mcview_nroff_seq_info(mcview_nroff_t* nroff);
+
+    static int mcview_nroff_seq_next(mcview_nroff_t* nroff);
+
+    static int mcview_nroff_seq_prev(mcview_nroff_t* nroff);
+
+private:
+    static gboolean mcview_nroff_get_char(mcview_nroff_t* nroff, int* ret_val, off_t nroff_index);
+};
+
 
 /* search.c: */
 class Search

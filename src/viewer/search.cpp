@@ -62,7 +62,7 @@ mc_search_cbret_t Search::mcview_search_cmd_callback(const void* user_data, std:
         || search_cb_char_curr_index >= view->search_nroff_seq->char_length)
     {
         if (search_cb_char_curr_index != -1)
-            mcview_nroff_seq_next (view->search_nroff_seq);
+            Nroff::mcview_nroff_seq_next (view->search_nroff_seq);
 
         search_cb_char_curr_index = 0;
         if (view->search_nroff_seq->char_length > 1)
@@ -153,19 +153,19 @@ void Search::mcview_do_search(WView* view, off_t want_search_start)
             {
                 mcview_nroff_t *nroff;
 
-                nroff = mcview_nroff_seq_new_num (view, view->search_start);
-                if (mcview_nroff_seq_prev (nroff) != -1)
+                nroff = Nroff::mcview_nroff_seq_new_num (view, view->search_start);
+                if (Nroff::mcview_nroff_seq_prev (nroff) != -1)
                     search_start =
-                        -(mcview__get_nroff_real_len (view, nroff->index - 1, 2) +
+                        -(Nroff::mcview__get_nroff_real_len (view, nroff->index - 1, 2) +
                             nroff->char_length + 1);
                 else
                     search_start = -2;
 
-                mcview_nroff_seq_free (&nroff);
+                Nroff::mcview_nroff_seq_free (&nroff);
             }
             else
             {
-                search_start = mcview__get_nroff_real_len (view, view->search_start + 1, 2);
+                search_start = Nroff::mcview__get_nroff_real_len (view, view->search_start + 1, 2);
             }
             search_start += view->search_start;
         }
@@ -274,7 +274,7 @@ void Search::mcview_search_show_result(WView* view, std::size_t match_len)
 
     nroff_len =
         view->mode_flags.nroff
-        ? mcview__get_nroff_real_len (view, view->search->start_buffer,
+        ? Nroff::mcview__get_nroff_real_len (view, view->search->start_buffer,
                                       view->search->normal_offset - view->search->start_buffer) : 0;
     view->search_start = view->search->normal_offset + nroff_len;
 
@@ -282,7 +282,7 @@ void Search::mcview_search_show_result(WView* view, std::size_t match_len)
         view->search_start++;
 
     nroff_len =
-        view->mode_flags.nroff ? mcview__get_nroff_real_len (view, view->search_start - 1,
+        view->mode_flags.nroff ? Nroff::mcview__get_nroff_real_len (view, view->search_start - 1,
                                                              match_len) : 0;
     view->search_end = view->search_start + match_len + nroff_len;
 
@@ -304,7 +304,7 @@ gboolean Search::mcview_find(mcview_search_status_msg_t* ssm, off_t search_start
             gboolean ok;
 
             view->search_nroff_seq->index = search_start;
-            mcview_nroff_seq_info (view->search_nroff_seq);
+            Nroff::mcview_nroff_seq_info (view->search_nroff_seq);
 
             if (search_end > search_start + (off_t) view->search->original_len
                 && mc_search_is_fixed_search_str (view->search))
@@ -330,7 +330,7 @@ gboolean Search::mcview_find(mcview_search_status_msg_t* ssm, off_t search_start
         return FALSE;
     }
     view->search_nroff_seq->index = search_start;
-    mcview_nroff_seq_info (view->search_nroff_seq);
+    Nroff::mcview_nroff_seq_info (view->search_nroff_seq);
 
     return mc_search_run (view->search, (void *) ssm, search_start, search_end, len);
 }

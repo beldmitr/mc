@@ -150,7 +150,7 @@ mcview_continue_search_cmd (WView * view)
 #else
             view->search = mc_search_new (view->last_search_string, NULL);
 #endif
-            view->search_nroff_seq = mcview_nroff_seq_new (view);
+            view->search_nroff_seq = Nroff::mcview_nroff_seq_new (view);
 
             if (view->search == NULL)
             {
