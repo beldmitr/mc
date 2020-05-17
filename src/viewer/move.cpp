@@ -260,7 +260,7 @@ void Move::mcview_coord_to_offset(WView* view, off_t* ret_offset, off_t line, of
     coord.cc_line = line;
     coord.cc_column = column;
     coord.cc_nroff_column = column;
-    mcview_ccache_lookup (view, &coord, CCACHE_OFFSET);
+    CoordCache::mcview_ccache_lookup (view, &coord, CoordCache::CCACHE_OFFSET);
     *ret_offset = coord.cc_offset;
 }
 
@@ -269,7 +269,7 @@ void Move::mcview_offset_to_coord(WView* view, off_t* ret_line, off_t* ret_colum
     coord_cache_entry_t coord;
 
     coord.cc_offset = offset;
-    mcview_ccache_lookup (view, &coord, CCACHE_LINECOL);
+    CoordCache::mcview_ccache_lookup (view, &coord, CoordCache::CCACHE_LINECOL);
 
     *ret_line = coord.cc_line;
     *ret_column = view->mode_flags.nroff ? coord.cc_nroff_column : coord.cc_column;

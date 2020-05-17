@@ -34,11 +34,7 @@ enum view_ds
     DS_STRING                   /* Data comes from a string in memory */
 };
 
-enum ccache_type
-{
-    CCACHE_OFFSET,
-    CCACHE_LINECOL
-};
+
 
 typedef enum
 {
@@ -232,14 +228,57 @@ void mcview_ascii_moveto_bol (WView *);
 void mcview_ascii_moveto_eol (WView *);
 
 /* coord_cache.c: */
-coord_cache_t *coord_cache_new (void);
-void coord_cache_free (coord_cache_t * cache);
+class CoordCache
+{
+public:
+    enum ccache_type
+    {
+        CCACHE_OFFSET,
+        CCACHE_LINECOL
+    };
+private:
+    enum nroff_state_t
+    {
+        NROFF_START,
+        NROFF_BACKSPACE,
+        NROFF_CONTINUATION
+    };
+private:
+    static constexpr int VIEW_COORD_CACHE_GRANUL = 1024;
+    static constexpr int CACHE_CAPACITY_DELTA = 64;
+
+    // FIXME DB use `using` or std::function
+    typedef gboolean (*cmp_func_t) (const coord_cache_entry_t * a, const coord_cache_entry_t * b);
+public:
+    static coord_cache_t* coord_cache_new();
+
+    static void coord_cache_free(coord_cache_t * cache);
 
 #ifdef MC_ENABLE_DEBUGGING_CODE
-void mcview_ccache_dump (WView * view);
+    static void mcview_ccache_dump (WView* view);
 #endif
 
-void mcview_ccache_lookup (WView * view, coord_cache_entry_t * coord, enum ccache_type lookup_what);
+    /** Look up the missing components of ''coord'', which are given by
+     * ''lookup_what''. The function returns the smallest value that
+     * matches the existing components of ''coord''.
+     */
+    static void mcview_ccache_lookup(WView* view, coord_cache_entry_t* coord, enum ccache_type lookup_what);
+
+private:
+    /** Find and return the index of the last cache entry that is
+    * smaller than ''coord'', according to the criterion ''sort_by''. */
+    static size_t mcview_ccache_find(WView* view, const coord_cache_entry_t * coord, cmp_func_t cmp_func);
+
+    static gboolean mcview_coord_cache_entry_less_nroff(const coord_cache_entry_t* a, const coord_cache_entry_t* b);
+
+    static gboolean mcview_coord_cache_entry_less_plain(const coord_cache_entry_t* a, const coord_cache_entry_t* b);
+
+    static gboolean mcview_coord_cache_entry_less_offset(const coord_cache_entry_t* a, const coord_cache_entry_t* b);
+
+    /* insert new cache entry into the cache */
+    static void mcview_ccache_add_entry(coord_cache_t* cache, size_t pos, const coord_cache_entry_t* entry);
+};
+
 
 /* datasource.c: */
 class DataSource

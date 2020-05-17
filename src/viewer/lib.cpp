@@ -191,7 +191,7 @@ void Lib::mcview_done(WView* view)
     DataSource::mcview_close_datasource(view);
     /* the growing buffer is freed with the datasource */
 
-    coord_cache_free (view->coord_cache);
+    CoordCache::coord_cache_free(view->coord_cache);
     view->coord_cache = nullptr;
 
     if (view->converter == INVALID_CONV)
