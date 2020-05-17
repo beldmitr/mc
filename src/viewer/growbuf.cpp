@@ -169,7 +169,7 @@ mcview_growbuf_read_until (WView * view, off_t ofs)
 
             if (error != NULL)
             {
-                mcview_show_error (view, error->message);
+                Lib::mcview_show_error (view, error->message);
                 g_error_free (error);
                 mcview_growbuf_done (view);
                 return;
@@ -184,7 +184,7 @@ mcview_growbuf_read_until (WView * view, off_t ofs)
                  */
                 view->pipe_first_err_msg = FALSE;
 
-                mcview_show_error (view, sp->err.buf);
+                Lib::mcview_show_error (view, sp->err.buf);
             }
 
             if (sp->out.len > 0)
@@ -200,7 +200,7 @@ mcview_growbuf_read_until (WView * view, off_t ofs)
 
                     err_msg = g_strdup_printf (_("Failed to read data from child stdout:\n%s"),
                                                unix_error_string (sp->out.error));
-                    mcview_show_error (view, err_msg);
+                    Lib::mcview_show_error (view, err_msg);
                     g_free (err_msg);
                 }
 

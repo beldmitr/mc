@@ -207,8 +207,8 @@ mcview_hook (void *v)
     else
         return;
 
-    mcview_done (view);
-    mcview_init (view);
+    Lib::mcview_done (view);
+    Lib::mcview_init (view);
     McViewer::mcview_load (view, 0, panel->dir.list[panel->selected].fname, 0, 0, 0);
     mcview_display (view);
 }
@@ -373,9 +373,9 @@ mcview_load_next_prev (WView * view, int direction)
     view->dir = NULL;
     view->dir_idx = NULL;
     vfile = vfs_path_append_new (view->workdir_vpath, dir->list[*dir_idx].fname, (char *) NULL);
-    mcview_done (view);
+    Lib::mcview_done (view);
     mcview_remove_ext_script (view);
-    mcview_init (view);
+    Lib::mcview_init (view);
     if (regex_command_for (view, vfile, "View", &ext_script) == 0)
         McViewer::mcview_load (view, NULL, vfs_path_as_str (vfile), 0, 0, 0);
     vfs_path_free (vfile);
@@ -399,8 +399,8 @@ mcview_load_file_from_history (WView * view)
 
     if (filename != NULL && (action == CK_View || action == CK_Enter))
     {
-        mcview_done (view);
-        mcview_init (view);
+        Lib::mcview_done (view);
+        Lib::mcview_init (view);
 
         McViewer::mcview_load (view, NULL, filename, 0, 0, 0);
 
@@ -428,7 +428,7 @@ mcview_execute_cmd (WView * view, long command)
         break;
     case CK_HexMode:
         /* Toggle between hex view and text view */
-        mcview_toggle_hex_mode (view);
+        Lib::mcview_toggle_hex_mode (view);
         break;
     case CK_HexEditMode:
         /* Toggle between hexview and hexedit mode */
@@ -499,13 +499,13 @@ mcview_execute_cmd (WView * view, long command)
         break;
     case CK_WrapMode:
         /* Toggle between wrapped and unwrapped view */
-        mcview_toggle_wrap_mode (view);
+        Lib::mcview_toggle_wrap_mode (view);
         break;
     case CK_MagicMode:
-        mcview_toggle_magic_mode (view);
+        Lib::mcview_toggle_magic_mode (view);
         break;
     case CK_NroffMode:
-        mcview_toggle_nroff_mode (view);
+        Lib::mcview_toggle_nroff_mode (view);
         break;
     case CK_Home:
         Move::mcview_moveto_bol (view);
@@ -560,7 +560,7 @@ mcview_execute_cmd (WView * view, long command)
         break;
 #ifdef HAVE_CHARSET
     case CK_SelectCodepage:
-        mcview_select_encoding (view);
+        Lib::mcview_select_encoding (view);
         view->dirty++;
         break;
 #endif
@@ -761,7 +761,7 @@ mcview_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm, void *
             if (mc_global.midnight_shutdown)
                 mcview_ok_to_quit (view);
         }
-        mcview_done (view);
+        Lib::mcview_done (view);
         mcview_remove_ext_script (view);
         return MSG_HANDLED;
 

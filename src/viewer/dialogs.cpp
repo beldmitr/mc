@@ -237,7 +237,7 @@ mcview_dialog_goto (WView * view, off_t * offset)
                 if (addr > 0)
                     addr--;
                 Move::mcview_coord_to_offset (view, offset, addr, 0);
-                *offset = mcview_bol (view, *offset, 0);
+                *offset = Lib::mcview_bol (view, *offset, 0);
                 break;
             case MC_VIEW_GOTO_PERCENT:
                 if (addr > 100)
@@ -247,7 +247,7 @@ mcview_dialog_goto (WView * view, off_t * offset)
                     Inlines::mcview_growbuf_read_all_data (view);
                 *offset = addr * mcview_get_filesize (view) / 100;
                 if (!view->mode_flags.hex)
-                    *offset = mcview_bol (view, *offset, 0);
+                    *offset = Lib::mcview_bol (view, *offset, 0);
                 break;
             case MC_VIEW_GOTO_OFFSET_DEC:
             case MC_VIEW_GOTO_OFFSET_HEX:
@@ -256,7 +256,7 @@ mcview_dialog_goto (WView * view, off_t * offset)
                     if (view->growbuf_in_use)
                         mcview_growbuf_read_until (view, addr);
 
-                    *offset = mcview_bol (view, addr, 0);
+                    *offset = Lib::mcview_bol (view, addr, 0);
                 }
                 else
                 {

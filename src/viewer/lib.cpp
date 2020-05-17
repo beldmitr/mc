@@ -51,23 +51,7 @@
 
 #include "internal.hpp"
 
-/*** global variables ****************************************************************************/
-
-/*** file scope macro definitions ****************************************************************/
-
-/*** file scope type declarations ****************************************************************/
-
-/*** file scope variables ************************************************************************/
-
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_toggle_magic_mode (WView * view)
+void Lib::mcview_toggle_magic_mode(WView* view)
 {
     char *filename, *command;
     dir_list *dir;
@@ -81,8 +65,8 @@ mcview_toggle_magic_mode (WView * view)
     command = g_strdup (view->command);
     dir = view->dir;
     dir_idx = view->dir_idx;
-    view->dir = NULL;
-    view->dir_idx = NULL;
+    view->dir = nullptr;
+    view->dir_idx = nullptr;
     mcview_done (view);
     mcview_init (view);
     McViewer::mcview_load (view, command, filename, 0, 0, 0);
@@ -95,10 +79,7 @@ mcview_toggle_magic_mode (WView * view)
     view->dirty++;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_toggle_wrap_mode (WView * view)
+void Lib::mcview_toggle_wrap_mode(WView* view)
 {
     view->mode_flags.wrap = !view->mode_flags.wrap;
     view->dpy_wrap_dirty = TRUE;
@@ -106,10 +87,7 @@ mcview_toggle_wrap_mode (WView * view)
     view->dirty++;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_toggle_nroff_mode (WView * view)
+void Lib::mcview_toggle_nroff_mode(WView* view)
 {
     view->mode_flags.nroff = !view->mode_flags.nroff;
     McViewer::mcview_altered_flags.nroff = TRUE;
@@ -118,10 +96,7 @@ mcview_toggle_nroff_mode (WView * view)
     view->dirty++;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_toggle_hex_mode (WView * view)
+void Lib::mcview_toggle_hex_mode(WView* view)
 {
     view->mode_flags.hex = !view->mode_flags.hex;
 
@@ -144,17 +119,12 @@ mcview_toggle_hex_mode (WView * view)
     view->dirty++;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_init (WView * view)
+void Lib::mcview_init(WView* view)
 {
-    size_t i;
-
-    view->filename_vpath = NULL;
-    view->workdir_vpath = NULL;
-    view->command = NULL;
-    view->search_nroff_seq = NULL;
+    view->filename_vpath = nullptr;
+    view->workdir_vpath = nullptr;
+    view->command = nullptr;
+    view->search_nroff_seq = nullptr;
 
     mcview_set_datasource_none (view);
 
@@ -163,7 +133,7 @@ mcview_init (WView * view)
 
     view->hexedit_lownibble = FALSE;
     view->locked = FALSE;
-    view->coord_cache = NULL;
+    view->coord_cache = nullptr;
 
     view->dpy_start = 0;
     view->dpy_paragraph_skip_lines = 0;
@@ -175,7 +145,7 @@ mcview_init (WView * view)
     view->hex_cursor = 0;
     view->cursor_col = 0;
     view->cursor_row = 0;
-    view->change_list = NULL;
+    view->change_list = nullptr;
 
     /* {status,ruler,data}_area are left uninitialized */
 
@@ -187,27 +157,24 @@ mcview_init (WView * view)
     view->search_end = 0;
 
     view->marker = 0;
-    for (i = 0; i < G_N_ELEMENTS (view->marks); i++)
+    for (size_t i = 0; i < G_N_ELEMENTS (view->marks); i++)
         view->marks[i] = 0;
 
     view->update_steps = 0;
     view->update_activate = 0;
 
-    view->saved_bookmarks = NULL;
+    view->saved_bookmarks = nullptr;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_done (WView * view)
+void Lib::mcview_done(WView* view)
 {
     /* Save current file position */
-    if (McViewer::mcview_remember_file_position && view->filename_vpath != NULL)
+    if (McViewer::mcview_remember_file_position && view->filename_vpath != nullptr)
     {
         save_file_position (view->filename_vpath, -1, 0,
                             view->mode_flags.hex ? view->hex_cursor : view->dpy_start,
                             view->saved_bookmarks);
-        view->saved_bookmarks = NULL;
+        view->saved_bookmarks = nullptr;
     }
 
     /* Write back the global viewer mode */
@@ -216,7 +183,7 @@ mcview_done (WView * view)
     /* Free memory used by the viewer */
     /* view->widget needs no destructor */
     vfs_path_free (view->filename_vpath);
-    view->filename_vpath = NULL;
+    view->filename_vpath = nullptr;
     vfs_path_free (view->workdir_vpath);
     view->workdir_vpath = NULL;
     MC_PTR_FREE (view->command);
@@ -225,7 +192,7 @@ mcview_done (WView * view)
     /* the growing buffer is freed with the datasource */
 
     coord_cache_free (view->coord_cache);
-    view->coord_cache = NULL;
+    view->coord_cache = nullptr;
 
     if (view->converter == INVALID_CONV)
         view->converter = str_cnv_from_term;
@@ -237,12 +204,12 @@ mcview_done (WView * view)
     }
 
     mc_search_free (view->search);
-    view->search = NULL;
+    view->search = nullptr;
     MC_PTR_FREE (view->last_search_string);
     Nroff::mcview_nroff_seq_free (&view->search_nroff_seq);
     mcview_hexedit_free_change_list (view);
 
-    if (mc_global.mc_run_mode == MC_RUN_VIEWER && view->dir != NULL)
+    if (mc_global.mc_run_mode == MC_RUN_VIEWER && view->dir != nullptr)
     {
         /* mcviewer is the owner of file list */
         dir_list_free_list (view->dir);
@@ -250,25 +217,23 @@ mcview_done (WView * view)
         g_free (view->dir_idx);
     }
 
-    view->dir = NULL;
+    view->dir = nullptr;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
 #ifdef HAVE_CHARSET
-void
-mcview_set_codeset (WView * view)
+void Lib::mcview_select_encoding(WView* view)
 {
-    const char *cp_id = NULL;
+    if (SelCodePage::do_select_codepage())
+        mcview_set_codeset(view);
+}
 
+void Lib::mcview_set_codeset(WView* view)
+{
     view->utf8 = TRUE;
-    cp_id =
-        get_codepage_id (mc_global.source_codepage >=
-                         0 ? mc_global.source_codepage : mc_global.display_codepage);
-    if (cp_id != NULL)
+    const char *cp_id = get_codepage_id(mc_global.source_codepage >= 0 ? mc_global.source_codepage : mc_global.display_codepage);
+    if (cp_id != nullptr)
     {
-        GIConv conv;
-        conv = str_crt_conv_from (cp_id);
+        GIConv conv = str_crt_conv_from (cp_id);
         if (conv != INVALID_CONV)
         {
             if (view->converter != str_cnv_from_term)
@@ -279,21 +244,9 @@ mcview_set_codeset (WView * view)
         view->dpy_wrap_dirty = TRUE;
     }
 }
-
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_select_encoding (WView * view)
-{
-    if (SelCodePage::do_select_codepage ())
-        mcview_set_codeset (view);
-}
 #endif /* HAVE_CHARSET */
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_show_error (WView * view, const char *msg)
+void Lib::mcview_show_error(WView* view, const char* msg)
 {
     if (Inlines::mcview_is_in_panel (view))
         mcview_set_datasource_string (view, msg);
@@ -301,23 +254,19 @@ mcview_show_error (WView * view, const char *msg)
         message (D_ERROR, MSG_ERROR, "%s", msg);
 }
 
-/* --------------------------------------------------------------------------------------------- */
-/** returns index of the first char in the line
- * it is constant for all line characters
- */
-
-off_t
-mcview_bol (WView * view, off_t current, off_t limit)
+off_t Lib::mcview_bol(WView* view, off_t current, off_t limit)
 {
-    int c;
-    off_t filesize;
-    filesize = mcview_get_filesize (view);
+    off_t filesize = mcview_get_filesize (view);
     if (current <= 0)
         return 0;
+
     if (current > filesize)
         return filesize;
+
+    int c;
     if (!Inlines::mcview_get_byte (view, current, &c))
         return current;
+
     if (c == '\n')
     {
         if (!Inlines::mcview_get_byte (view, current - 1, &c))
@@ -336,13 +285,7 @@ mcview_bol (WView * view, off_t current, off_t limit)
     return current;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-/** returns index of last char on line + width EOL
- * mcview_eol of the current line == mcview_bol next line
- */
-
-off_t
-mcview_eol (WView * view, off_t current)
+off_t Lib::mcview_eol(WView* view, off_t current)
 {
     int c, prev_ch = 0;
 
@@ -368,33 +311,24 @@ mcview_eol (WView * view, off_t current)
     return current;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-char *
-mcview_get_title (const WDialog * h, size_t len)
+char* Lib::mcview_get_title(const WDialog* h, size_t len)
 {
-    const WView *view;
-    const char *modified;
-    const char *file_label;
-    const char *view_filename;
-    char *ret_str;
-
-    view = (const WView *) widget_find_by_type (CONST_WIDGET (h), mcview_callback);
-    modified = view->hexedit_mode && (view->change_list != NULL) ? "(*) " : "    ";
-    view_filename = vfs_path_as_str (view->filename_vpath);
+    const auto* view = (const WView *) widget_find_by_type(CONST_WIDGET (h), mcview_callback); // FIXME DB c++ cast
+    const char *modified = view->hexedit_mode && (view->change_list != nullptr) ? "(*) " : "    ";
+    const char *view_filename = vfs_path_as_str (view->filename_vpath);
 
     len -= 4;
 
-    file_label = view_filename != NULL ? view_filename : view->command != NULL ? view->command : "";
+    const char *file_label;
+    // TODO DB I don't really undestand 2 lines below, so you assign something to file_label and after immediately reassign it
+    file_label = view_filename != nullptr ? view_filename : view->command != nullptr ? view->command : "";
     file_label = str_term_trim (file_label, len - str_term_width1 (_("View: ")));
 
-    ret_str = g_strconcat (_("View: "), modified, file_label, (char *) NULL);
+    char *ret_str = g_strconcat (_("View: "), modified, file_label, (char *) nullptr);
     return ret_str;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-int mcview_calc_percent (WView * view, off_t p)
+int Lib::mcview_calc_percent(WView* view, off_t p)
 {
     const screen_dimen right = view->status_area.left + view->status_area.width;
     const screen_dimen height = view->status_area.height;
@@ -421,6 +355,3 @@ int mcview_calc_percent (WView * view, off_t p)
 
     return percent;
 }
-
-/* --------------------------------------------------------------------------------------------- */
-

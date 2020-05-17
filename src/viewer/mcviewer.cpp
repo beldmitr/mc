@@ -91,16 +91,16 @@ WView* McViewer::mcview_new(int y, int x, int lines, int cols, gboolean is_panel
     view->dpy_frame_size = is_panel ? 1 : 0;
     view->converter = str_cnv_from_term;
 
-    mcview_init(view);
+    Lib::mcview_init(view);
 
     if (McViewer::mcview_global_flags.hex)
-        mcview_toggle_hex_mode(view);
+        Lib::mcview_toggle_hex_mode(view);
     if (McViewer::mcview_global_flags.nroff)
-        mcview_toggle_nroff_mode(view);
+        Lib::mcview_toggle_nroff_mode(view);
     if (McViewer::mcview_global_flags.wrap)
-        mcview_toggle_wrap_mode(view);
+        Lib::mcview_toggle_wrap_mode(view);
     if (McViewer::mcview_global_flags.magic)
-        mcview_toggle_magic_mode(view);
+        Lib::mcview_toggle_magic_mode(view);
 
     return view;
 }
@@ -121,7 +121,7 @@ gboolean McViewer::mcview_viewer(const char* command, const vfs_path_t* file_vpa
     Widget* b = WIDGET(buttonbar_new (TRUE));
     group_add_widget_autopos(g, b, b->pos_flags, nullptr);
 
-    view_dlg->get_title = mcview_get_title;
+    view_dlg->get_title = Lib::mcview_get_title;
 
     gboolean succeeded = mcview_load(lc_mcview, command, vfs_path_as_str (file_vpath), start_line, search_start, search_end);
 
@@ -170,7 +170,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
         view->dpy_text_column = 0;
 
 #ifdef HAVE_CHARSET
-    mcview_set_codeset(view);
+    Lib::mcview_set_codeset(view);
 #endif
 
     if (command != nullptr && (view->mode_flags.magic || file == nullptr || file[0] == '\0'))
@@ -189,7 +189,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
             g_snprintf (tmp, sizeof (tmp), _("Cannot open \"%s\"\n%s"),
                         file, unix_error_string (errno));
             mcview_close_datasource (view);
-            mcview_show_error (view, tmp);
+            Lib::mcview_show_error (view, tmp);
             vfs_path_free (view->filename_vpath);
             view->filename_vpath = nullptr;
             vfs_path_free (view->workdir_vpath);
@@ -204,7 +204,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
             g_snprintf (tmp, sizeof (tmp), _("Cannot stat \"%s\"\n%s"),
                         file, unix_error_string (errno));
             mcview_close_datasource (view);
-            mcview_show_error (view, tmp);
+            Lib::mcview_show_error (view, tmp);
             vfs_path_free (view->filename_vpath);
             view->filename_vpath = nullptr;
             vfs_path_free (view->workdir_vpath);
@@ -216,7 +216,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
         {
             mc_close (fd);
             mcview_close_datasource (view);
-            mcview_show_error (view, _("Cannot view: not a regular file"));
+            Lib::mcview_show_error (view, _("Cannot view: not a regular file"));
             vfs_path_free (view->filename_vpath);
             view->filename_vpath = nullptr;
             vfs_path_free (view->workdir_vpath);
@@ -254,7 +254,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
                         g_snprintf (tmp, sizeof (tmp), _("Cannot open \"%s\" in parse mode\n%s"),
                                     file, unix_error_string (errno));
                         mcview_close_datasource (view);
-                        mcview_show_error (view, tmp);
+                        Lib::mcview_show_error (view, tmp);
                     }
                     else
                     {
@@ -297,7 +297,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
 
         if (!view->mode_flags.hex)
         {
-            view->dpy_start = mcview_bol (view, new_offset, 0);
+            view->dpy_start = Lib::mcview_bol (view, new_offset, 0);
             view->dpy_wrap_dirty = TRUE;
         }
         else

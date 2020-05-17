@@ -361,7 +361,7 @@ int Search::mcview_search_status_update_cb(status_msg_t* sm)
     int percent = -1;
 
     if (Setup::verbose)
-        percent = mcview_calc_percent (vsm->view, vsm->offset);
+        percent = Lib::mcview_calc_percent (vsm->view, vsm->offset);
 
     if (percent >= 0)
         label_set_textv (ssm->label, _("Searching %s: %3d%%"), vsm->view->last_search_string,

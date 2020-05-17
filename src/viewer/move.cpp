@@ -298,7 +298,7 @@ void Move::mcview_moveto_match(WView* view)
     }
     else
     {
-        view->dpy_start = mcview_bol (view, view->search_start, 0);
+        view->dpy_start = Lib::mcview_bol (view, view->search_start, 0);
         view->dpy_paragraph_skip_lines = 0;
         view->dpy_wrap_dirty = TRUE;
     }

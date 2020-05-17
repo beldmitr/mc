@@ -454,7 +454,7 @@ str_fit_to_term (const char *text, int width, align_crt_t just_mode)
 /* --------------------------------------------------------------------------------------------- */
 
 const char *
-str_term_trim (const char *text, int width)
+str_term_trim (const char *text, int width) // FIXME DB width may be size_t or unsigned int
 {
     return used_class.term_trim (text, width);
 }

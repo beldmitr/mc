@@ -597,7 +597,7 @@ mcview_display_line (WView * view, mcview_state_machine_t * state, int row,
         off_t eol;
         int retval;
 
-        eol = mcview_eol (view, state->offset);
+        eol = Lib::mcview_eol (view, state->offset);
         retval = (eol > state->offset) ? 1 : 0;
 
         mcview_state_machine_init (state, eol);
@@ -735,7 +735,7 @@ mcview_display_line (WView * view, mcview_state_machine_t * state, int row,
              * parsing and then not actually displaying it. */
             off_t eol;
 
-            eol = mcview_eol (view, state->offset);
+            eol = Lib::mcview_eol (view, state->offset);
             mcview_state_machine_init (state, eol);
             return 1;
         }
@@ -940,7 +940,7 @@ mcview_ascii_move_down (WView * view, off_t lines)
          * EOF, that can't happen. */
         if (!view->mode_flags.wrap)
         {
-            view->dpy_start = mcview_eol (view, view->dpy_start);
+            view->dpy_start = Lib::mcview_eol (view, view->dpy_start);
             view->dpy_paragraph_skip_lines = 0;
             view->dpy_wrap_dirty = TRUE;
         }
@@ -978,7 +978,7 @@ mcview_ascii_move_up (WView * view, off_t lines)
     if (!view->mode_flags.wrap)
     {
         while (lines-- != 0)
-            view->dpy_start = mcview_bol (view, view->dpy_start - 1, 0);
+            view->dpy_start = Lib::mcview_bol (view, view->dpy_start - 1, 0);
         view->dpy_paragraph_skip_lines = 0;
         view->dpy_wrap_dirty = TRUE;
     }
@@ -999,7 +999,7 @@ mcview_ascii_move_up (WView * view, off_t lines)
             lines -= view->dpy_paragraph_skip_lines;
             view->force_max = view->dpy_start;
             view->dpy_start =
-                mcview_bol (view, view->dpy_start - 1,
+                Lib::mcview_bol (view, view->dpy_start - 1,
                             view->dpy_start - MAX_BACKWARDS_WALK_IN_PARAGRAPH);
             mcview_state_machine_init (&view->dpy_state_top, view->dpy_start);
             /* This is a tricky way of denoting that we're at the end of the paragraph.

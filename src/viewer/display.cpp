@@ -128,7 +128,7 @@ mcview_display_percent (WView * view, off_t p)
 {
     int percent;
 
-    percent = mcview_calc_percent (view, p);
+    percent = Lib::mcview_calc_percent (view, p);
     if (percent >= 0)
     {
         const screen_dimen top = view->status_area.top;
