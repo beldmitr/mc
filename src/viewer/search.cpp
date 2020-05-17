@@ -103,7 +103,7 @@ mc_search_cbret_t Search::mcview_search_update_cmd_callback(const void* user_dat
 
     vsm->offset = (off_t) char_offset;
 
-    if (mcview_search_options.backwards)
+    if (Dialogs::mcview_search_options.backwards)
     {
         if (vsm->offset <= view->update_activate)
         {
@@ -146,10 +146,10 @@ void Search::mcview_do_search(WView* view, off_t want_search_start)
     if (view->search_start != 0)
     {
         if (!view->mode_flags.nroff)
-            search_start = view->search_start + (mcview_search_options.backwards ? -2 : 0);
+            search_start = view->search_start + (Dialogs::mcview_search_options.backwards ? -2 : 0);
         else
         {
-            if (mcview_search_options.backwards)
+            if (Dialogs::mcview_search_options.backwards)
             {
                 mcview_nroff_t *nroff;
 
@@ -171,7 +171,7 @@ void Search::mcview_do_search(WView* view, off_t want_search_start)
         }
     }
 
-    if (mcview_search_options.backwards && search_start < 0)
+    if (Dialogs::mcview_search_options.backwards && search_start < 0)
         search_start = 0;
 
     /* Compute the percent steps */
@@ -214,7 +214,7 @@ void Search::mcview_do_search(WView* view, off_t want_search_start)
 
     /* After mcview_may_still_grow (view) == FALSE we have remained last chunk. Search there. */
     if (view->growbuf_in_use && !found && view->search->error == MC_SEARCH_E_NOTFOUND
-        && !mcview_search_options.backwards
+        && !Dialogs::mcview_search_options.backwards
         && mcview_find (&vsm, search_start, mcview_get_filesize (view), &match_len))
     {
         mcview_search_show_result (view, match_len);
@@ -224,7 +224,7 @@ void Search::mcview_do_search(WView* view, off_t want_search_start)
     status_msg_deinit (STATUS_MSG (&vsm));
 
     if (orig_search_start != 0 && (!found && view->search->error == MC_SEARCH_E_NOTFOUND)
-        && !mcview_search_options.backwards)
+        && !Dialogs::mcview_search_options.backwards)
     {
         view->search_start = orig_search_start;
         Display::mcview_update (view);
@@ -296,7 +296,7 @@ gboolean Search::mcview_find(mcview_search_status_msg_t* ssm, off_t search_start
     view->search_numNeedSkipChar = 0;
     search_cb_char_curr_index = -1;
 
-    if (mcview_search_options.backwards)
+    if (Dialogs::mcview_search_options.backwards)
     {
         search_end = mcview_get_filesize (view);
         while (search_start >= 0)

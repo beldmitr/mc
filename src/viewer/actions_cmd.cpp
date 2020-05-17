@@ -102,7 +102,7 @@ mcview_search (WView * view, gboolean start_search)
 
     if (start_search)
     {
-        if (mcview_dialog_search (view))
+        if (Dialogs::mcview_dialog_search(view))
         {
             if (view->mode_flags.hex)
                 want_search_start = view->hex_cursor;
@@ -114,7 +114,7 @@ mcview_search (WView * view, gboolean start_search)
     {
         if (view->mode_flags.hex)
         {
-            if (!mcview_search_options.backwards)
+            if (!Dialogs::mcview_search_options.backwards)
                 want_search_start = view->hex_cursor + 1;
             else if (view->hex_cursor > 0)
                 want_search_start = view->hex_cursor - 1;
@@ -160,12 +160,12 @@ mcview_continue_search_cmd (WView * view)
             }
             else
             {
-                view->search->search_type = mcview_search_options.type;
+                view->search->search_type = Dialogs::mcview_search_options.type;
 #ifdef HAVE_CHARSET
-                view->search->is_all_charsets = mcview_search_options.all_codepages;
+                view->search->is_all_charsets = Dialogs::mcview_search_options.all_codepages;
 #endif
-                view->search->is_case_sensitive = mcview_search_options.case_sens;
-                view->search->whole_words = mcview_search_options.whole_words;
+                view->search->is_case_sensitive = Dialogs::mcview_search_options.case_sens;
+                view->search->whole_words = Dialogs::mcview_search_options.whole_words;
                 view->search->search_fn = Search::mcview_search_cmd_callback;
                 view->search->update_fn = Search::mcview_search_update_cmd_callback;
 
@@ -450,7 +450,7 @@ mcview_execute_cmd (WView * view, long command)
         {
             off_t addr;
 
-            if (mcview_dialog_goto (view, &addr))
+            if (Dialogs::mcview_dialog_goto (view, &addr))
             {
                 if (addr >= 0)
                     Move::mcview_moveto_offset (view, addr);
@@ -472,29 +472,29 @@ mcview_execute_cmd (WView * view, long command)
         mcview_continue_search_cmd (view);
         break;
     case CK_SearchForward:
-        mcview_search_options.backwards = FALSE;
+        Dialogs::mcview_search_options.backwards = FALSE;
         mcview_search (view, TRUE);
         break;
     case CK_SearchForwardContinue:
-        mcview_search_options.backwards = FALSE;
+        Dialogs::mcview_search_options.backwards = FALSE;
         mcview_continue_search_cmd (view);
         break;
     case CK_SearchBackward:
-        mcview_search_options.backwards = TRUE;
+        Dialogs::mcview_search_options.backwards = TRUE;
         mcview_search (view, TRUE);
         break;
     case CK_SearchBackwardContinue:
-        mcview_search_options.backwards = TRUE;
+        Dialogs::mcview_search_options.backwards = TRUE;
         mcview_continue_search_cmd (view);
         break;
     case CK_SearchOppositeContinue:
         {
             gboolean direction;
 
-            direction = mcview_search_options.backwards;
-            mcview_search_options.backwards = !direction;
+            direction = Dialogs::mcview_search_options.backwards;
+            Dialogs::mcview_search_options.backwards = !direction;
             mcview_continue_search_cmd (view);
-            mcview_search_options.backwards = direction;
+            Dialogs::mcview_search_options.backwards = direction;
         }
         break;
     case CK_WrapMode:

@@ -210,18 +210,11 @@ typedef struct mcview_nroff_struct
     nroff_type_t prev_type;
 } mcview_nroff_t;
 
-typedef struct mcview_search_options_t
-{
-    mc_search_type_t type;
-    gboolean case_sens;
-    gboolean backwards;
-    gboolean whole_words;
-    gboolean all_codepages;
-} mcview_search_options_t;
+
 
 /*** global variables defined in .c file *********************************************************/
 
-extern mcview_search_options_t mcview_search_options;
+
 
 /*** declarations of public functions ************************************************************/
 
@@ -265,9 +258,33 @@ gboolean mcview_load_command_output (WView *, const char *);
 void mcview_set_datasource_vfs_pipe (WView *, int);
 void mcview_set_datasource_string (WView *, const char *);
 
-/* dialog.c: */
-gboolean mcview_dialog_search (WView * view);
-gboolean mcview_dialog_goto (WView * view, off_t * offset);
+/* dialogs.c: */
+class Dialogs
+{
+private:
+    struct mcview_search_options_t
+    {
+        mc_search_type_t type;
+        gboolean case_sens;
+        gboolean backwards;
+        gboolean whole_words;
+        gboolean all_codepages;
+    };
+
+public:
+    static inline mcview_search_options_t mcview_search_options = {
+        .type = MC_SEARCH_T_NORMAL,
+        .case_sens = FALSE,
+        .backwards = FALSE,
+        .whole_words = FALSE,
+        .all_codepages = FALSE
+    };
+public:
+    static gboolean mcview_dialog_search(WView* view);
+
+    static gboolean mcview_dialog_goto(WView* view, off_t* offset);
+};
+
 
 /* display.c: */
 class Display
