@@ -84,7 +84,7 @@ void Move::mcview_move_up(WView* view, off_t lines)
 
 void Move::mcview_move_down(WView* view, off_t lines)
 {
-    off_t last_byte = mcview_get_filesize (view);
+    off_t last_byte = DataSource::mcview_get_filesize (view);
 
     if (view->mode_flags.hex)
     {
@@ -136,7 +136,7 @@ void Move::mcview_move_right(WView* view, off_t columns)
     {
         off_t old_cursor = view->hex_cursor;
 
-        off_t last_byte = Inlines::diff_or_zero<off_t>(mcview_get_filesize (view), 1);
+        off_t last_byte = Inlines::diff_or_zero<off_t>(DataSource::mcview_get_filesize (view), 1);
 
         g_assert (columns == 1);    // FIXME DB replace with the c++ assert
 
@@ -168,12 +168,12 @@ void Move::mcview_moveto_top(WView* view)
 
 void Move::mcview_moveto_bottom(WView* view)
 {
-    mcview_update_filesize (view);
+    DataSource::mcview_update_filesize (view);
 
     if (view->growbuf_in_use)
         Inlines::mcview_growbuf_read_all_data (view);
 
-    off_t filesize = mcview_get_filesize (view);
+    off_t filesize = DataSource::mcview_get_filesize (view);
 
     if (view->mode_flags.hex)
     {
@@ -216,7 +216,7 @@ void Move::mcview_moveto_eol(WView* view)
         }
         else
         {
-            off_t filesize = mcview_get_filesize (view);
+            off_t filesize = DataSource::mcview_get_filesize (view);
             view->hex_cursor = Inlines::diff_or_zero<off_t>(filesize, 1);
         }
     }

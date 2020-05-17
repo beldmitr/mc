@@ -358,7 +358,7 @@ gboolean Hex::mcview_hexedit_save_changes(WView* view)
                 /* delete the saved item from the change list */
                 view->change_list = next;
                 view->dirty++;
-                mcview_set_byte (view, curr->offset, curr->value);
+                DataSource::mcview_set_byte (view, curr->offset, curr->value);
                 g_free (curr);
             }
 

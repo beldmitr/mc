@@ -174,7 +174,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
 #endif
 
     if (command != nullptr && (view->mode_flags.magic || file == nullptr || file[0] == '\0'))
-        retval = mcview_load_command_output (view, command);
+        retval = DataSource::mcview_load_command_output (view, command);
     else if (file != nullptr && file[0] != '\0')
     {
         int fd;
@@ -188,7 +188,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
         {
             g_snprintf (tmp, sizeof (tmp), _("Cannot open \"%s\"\n%s"),
                         file, unix_error_string (errno));
-            mcview_close_datasource (view);
+            DataSource::mcview_close_datasource (view);
             Lib::mcview_show_error (view, tmp);
             vfs_path_free (view->filename_vpath);
             view->filename_vpath = nullptr;
@@ -203,7 +203,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
             mc_close (fd);
             g_snprintf (tmp, sizeof (tmp), _("Cannot stat \"%s\"\n%s"),
                         file, unix_error_string (errno));
-            mcview_close_datasource (view);
+            DataSource::mcview_close_datasource (view);
             Lib::mcview_show_error (view, tmp);
             vfs_path_free (view->filename_vpath);
             view->filename_vpath = nullptr;
@@ -215,7 +215,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
         if (!S_ISREG (st.st_mode))
         {
             mc_close (fd);
-            mcview_close_datasource (view);
+            DataSource::mcview_close_datasource (view);
             Lib::mcview_show_error (view, _("Cannot view: not a regular file"));
             vfs_path_free (view->filename_vpath);
             view->filename_vpath = nullptr;
@@ -227,7 +227,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
         if (st.st_size == 0 || mc_lseek (fd, 0, SEEK_SET) == -1)
         {
             /* Must be one of those nice files that grow (/proc) */
-            mcview_set_datasource_vfs_pipe (view, fd);
+            DataSource::mcview_set_datasource_vfs_pipe (view, fd);
         }
         else
         {
@@ -253,7 +253,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
                     {
                         g_snprintf (tmp, sizeof (tmp), _("Cannot open \"%s\" in parse mode\n%s"),
                                     file, unix_error_string (errno));
-                        mcview_close_datasource (view);
+                        DataSource::mcview_close_datasource (view);
                         Lib::mcview_show_error (view, tmp);
                     }
                     else
@@ -265,7 +265,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
                 }
             }
 
-            mcview_set_datasource_file (view, fd, &st);
+            DataSource::mcview_set_datasource_file (view, fd, &st);
         }
         retval = TRUE;
     }
@@ -289,7 +289,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
         off_t new_offset;
 
         load_file_position(view->filename_vpath, &line, &col, &new_offset, &view->saved_bookmarks);
-        off_t max_offset = mcview_get_filesize(view) - 1;
+        off_t max_offset = DataSource::mcview_get_filesize(view) - 1;
         if (max_offset < 0)
             new_offset = 0;
         else

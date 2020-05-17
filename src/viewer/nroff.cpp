@@ -220,7 +220,7 @@ gboolean Nroff::mcview_nroff_get_char(mcview_nroff_t* nroff, int* ret_val, off_t
 #ifdef HAVE_CHARSET
     if (nroff->view->utf8)
     {
-        if (!mcview_get_utf (nroff->view, nroff_index, &c, &nroff->char_length))
+        if (!DataSource::mcview_get_utf (nroff->view, nroff_index, &c, &nroff->char_length))
         {
             /* we need got symbol in any case */
             nroff->char_length = 1;

@@ -265,7 +265,7 @@ void Display::mcview_display_status(WView* view)
         {
             char buffer[BUF_TRUNC_LEN + 1];
 
-            size_trunc_len (buffer, BUF_TRUNC_LEN, mcview_get_filesize (view), 0,
+            size_trunc_len (buffer, BUF_TRUNC_LEN, DataSource::mcview_get_filesize (view), 0,
                             Setup::panels_options.kilobyte_si);
             tty_printf ("%9" PRIuMAX "/%s%s %s", (uintmax_t) view->dpy_end,
                         buffer, Inlines::mcview_may_still_grow (view) ? "+" : " ",

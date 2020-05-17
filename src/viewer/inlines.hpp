@@ -49,7 +49,7 @@ public:
     {
         g_assert (view->datasource == DS_FILE);
 
-        mcview_file_load_data(view, byte_index);
+        DataSource::mcview_file_load_data(view, byte_index);
         if (mcview_already_loaded(view->ds_file_offset, byte_index, view->ds_file_datalen)) {
             if (retval)
                 *retval = view->ds_file_data[byte_index - view->ds_file_offset];
@@ -66,8 +66,8 @@ public:
             case DS_STDIO_PIPE:
             case DS_VFS_PIPE:return Growbuf::mcview_get_byte_growing_buffer(view, offset, retval);
             case DS_FILE:return mcview_get_byte_file(view, offset, retval);
-            case DS_STRING:return mcview_get_byte_string(view, offset, retval);
-            case DS_NONE:return mcview_get_byte_none(view, offset, retval);
+            case DS_STRING:return DataSource::mcview_get_byte_string(view, offset, retval);
+            case DS_NONE:return DataSource::mcview_get_byte_none(view, offset, retval);
             default:return FALSE;
         }
     }

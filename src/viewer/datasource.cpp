@@ -55,69 +55,31 @@
 #include "lib/global.hpp"
 #include "lib/vfs/vfs.hpp"
 #include "lib/util.hpp"
-#include "lib/widget.hpp"         /* D_NORMAL, D_ERROR */
 
 #include "internal.hpp"
 
-/*** global variables ****************************************************************************/
-
-/*** file scope macro definitions ****************************************************************/
-
-/*** file scope type declarations ****************************************************************/
-
-/*** file scope variables ************************************************************************/
-
-/* --------------------------------------------------------------------------------------------- */
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-static void
-mcview_set_datasource_stdio_pipe (WView * view, mc_pipe_t * p)
-{
-    p->out.len = MC_PIPE_BUFSIZE;
-    p->out.null_term = FALSE;
-    p->err.len = MC_PIPE_BUFSIZE;
-    p->err.null_term = TRUE;
-    view->datasource = DS_STDIO_PIPE;
-    view->ds_stdio_pipe = p;
-    view->pipe_first_err_msg = TRUE;
-
-    Growbuf::mcview_growbuf_init (view);
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_set_datasource_none (WView * view)
+void DataSource::mcview_set_datasource_none(WView* view)
 {
     view->datasource = DS_NONE;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-off_t
-mcview_get_filesize (WView * view)
+off_t DataSource::mcview_get_filesize(WView* view)
 {
     switch (view->datasource)
     {
-    case DS_STDIO_PIPE:
-    case DS_VFS_PIPE:
-        return Growbuf::mcview_growbuf_filesize (view);
-    case DS_FILE:
-        return view->ds_file_filesize;
-    case DS_STRING:
-        return view->ds_string_len;
-    default:
-        return 0;
+        case DS_STDIO_PIPE:
+        case DS_VFS_PIPE:
+            return Growbuf::mcview_growbuf_filesize (view);
+        case DS_FILE:
+            return view->ds_file_filesize;
+        case DS_STRING:
+            return view->ds_string_len;
+        default:
+            return 0;
     }
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_update_filesize (WView * view)
+void DataSource::mcview_update_filesize(WView* view)
 {
     if (view->datasource == DS_FILE)
     {
@@ -127,50 +89,51 @@ mcview_update_filesize (WView * view)
     }
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-char *
-mcview_get_ptr_file (WView * view, off_t byte_index)
+char* DataSource::mcview_get_ptr_file(WView* view, off_t byte_index)
 {
     g_assert (view->datasource == DS_FILE);
 
     mcview_file_load_data (view, byte_index);
     if (Inlines::mcview_already_loaded (view->ds_file_offset, byte_index, view->ds_file_datalen))
         return (char *) (view->ds_file_data + (byte_index - view->ds_file_offset));
-    return NULL;
+    return nullptr;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-/* Invalid UTF-8 is reported as negative integers (one for each byte),
- * see ticket 3783. */
-gboolean
-mcview_get_utf (WView * view, off_t byte_index, int *ch, int *ch_len)
+char* DataSource::mcview_get_ptr_string(WView* view, off_t byte_index)
 {
-    gchar *str = NULL;
+    g_assert (view->datasource == DS_STRING);
+
+    if (byte_index >= 0 && byte_index < (off_t) view->ds_string_len)
+        return (char *) (view->ds_string_data + byte_index);
+    return nullptr;
+}
+
+gboolean DataSource::mcview_get_utf(WView* view, off_t byte_index, int* ch, int* ch_len)
+{
+    char* str = nullptr;
     int res;
-    gchar utf8buf[UTF8_CHAR_LEN + 1];
+    char utf8buf[UTF8_CHAR_LEN + 1];
 
     switch (view->datasource)
     {
-    case DS_STDIO_PIPE:
-    case DS_VFS_PIPE:
-        str = Growbuf::mcview_get_ptr_growing_buffer (view, byte_index);
-        break;
-    case DS_FILE:
-        str = mcview_get_ptr_file (view, byte_index);
-        break;
-    case DS_STRING:
-        str = mcview_get_ptr_string (view, byte_index);
-        break;
-    case DS_NONE:
-    default:
-        break;
+        case DS_STDIO_PIPE:
+        case DS_VFS_PIPE:
+            str = Growbuf::mcview_get_ptr_growing_buffer (view, byte_index);
+            break;
+        case DS_FILE:
+            str = mcview_get_ptr_file (view, byte_index);
+            break;
+        case DS_STRING:
+            str = mcview_get_ptr_string (view, byte_index);
+            break;
+        case DS_NONE:
+        default:
+            break;
     }
 
     *ch = 0;
 
-    if (str == NULL)
+    if (str == nullptr)
         return FALSE;
 
     res = g_utf8_get_char_validated (str, -1);
@@ -203,83 +166,48 @@ mcview_get_utf (WView * view, off_t byte_index, int *ch, int *ch_len)
     }
     else
     {
-        gchar *next_ch = NULL;
-
         *ch = res;
         /* Calculate UTF-8 char length */
-        next_ch = g_utf8_next_char (str);
+        char *next_ch = g_utf8_next_char (str);
         *ch_len = next_ch - str;
     }
 
     return TRUE;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-char *
-mcview_get_ptr_string (WView * view, off_t byte_index)
+gboolean DataSource::mcview_get_byte_string(WView* view, off_t byte_index, int* retval)
 {
-    g_assert (view->datasource == DS_STRING);
-
-    if (byte_index >= 0 && byte_index < (off_t) view->ds_string_len)
-        return (char *) (view->ds_string_data + byte_index);
-    return NULL;
-}
-
-/* --------------------------------------------------------------------------------------------- */
-
-gboolean
-mcview_get_byte_string (WView * view, off_t byte_index, int *retval)
-{
-    char *p;
-
-    if (retval != NULL)
+    if (retval != nullptr)
         *retval = -1;
 
-    p = mcview_get_ptr_string (view, byte_index);
-    if (p == NULL)
+    char *p = mcview_get_ptr_string (view, byte_index);
+    if (p == nullptr)
         return FALSE;
 
-    if (retval != NULL)
+    if (retval != nullptr)
         *retval = (unsigned char) (*p);
     return TRUE;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-gboolean
-mcview_get_byte_none (WView * view, off_t byte_index, int *retval)
+gboolean DataSource::mcview_get_byte_none(WView* view, off_t /* byte_index */, int* retval)
 {
-    (void) &view;
-    (void) byte_index;
-
     g_assert (view->datasource == DS_NONE);
 
-    if (retval != NULL)
+    if (retval != nullptr)
         *retval = -1;
     return FALSE;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_set_byte (WView * view, off_t offset, byte b)
+void DataSource::mcview_set_byte(WView* view, off_t offset, byte /* b */)
 {
-    (void) &b;
-
     g_assert (offset < mcview_get_filesize (view));
     g_assert (view->datasource == DS_FILE);
 
     view->ds_file_datalen = 0;  /* just force reloading */
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-/*static */
-void
-mcview_file_load_data (WView * view, off_t byte_index)
+void DataSource::mcview_file_load_data(WView* view, off_t byte_index)
 {
-    off_t blockoffset;
     ssize_t res;
     size_t bytes_read;
 
@@ -291,9 +219,9 @@ mcview_file_load_data (WView * view, off_t byte_index)
     if (byte_index >= view->ds_file_filesize)
         return;
 
-    blockoffset = Inlines::mcview_offset_rounddown (byte_index, view->ds_file_datasize);
+    off_t blockoffset = Inlines::mcview_offset_rounddown (byte_index, view->ds_file_datasize);
     if (mc_lseek (view->ds_file_fd, blockoffset, SEEK_SET) == -1)
-        goto error;
+        goto error; // FIXME DB goto
 
     bytes_read = 0;
     while (bytes_read < view->ds_file_datasize)
@@ -302,7 +230,7 @@ mcview_file_load_data (WView * view, off_t byte_index)
             mc_read (view->ds_file_fd, view->ds_file_data + bytes_read,
                      view->ds_file_datasize - bytes_read);
         if (res == -1)
-            goto error;
+            goto error; // FIXME DB goto
         if (res == 0)
             break;
         bytes_read += (size_t) res;
@@ -319,49 +247,43 @@ mcview_file_load_data (WView * view, off_t byte_index)
     }
     return;
 
-  error:
+    error:
     view->ds_file_datalen = 0;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_close_datasource (WView * view)
+void DataSource::mcview_close_datasource(WView* view)
 {
     switch (view->datasource)
     {
-    case DS_NONE:
-        break;
-    case DS_STDIO_PIPE:
-        if (view->ds_stdio_pipe != NULL)
-        {
-            Growbuf::mcview_growbuf_done (view);
-            Display::mcview_display (view);
-        }
+        case DS_NONE:
+            break;
+        case DS_STDIO_PIPE:
+            if (view->ds_stdio_pipe != nullptr)
+            {
+                Growbuf::mcview_growbuf_done (view);
+                Display::mcview_display (view);
+            }
             Growbuf::mcview_growbuf_free (view);
-        break;
-    case DS_VFS_PIPE:
-        if (view->ds_vfs_pipe != -1)
-            Growbuf::mcview_growbuf_done (view);
+            break;
+        case DS_VFS_PIPE:
+            if (view->ds_vfs_pipe != -1)
+                Growbuf::mcview_growbuf_done (view);
             Growbuf::mcview_growbuf_free (view);
-        break;
-    case DS_FILE:
-        (void) mc_close (view->ds_file_fd);
-        view->ds_file_fd = -1;
-        MC_PTR_FREE (view->ds_file_data);
-        break;
-    case DS_STRING:
-        MC_PTR_FREE (view->ds_string_data);
-    default:
-        break;
+            break;
+        case DS_FILE:
+            (void) mc_close (view->ds_file_fd);
+            view->ds_file_fd = -1;
+            MC_PTR_FREE (view->ds_file_data);
+            break;
+        case DS_STRING:
+            MC_PTR_FREE (view->ds_string_data);
+        default:
+            break;
     }
     view->datasource = DS_NONE;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_set_datasource_file (WView * view, int fd, const struct stat *st)
+void DataSource::mcview_set_datasource_file(WView* view, int fd, const struct stat* st)
 {
     view->datasource = DS_FILE;
     view->ds_file_fd = fd;
@@ -372,18 +294,13 @@ mcview_set_datasource_file (WView * view, int fd, const struct stat *st)
     view->ds_file_datasize = 4096;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-gboolean
-mcview_load_command_output (WView * view, const char *command)
+gboolean DataSource::mcview_load_command_output(WView* view, const char* command)
 {
-    mc_pipe_t *p;
-    GError *error = NULL;
-
     mcview_close_datasource (view);
 
-    p = mc_popen (command, &error);
-    if (p == NULL)
+    GError *error = nullptr;
+    mc_pipe_t *p = mc_popen (command, &error);
+    if (p == nullptr)
     {
         Display::mcview_display (view);
         Lib::mcview_show_error (view, error->message);
@@ -393,7 +310,7 @@ mcview_load_command_output (WView * view, const char *command)
 
     /* Check if filter produced any output */
     mcview_set_datasource_stdio_pipe (view, p);
-    if (!Inlines::mcview_get_byte (view, 0, NULL))
+    if (!Inlines::mcview_get_byte (view, 0, nullptr))
     {
         mcview_close_datasource (view);
         Display::mcview_display (view);
@@ -403,10 +320,7 @@ mcview_load_command_output (WView * view, const char *command)
     return TRUE;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_set_datasource_vfs_pipe (WView * view, int fd)
+void DataSource::mcview_set_datasource_vfs_pipe(WView* view, int fd)
 {
     g_assert (fd != -1);
 
@@ -416,14 +330,22 @@ mcview_set_datasource_vfs_pipe (WView * view, int fd)
     Growbuf::mcview_growbuf_init (view);
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_set_datasource_string (WView * view, const char *s)
+void DataSource::mcview_set_datasource_string(WView* view, const char* s)
 {
     view->datasource = DS_STRING;
-    view->ds_string_len = strlen (s);
-    view->ds_string_data = (byte *) g_strndup (s, view->ds_string_len);
+    view->ds_string_len = strlen(s);
+    view->ds_string_data = (byte*) g_strndup(s, view->ds_string_len);
 }
 
-/* --------------------------------------------------------------------------------------------- */
+void DataSource::mcview_set_datasource_stdio_pipe(WView* view, mc_pipe_t* p)
+{
+    p->out.len = MC_PIPE_BUFSIZE;
+    p->out.null_term = FALSE;
+    p->err.len = MC_PIPE_BUFSIZE;
+    p->err.null_term = TRUE;
+    view->datasource = DS_STDIO_PIPE;
+    view->ds_stdio_pipe = p;
+    view->pipe_first_err_msg = TRUE;
+
+    Growbuf::mcview_growbuf_init (view);
+}

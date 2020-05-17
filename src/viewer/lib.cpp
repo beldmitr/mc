@@ -126,7 +126,7 @@ void Lib::mcview_init(WView* view)
     view->command = nullptr;
     view->search_nroff_seq = nullptr;
 
-    mcview_set_datasource_none (view);
+    DataSource::mcview_set_datasource_none (view);
 
     view->growbuf_in_use = FALSE;
     /* leave the other growbuf fields uninitialized */
@@ -188,7 +188,7 @@ void Lib::mcview_done(WView* view)
     view->workdir_vpath = NULL;
     MC_PTR_FREE (view->command);
 
-    mcview_close_datasource (view);
+    DataSource::mcview_close_datasource(view);
     /* the growing buffer is freed with the datasource */
 
     coord_cache_free (view->coord_cache);
@@ -249,14 +249,14 @@ void Lib::mcview_set_codeset(WView* view)
 void Lib::mcview_show_error(WView* view, const char* msg)
 {
     if (Inlines::mcview_is_in_panel (view))
-        mcview_set_datasource_string (view, msg);
+        DataSource::mcview_set_datasource_string (view, msg);
     else
         message (D_ERROR, MSG_ERROR, "%s", msg);
 }
 
 off_t Lib::mcview_bol(WView* view, off_t current, off_t limit)
 {
-    off_t filesize = mcview_get_filesize (view);
+    off_t filesize = DataSource::mcview_get_filesize (view);
     if (current <= 0)
         return 0;
 
@@ -338,7 +338,7 @@ int Lib::mcview_calc_percent(WView* view, off_t p)
     if (Inlines::mcview_may_still_grow (view))
         return (-1);
 
-    off_t filesize = mcview_get_filesize (view);
+    off_t filesize = DataSource::mcview_get_filesize (view);
     if (view->mode_flags.hex && filesize > 0)
     {
         /* p can't be beyond the last char, only over that. Compensate for this. */

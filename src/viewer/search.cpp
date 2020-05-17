@@ -194,7 +194,7 @@ void Search::mcview_do_search(WView* view, off_t want_search_start)
         else
             growbufsize = view->search->original_len;
 
-        if (mcview_find (&vsm, search_start, mcview_get_filesize (view), &match_len))
+        if (mcview_find (&vsm, search_start, DataSource::mcview_get_filesize (view), &match_len))
         {
             mcview_search_show_result (view, match_len);
             found = TRUE;
@@ -215,7 +215,7 @@ void Search::mcview_do_search(WView* view, off_t want_search_start)
     /* After mcview_may_still_grow (view) == FALSE we have remained last chunk. Search there. */
     if (view->growbuf_in_use && !found && view->search->error == MC_SEARCH_E_NOTFOUND
         && !Dialogs::mcview_search_options.backwards
-        && mcview_find (&vsm, search_start, mcview_get_filesize (view), &match_len))
+        && mcview_find (&vsm, search_start, DataSource::mcview_get_filesize (view), &match_len))
     {
         mcview_search_show_result (view, match_len);
         found = TRUE;
@@ -281,9 +281,7 @@ void Search::mcview_search_show_result(WView* view, std::size_t match_len)
     if (!view->mode_flags.hex)
         view->search_start++;
 
-    nroff_len =
-        view->mode_flags.nroff ? Nroff::mcview__get_nroff_real_len (view, view->search_start - 1,
-                                                             match_len) : 0;
+    nroff_len = view->mode_flags.nroff ? Nroff::mcview__get_nroff_real_len (view, view->search_start - 1, match_len) : 0;
     view->search_end = view->search_start + match_len + nroff_len;
 
     Move::mcview_moveto_match (view);
@@ -298,7 +296,7 @@ gboolean Search::mcview_find(mcview_search_status_msg_t* ssm, off_t search_start
 
     if (Dialogs::mcview_search_options.backwards)
     {
-        search_end = mcview_get_filesize (view);
+        search_end = DataSource::mcview_get_filesize (view);
         while (search_start >= 0)
         {
             gboolean ok;
@@ -337,7 +335,7 @@ gboolean Search::mcview_find(mcview_search_status_msg_t* ssm, off_t search_start
 
 void Search::mcview_search_update_steps(WView* view)
 {
-    off_t filesize = mcview_get_filesize (view);
+    off_t filesize = DataSource::mcview_get_filesize (view);
 
     if (filesize != 0)
         view->update_steps = filesize / 100;
@@ -356,25 +354,23 @@ void Search::mcview_search_update_steps(WView* view)
 int Search::mcview_search_status_update_cb(status_msg_t* sm)
 {
     simple_status_msg_t *ssm = SIMPLE_STATUS_MSG (sm);
-    mcview_search_status_msg_t *vsm = (mcview_search_status_msg_t *) sm;
-    Widget *wd = WIDGET (sm->dlg);
+    auto* vsm = (mcview_search_status_msg_t*) sm; // FIXME DB static_cast ??
+    Widget* wd = WIDGET (sm->dlg);
     int percent = -1;
 
     if (Setup::verbose)
         percent = Lib::mcview_calc_percent (vsm->view, vsm->offset);
 
     if (percent >= 0)
-        label_set_textv (ssm->label, _("Searching %s: %3d%%"), vsm->view->last_search_string,
-                         percent);
+        label_set_textv (ssm->label, _("Searching %s: %3d%%"), vsm->view->last_search_string, percent);
     else
         label_set_textv (ssm->label, _("Searching %s"), vsm->view->last_search_string);
 
     if (vsm->first)
     {
-        int wd_width;
         Widget *lw = WIDGET (ssm->label);
 
-        wd_width = MAX (wd->cols, lw->cols + 6);
+        int wd_width = MAX (wd->cols, lw->cols + 6);
         widget_set_size (wd, wd->y, wd->x, wd->lines, wd_width);
         widget_set_size (lw, lw->y, wd->x + (wd->cols - lw->cols) / 2, lw->lines, lw->cols);
         vsm->first = FALSE;

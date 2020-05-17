@@ -212,7 +212,7 @@ gboolean Dialogs::mcview_dialog_goto(WView* view, off_t* offset)
                     /* read all data from pipe to get real size */
                     if (view->growbuf_in_use)
                         Inlines::mcview_growbuf_read_all_data (view);
-                    *offset = addr * mcview_get_filesize (view) / 100;
+                    *offset = addr * DataSource::mcview_get_filesize (view) / 100;
                     if (!view->mode_flags.hex)
                         *offset = Lib::mcview_bol (view, *offset, 0);
                     break;
@@ -232,7 +232,7 @@ gboolean Dialogs::mcview_dialog_goto(WView* view, off_t* offset)
                             Inlines::mcview_growbuf_read_all_data (view);
 
                         *offset = addr;
-                        addr = mcview_get_filesize (view);
+                        addr = DataSource::mcview_get_filesize (view);
                         if (*offset > addr)
                             *offset = addr;
                     }

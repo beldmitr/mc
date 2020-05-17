@@ -356,7 +356,7 @@ mcview_get_next_char (WView * view, mcview_state_machine_t * state, int *c)
     {
         int char_length = 0;
 
-        if (!mcview_get_utf (view, state->offset, c, &char_length))
+        if (!DataSource::mcview_get_utf (view, state->offset, c, &char_length))
             return FALSE;
         /* Pretend EOF if we crossed force_max */
         if (view->force_max >= 0 && state->offset + char_length > view->force_max)

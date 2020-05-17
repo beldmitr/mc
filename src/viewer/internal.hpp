@@ -242,21 +242,44 @@ void mcview_ccache_dump (WView * view);
 void mcview_ccache_lookup (WView * view, coord_cache_entry_t * coord, enum ccache_type lookup_what);
 
 /* datasource.c: */
-void mcview_set_datasource_none (WView *);
-off_t mcview_get_filesize (WView *);
-void mcview_update_filesize (WView * view);
-char *mcview_get_ptr_file (WView *, off_t);
-char *mcview_get_ptr_string (WView *, off_t);
-gboolean mcview_get_utf (WView * view, off_t byte_index, int *ch, int *ch_len);
-gboolean mcview_get_byte_string (WView *, off_t, int *);
-gboolean mcview_get_byte_none (WView *, off_t, int *);
-void mcview_set_byte (WView *, off_t, byte);
-void mcview_file_load_data (WView *, off_t);
-void mcview_close_datasource (WView *);
-void mcview_set_datasource_file (WView *, int, const struct stat *);
-gboolean mcview_load_command_output (WView *, const char *);
-void mcview_set_datasource_vfs_pipe (WView *, int);
-void mcview_set_datasource_string (WView *, const char *);
+class DataSource
+{
+public:
+    static void mcview_set_datasource_none(WView* view);
+
+    static off_t mcview_get_filesize(WView* view);
+
+    static void mcview_update_filesize(WView* view);
+
+    static char* mcview_get_ptr_file(WView* view, off_t byte_index);
+
+    static char* mcview_get_ptr_string(WView* view, off_t byte_index);
+
+    /* Invalid UTF-8 is reported as negative integers (one for each byte),
+    * see ticket 3783. */
+    static gboolean mcview_get_utf(WView* view, off_t byte_index, int* ch, int* ch_len);
+
+    static gboolean mcview_get_byte_string(WView* view, off_t byte_index, int* retval);
+
+    static gboolean mcview_get_byte_none(WView* view, off_t byte_index, int* retval);
+
+    static void mcview_set_byte(WView* view, off_t offset, byte b);
+
+    static void mcview_file_load_data(WView* view, off_t byte_index);
+
+    static void mcview_close_datasource(WView* view);
+
+    static void mcview_set_datasource_file(WView* view, int fd, const struct stat* st);
+
+    static gboolean mcview_load_command_output(WView* view, const char* command);
+
+    static void mcview_set_datasource_vfs_pipe(WView* view, int fd);
+
+    static void mcview_set_datasource_string(WView* view, const char* s);
+private:
+    static void mcview_set_datasource_stdio_pipe(WView* view, mc_pipe_t* p);
+};
+
 
 /* dialogs.c: */
 class Dialogs
