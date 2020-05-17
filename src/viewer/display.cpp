@@ -51,153 +51,7 @@
 
 #include "internal.hpp"
 
-/*** global variables ****************************************************************************/
-
-/*** file scope macro definitions ****************************************************************/
-
-#define BUF_TRUNC_LEN 5         /* The length of the line displays the file size */
-
-/*** file scope type declarations ****************************************************************/
-
-/*** file scope variables ************************************************************************/
-
-/* If set, show a ruler */
-static enum ruler_type
-{
-    RULER_NONE,
-    RULER_TOP,
-    RULER_BOTTOM
-} ruler = RULER_NONE;
-
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-/** Define labels and handlers for functional keys */
-
-static void
-mcview_set_buttonbar (WView * view)
-{
-    Widget *w = WIDGET (view);
-    WDialog *h = DIALOG (w->owner);
-    WButtonBar *b;
-    const global_keymap_t *keymap = view->mode_flags.hex ? view->hex_keymap : w->keymap;
-
-    b = find_buttonbar (h);
-    buttonbar_set_label (b, 1, Q_ ("ButtonBar|Help"), keymap, w);
-
-    if (view->mode_flags.hex)
-    {
-        if (view->hexedit_mode)
-            buttonbar_set_label (b, 2, Q_ ("ButtonBar|View"), keymap, w);
-        else if (view->datasource == DS_FILE)
-            buttonbar_set_label (b, 2, Q_ ("ButtonBar|Edit"), keymap, w);
-        else
-            buttonbar_set_label (b, 2, "", keymap, WIDGET (view));
-
-        buttonbar_set_label (b, 4, Q_ ("ButtonBar|Ascii"), keymap, w);
-        buttonbar_set_label (b, 6, Q_ ("ButtonBar|Save"), keymap, w);
-        buttonbar_set_label (b, 7, Q_ ("ButtonBar|HxSrch"), keymap, w);
-
-    }
-    else
-    {
-        buttonbar_set_label (b, 2, view->mode_flags.wrap ? Q_ ("ButtonBar|UnWrap")
-                             : Q_ ("ButtonBar|Wrap"), keymap, w);
-        buttonbar_set_label (b, 4, Q_ ("ButtonBar|Hex"), keymap, w);
-        buttonbar_set_label (b, 6, "", keymap, WIDGET (view));
-        buttonbar_set_label (b, 7, Q_ ("ButtonBar|Search"), keymap, w);
-    }
-
-    buttonbar_set_label (b, 5, Q_ ("ButtonBar|Goto"), keymap, w);
-    buttonbar_set_label (b, 8, view->mode_flags.magic ? Q_ ("ButtonBar|Raw")
-                         : Q_ ("ButtonBar|Parse"), keymap, w);
-
-    if (!Inlines::mcview_is_in_panel (view))     /* don't override some panel buttonbar keys  */
-    {
-        buttonbar_set_label (b, 3, Q_ ("ButtonBar|Quit"), keymap, w);
-        buttonbar_set_label (b, 9, view->mode_flags.nroff ? Q_ ("ButtonBar|Unform")
-                             : Q_ ("ButtonBar|Format"), keymap, w);
-        buttonbar_set_label (b, 10, Q_ ("ButtonBar|Quit"), keymap, w);
-    }
-}
-
-/* --------------------------------------------------------------------------------------------- */
-
-static void
-mcview_display_percent (WView * view, off_t p)
-{
-    int percent;
-
-    percent = Lib::mcview_calc_percent (view, p);
-    if (percent >= 0)
-    {
-        const screen_dimen top = view->status_area.top;
-        const screen_dimen right = view->status_area.left + view->status_area.width;
-
-        widget_gotoyx (view, top, right - 4);
-        tty_printf ("%3d%%", percent);
-        /* avoid cursor wrapping in NCurses-base MC */
-        widget_gotoyx (view, top, right - 1);
-    }
-}
-
-/* --------------------------------------------------------------------------------------------- */
-
-static void
-mcview_display_status (WView * view)
-{
-    const screen_dimen top = view->status_area.top;
-    const screen_dimen left = view->status_area.left;
-    const screen_dimen width = view->status_area.width;
-    const screen_dimen height = view->status_area.height;
-    const char *file_label;
-
-    if (height < 1)
-        return;
-
-    tty_setcolor (STATUSBAR_COLOR);
-    tty_draw_hline (WIDGET (view)->y + top, WIDGET (view)->x + left, ' ', width);
-
-    file_label =
-        view->filename_vpath != NULL ?
-        vfs_path_get_last_path_str (view->filename_vpath) : view->command != NULL ?
-        view->command : "";
-
-    if (width > 40)
-    {
-        widget_gotoyx (view, top, width - 32);
-        if (view->mode_flags.hex)
-            tty_printf ("0x%08" PRIxMAX, (uintmax_t) view->hex_cursor);
-        else
-        {
-            char buffer[BUF_TRUNC_LEN + 1];
-
-            size_trunc_len (buffer, BUF_TRUNC_LEN, mcview_get_filesize (view), 0,
-                            Setup::panels_options.kilobyte_si);
-            tty_printf ("%9" PRIuMAX "/%s%s %s", (uintmax_t) view->dpy_end,
-                        buffer, Inlines::mcview_may_still_grow (view) ? "+" : " ",
-#ifdef HAVE_CHARSET
-                        mc_global.source_codepage >= 0 ?
-                        get_codepage_id (mc_global.source_codepage) :
-#endif
-                        "");
-        }
-    }
-    widget_gotoyx (view, top, left);
-    if (width > 40)
-        tty_print_string (str_fit_to_term (file_label, width - 34, J_LEFT_FIT));
-    else
-        tty_print_string (str_fit_to_term (file_label, width - 5, J_LEFT_FIT));
-    if (width > 26)
-        mcview_display_percent (view, view->mode_flags.hex ? view->hex_cursor : view->dpy_end);
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_update (WView * view)
+void Display::mcview_update(WView* view)
 {
     static int dirt_limit = 1;
 
@@ -239,11 +93,7 @@ mcview_update (WView * view)
     }
 }
 
-/* --------------------------------------------------------------------------------------------- */
-/** Displays as much data from view->dpy_start as fits on the screen */
-
-void
-mcview_display (WView * view)
+void Display::mcview_display(WView* view)
 {
     if (view->mode_flags.hex)
         Hex::mcview_display_hex (view);
@@ -252,10 +102,7 @@ mcview_display (WView * view)
     mcview_display_status (view);
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_compute_areas (WView * view)
+void Display::mcview_compute_areas(WView* view)
 {
     struct area view_area;
     screen_dimen height, rest, y;
@@ -308,10 +155,7 @@ mcview_compute_areas (WView * view)
         view->ruler_area.top = y;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_update_bytes_per_line (WView * view)
+void Display::mcview_update_bytes_per_line(WView* view)
 {
     const screen_dimen cols = view->data_area.width;
     int bytes;
@@ -327,17 +171,14 @@ mcview_update_bytes_per_line (WView * view)
     view->dirty = McViewer::mcview_max_dirt_limit + 1;    /* To force refresh */
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_display_toggle_ruler (WView * view)
+void Display::mcview_display_toggle_ruler(WView* view)
 {
     static const enum ruler_type next[3] =
-    {
-        RULER_TOP,
-        RULER_BOTTOM,
-        RULER_NONE
-    };
+        {
+            RULER_TOP,
+            RULER_BOTTOM,
+            RULER_NONE
+        };
 
     g_assert ((size_t) ruler < 3);
 
@@ -346,12 +187,9 @@ mcview_display_toggle_ruler (WView * view)
     view->dirty++;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_display_clean (WView * view)
+void Display::mcview_display_clean(WView* view)
 {
-    Widget *w = WIDGET (view);
+    Widget* w = WIDGET (view);
 
     tty_setcolor (VIEW_NORMAL_COLOR);
     widget_erase (w);
@@ -359,10 +197,7 @@ mcview_display_clean (WView * view)
         tty_draw_box (w->y, w->x, w->lines, w->cols, FALSE);
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_display_ruler (WView * view)
+void Display::mcview_display_ruler(WView* view)
 {
     static const char ruler_chars[] = "|----*----";
     const screen_dimen top = view->ruler_area.top;
@@ -402,4 +237,113 @@ mcview_display_ruler (WView * view)
     tty_setcolor (VIEW_NORMAL_COLOR);
 }
 
-/* --------------------------------------------------------------------------------------------- */
+void Display::mcview_display_status(WView* view)
+{
+    const screen_dimen top = view->status_area.top;
+    const screen_dimen left = view->status_area.left;
+    const screen_dimen width = view->status_area.width;
+    const screen_dimen height = view->status_area.height;
+    const char *file_label;
+
+    if (height < 1)
+        return;
+
+    tty_setcolor (STATUSBAR_COLOR);
+    tty_draw_hline (WIDGET (view)->y + top, WIDGET (view)->x + left, ' ', width);
+
+    file_label =
+        view->filename_vpath != NULL ?
+        vfs_path_get_last_path_str (view->filename_vpath) : view->command != NULL ?
+                                                            view->command : "";
+
+    if (width > 40)
+    {
+        widget_gotoyx (view, top, width - 32);
+        if (view->mode_flags.hex)
+            tty_printf ("0x%08" PRIxMAX, (uintmax_t) view->hex_cursor);
+        else
+        {
+            char buffer[BUF_TRUNC_LEN + 1];
+
+            size_trunc_len (buffer, BUF_TRUNC_LEN, mcview_get_filesize (view), 0,
+                            Setup::panels_options.kilobyte_si);
+            tty_printf ("%9" PRIuMAX "/%s%s %s", (uintmax_t) view->dpy_end,
+                        buffer, Inlines::mcview_may_still_grow (view) ? "+" : " ",
+#ifdef HAVE_CHARSET
+                        mc_global.source_codepage >= 0 ?
+                        get_codepage_id (mc_global.source_codepage) :
+                        #endif
+                        "");
+        }
+    }
+    widget_gotoyx (view, top, left);
+    if (width > 40)
+        tty_print_string (str_fit_to_term (file_label, width - 34, J_LEFT_FIT));
+    else
+        tty_print_string (str_fit_to_term (file_label, width - 5, J_LEFT_FIT));
+    if (width > 26)
+        mcview_display_percent (view, view->mode_flags.hex ? view->hex_cursor : view->dpy_end);
+}
+
+void Display::mcview_display_percent(WView* view, off_t p)
+{
+    int percent;
+
+    percent = Lib::mcview_calc_percent (view, p);
+    if (percent >= 0)
+    {
+        const screen_dimen top = view->status_area.top;
+        const screen_dimen right = view->status_area.left + view->status_area.width;
+
+        widget_gotoyx (view, top, right - 4);
+        tty_printf ("%3d%%", percent);
+        /* avoid cursor wrapping in NCurses-base MC */
+        widget_gotoyx (view, top, right - 1);
+    }
+}
+
+void Display::mcview_set_buttonbar(WView* view)
+{
+    Widget *w = WIDGET (view);
+    WDialog *h = DIALOG (w->owner);
+    WButtonBar *b;
+    const global_keymap_t *keymap = view->mode_flags.hex ? view->hex_keymap : w->keymap;
+
+    b = find_buttonbar (h);
+    buttonbar_set_label (b, 1, Q_ ("ButtonBar|Help"), keymap, w);
+
+    if (view->mode_flags.hex)
+    {
+        if (view->hexedit_mode)
+            buttonbar_set_label (b, 2, Q_ ("ButtonBar|View"), keymap, w);
+        else if (view->datasource == DS_FILE)
+            buttonbar_set_label (b, 2, Q_ ("ButtonBar|Edit"), keymap, w);
+        else
+            buttonbar_set_label (b, 2, "", keymap, WIDGET (view));
+
+        buttonbar_set_label (b, 4, Q_ ("ButtonBar|Ascii"), keymap, w);
+        buttonbar_set_label (b, 6, Q_ ("ButtonBar|Save"), keymap, w);
+        buttonbar_set_label (b, 7, Q_ ("ButtonBar|HxSrch"), keymap, w);
+
+    }
+    else
+    {
+        buttonbar_set_label (b, 2, view->mode_flags.wrap ? Q_ ("ButtonBar|UnWrap")
+                                                         : Q_ ("ButtonBar|Wrap"), keymap, w);
+        buttonbar_set_label (b, 4, Q_ ("ButtonBar|Hex"), keymap, w);
+        buttonbar_set_label (b, 6, "", keymap, WIDGET (view));
+        buttonbar_set_label (b, 7, Q_ ("ButtonBar|Search"), keymap, w);
+    }
+
+    buttonbar_set_label (b, 5, Q_ ("ButtonBar|Goto"), keymap, w);
+    buttonbar_set_label (b, 8, view->mode_flags.magic ? Q_ ("ButtonBar|Raw")
+                                                      : Q_ ("ButtonBar|Parse"), keymap, w);
+
+    if (!Inlines::mcview_is_in_panel (view))     /* don't override some panel buttonbar keys  */
+    {
+        buttonbar_set_label (b, 3, Q_ ("ButtonBar|Quit"), keymap, w);
+        buttonbar_set_label (b, 9, view->mode_flags.nroff ? Q_ ("ButtonBar|Unform")
+                                                          : Q_ ("ButtonBar|Format"), keymap, w);
+        buttonbar_set_label (b, 10, Q_ ("ButtonBar|Quit"), keymap, w);
+    }
+}

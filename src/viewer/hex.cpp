@@ -78,7 +78,7 @@ void Hex::mcview_display_hex(WView* view)
 
     char hex_buff[10];          /* A temporary buffer for sprintf and mvwaddstr */
 
-    mcview_display_clean (view);
+    Display::mcview_display_clean (view);
 
     /* Find the first displayable changed byte */
     /* In UTF-8 mode, go back by 1 or maybe 2 lines to handle continuation bytes properly. */

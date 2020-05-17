@@ -227,7 +227,7 @@ void Search::mcview_do_search(WView* view, off_t want_search_start)
         && !mcview_search_options.backwards)
     {
         view->search_start = orig_search_start;
-        mcview_update (view);
+        Display::mcview_update (view);
 
         if (query_dialog
             (_("Search done"), _("Continue from beginning?"), D_NORMAL, 2, _("&Yes"),
@@ -258,7 +258,7 @@ void Search::mcview_do_search(WView* view, off_t want_search_start)
     if (!found)
     {
         view->search_start = orig_search_start;
-        mcview_update (view);
+        Display::mcview_update (view);
 
         if (view->search->error == MC_SEARCH_E_NOTFOUND)
             query_dialog (_("Search"), _(STR_E_NOTFOUND), D_NORMAL, 1, _("&Dismiss"));

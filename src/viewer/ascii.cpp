@@ -865,8 +865,8 @@ mcview_display_text (WView * view)
 
         again = FALSE;
 
-        mcview_display_clean (view);
-        mcview_display_ruler (view);
+        Display::mcview_display_clean (view);
+        Display::mcview_display_ruler (view);
 
         if (!view->mode_flags.wrap)
             mcview_state_machine_init (&state, view->dpy_start);

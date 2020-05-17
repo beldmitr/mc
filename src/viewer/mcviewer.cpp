@@ -279,8 +279,8 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
     view->force_max = -1;
     view->dpy_text_column = 0;
 
-    mcview_compute_areas (view);
-    mcview_update_bytes_per_line (view);
+    Display::mcview_compute_areas (view);
+    Display::mcview_update_bytes_per_line (view);
 
     if (McViewer::mcview_remember_file_position && view->filename_vpath != nullptr && start_line == 0)
     {
@@ -421,5 +421,5 @@ void McViewer::mcview_mouse_callback (Widget* w, mouse_msg_t msg, mouse_event_t*
     }
 
     if (ok)
-        mcview_update (view);
+        Display::mcview_update (view);
 }

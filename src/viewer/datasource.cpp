@@ -336,7 +336,7 @@ mcview_close_datasource (WView * view)
         if (view->ds_stdio_pipe != NULL)
         {
             Growbuf::mcview_growbuf_done (view);
-            mcview_display (view);
+            Display::mcview_display (view);
         }
             Growbuf::mcview_growbuf_free (view);
         break;
@@ -385,7 +385,7 @@ mcview_load_command_output (WView * view, const char *command)
     p = mc_popen (command, &error);
     if (p == NULL)
     {
-        mcview_display (view);
+        Display::mcview_display (view);
         Lib::mcview_show_error (view, error->message);
         g_error_free (error);
         return FALSE;
@@ -396,7 +396,7 @@ mcview_load_command_output (WView * view, const char *command)
     if (!Inlines::mcview_get_byte (view, 0, NULL))
     {
         mcview_close_datasource (view);
-        mcview_display (view);
+        Display::mcview_display (view);
         return FALSE;
     }
 

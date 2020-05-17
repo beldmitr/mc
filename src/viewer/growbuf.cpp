@@ -178,7 +178,7 @@ void Growbuf::mcview_growbuf_read_until(WView* view, off_t ofs)
                      */
                     mcview_growbuf_done (view);
                 }
-                mcview_display (view);
+                Display::mcview_display (view);
                 return;
             }
         }

@@ -210,7 +210,7 @@ mcview_hook (void *v)
     Lib::mcview_done (view);
     Lib::mcview_init (view);
     McViewer::mcview_load (view, 0, panel->dir.list[panel->selected].fname, 0, 0, 0);
-    mcview_display (view);
+    Display::mcview_display (view);
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -547,7 +547,7 @@ mcview_execute_cmd (WView * view, long command)
         Execute::toggle_subshell ();
         break;
     case CK_Ruler:
-        mcview_display_toggle_ruler (view);
+        Display::mcview_display_toggle_ruler (view);
         break;
     case CK_Bookmark:
         view->dpy_start = view->marks[view->marker];
@@ -637,8 +637,8 @@ static inline void
 mcview_resize (WView * view)
 {
     view->dpy_wrap_dirty = TRUE;
-    mcview_compute_areas (view);
-    mcview_update_bytes_per_line (view);
+    Display::mcview_compute_areas (view);
+    Display::mcview_update_bytes_per_line (view);
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -690,8 +690,8 @@ mcview_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm, void *
     WView *view = (WView *) w;
     cb_ret_t i;
 
-    mcview_compute_areas (view);
-    mcview_update_bytes_per_line (view);
+    Display::mcview_compute_areas (view);
+    Display::mcview_update_bytes_per_line (view);
 
     switch (msg)
     {
@@ -703,7 +703,7 @@ mcview_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm, void *
         return MSG_HANDLED;
 
     case MSG_DRAW:
-        mcview_display (view);
+        Display::mcview_display (view);
         return MSG_HANDLED;
 
     case MSG_CURSOR:
@@ -713,18 +713,18 @@ mcview_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm, void *
 
     case MSG_KEY:
         i = mcview_handle_key (view, parm);
-        mcview_update (view);
+        Display::mcview_update (view);
         return i;
 
     case MSG_ACTION:
         i = mcview_execute_cmd (view, parm);
-        mcview_update (view);
+        Display::mcview_update (view);
         return i;
 
     case MSG_FOCUS:
         view->dpy_bbar_dirty = TRUE;
         /* TODO: get rid of draw here before MSG_DRAW */
-        mcview_update (view);
+        Display::mcview_update (view);
         return MSG_HANDLED;
 
     case MSG_RESIZE:
@@ -794,7 +794,7 @@ mcview_dialog_callback (Widget * w, Widget * sender, widget_msg_t msg, int parm,
         if (mcview_ok_to_quit (view))
             dlg_stop (h);
         else
-            mcview_update (view);
+            Display::mcview_update (view);
         return MSG_HANDLED;
 
     default:
