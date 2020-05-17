@@ -487,7 +487,7 @@ convert_from_utf_to_current_c (int input_char, GIConv conv)
 /* --------------------------------------------------------------------------------------------- */
 
 int
-convert_from_8bit_to_utf_c (char input_char, GIConv conv)
+convert_from_8bit_to_utf_c (char input_char, GIConv conv)   // TODO DB input_char probably should be unsigned char ??
 {
     unsigned char str[2];
     unsigned char buf_ch[UTF8_CHAR_LEN + 1];

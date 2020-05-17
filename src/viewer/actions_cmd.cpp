@@ -269,7 +269,7 @@ mcview_handle_editkey (WView * view, int key)
         node = g_new (struct hexedit_change_node, 1);
         node->offset = view->hex_cursor;
         node->value = byte_val;
-        mcview_enqueue_change (&view->change_list, node);
+        Hex::mcview_enqueue_change (&view->change_list, node);
     }
     else
         node->value = byte_val;
@@ -432,7 +432,7 @@ mcview_execute_cmd (WView * view, long command)
         break;
     case CK_HexEditMode:
         /* Toggle between hexview and hexedit mode */
-        mcview_toggle_hexedit_mode (view);
+        Hex::mcview_toggle_hexedit_mode (view);
         break;
     case CK_ToggleNavigation:
         view->hexview_in_text = !view->hexview_in_text;
@@ -463,7 +463,7 @@ mcview_execute_cmd (WView * view, long command)
             break;
         }
     case CK_Save:
-        mcview_hexedit_save_changes (view);
+        Hex::mcview_hexedit_save_changes (view);
         break;
     case CK_Search:
         mcview_search (view, TRUE);
@@ -671,9 +671,9 @@ mcview_ok_to_quit (WView * view)
     switch (r)
     {
     case 0:                    /* Yes */
-        return mcview_hexedit_save_changes (view) || mc_global.midnight_shutdown;
+        return Hex::mcview_hexedit_save_changes (view) || mc_global.midnight_shutdown;
     case 1:                    /* No */
-        mcview_hexedit_free_change_list (view);
+        Hex::mcview_hexedit_free_change_list (view);
         return TRUE;
     default:
         return FALSE;

@@ -49,50 +49,7 @@
 
 #include "internal.hpp"
 
-/*** global variables ****************************************************************************/
-
-/*** file scope macro definitions ****************************************************************/
-
-/*** file scope type declarations ****************************************************************/
-
-typedef enum
-{
-    MARK_NORMAL,
-    MARK_SELECTED,
-    MARK_CURSOR,
-    MARK_CHANGED
-} mark_t;
-
-/*** file scope variables ************************************************************************/
-
-static const char hex_char[] = "0123456789ABCDEF";
-
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-/* --------------------------------------------------------------------------------------------- */
-/** Determine the state of the current byte.
- *
- * @param view viewer object
- * @param from offset
- * @param curr current node
- */
-
-static mark_t
-mcview_hex_calculate_boldflag (WView * view, off_t from, struct hexedit_change_node *curr,
-                               gboolean force_changed)
-{
-    return (from == view->hex_cursor) ? MARK_CURSOR
-        : ((curr != NULL && from == curr->offset) || force_changed) ? MARK_CHANGED
-        : (view->search_start <= from && from < view->search_end) ? MARK_SELECTED : MARK_NORMAL;
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_display_hex (WView * view)
+void Hex::mcview_display_hex(WView* view)
 {
     const screen_dimen top = view->data_area.top;
     const screen_dimen left = view->data_area.left;
@@ -372,14 +329,11 @@ mcview_display_hex (WView * view)
     view->dpy_end = from;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-gboolean
-mcview_hexedit_save_changes (WView * view)
+gboolean Hex::mcview_hexedit_save_changes(WView* view)
 {
     int answer = 0;
 
-    if (view->change_list == NULL)
+    if (view->change_list == nullptr)
         return TRUE;
 
     while (answer == 0)
@@ -388,12 +342,12 @@ mcview_hexedit_save_changes (WView * view)
         char *text;
         struct hexedit_change_node *curr, *next;
 
-        g_assert (view->filename_vpath != NULL);
+        g_assert (view->filename_vpath != nullptr);
 
         fp = mc_open (view->filename_vpath, O_WRONLY);
         if (fp != -1)
         {
-            for (curr = view->change_list; curr != NULL; curr = next)
+            for (curr = view->change_list; curr != nullptr; curr = next)
             {
                 next = curr->next;
 
@@ -408,7 +362,7 @@ mcview_hexedit_save_changes (WView * view)
                 g_free (curr);
             }
 
-            view->change_list = NULL;
+            view->change_list = nullptr;
 
             if (view->locked)
                 view->locked = unlock_file (view->filename_vpath);
@@ -422,7 +376,7 @@ mcview_hexedit_save_changes (WView * view)
             return TRUE;
         }
 
-      save_error:
+        save_error:
         text = g_strdup_printf (_("Cannot save file:\n%s"), unix_error_string (errno));
         (void) mc_close (fp);
 
@@ -433,29 +387,23 @@ mcview_hexedit_save_changes (WView * view)
     return FALSE;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_toggle_hexedit_mode (WView * view)
+void Hex::mcview_toggle_hexedit_mode(WView* view)
 {
     view->hexedit_mode = !view->hexedit_mode;
     view->dpy_bbar_dirty = TRUE;
     view->dirty++;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_hexedit_free_change_list (WView * view)
+void Hex::mcview_hexedit_free_change_list(WView* view)
 {
     struct hexedit_change_node *curr, *next;
 
-    for (curr = view->change_list; curr != NULL; curr = next)
+    for (curr = view->change_list; curr != nullptr; curr = next)
     {
         next = curr->next;
         g_free (curr);
     }
-    view->change_list = NULL;
+    view->change_list = nullptr;
 
     if (view->locked)
         view->locked = unlock_file (view->filename_vpath);
@@ -463,21 +411,23 @@ mcview_hexedit_free_change_list (WView * view)
     view->dirty++;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_enqueue_change (struct hexedit_change_node **head, struct hexedit_change_node *node)
+void Hex::mcview_enqueue_change(struct hexedit_change_node** head, struct hexedit_change_node* node)
 {
     /* chnode always either points to the head of the list or
      * to one of the ->next fields in the list. The value at
      * this location will be overwritten with the new node.   */
-    struct hexedit_change_node **chnode = head;
+    struct hexedit_change_node** chnode = head;
 
-    while (*chnode != NULL && (*chnode)->offset < node->offset)
+    while (*chnode != nullptr && (*chnode)->offset < node->offset)
         chnode = &((*chnode)->next);
 
     node->next = *chnode;
     *chnode = node;
 }
 
-/* --------------------------------------------------------------------------------------------- */
+Hex::mark_t Hex::mcview_hex_calculate_boldflag(WView* view, off_t from, struct hexedit_change_node* curr, gboolean force_changed)
+{
+    return (from == view->hex_cursor) ? MARK_CURSOR
+                                      : ((curr != nullptr && from == curr->offset) || force_changed) ? MARK_CHANGED
+                                                                                                  : (view->search_start <= from && from < view->search_end) ? MARK_SELECTED : MARK_NORMAL;
+}
