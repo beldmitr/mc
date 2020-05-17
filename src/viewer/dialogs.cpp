@@ -254,7 +254,7 @@ mcview_dialog_goto (WView * view, off_t * offset)
                 if (!view->mode_flags.hex)
                 {
                     if (view->growbuf_in_use)
-                        mcview_growbuf_read_until (view, addr);
+                        Growbuf::mcview_growbuf_read_until (view, addr);
 
                     *offset = Lib::mcview_bol (view, addr, 0);
                 }

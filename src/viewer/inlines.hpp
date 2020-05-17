@@ -64,7 +64,7 @@ public:
     {
         switch (view->datasource) {
             case DS_STDIO_PIPE:
-            case DS_VFS_PIPE:return mcview_get_byte_growing_buffer(view, offset, retval);
+            case DS_VFS_PIPE:return Growbuf::mcview_get_byte_growing_buffer(view, offset, retval);
             case DS_FILE:return mcview_get_byte_file(view, offset, retval);
             case DS_STRING:return mcview_get_byte_string(view, offset, retval);
             case DS_NONE:return mcview_get_byte_none(view, offset, retval);
@@ -112,6 +112,6 @@ public:
 
     static void mcview_growbuf_read_all_data(WView* view)
     {
-        mcview_growbuf_read_until(view, OFFSETTYPE_MAX);
+        Growbuf::mcview_growbuf_read_until(view, OFFSETTYPE_MAX);
     }
 };

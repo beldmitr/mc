@@ -42,26 +42,7 @@
 
 #include "internal.hpp"
 
-/* Block size for reading files in parts */
-#define VIEW_PAGE_SIZE ((size_t) 8192)
-
-/*** global variables ****************************************************************************/
-
-/*** file scope macro definitions ****************************************************************/
-
-/*** file scope type declarations ****************************************************************/
-
-/*** file scope variables ************************************************************************/
-
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_growbuf_init (WView * view)
+void Growbuf::mcview_growbuf_init(WView* view)
 {
     view->growbuf_in_use = TRUE;
     view->growbuf_blockptr = g_ptr_array_new ();
@@ -69,17 +50,14 @@ mcview_growbuf_init (WView * view)
     view->growbuf_finished = FALSE;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_growbuf_done (WView * view)
+void Growbuf::mcview_growbuf_done(WView* view)
 {
     view->growbuf_finished = TRUE;
 
     if (view->datasource == DS_STDIO_PIPE)
     {
-        mc_pclose (view->ds_stdio_pipe, NULL);
-        view->ds_stdio_pipe = NULL;
+        mc_pclose (view->ds_stdio_pipe, nullptr);
+        view->ds_stdio_pipe = nullptr;
     }
     else                        /* view->datasource == DS_VFS_PIPE */
     {
@@ -88,25 +66,19 @@ mcview_growbuf_done (WView * view)
     }
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_growbuf_free (WView * view)
+void Growbuf::mcview_growbuf_free(WView* view)
 {
     g_assert (view->growbuf_in_use);
 
-    g_ptr_array_foreach (view->growbuf_blockptr, (GFunc) g_free, NULL);
+    g_ptr_array_foreach (view->growbuf_blockptr, (GFunc) g_free, nullptr);
 
-    (void) g_ptr_array_free (view->growbuf_blockptr, TRUE);
+    g_ptr_array_free (view->growbuf_blockptr, TRUE);
 
-    view->growbuf_blockptr = NULL;
+    view->growbuf_blockptr = nullptr;
     view->growbuf_in_use = FALSE;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-off_t
-mcview_growbuf_filesize (WView * view)
+off_t Growbuf::mcview_growbuf_filesize(WView* view)
 {
     g_assert (view->growbuf_in_use);
 
@@ -116,14 +88,7 @@ mcview_growbuf_filesize (WView * view)
         return ((off_t) view->growbuf_blockptr->len - 1) * VIEW_PAGE_SIZE + view->growbuf_lastindex;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-/** Copies the output from the pipe to the growing buffer, until either
- * the end-of-pipe is reached or the interval [0..ofs) of the growing
- * buffer is completely filled.
- */
-
-void
-mcview_growbuf_read_until (WView * view, off_t ofs)
+void Growbuf::mcview_growbuf_read_until(WView* view, off_t ofs)
 {
     gboolean short_read = FALSE;
 
@@ -142,7 +107,7 @@ mcview_growbuf_read_until (WView * view, off_t ofs)
         {
             /* Append a new block to the growing buffer */
             byte *newblock = static_cast<byte*>(g_try_malloc (VIEW_PAGE_SIZE));
-            if (newblock == NULL)
+            if (newblock == nullptr)
                 return;
 
             g_ptr_array_add (view->growbuf_blockptr, newblock);
@@ -157,7 +122,7 @@ mcview_growbuf_read_until (WView * view, off_t ofs)
         if (view->datasource == DS_STDIO_PIPE)
         {
             mc_pipe_t *sp = view->ds_stdio_pipe;
-            GError *error = NULL;
+            GError *error = nullptr;
 
             if (bytesfree > MC_PIPE_BUFSIZE)
                 bytesfree = MC_PIPE_BUFSIZE;
@@ -167,7 +132,7 @@ mcview_growbuf_read_until (WView * view, off_t ofs)
 
             mc_pread (sp, &error);
 
-            if (error != NULL)
+            if (error != nullptr)
             {
                 Lib::mcview_show_error (view, error->message);
                 g_error_free (error);
@@ -204,7 +169,7 @@ mcview_growbuf_read_until (WView * view, off_t ofs)
                     g_free (err_msg);
                 }
 
-                if (view->ds_stdio_pipe != NULL)
+                if (view->ds_stdio_pipe != nullptr)
                 {
                     /* when switch from parse to raw mode and back,
                      * do not close the already closed pipe after following loop:
@@ -237,55 +202,45 @@ mcview_growbuf_read_until (WView * view, off_t ofs)
     }
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-gboolean
-mcview_get_byte_growing_buffer (WView * view, off_t byte_index, int *retval)
+gboolean Growbuf::mcview_get_byte_growing_buffer(WView* view, off_t byte_index, int* retval)
 {
-    char *p;
-
     g_assert (view->growbuf_in_use);
 
-    if (retval != NULL)
+    if (retval != nullptr)
         *retval = -1;
 
     if (byte_index < 0)
         return FALSE;
 
-    p = mcview_get_ptr_growing_buffer (view, byte_index);
-    if (p == NULL)
+    char *p = mcview_get_ptr_growing_buffer (view, byte_index);
+    if (p == nullptr)
         return FALSE;
 
-    if (retval != NULL)
+    if (retval != nullptr)
         *retval = (unsigned char) (*p);
 
     return TRUE;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-char *
-mcview_get_ptr_growing_buffer (WView * view, off_t byte_index)
+char* Growbuf::mcview_get_ptr_growing_buffer(WView* view, off_t byte_index)
 {
     off_t pageno, pageindex;
 
     g_assert (view->growbuf_in_use);
 
     if (byte_index < 0)
-        return NULL;
+        return nullptr;
 
     pageno = byte_index / VIEW_PAGE_SIZE;
     pageindex = byte_index % VIEW_PAGE_SIZE;
 
     mcview_growbuf_read_until (view, byte_index + 1);
     if (view->growbuf_blockptr->len == 0)
-        return NULL;
+        return nullptr;
     if (pageno < (off_t) view->growbuf_blockptr->len - 1)
         return ((char *) g_ptr_array_index (view->growbuf_blockptr, pageno) + pageindex);
     if (pageno == (off_t) view->growbuf_blockptr->len - 1
         && pageindex < (off_t) view->growbuf_lastindex)
         return ((char *) g_ptr_array_index (view->growbuf_blockptr, pageno) + pageindex);
-    return NULL;
+    return nullptr;
 }
-
-/* --------------------------------------------------------------------------------------------- */

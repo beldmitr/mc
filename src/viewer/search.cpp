@@ -190,7 +190,7 @@ void Search::mcview_do_search(WView* view, off_t want_search_start)
         off_t growbufsize;
 
         if (view->growbuf_in_use)
-            growbufsize = mcview_growbuf_filesize (view);
+            growbufsize = Growbuf::mcview_growbuf_filesize (view);
         else
             growbufsize = view->search->original_len;
 

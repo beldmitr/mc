@@ -82,7 +82,7 @@ mcview_set_datasource_stdio_pipe (WView * view, mc_pipe_t * p)
     view->ds_stdio_pipe = p;
     view->pipe_first_err_msg = TRUE;
 
-    mcview_growbuf_init (view);
+    Growbuf::mcview_growbuf_init (view);
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -104,7 +104,7 @@ mcview_get_filesize (WView * view)
     {
     case DS_STDIO_PIPE:
     case DS_VFS_PIPE:
-        return mcview_growbuf_filesize (view);
+        return Growbuf::mcview_growbuf_filesize (view);
     case DS_FILE:
         return view->ds_file_filesize;
     case DS_STRING:
@@ -155,7 +155,7 @@ mcview_get_utf (WView * view, off_t byte_index, int *ch, int *ch_len)
     {
     case DS_STDIO_PIPE:
     case DS_VFS_PIPE:
-        str = mcview_get_ptr_growing_buffer (view, byte_index);
+        str = Growbuf::mcview_get_ptr_growing_buffer (view, byte_index);
         break;
     case DS_FILE:
         str = mcview_get_ptr_file (view, byte_index);
@@ -335,15 +335,15 @@ mcview_close_datasource (WView * view)
     case DS_STDIO_PIPE:
         if (view->ds_stdio_pipe != NULL)
         {
-            mcview_growbuf_done (view);
+            Growbuf::mcview_growbuf_done (view);
             mcview_display (view);
         }
-        mcview_growbuf_free (view);
+            Growbuf::mcview_growbuf_free (view);
         break;
     case DS_VFS_PIPE:
         if (view->ds_vfs_pipe != -1)
-            mcview_growbuf_done (view);
-        mcview_growbuf_free (view);
+            Growbuf::mcview_growbuf_done (view);
+            Growbuf::mcview_growbuf_free (view);
         break;
     case DS_FILE:
         (void) mc_close (view->ds_file_fd);
@@ -413,7 +413,7 @@ mcview_set_datasource_vfs_pipe (WView * view, int fd)
     view->datasource = DS_VFS_PIPE;
     view->ds_vfs_pipe = fd;
 
-    mcview_growbuf_init (view);
+    Growbuf::mcview_growbuf_init (view);
 }
 
 /* --------------------------------------------------------------------------------------------- */
