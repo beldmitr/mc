@@ -77,7 +77,7 @@ void Move::mcview_move_up(WView* view, off_t lines)
     }
     else
     {
-        mcview_ascii_move_up (view, lines);
+        Ascii::mcview_ascii_move_up (view, lines);
     }
     mcview_movement_fixups (view, TRUE);
 }
@@ -103,7 +103,7 @@ void Move::mcview_move_down(WView* view, off_t lines)
     }
     else
     {
-        mcview_ascii_move_down (view, lines);
+        Ascii::mcview_ascii_move_down (view, lines);
     }
     mcview_movement_fixups (view, TRUE);
 }
@@ -160,7 +160,7 @@ void Move::mcview_moveto_top(WView* view)
 {
     view->dpy_start = 0;
     view->dpy_paragraph_skip_lines = 0;
-    mcview_state_machine_init (&view->dpy_state_top, 0);
+    Ascii::mcview_state_machine_init (&view->dpy_state_top, 0);
     view->hex_cursor = 0;
     view->dpy_text_column = 0;
     mcview_movement_fixups (view, TRUE);
@@ -200,7 +200,7 @@ void Move::mcview_moveto_bol(WView* view)
     }
     else
     {
-        mcview_ascii_moveto_bol (view);
+        Ascii::mcview_ascii_moveto_bol (view);
     }
     mcview_movement_fixups (view, TRUE);
 }
@@ -222,9 +222,9 @@ void Move::mcview_moveto_eol(WView* view)
     }
     else
     {
-        mcview_ascii_moveto_eol (view);
+        Ascii::mcview_ascii_moveto_eol(view);
     }
-    mcview_movement_fixups (view, FALSE);
+    mcview_movement_fixups(view, FALSE);
 }
 
 void Move::mcview_moveto_offset(WView* view, off_t offset)

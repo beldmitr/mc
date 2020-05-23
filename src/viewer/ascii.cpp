@@ -156,701 +156,14 @@
 
 #include "internal.hpp"
 
-/*** global variables ****************************************************************************/
-
-/*** file scope macro definitions ****************************************************************/
-
+// FIXME DB: How to get rid of this macros ?? Let's try to get rid of the whole glib library, using c++ tools instead
 #if GLIB_CHECK_VERSION (2, 30, 0)
 #define SPACING_MARK G_UNICODE_SPACING_MARK
 #else
 #define SPACING_MARK G_UNICODE_COMBINING_MARK
 #endif
 
-/* The Unicode standard recommends that lonely combining characters are printed over a dotted
- * circle. If the terminal is not UTF-8, this will be replaced by a dot anyway. */
-#define BASE_CHARACTER_FOR_LONELY_COMBINING 0x25CC      /* dotted circle */
-#define MAX_COMBINING_CHARS 4   /* both slang and ncurses support exactly 4 */
-
-/* I think anything other than space (e.g. arrows) just introduce visual clutter without actually
- * adding value. */
-#define PARTIAL_CJK_AT_LEFT_MARGIN  ' '
-#define PARTIAL_CJK_AT_RIGHT_MARGIN ' '
-
-/*
- * Wrap mode: This is for safety so that jumping to the end of file (which already includes
- * scrolling back by a page) and then walking backwards is reasonably fast, even if the file is
- * extremely large and consists of maybe full zeros or something like that. If there's no newline
- * found within this limit, just start displaying from there and see what happens. We might get
- * some displaying parameteres (most importantly the columns) incorrect, but at least will show the
- * file without spinning the CPU for ages. When scrolling back to that point, the user might see a
- * garbled first line (even starting with an invalid partial UTF-8), but then walking back by yet
- * another line should fix it.
- *
- * Unwrap mode: This is not used, we wouldn't be able to do anything reasonable without walking
- * back a whole paragraph (well, view->data_area.height paragraphs actually).
- */
-#define MAX_BACKWARDS_WALK_IN_PARAGRAPH (100 * 1000)
-
-/*** file scope type declarations ****************************************************************/
-
-/*** file scope variables ************************************************************************/
-
-/* --------------------------------------------------------------------------------------------- */
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-/* TODO: These methods shouldn't be necessary, see ticket 3257 */
-
-static int
-mcview_wcwidth (const WView * view, int c)
-{
-#ifdef HAVE_CHARSET
-    if (view->utf8)
-    {
-        if (g_unichar_iswide (c))
-            return 2;
-        if (g_unichar_iszerowidth (c))
-            return 0;
-    }
-#else
-    (void) view;
-    (void) c;
-#endif /* HAVE_CHARSET */
-    return 1;
-}
-
-/* --------------------------------------------------------------------------------------------- */
-
-static gboolean
-mcview_ismark (const WView * view, int c)
-{
-#ifdef HAVE_CHARSET
-    if (view->utf8)
-        return g_unichar_ismark (c);
-#else
-    (void) view;
-    (void) c;
-#endif /* HAVE_CHARSET */
-    return FALSE;
-}
-
-/* --------------------------------------------------------------------------------------------- */
-
-/* actually is_non_spacing_mark_or_enclosing_mark */
-static gboolean
-mcview_is_non_spacing_mark (const WView * view, int c)
-{
-#ifdef HAVE_CHARSET
-    if (view->utf8)
-    {
-        GUnicodeType type;
-
-        type = g_unichar_type (c);
-
-        return type == G_UNICODE_NON_SPACING_MARK || type == G_UNICODE_ENCLOSING_MARK;
-    }
-#else
-    (void) view;
-    (void) c;
-#endif /* HAVE_CHARSET */
-    return FALSE;
-}
-
-/* --------------------------------------------------------------------------------------------- */
-
-#if 0
-static gboolean
-mcview_is_spacing_mark (const WView * view, int c)
-{
-#ifdef HAVE_CHARSET
-    if (view->utf8)
-        return g_unichar_type (c) == SPACING_MARK;
-#else
-    (void) view;
-    (void) c;
-#endif /* HAVE_CHARSET */
-    return FALSE;
-}
-#endif /* 0 */
-
-/* --------------------------------------------------------------------------------------------- */
-
-static gboolean
-mcview_isprint (const WView * view, int c)
-{
-#ifdef HAVE_CHARSET
-    if (!view->utf8)
-        c = convert_from_8bit_to_utf_c ((unsigned char) c, view->converter);
-    return g_unichar_isprint (c);
-#else
-    (void) view;
-    /* TODO this is very-very buggy by design: ticket 3257 comments 0-1 */
-    return is_printable (c);
-#endif /* HAVE_CHARSET */
-}
-
-/* --------------------------------------------------------------------------------------------- */
-
-static int
-mcview_char_display (const WView * view, int c, char *s)
-{
-#ifdef HAVE_CHARSET
-    if (mc_global.utf8_display)
-    {
-        if (!view->utf8)
-            c = convert_from_8bit_to_utf_c ((unsigned char) c, view->converter);
-        if (!g_unichar_isprint (c))
-            c = '.';
-        return g_unichar_to_utf8 (c, s);
-    }
-    if (view->utf8)
-    {
-        if (g_unichar_iswide (c))
-        {
-            s[0] = s[1] = '.';
-            return 2;
-        }
-        if (g_unichar_iszerowidth (c))
-            return 0;
-        /* TODO the is_printable check below will be broken for this */
-        c = convert_from_utf_to_current_c (c, view->converter);
-    }
-    else
-    {
-        /* TODO the is_printable check below will be broken for this */
-        c = convert_to_display_c (c);
-    }
-#else
-    (void) view;
-#endif /* HAVE_CHARSET */
-    /* TODO this is very-very buggy by design: ticket 3257 comments 0-1 */
-    if (!is_printable (c))
-        c = '.';
-    *s = c;
-    return 1;
-}
-
-/* --------------------------------------------------------------------------------------------- */
-
-/**
- * Just for convenience, a common interface in front of mcview_get_utf and mcview_get_byte, so that
- * the caller doesn't have to care about utf8 vs 8-bit modes.
- *
- * Normally: stores c, updates state, returns TRUE.
- * At EOF: state is unchanged, c is undefined, returns FALSE.
- *
- * Just as with mcview_get_utf(), invalid UTF-8 is reported using negative integers.
- *
- * Also, temporary hack: handle force_max here.
- * TODO: move it to lower layers (datasource.c)?
- */
-static gboolean
-mcview_get_next_char (WView * view, mcview_state_machine_t * state, int *c)
-{
-    /* Pretend EOF if we reached force_max */
-    if (view->force_max >= 0 && state->offset >= view->force_max)
-        return FALSE;
-
-#ifdef HAVE_CHARSET
-    if (view->utf8)
-    {
-        int char_length = 0;
-
-        if (!DataSource::mcview_get_utf (view, state->offset, c, &char_length))
-            return FALSE;
-        /* Pretend EOF if we crossed force_max */
-        if (view->force_max >= 0 && state->offset + char_length > view->force_max)
-            return FALSE;
-
-        state->offset += char_length;
-        return TRUE;
-    }
-#endif /* HAVE_CHARSET */
-    if (!Inlines::mcview_get_byte (view, state->offset, c))
-        return FALSE;
-    state->offset++;
-    return TRUE;
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/**
- * This function parses the next nroff character and gives it to you along with its desired color,
- * so you never have to care about nroff again.
- *
- * The nroff mode does the backspace trick for every single character (Unicode codepoint). At least
- * that's what the GNU groff 1.22 package produces, and that's what less 458 expects. For
- * double-wide characters (CJK), still only a single backspace is emitted. For combining accents
- * and such, the print-backspace-print step is repeated for the base character and then for each
- * accent separately.
- *
- * So, the right place for this layer is after the bytes are interpreted in UTF-8, but before
- * joining a base character with its combining accents.
- *
- * Normally: stores c and color, updates state, returns TRUE.
- * At EOF: state is unchanged, c and color are undefined, returns FALSE.
- *
- * color can be null if the caller doesn't care.
- */
-static gboolean
-mcview_get_next_maybe_nroff_char (WView * view, mcview_state_machine_t * state, int *c, int *color)
-{
-    mcview_state_machine_t state_after_nroff;
-    int c2, c3;
-
-    if (color != NULL)
-        *color = VIEW_NORMAL_COLOR;
-
-    if (!view->mode_flags.nroff)
-        return mcview_get_next_char (view, state, c);
-
-    if (!mcview_get_next_char (view, state, c))
-        return FALSE;
-    /* Don't allow nroff formatting around CR, LF, TAB or other special chars */
-    if (!mcview_isprint (view, *c))
-        return TRUE;
-
-    state_after_nroff = *state;
-
-    if (!mcview_get_next_char (view, &state_after_nroff, &c2))
-        return TRUE;
-    if (c2 != '\b')
-        return TRUE;
-
-    if (!mcview_get_next_char (view, &state_after_nroff, &c3))
-        return TRUE;
-    if (!mcview_isprint (view, c3))
-        return TRUE;
-
-    if (*c == '_' && c3 == '_')
-    {
-        *state = state_after_nroff;
-        if (color != NULL)
-            *color =
-                state->nroff_underscore_is_underlined ? VIEW_UNDERLINED_COLOR : VIEW_BOLD_COLOR;
-    }
-    else if (*c == c3)
-    {
-        *state = state_after_nroff;
-        state->nroff_underscore_is_underlined = FALSE;
-        if (color != NULL)
-            *color = VIEW_BOLD_COLOR;
-    }
-    else if (*c == '_')
-    {
-        *c = c3;
-        *state = state_after_nroff;
-        state->nroff_underscore_is_underlined = TRUE;
-        if (color != NULL)
-            *color = VIEW_UNDERLINED_COLOR;
-    }
-
-    return TRUE;
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/**
- * Get one base character, along with its combining or spacing mark characters.
- *
- * (A spacing mark is a character that extends the base character's width 1 into a combined
- * character of width 2, yet these two character cells should not be separated. E.g. Devanagari
- * <U+0939><U+094B>.)
- *
- * This method exists mainly for two reasons. One is to be able to tell if we fit on the current
- * line or need to wrap to the next one. The other is that both slang and ncurses seem to require
- * that the character and its combining marks are printed in a single call (or is it just a
- * limitation of mc's wrapper to them?).
- *
- * For convenience, this method takes care of converting CR or CR+LF into LF.
- * TODO this should probably happen later, when displaying the file?
- *
- * Normally: stores cs and color, updates state, returns >= 1 (entries in cs).
- * At EOF: state is unchanged, cs and color are undefined, returns 0.
- *
- * @param view ...
- * @param state the parser-formatter state machine's state, updated
- * @param cs store the characters here
- * @param clen the room available in cs (that is, at most clen-1 combining marks are allowed), must
- *   be at least 2
- * @param color if non-NULL, store the color here, taken from the first codepoint's color
- * @return the number of entries placed in cs, or 0 on EOF
- */
-static int
-mcview_next_combining_char_sequence (WView * view, mcview_state_machine_t * state, int *cs,
-                                     int clen, int *color)
-{
-    int i = 1;
-
-    if (!mcview_get_next_maybe_nroff_char (view, state, cs, color))
-        return 0;
-
-    /* Process \r and \r\n newlines. */
-    if (cs[0] == '\r')
-    {
-        int cnext;
-
-        mcview_state_machine_t state_after_crlf = *state;
-        if (mcview_get_next_maybe_nroff_char (view, &state_after_crlf, &cnext, NULL)
-            && cnext == '\n')
-            *state = state_after_crlf;
-        cs[0] = '\n';
-        return 1;
-    }
-
-    /* We don't want combining over non-printable characters. This includes '\n' and '\t' too. */
-    if (!mcview_isprint (view, cs[0]))
-        return 1;
-
-    if (mcview_ismark (view, cs[0]))
-    {
-        if (!state->print_lonely_combining)
-        {
-            /* First character is combining. Either just return it, ... */
-            return 1;
-        }
-        else
-        {
-            /* or place this (and subsequent combining ones) over a dotted circle. */
-            cs[1] = cs[0];
-            cs[0] = BASE_CHARACTER_FOR_LONELY_COMBINING;
-            i = 2;
-        }
-    }
-
-    if (mcview_wcwidth (view, cs[0]) == 2)
-    {
-        /* Don't allow combining or spacing mark for wide characters, is this okay? */
-        return 1;
-    }
-
-    /* Look for more combining chars. Either at most clen-1 zero-width combining chars,
-     * or at most 1 spacing mark. Is this logic correct? */
-    for (; i < clen; i++)
-    {
-        mcview_state_machine_t state_after_combining;
-
-        state_after_combining = *state;
-        if (!mcview_get_next_maybe_nroff_char (view, &state_after_combining, &cs[i], NULL))
-            return i;
-        if (!mcview_ismark (view, cs[i]) || !mcview_isprint (view, cs[i]))
-            return i;
-        if (g_unichar_type (cs[i]) == SPACING_MARK)
-        {
-            /* Only allow as the first combining char. Stop processing in either case. */
-            if (i == 1)
-            {
-                *state = state_after_combining;
-                i++;
-            }
-            return i;
-        }
-        *state = state_after_combining;
-    }
-    return i;
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/**
- * Parse, format and possibly display one visual line of text.
- *
- * Formatting starts at the given "state" (which encodes the file offset and parser and formatter's
- * internal state). In unwrap mode, this should point to the beginning of the paragraph with the
- * default state, the additional horizontal scrolling is added here. In wrap mode, this should
- * point to the beginning of the line, with the proper state at that point.
- *
- * In wrap mode, if a line ends in a newline, it is consumed, even if it's exactly at the right
- * edge. In unwrap mode, the whole remaining line, including the newline is consumed. Displaying
- * the next line should start at "state"'s new value, or if we displayed the bottom line then
- * state->offset tells the file offset to be shown in the top bar.
- *
- * If "row" is offscreen, don't actually display the line but still update "state" and return the
- * proper value. This is used by mcview_wrap_move_down to advance in the file.
- *
- * @param view ...
- * @param state the parser-formatter state machine's state, updated
- * @param row print to this row
- * @param paragraph_ended store TRUE if paragraph ended by newline or EOF, FALSE if wraps to next
- *   line
- * @param linewidth store the width of the line here
- * @return the number of rows, that is, 0 if we were already at EOF, otherwise 1
- */
-static int
-mcview_display_line (WView * view, mcview_state_machine_t * state, int row,
-                     gboolean * paragraph_ended, off_t * linewidth)
-{
-    const screen_dimen left = view->data_area.left;
-    const screen_dimen top = view->data_area.top;
-    const screen_dimen width = view->data_area.width;
-    const screen_dimen height = view->data_area.height;
-    off_t dpy_text_column = view->mode_flags.wrap ? 0 : view->dpy_text_column;
-    screen_dimen col = 0;
-    int cs[1 + MAX_COMBINING_CHARS];
-    char str[(1 + MAX_COMBINING_CHARS) * UTF8_CHAR_LEN + 1];
-    int i, j;
-
-    if (paragraph_ended != NULL)
-        *paragraph_ended = TRUE;
-
-    if (!view->mode_flags.wrap && (row < 0 || row >= (int) height) && linewidth == NULL)
-    {
-        /* Optimization: Fast forward to the end of the line, rather than carefully
-         * parsing and then not actually displaying it. */
-        off_t eol;
-        int retval;
-
-        eol = Lib::mcview_eol (view, state->offset);
-        retval = (eol > state->offset) ? 1 : 0;
-
-        mcview_state_machine_init (state, eol);
-        return retval;
-    }
-
-    while (TRUE)
-    {
-        int charwidth = 0;
-        mcview_state_machine_t state_saved;
-        int n;
-        int color;
-
-        state_saved = *state;
-        n = mcview_next_combining_char_sequence (view, state, cs, 1 + MAX_COMBINING_CHARS, &color);
-        if (n == 0)
-        {
-            if (linewidth != NULL)
-                *linewidth = col;
-            return (col > 0) ? 1 : 0;
-        }
-
-        if (view->search_start <= state->offset && state->offset < view->search_end)
-            color = VIEW_SELECTED_COLOR;
-
-        if (cs[0] == '\n')
-        {
-            /* New line: reset all formatting state for the next paragraph. */
-            mcview_state_machine_init (state, state->offset);
-            if (linewidth != NULL)
-                *linewidth = col;
-            return 1;
-        }
-
-        if (mcview_is_non_spacing_mark (view, cs[0]))
-        {
-            /* Lonely combining character. Probably leftover after too many combining chars. Just ignore. */
-            continue;
-        }
-
-        /* Nonprintable, or lonely spacing mark */
-        if ((!mcview_isprint (view, cs[0]) || mcview_ismark (view, cs[0])) && cs[0] != '\t')
-            cs[0] = '.';
-
-        for (i = 0; i < n; i++)
-            charwidth += mcview_wcwidth (view, cs[i]);
-
-        /* Adjust the width for TAB. It's handled below along with the normal characters,
-         * so that it's wrapped consistently with them, and is painted with the proper
-         * attributes (although currently it can't have a special color). */
-        if (cs[0] == '\t')
-        {
-            charwidth = Setup::option_tab_spacing - state->unwrapped_column % Setup::option_tab_spacing;
-            state->print_lonely_combining = TRUE;
-        }
-        else
-            state->print_lonely_combining = FALSE;
-
-        /* In wrap mode only: We're done with this row if the character sequence wouldn't fit.
-         * Except if at the first column, because then it wouldn't fit in the next row either.
-         * In this extreme case let the unwrapped code below do its best to display it. */
-        if (view->mode_flags.wrap && (off_t) col + charwidth > dpy_text_column + (off_t) width
-            && col > 0)
-        {
-            *state = state_saved;
-            if (paragraph_ended != NULL)
-                *paragraph_ended = FALSE;
-            if (linewidth != NULL)
-                *linewidth = col;
-            return 1;
-        }
-
-        /* Display, unless outside of the viewport. */
-        if (row >= 0 && row < (int) height)
-        {
-            if ((off_t) col >= dpy_text_column &&
-                (off_t) col + charwidth <= dpy_text_column + (off_t) width)
-            {
-                /* The combining character sequence fits entirely in the viewport. Print it. */
-                tty_setcolor (color);
-                widget_gotoyx (view, top + row, left + ((off_t) col - dpy_text_column));
-                if (cs[0] == '\t')
-                {
-                    for (i = 0; i < charwidth; i++)
-                        tty_print_char (' ');
-                }
-                else
-                {
-                    j = 0;
-                    for (i = 0; i < n; i++)
-                        j += mcview_char_display (view, cs[i], str + j);
-                    str[j] = '\0';
-                    /* This is probably a bug in our tty layer, but tty_print_string
-                     * normalizes the string, whereas tty_printf doesn't. Don't normalize,
-                     * since we handle combining characters ourselves correctly, it's
-                     * better if they are copy-pasted correctly. Ticket 3255. */
-                    tty_printf ("%s", str);
-                }
-            }
-            else if ((off_t) col < dpy_text_column && (off_t) col + charwidth > dpy_text_column)
-            {
-                /* The combining character sequence would cross the left edge of the viewport.
-                 * This cannot happen with wrap mode. Print replacement character(s),
-                 * or spaces with the correct attributes for partial Tabs. */
-                tty_setcolor (color);
-                for (i = dpy_text_column;
-                     i < (off_t) col + charwidth && i < dpy_text_column + (off_t) width; i++)
-                {
-                    widget_gotoyx (view, top + row, left + (i - dpy_text_column));
-                    tty_print_anychar ((cs[0] == '\t') ? ' ' : PARTIAL_CJK_AT_LEFT_MARGIN);
-                }
-            }
-            else if ((off_t) col < dpy_text_column + (off_t) width &&
-                     (off_t) col + charwidth > dpy_text_column + (off_t) width)
-            {
-                /* The combining character sequence would cross the right edge of the viewport
-                 * and we're not wrapping. Print replacement character(s),
-                 * or spaces with the correct attributes for partial Tabs. */
-                tty_setcolor (color);
-                for (i = col; i < dpy_text_column + (off_t) width; i++)
-                {
-                    widget_gotoyx (view, top + row, left + (i - dpy_text_column));
-                    tty_print_anychar ((cs[0] == '\t') ? ' ' : PARTIAL_CJK_AT_RIGHT_MARGIN);
-                }
-            }
-        }
-
-        col += charwidth;
-        state->unwrapped_column += charwidth;
-
-        if (!view->mode_flags.wrap && (off_t) col >= dpy_text_column + (off_t) width
-            && linewidth == NULL)
-        {
-            /* Optimization: Fast forward to the end of the line, rather than carefully
-             * parsing and then not actually displaying it. */
-            off_t eol;
-
-            eol = Lib::mcview_eol (view, state->offset);
-            mcview_state_machine_init (state, eol);
-            return 1;
-        }
-    }
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/**
- * Parse, format and possibly display one paragraph (perhaps not from the beginning).
- *
- * Formatting starts at the given "state" (which encodes the file offset and parser and formatter's
- * internal state). In unwrap mode, this should point to the beginning of the paragraph with the
- * default state, the additional horizontal scrolling is added here. In wrap mode, this may point
- * to the beginning of the line within a paragraph (to display the partial paragraph at the top),
- * with the proper state at that point.
- *
- * Displaying the next paragraph should start at "state"'s new value, or if we displayed the bottom
- * line then state->offset tells the file offset to be shown in the top bar.
- *
- * If "row" is negative, don't display the first abs(row) lines and display the rest from the top.
- * This was a nice idea but it's now unused :)
- *
- * If "row" is too large, don't display the paragraph at all but still return the number of lines.
- * This is used when moving upwards.
- *
- * @param view ...
- * @param state the parser-formatter state machine's state, updated
- * @param row print starting at this row
- * @return the number of rows the paragraphs is wrapped to, that is, 0 if we were already at EOF,
- *   otherwise 1 in unwrap mode, >= 1 in wrap mode. We stop when reaching the bottom of the
- *   viewport, it's not counted how many more lines the paragraph would occupy
- */
-static int
-mcview_display_paragraph (WView * view, mcview_state_machine_t * state, int row)
-{
-    const screen_dimen height = view->data_area.height;
-    int lines = 0;
-
-    while (TRUE)
-    {
-        gboolean paragraph_ended;
-
-        lines += mcview_display_line (view, state, row, &paragraph_ended, NULL);
-        if (paragraph_ended)
-            return lines;
-
-        if (row < (int) height)
-        {
-            row++;
-            /* stop if bottom of screen reached */
-            if (row >= (int) height)
-                return lines;
-        }
-    }
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/**
- * Recompute dpy_state_top from dpy_start and dpy_paragraph_skip_lines. Clamp
- * dpy_paragraph_skip_lines if necessary.
- *
- * This method should be called in wrap mode after changing one of the parsing or formatting
- * properties (e.g. window width, encoding, nroff), or when switching to wrap mode from unwrap or
- * hex.
- *
- * If we stayed within the same paragraph then try to keep the vertical offset within that
- * paragraph as well. It might happen though that the paragraph became shorter than our desired
- * vertical position, in that case move to its last row.
- */
-static void
-mcview_wrap_fixup (WView * view)
-{
-    int lines = view->dpy_paragraph_skip_lines;
-
-    if (!view->dpy_wrap_dirty)
-        return;
-    view->dpy_wrap_dirty = FALSE;
-
-    view->dpy_paragraph_skip_lines = 0;
-    mcview_state_machine_init (&view->dpy_state_top, view->dpy_start);
-
-    while (lines-- != 0)
-    {
-        mcview_state_machine_t state_prev;
-        gboolean paragraph_ended;
-
-        state_prev = view->dpy_state_top;
-        if (mcview_display_line (view, &view->dpy_state_top, -1, &paragraph_ended, NULL) == 0)
-            break;
-        if (paragraph_ended)
-        {
-            view->dpy_state_top = state_prev;
-            break;
-        }
-        view->dpy_paragraph_skip_lines++;
-    }
-}
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-/**
- * In both wrap and unwrap modes, dpy_start points to the beginning of the paragraph.
- *
- * In unwrap mode, start displaying from this position, probably applying an additional horizontal
- * scroll.
- *
- * In wrap mode, an additional dpy_paragraph_skip_lines lines are skipped from the top of this
- * paragraph. dpy_state_top contains the position and parser-formatter state corresponding to the
- * top left corner so we can just start rendering from here. Unless dpy_wrap_dirty is set in which
- * case dpy_state_top is invalid and we need to recompute first.
- */
-void
-mcview_display_text (WView * view)
+void Ascii::mcview_display_text(WView* view)
 {
     const screen_dimen left = view->data_area.left;
     const screen_dimen top = view->data_area.top;
@@ -901,7 +214,7 @@ mcview_display_text (WView * view)
     view->dpy_state_bottom = state;
 
     tty_setcolor (VIEW_NORMAL_COLOR);
-    if (McViewer::mcview_show_eof != NULL && McViewer::mcview_show_eof[0] != '\0')
+    if (McViewer::mcview_show_eof != nullptr && McViewer::mcview_show_eof[0] != '\0')
         while (row < (int) height)
         {
             widget_gotoyx (view, top + row, left);
@@ -911,20 +224,14 @@ mcview_display_text (WView * view)
         }
 }
 
-/* --------------------------------------------------------------------------------------------- */
-/**
- * Move down.
- *
- * It's very simple. Just invisibly format the next "lines" lines, carefully carrying the formatter
- * state in wrap mode. But before each step we need to check if we've already hit the end of the
- * file, in that case we can no longer move. This is done by walking from dpy_state_bottom.
- *
- * Note that this relies on mcview_display_text() setting dpy_state_bottom to its correct value
- * upon rendering the screen contents. So don't call this function from other functions (e.g. at
- * the bottom of mcview_ascii_move_up()) which invalidate this value.
- */
-void
-mcview_ascii_move_down (WView * view, off_t lines)
+void Ascii::mcview_state_machine_init(mcview_state_machine_t* state, off_t offset)
+{
+    memset(state, 0, sizeof(*state));   // FIXME DB: std::memset
+    state->offset = offset;
+    state->print_lonely_combining = TRUE;
+}
+
+void Ascii::mcview_ascii_move_down(WView* view, off_t lines)
 {
     while (lines-- != 0)
     {
@@ -933,7 +240,7 @@ mcview_ascii_move_down (WView * view, off_t lines)
         /* See if there's still data below the bottom line, by imaginarily displaying one
          * more line. This takes care of reading more data into growbuf, if required.
          * If the end position didn't advance, we're at EOF and hence bail out. */
-        if (mcview_display_line (view, &view->dpy_state_bottom, -1, &paragraph_ended, NULL) == 0)
+        if (mcview_display_line (view, &view->dpy_state_bottom, -1, &paragraph_ended, nullptr) == 0)
             break;
 
         /* Okay, there's enough data. Move by 1 row at the top, too. No need to check for
@@ -946,7 +253,7 @@ mcview_ascii_move_down (WView * view, off_t lines)
         }
         else
         {
-            mcview_display_line (view, &view->dpy_state_top, -1, &paragraph_ended, NULL);
+            mcview_display_line (view, &view->dpy_state_top, -1, &paragraph_ended, nullptr);
             if (!paragraph_ended)
                 view->dpy_paragraph_skip_lines++;
             else
@@ -958,22 +265,7 @@ mcview_ascii_move_down (WView * view, off_t lines)
     }
 }
 
-/* --------------------------------------------------------------------------------------------- */
-/**
- * Move up.
- *
- * Unwrap mode: Piece of cake. Wrap mode: If we'd walk back more than the current line offset
- * within the paragraph, we need to jump back to the previous paragraph and compute its height to
- * see if we start from that paragraph, and repeat this if necessary. Once we're within the desired
- * paragraph, we still need to format it from its beginning to know the state.
- *
- * See the top of this file for comments about MAX_BACKWARDS_WALK_IN_PARAGRAPH.
- *
- * force_max is a nice protection against the rare extreme case that the file underneath us
- * changes, we don't want to endlessly consume a file of maybe full of zeros upon moving upwards.
- */
-void
-mcview_ascii_move_up (WView * view, off_t lines)
+void Ascii::mcview_ascii_move_up(WView* view, off_t lines)
 {
     if (!view->mode_flags.wrap)
     {
@@ -1000,13 +292,12 @@ mcview_ascii_move_up (WView * view, off_t lines)
             view->force_max = view->dpy_start;
             view->dpy_start =
                 Lib::mcview_bol (view, view->dpy_start - 1,
-                            view->dpy_start - MAX_BACKWARDS_WALK_IN_PARAGRAPH);
+                                 view->dpy_start - MAX_BACKWARDS_WALK_IN_PARAGRAPH);
             mcview_state_machine_init (&view->dpy_state_top, view->dpy_start);
             /* This is a tricky way of denoting that we're at the end of the paragraph.
              * Normally we'd jump to the next paragraph and reset paragraph_skip_lines. But for
              * walking backwards this is exactly what we need. */
-            view->dpy_paragraph_skip_lines =
-                mcview_display_paragraph (view, &view->dpy_state_top, view->data_area.height);
+            view->dpy_paragraph_skip_lines = mcview_display_paragraph(view, &view->dpy_state_top, view->data_area.height);
             view->force_max = -1;
         }
 
@@ -1016,23 +307,17 @@ mcview_ascii_move_up (WView * view, off_t lines)
         mcview_state_machine_init (&view->dpy_state_top, view->dpy_start);
         view->dpy_paragraph_skip_lines -= lines;
         for (i = 0; i < view->dpy_paragraph_skip_lines; i++)
-            mcview_display_line (view, &view->dpy_state_top, -1, NULL, NULL);
+            mcview_display_line (view, &view->dpy_state_top, -1, nullptr, nullptr);
     }
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_ascii_moveto_bol (WView * view)
+void Ascii::mcview_ascii_moveto_bol(WView* view)
 {
     if (!view->mode_flags.wrap)
         view->dpy_text_column = 0;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_ascii_moveto_eol (WView * view)
+void Ascii::mcview_ascii_moveto_eol(WView* view)
 {
     if (!view->mode_flags.wrap)
     {
@@ -1041,19 +326,459 @@ mcview_ascii_moveto_eol (WView * view)
 
         /* Get the width of the topmost paragraph. */
         mcview_state_machine_init (&state, view->dpy_start);
-        mcview_display_line (view, &state, -1, NULL, &linewidth);
+        mcview_display_line (view, &state, -1, nullptr, &linewidth);
         view->dpy_text_column = Inlines::diff_or_zero<off_t>(linewidth, (off_t) view->data_area.width);
     }
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-void
-mcview_state_machine_init (mcview_state_machine_t * state, off_t offset)
+void Ascii::mcview_wrap_fixup(WView* view)
 {
-    memset (state, 0, sizeof (*state));
-    state->offset = offset;
-    state->print_lonely_combining = TRUE;
+    int lines = view->dpy_paragraph_skip_lines;
+
+    if (!view->dpy_wrap_dirty)
+        return;
+    view->dpy_wrap_dirty = FALSE;
+
+    view->dpy_paragraph_skip_lines = 0;
+    mcview_state_machine_init (&view->dpy_state_top, view->dpy_start);
+
+    while (lines-- != 0)
+    {
+        mcview_state_machine_t state_prev = view->dpy_state_top;
+        gboolean paragraph_ended;
+        if (mcview_display_line (view, &view->dpy_state_top, -1, &paragraph_ended, nullptr) == 0)
+            break;
+        if (paragraph_ended)
+        {
+            view->dpy_state_top = state_prev;
+            break;
+        }
+        view->dpy_paragraph_skip_lines++;
+    }
 }
 
-/* --------------------------------------------------------------------------------------------- */
+int Ascii::mcview_display_paragraph(WView* view, mcview_state_machine_t* state, int row)
+{
+    const screen_dimen height = view->data_area.height;
+    int lines = 0;
+
+    while (TRUE)
+    {
+        gboolean paragraph_ended;
+
+        lines += mcview_display_line(view, state, row, &paragraph_ended, nullptr);
+        if (paragraph_ended)
+            return lines;
+
+        if (row < (int) height)
+        {
+            row++;
+            /* stop if bottom of screen reached */
+            if (row >= (int) height)
+                return lines;
+        }
+    }
+}
+
+int Ascii::mcview_display_line(WView* view, mcview_state_machine_t* state, int row, gboolean* paragraph_ended, off_t* linewidth)
+{
+    const screen_dimen left = view->data_area.left;
+    const screen_dimen top = view->data_area.top;
+    const screen_dimen width = view->data_area.width;
+    const screen_dimen height = view->data_area.height;
+    off_t dpy_text_column = view->mode_flags.wrap ? 0 : view->dpy_text_column;
+    screen_dimen col = 0;
+    int cs[1 + MAX_COMBINING_CHARS];
+    char str[(1 + MAX_COMBINING_CHARS) * UTF8_CHAR_LEN + 1];
+    int i, j;
+
+    if (paragraph_ended != nullptr)
+        *paragraph_ended = TRUE;
+
+    if (!view->mode_flags.wrap && (row < 0 || row >= (int) height) && linewidth == nullptr)
+    {
+        /* Optimization: Fast forward to the end of the line, rather than carefully
+         * parsing and then not actually displaying it. */
+        off_t eol = Lib::mcview_eol (view, state->offset);
+        int retval = (eol > state->offset) ? 1 : 0;
+
+        mcview_state_machine_init (state, eol);
+        return retval;
+    }
+
+    while (TRUE)
+    {
+        int charwidth = 0;
+        int color;
+
+        mcview_state_machine_t state_saved = *state;
+        int n = mcview_next_combining_char_sequence (view, state, cs, 1 + MAX_COMBINING_CHARS, &color);
+        if (n == 0)
+        {
+            if (linewidth != nullptr)
+                *linewidth = col;
+            return (col > 0) ? 1 : 0;
+        }
+
+        if (view->search_start <= state->offset && state->offset < view->search_end)
+            color = VIEW_SELECTED_COLOR;
+
+        if (cs[0] == '\n')
+        {
+            /* New line: reset all formatting state for the next paragraph. */
+            mcview_state_machine_init (state, state->offset);
+            if (linewidth != nullptr)
+                *linewidth = col;
+            return 1;
+        }
+
+        if (mcview_is_non_spacing_mark (view, cs[0]))
+        {
+            /* Lonely combining character. Probably leftover after too many combining chars. Just ignore. */
+            continue;
+        }
+
+        /* Nonprintable, or lonely spacing mark */
+        if ((!mcview_isprint (view, cs[0]) || mcview_ismark (view, cs[0])) && cs[0] != '\t')
+            cs[0] = '.';
+
+        for (i = 0; i < n; i++)
+            charwidth += mcview_wcwidth (view, cs[i]);
+
+        /* Adjust the width for TAB. It's handled below along with the normal characters,
+         * so that it's wrapped consistently with them, and is painted with the proper
+         * attributes (although currently it can't have a special color). */
+        if (cs[0] == '\t')
+        {
+            charwidth = Setup::option_tab_spacing - state->unwrapped_column % Setup::option_tab_spacing;
+            state->print_lonely_combining = TRUE;
+        }
+        else
+            state->print_lonely_combining = FALSE;
+
+        /* In wrap mode only: We're done with this row if the character sequence wouldn't fit.
+         * Except if at the first column, because then it wouldn't fit in the next row either.
+         * In this extreme case let the unwrapped code below do its best to display it. */
+        if (view->mode_flags.wrap && (off_t) col + charwidth > dpy_text_column + (off_t) width
+            && col > 0)
+        {
+            *state = state_saved;
+            if (paragraph_ended != nullptr)
+                *paragraph_ended = FALSE;
+            if (linewidth != nullptr)
+                *linewidth = col;
+            return 1;
+        }
+
+        /* Display, unless outside of the viewport. */
+        if (row >= 0 && row < (int) height)
+        {
+            if ((off_t) col >= dpy_text_column &&
+                (off_t) col + charwidth <= dpy_text_column + (off_t) width)
+            {
+                /* The combining character sequence fits entirely in the viewport. Print it. */
+                tty_setcolor (color);
+                widget_gotoyx (view, top + row, left + ((off_t) col - dpy_text_column));
+                if (cs[0] == '\t')
+                {
+                    for (i = 0; i < charwidth; i++)
+                        tty_print_char (' ');
+                }
+                else
+                {
+                    j = 0;
+                    for (i = 0; i < n; i++)
+                        j += mcview_char_display (view, cs[i], str + j);
+                    str[j] = '\0';
+                    /* This is probably a bug in our tty layer, but tty_print_string
+                     * normalizes the string, whereas tty_printf doesn't. Don't normalize,
+                     * since we handle combining characters ourselves correctly, it's
+                     * better if they are copy-pasted correctly. Ticket 3255. */
+                    tty_printf ("%s", str);
+                }
+            }
+            else if ((off_t) col < dpy_text_column && (off_t) col + charwidth > dpy_text_column)
+            {
+                /* The combining character sequence would cross the left edge of the viewport.
+                 * This cannot happen with wrap mode. Print replacement character(s),
+                 * or spaces with the correct attributes for partial Tabs. */
+                tty_setcolor (color);
+                for (i = dpy_text_column;
+                     i < (off_t) col + charwidth && i < dpy_text_column + (off_t) width; i++)
+                {
+                    widget_gotoyx (view, top + row, left + (i - dpy_text_column));
+                    tty_print_anychar ((cs[0] == '\t') ? ' ' : PARTIAL_CJK_AT_LEFT_MARGIN);
+                }
+            }
+            else if ((off_t) col < dpy_text_column + (off_t) width &&
+                (off_t) col + charwidth > dpy_text_column + (off_t) width)
+            {
+                /* The combining character sequence would cross the right edge of the viewport
+                 * and we're not wrapping. Print replacement character(s),
+                 * or spaces with the correct attributes for partial Tabs. */
+                tty_setcolor (color);
+                for (i = col; i < dpy_text_column + (off_t) width; i++)
+                {
+                    widget_gotoyx (view, top + row, left + (i - dpy_text_column));
+                    tty_print_anychar ((cs[0] == '\t') ? ' ' : PARTIAL_CJK_AT_RIGHT_MARGIN);
+                }
+            }
+        }
+
+        col += charwidth;
+        state->unwrapped_column += charwidth;
+
+        if (!view->mode_flags.wrap && (off_t) col >= dpy_text_column + (off_t) width
+            && linewidth == nullptr)
+        {
+            /* Optimization: Fast forward to the end of the line, rather than carefully
+             * parsing and then not actually displaying it. */
+            off_t eol;
+
+            eol = Lib::mcview_eol (view, state->offset);
+            mcview_state_machine_init (state, eol);
+            return 1;
+        }
+    }
+}
+
+int Ascii::mcview_next_combining_char_sequence(WView* view, mcview_state_machine_t* state, int* cs, int clen, int* color)
+{
+    int i = 1;
+
+    if (!mcview_get_next_maybe_nroff_char (view, state, cs, color))
+        return 0;
+
+    /* Process \r and \r\n newlines. */
+    if (cs[0] == '\r')
+    {
+        int cnext;
+
+        mcview_state_machine_t state_after_crlf = *state;
+        if (mcview_get_next_maybe_nroff_char (view, &state_after_crlf, &cnext, nullptr)
+            && cnext == '\n')
+            *state = state_after_crlf;
+        cs[0] = '\n';
+        return 1;
+    }
+
+    /* We don't want combining over non-printable characters. This includes '\n' and '\t' too. */
+    if (!mcview_isprint (view, cs[0]))
+        return 1;
+
+    if (mcview_ismark (view, cs[0]))
+    {
+        if (!state->print_lonely_combining)
+        {
+            /* First character is combining. Either just return it, ... */
+            return 1;
+        }
+        else
+        {
+            /* or place this (and subsequent combining ones) over a dotted circle. */
+            cs[1] = cs[0];
+            cs[0] = BASE_CHARACTER_FOR_LONELY_COMBINING;
+            i = 2;
+        }
+    }
+
+    if (mcview_wcwidth (view, cs[0]) == 2)
+    {
+        /* Don't allow combining or spacing mark for wide characters, is this okay? */
+        return 1;
+    }
+
+    /* Look for more combining chars. Either at most clen-1 zero-width combining chars,
+     * or at most 1 spacing mark. Is this logic correct? */
+    for (; i < clen; i++)
+    {
+        mcview_state_machine_t state_after_combining;
+
+        state_after_combining = *state;
+        if (!mcview_get_next_maybe_nroff_char (view, &state_after_combining, &cs[i], nullptr))
+            return i;
+        if (!mcview_ismark (view, cs[i]) || !mcview_isprint (view, cs[i]))
+            return i;
+        if (g_unichar_type (cs[i]) == SPACING_MARK)
+        {
+            /* Only allow as the first combining char. Stop processing in either case. */
+            if (i == 1)
+            {
+                *state = state_after_combining;
+                i++;
+            }
+            return i;
+        }
+        *state = state_after_combining;
+    }
+    return i;
+}
+
+gboolean Ascii::mcview_get_next_maybe_nroff_char(WView* view, mcview_state_machine_t* state, int* c, int* color)
+{
+    mcview_state_machine_t state_after_nroff;
+    int c2, c3;
+
+    if (color != nullptr)
+        *color = VIEW_NORMAL_COLOR;
+
+    if (!view->mode_flags.nroff)
+        return mcview_get_next_char (view, state, c);
+
+    if (!mcview_get_next_char (view, state, c))
+        return FALSE;
+    /* Don't allow nroff formatting around CR, LF, TAB or other special chars */
+    if (!mcview_isprint (view, *c))
+        return TRUE;
+
+    state_after_nroff = *state;
+
+    if (!mcview_get_next_char (view, &state_after_nroff, &c2))
+        return TRUE;
+    if (c2 != '\b')
+        return TRUE;
+
+    if (!mcview_get_next_char (view, &state_after_nroff, &c3))
+        return TRUE;
+    if (!mcview_isprint (view, c3))
+        return TRUE;
+
+    if (*c == '_' && c3 == '_')
+    {
+        *state = state_after_nroff;
+        if (color != nullptr)
+            *color =
+                state->nroff_underscore_is_underlined ? VIEW_UNDERLINED_COLOR : VIEW_BOLD_COLOR;
+    }
+    else if (*c == c3)
+    {
+        *state = state_after_nroff;
+        state->nroff_underscore_is_underlined = FALSE;
+        if (color != nullptr)
+            *color = VIEW_BOLD_COLOR;
+    }
+    else if (*c == '_')
+    {
+        *c = c3;
+        *state = state_after_nroff;
+        state->nroff_underscore_is_underlined = TRUE;
+        if (color != nullptr)
+            *color = VIEW_UNDERLINED_COLOR;
+    }
+
+    return TRUE;
+}
+
+gboolean Ascii::mcview_get_next_char(WView* view, mcview_state_machine_t* state, int* c)
+{
+    /* Pretend EOF if we reached force_max */
+    if (view->force_max >= 0 && state->offset >= view->force_max)
+        return FALSE;
+
+#ifdef HAVE_CHARSET
+    if (view->utf8)
+    {
+        int char_length = 0;
+
+        if (!DataSource::mcview_get_utf (view, state->offset, c, &char_length))
+            return FALSE;
+        /* Pretend EOF if we crossed force_max */
+        if (view->force_max >= 0 && state->offset + char_length > view->force_max)
+            return FALSE;
+
+        state->offset += char_length;
+        return TRUE;
+    }
+#endif /* HAVE_CHARSET */
+    if (!Inlines::mcview_get_byte (view, state->offset, c))
+        return FALSE;
+    state->offset++;
+    return TRUE;
+}
+
+int Ascii::mcview_char_display(const WView* view, int c, char* s)
+{
+#ifdef HAVE_CHARSET
+    if (mc_global.utf8_display)
+    {
+        if (!view->utf8)
+            c = convert_from_8bit_to_utf_c ((unsigned char) c, view->converter);
+        if (!g_unichar_isprint (c))
+            c = '.';
+        return g_unichar_to_utf8 (c, s);
+    }
+    if (view->utf8)
+    {
+        if (g_unichar_iswide (c))
+        {
+            s[0] = s[1] = '.';
+            return 2;
+        }
+        if (g_unichar_iszerowidth (c))
+            return 0;
+        /* TODO the is_printable check below will be broken for this */
+        c = convert_from_utf_to_current_c (c, view->converter);
+    }
+    else
+    {
+        /* TODO the is_printable check below will be broken for this */
+        c = convert_to_display_c (c);
+    }
+#else
+    (void) view;
+#endif /* HAVE_CHARSET */
+    /* TODO this is very-very buggy by design: ticket 3257 comments 0-1 */
+    if (!is_printable (c))
+        c = '.';
+    *s = c;
+    return 1;
+}
+
+gboolean Ascii::mcview_isprint(const WView* view, int c)
+{
+#ifdef HAVE_CHARSET
+    if (!view->utf8)
+        c = convert_from_8bit_to_utf_c((unsigned char) c, view->converter);
+    return g_unichar_isprint (c);
+#else
+    (void) view;
+    /* TODO this is very-very buggy by design: ticket 3257 comments 0-1 */
+    return is_printable (c);
+#endif /* HAVE_CHARSET */
+}
+
+gboolean Ascii::mcview_is_non_spacing_mark(const WView* view, int c)
+{
+#ifdef HAVE_CHARSET
+    if (view->utf8)
+    {
+        GUnicodeType type = g_unichar_type(c);
+
+        return type == G_UNICODE_NON_SPACING_MARK || type == G_UNICODE_ENCLOSING_MARK;
+    }
+#endif /* HAVE_CHARSET */
+    return FALSE;
+}
+
+gboolean Ascii::mcview_ismark(const WView* view, int c)
+{
+#ifdef HAVE_CHARSET
+    if (view->utf8)
+        return g_unichar_ismark(c);
+#endif /* HAVE_CHARSET */
+    return FALSE;
+}
+
+int Ascii::mcview_wcwidth(const WView* view, int c)
+{
+#ifdef HAVE_CHARSET
+    if (view->utf8)
+    {
+        if (g_unichar_iswide(c))
+            return 2;
+        if (g_unichar_iszerowidth(c))
+            return 0;
+    }
+#endif /* HAVE_CHARSET */
+    return 1;
+}

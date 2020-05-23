@@ -137,7 +137,7 @@ void Lib::mcview_init(WView* view)
 
     view->dpy_start = 0;
     view->dpy_paragraph_skip_lines = 0;
-    mcview_state_machine_init (&view->dpy_state_top, 0);
+    Ascii::mcview_state_machine_init (&view->dpy_state_top, 0);
     view->dpy_wrap_dirty = FALSE;
     view->force_max = -1;
     view->dpy_text_column = 0;

@@ -274,7 +274,7 @@ gboolean McViewer::mcview_load(WView* view, const char* command, const char* fil
     view->command = g_strdup (command);
     view->dpy_start = 0;
     view->dpy_paragraph_skip_lines = 0;
-    mcview_state_machine_init (&view->dpy_state_top, 0);
+    Ascii::mcview_state_machine_init (&view->dpy_state_top, 0);
     view->dpy_wrap_dirty = FALSE;
     view->force_max = -1;
     view->dpy_text_column = 0;

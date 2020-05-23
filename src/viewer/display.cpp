@@ -98,7 +98,7 @@ void Display::mcview_display(WView* view)
     if (view->mode_flags.hex)
         Hex::mcview_display_hex (view);
     else
-        mcview_display_text (view);
+        Ascii::mcview_display_text (view);
     mcview_display_status (view);
 }
 
