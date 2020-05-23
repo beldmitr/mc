@@ -313,7 +313,7 @@ off_t Lib::mcview_eol(WView* view, off_t current)
 
 char* Lib::mcview_get_title(const WDialog* h, size_t len)
 {
-    const auto* view = (const WView *) widget_find_by_type(CONST_WIDGET (h), mcview_callback); // FIXME DB c++ cast
+    const auto* view = (const WView*) widget_find_by_type(CONST_WIDGET (h), ActionsCmd::mcview_callback); // FIXME DB c++ cast
     const char *modified = view->hexedit_mode && (view->change_list != nullptr) ? "(*) " : "    ";
     const char *view_filename = vfs_path_as_str (view->filename_vpath);
 

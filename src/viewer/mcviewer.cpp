@@ -78,7 +78,7 @@ WView* McViewer::mcview_new(int y, int x, int lines, int cols, gboolean is_panel
 {
     WView *view = g_new0(WView, 1);
     Widget *w = WIDGET(view);
-    widget_init(w, y, x, lines, cols, mcview_callback, mcview_mouse_callback);
+    widget_init(w, y, x, lines, cols, ActionsCmd::mcview_callback, mcview_mouse_callback);
     w->options = static_cast<widget_options_t>(w->options | WOP_SELECTABLE | WOP_TOP_SELECT);
     w->keymap = KeyBindDefaults::viewer_map;
 
@@ -109,7 +109,7 @@ WView* McViewer::mcview_new(int y, int x, int lines, int cols, gboolean is_panel
 gboolean McViewer::mcview_viewer(const char* command, const vfs_path_t* file_vpath, int start_line, off_t search_start, off_t search_end)
 {
     /* Create dialog and widgets, put them on the dialog */
-    WDialog* view_dlg = dlg_create(FALSE, 0, 0, 1, 1, WPOS_FULLSCREEN, FALSE, nullptr, mcview_dialog_callback, nullptr, "[Internal File Viewer]", nullptr);
+    WDialog* view_dlg = dlg_create(FALSE, 0, 0, 1, 1, WPOS_FULLSCREEN, FALSE, nullptr, ActionsCmd::mcview_dialog_callback, nullptr, "[Internal File Viewer]", nullptr);
     Widget* vw = WIDGET(view_dlg);
     widget_want_tab(vw, TRUE);
 
