@@ -206,6 +206,9 @@ add_compile_definitions(ENABLE_CONFIGURE_ARGS)
 add_compile_definitions(MC_CONFIGURE_ARGS="")
 #add_compile_definitions(ENABLE_NLS)    # FIXME enable and try to compile
 #add_compile_definitions(MC_ENABLE_DEBUGGING_CODE)  # FIXME enable and try to compile
+#add_compile_definitions(ENABLE_NLS)    // FIXME, doesn't compile when is enabled
+add_compile_definitions(HAVE_STRUCT_STAT_ST_MTIM)
+
 
 #curses
 #add_compile_definitions(HAVE_NCURSES_H)

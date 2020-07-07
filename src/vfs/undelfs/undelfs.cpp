@@ -46,7 +46,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>             /* memset() */
+#include <cstring>
 
 #ifdef HAVE_EXT2FS_EXT2_FS_H
 #include <ext2fs/ext2_fs.h>
@@ -56,116 +56,80 @@
 #include <linux/ext2_fs.h>
 #endif
 
-#include <ext2fs/ext2fs.h>
 #include <ctype.h>
 
 #include "lib/global.hpp"
-
 #include "lib/util.hpp"
 #include "lib/widget.hpp"         /* message() */
-#include "lib/vfs/xdirentry.hpp"
-#include "lib/vfs/utilvfs.hpp"
 #include "lib/vfs/vfs.hpp"
 
 #include "undelfs.hpp"
-
-/*** global variables ****************************************************************************/
-
-/*** file scope macro definitions ****************************************************************/
 
 /* To generate the . and .. entries use -2 */
 #define READDIR_PTR_INIT 0
 
 #define undelfs_stat undelfs_lstat
 
-/*** file scope type declarations ****************************************************************/
 
-struct deleted_info
+void Undelfs::vfs_init_undelfs()
 {
-    ext2_ino_t ino;
-    unsigned short mode;
-    unsigned short uid;
-    unsigned short gid;
-    unsigned long size;
-    time_t dtime;
-    int num_blocks;
-    int free_blocks;
-};
+    /* NULLize vfs_s_subclass members */
+    memset (&undelfs_subclass, 0, sizeof (undelfs_subclass));
 
-struct lsdel_struct
+    vfs_init_class (vfs_undelfs_ops, "undelfs", VFSF_UNKNOWN, "undel");
+    vfs_undelfs_ops->init = undelfs_init;
+    vfs_undelfs_ops->open = undelfs_open;
+    vfs_undelfs_ops->close = undelfs_close;
+    vfs_undelfs_ops->read = undelfs_read;
+    vfs_undelfs_ops->opendir = undelfs_opendir;
+    vfs_undelfs_ops->readdir = undelfs_readdir;
+    vfs_undelfs_ops->closedir = undelfs_closedir;
+    vfs_undelfs_ops->stat = undelfs_stat;
+    vfs_undelfs_ops->lstat = undelfs_lstat;
+    vfs_undelfs_ops->fstat = undelfs_fstat;
+    vfs_undelfs_ops->chdir = undelfs_chdir;
+    vfs_undelfs_ops->lseek = undelfs_lseek;
+    vfs_undelfs_ops->getid = undelfs_getid;
+    vfs_undelfs_ops->nothingisopen = undelfs_nothingisopen;
+    vfs_undelfs_ops->free = undelfs_free;
+    vfs_register_class (vfs_undelfs_ops);
+}
+
+void Undelfs::com_err(const char* whoami, long err_code, const char* fmt, ...)
 {
-    ext2_ino_t inode;
-    int num_blocks;
-    int free_blocks;
-    int bad_blocks;
-};
+    va_list ap;
 
-typedef struct
-{
-    int f_index;                /* file index into delarray */
-    char *buf;
-    int error_code;             /*  */
-    off_t pos;                  /* file position */
-    off_t current;              /* used to determine current position in itereate */
-    gboolean finished;
-    ext2_ino_t inode;
-    int bytes_read;
-    off_t size;
+    va_start (ap, fmt);
+    char *str = g_strdup_vprintf (fmt, ap);
+    va_end (ap);
 
-    /* Used by undelfs_read: */
-    char *dest_buffer;          /* destination buffer */
-    size_t count;               /* bytes to read */
-} undelfs_file;
+    message (D_ERROR, _("Ext2lib error"), "%s (%s: %ld)", str, whoami, err_code);
+    g_free (str);
+}
 
-/*** file scope variables ************************************************************************/
-
-/* We only allow one opened ext2fs */
-static char *ext2_fname;
-static ext2_filsys fs = NULL;
-static struct lsdel_struct lsd;
-static struct deleted_info *delarray;
-static int num_delarray, max_delarray;
-static char *block_buf;
-static const char *undelfserr = N_("undelfs: error");
-static int readdir_ptr;
-static int undelfs_usage;
-
-static struct vfs_s_subclass undelfs_subclass;
-static struct vfs_class *vfs_undelfs_ops = VFS_CLASS (&undelfs_subclass);
-
-/* --------------------------------------------------------------------------------------------- */
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-static void
-undelfs_shutdown (void)
+void Undelfs::undelfs_shutdown()
 {
     if (fs)
         ext2fs_close (fs);
-    fs = NULL;
+
+    fs = nullptr;
     MC_PTR_FREE (ext2_fname);
     MC_PTR_FREE (delarray);
     MC_PTR_FREE (block_buf);
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static void
-undelfs_get_path (const vfs_path_t * vpath, char **fsname, char **file)
+void Undelfs::undelfs_get_path(const vfs_path_t* vpath, char** fsname, char** file)
 {
-    const char *p, *dirname;
-    const vfs_path_element_t *path_element;
-
-    path_element = vfs_path_get_by_index (vpath, -1);
+    const vfs_path_element_t *path_element = vfs_path_get_by_index (vpath, -1);
 
     /* To look like filesystem, we have virtual directories
        undel://XXX, which have no subdirectories. XXX is replaced with
-       hda5, sdb8 etc, which is assumed to live under /dev. 
+       hda5, sdb8 etc, which is assumed to live under /dev.
        -- pavel@ucw.cz */
 
-    dirname = path_element->path;
+    const char* dirname = path_element->path;
 
-    *fsname = NULL;
+    *fsname = nullptr;
 
     if (strncmp (dirname, "undel://", 8) != 0)
         return;
@@ -177,7 +141,7 @@ undelfs_get_path (const vfs_path_t * vpath, char **fsname, char **file)
     if (*dirname == 0)
         return;
 
-    p = dirname + strlen (dirname);
+    const char *p = dirname + strlen (dirname);
 #if 0
     /* Strip trailing ./
      */
@@ -193,23 +157,20 @@ undelfs_get_path (const vfs_path_t * vpath, char **fsname, char **file)
 
             *file = g_strdup (p + 1);
             tmp = g_strndup (dirname, p - dirname);
-            *fsname = g_strconcat ("/dev/", tmp, (char *) NULL);
+            *fsname = g_strconcat ("/dev/", tmp, (char *) nullptr);
             g_free (tmp);
             return;
         }
         p--;
     }
     *file = g_strdup ("");
-    *fsname = g_strconcat ("/dev/", dirname, (char *) NULL);
+    *fsname = g_strconcat ("/dev/", dirname, (char *) nullptr);
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static int
-undelfs_lsdel_proc (ext2_filsys _fs, blk_t * block_nr, int blockcnt, void *Private)
+int Undelfs::undelfs_lsdel_proc (ext2_filsys _fs, blk_t* block_nr, int /*blockcnt*/, void* Private)
 {
-    struct lsdel_struct *_lsd = (struct lsdel_struct *) Private;
-    (void) blockcnt;
+    auto *_lsd = static_cast<lsdel_struct*>(Private);
+
     _lsd->num_blocks++;
 
     if (*block_nr < _fs->super->s_first_data_block || *block_nr >= _fs->super->s_blocks_count)
@@ -224,14 +185,7 @@ undelfs_lsdel_proc (ext2_filsys _fs, blk_t * block_nr, int blockcnt, void *Priva
     return 0;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-/**
- * Load information about deleted files.
- * Don't abort if there is not enough memory - load as much as we can.
- */
-
-static int
-undelfs_loaddel (void)
+int Undelfs::undelfs_loaddel()
 {
     int retval, count;
     ext2_ino_t ino;
@@ -290,14 +244,11 @@ undelfs_loaddel (void)
         {
             if (num_delarray >= max_delarray)
             {
-                struct deleted_info *delarray_new = static_cast<struct deleted_info *>(g_try_realloc (delarray,
-                                                                   sizeof (struct deleted_info) *
-                                                                   (max_delarray + 50)));
+                auto *delarray_new = static_cast<deleted_info*>(g_try_realloc (delarray, sizeof (struct deleted_info) * (max_delarray + 50)));
                 if (!delarray_new)
                 {
-                    message (D_ERROR, undelfserr, "%s",
-                             _("no more memory while reallocating array"));
-                    goto error_out;
+                    message (D_ERROR, undelfserr, "%s", _("no more memory while reallocating array"));
+                    goto error_out;     // TODO DB get rid of goto
                 }
                 delarray = delarray_new;
                 max_delarray += 50;
@@ -314,7 +265,7 @@ undelfs_loaddel (void)
             num_delarray++;
         }
 
-      next:
+        next:
         retval = ext2fs_get_next_inode (scan, &ino, &inode);
         if (retval)
         {
@@ -326,35 +277,32 @@ undelfs_loaddel (void)
     ext2fs_close_inode_scan (scan);
     return 1;
 
-  error_out:
+    error_out:
     ext2fs_close_inode_scan (scan);
-  free_block_buf:
+    free_block_buf:
     MC_PTR_FREE (block_buf);
-  free_delarray:
+    free_delarray:
     MC_PTR_FREE (delarray);
     return 0;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static void *
-undelfs_opendir (const vfs_path_t * vpath)
+void* Undelfs::undelfs_opendir(const vfs_path_t* vpath)
 {
-    char *file, *f = NULL;
+    char *file, *f = nullptr;
     const vfs_path_element_t *path_element;
 
     path_element = vfs_path_get_by_index (vpath, -1);
     undelfs_get_path (vpath, &file, &f);
-    if (file == NULL)
+    if (file == nullptr)
     {
         g_free (f);
-        return 0;
+        return nullptr;
     }
 
     /* We don't use the file name */
     g_free (f);
 
-    if (!ext2_fname || strcmp (ext2_fname, file))
+    if (!ext2_fname || std::strcmp(ext2_fname, file))
     {
         undelfs_shutdown ();
         ext2_fname = file;
@@ -370,7 +318,7 @@ undelfs_opendir (const vfs_path_t * vpath)
     if (ext2fs_open (ext2_fname, 0, 0, 0, unix_io_manager, &fs))
     {
         message (D_ERROR, undelfserr, _("Cannot open file %s"), ext2_fname);
-        return 0;
+        return nullptr;
     }
     vfs_print_message ("%s", _("undelfs: reading inode bitmap..."));
     if (ext2fs_read_inode_bitmap (fs))
@@ -389,17 +337,14 @@ undelfs_opendir (const vfs_path_t * vpath)
         goto quit_opendir;
     vfs_print_message (_("%s: done."), path_element->Class->name);
     return fs;
-  quit_opendir:
+    quit_opendir:
     vfs_print_message (_("%s: failure"), path_element->Class->name);
     ext2fs_close (fs);
-    fs = NULL;
-    return 0;
+    fs = nullptr;
+    return nullptr;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static void *
-undelfs_readdir (void *vfs_info)
+void* Undelfs::undelfs_readdir(void *vfs_info)
 {
     static union vfs_dirent undelfs_readdir_data;
     static char *const dirent_dest = undelfs_readdir_data.dent.d_name;
@@ -407,10 +352,10 @@ undelfs_readdir (void *vfs_info)
     if (vfs_info != fs)
     {
         message (D_ERROR, undelfserr, "%s", _("vfs_info is not fs!"));
-        return NULL;
+        return nullptr;
     }
     if (readdir_ptr == num_delarray)
-        return NULL;
+        return nullptr;
     if (readdir_ptr < 0)
         strcpy (dirent_dest, readdir_ptr == -2 ? "." : "..");
     else
@@ -421,43 +366,35 @@ undelfs_readdir (void *vfs_info)
     return &undelfs_readdir_data;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static int
-undelfs_closedir (void *vfs_info)
+int Undelfs::undelfs_closedir (void* /*vfs_info*/)
 {
-    (void) vfs_info;
     return 0;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-/* We do not support lseek */
-
-static void *
-undelfs_open (const vfs_path_t * vpath, int flags, mode_t mode)
+void* Undelfs::undelfs_open(const vfs_path_t* vpath, int flags, mode_t mode)
 {
-    char *file, *f = NULL;
+    char *file, *f = nullptr;
     ext2_ino_t inode, i;
-    undelfs_file *p = NULL;
+    undelfs_file *p = nullptr;
     (void) flags;
     (void) mode;
 
     /* Only allow reads on this file system */
     undelfs_get_path (vpath, &file, &f);
-    if (file == NULL)
+    if (file == nullptr)
     {
         g_free (f);
-        return 0;
+        return nullptr;
     }
 
-    if (!ext2_fname || strcmp (ext2_fname, file))
+    if (!ext2_fname || std::strcmp(ext2_fname, file))
     {
         message (D_ERROR, undelfserr, "%s", _("You have to chdir to extract files first"));
         g_free (file);
         g_free (f);
-        return 0;
+        return nullptr;
     }
-    inode = atol (f);
+    inode = atol(f);
 
     /* Search the file into delarray */
     for (i = 0; i < (ext2_ino_t) num_delarray; i++)
@@ -471,7 +408,7 @@ undelfs_open (const vfs_path_t * vpath, int flags, mode_t mode)
         {
             g_free (file);
             g_free (f);
-            return 0;
+            return nullptr;
         }
         p->buf = static_cast<char*>(g_try_malloc (fs->blocksize));
         if (!p->buf)
@@ -479,7 +416,7 @@ undelfs_open (const vfs_path_t * vpath, int flags, mode_t mode)
             g_free (p);
             g_free (file);
             g_free (f);
-            return 0;
+            return nullptr;
         }
         p->inode = inode;
         p->finished = FALSE;
@@ -494,25 +431,19 @@ undelfs_open (const vfs_path_t * vpath, int flags, mode_t mode)
     return p;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static int
-undelfs_close (void *vfs_info)
+int Undelfs::undelfs_close(void* vfs_info)
 {
-    undelfs_file *p = static_cast<undelfs_file *>(vfs_info);
+    auto *p = static_cast<undelfs_file *>(vfs_info);
     g_free (p->buf);
     g_free (p);
     undelfs_usage--;
     return 0;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static int
-undelfs_dump_read (ext2_filsys param_fs, blk_t * blocknr, int blockcnt, void *Private)
+int Undelfs::undelfs_dump_read(ext2_filsys param_fs, blk_t* blocknr, int blockcnt, void* Private)
 {
     int copy_count;
-    undelfs_file *p = (undelfs_file *) Private;
+    auto *p = static_cast<undelfs_file*>(Private);
 
     if (blockcnt < 0)
         return 0;
@@ -578,13 +509,9 @@ undelfs_dump_read (ext2_filsys param_fs, blk_t * blocknr, int blockcnt, void *Pr
     return 0;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static ssize_t
-undelfs_read (void *vfs_info, char *buffer, size_t count)
+ssize_t Undelfs::undelfs_read(void* vfs_info, char* buffer, size_t count)
 {
-    undelfs_file *p = static_cast<undelfs_file *>(vfs_info);
-    int retval;
+    auto *p = static_cast<undelfs_file *>(vfs_info);
 
     p->dest_buffer = buffer;
     p->current = 0;
@@ -595,7 +522,7 @@ undelfs_read (void *vfs_info, char *buffer, size_t count)
     {
         p->count = p->size - p->pos;
     }
-    retval = ext2fs_block_iterate (fs, p->inode, 0, NULL, undelfs_dump_read, p);
+    int retval = ext2fs_block_iterate (fs, p->inode, 0, nullptr, undelfs_dump_read, p);
     if (retval)
     {
         message (D_ERROR, undelfserr, "%s", _("while iterating over blocks"));
@@ -607,12 +534,9 @@ undelfs_read (void *vfs_info, char *buffer, size_t count)
     return p->dest_buffer - buffer;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static long
-undelfs_getindex (char *path)
+long Undelfs::undelfs_getindex(char *path)
 {
-    ext2_ino_t inode = atol (path);
+    ext2_ino_t inode = atol(path);
     int i;
 
     for (i = 0; i < num_delarray; i++)
@@ -623,10 +547,7 @@ undelfs_getindex (char *path)
     return -1;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static int
-undelfs_stat_int (int inode_index, struct stat *buf)
+int Undelfs::undelfs_stat_int (int inode_index, struct stat *buf)
 {
     buf->st_dev = 0;
     buf->st_ino = delarray[inode_index].ino;
@@ -644,16 +565,13 @@ undelfs_stat_int (int inode_index, struct stat *buf)
     return 0;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static int
-undelfs_lstat (const vfs_path_t * vpath, struct stat *buf)
+int Undelfs::undelfs_lstat(const vfs_path_t* vpath, struct stat* buf)
 {
     int inode_index;
-    char *file, *f = NULL;
+    char *file, *f = nullptr;
 
     undelfs_get_path (vpath, &file, &f);
-    if (file == NULL)
+    if (file == nullptr)
     {
         g_free (f);
         return 0;
@@ -672,14 +590,14 @@ undelfs_lstat (const vfs_path_t * vpath, struct stat *buf)
         return -1;
     }
 
-    if (!ext2_fname || strcmp (ext2_fname, file))
+    if (!ext2_fname || std::strcmp(ext2_fname, file))
     {
         g_free (file);
         g_free (f);
         message (D_ERROR, undelfserr, "%s", _("You have to chdir to extract files first"));
         return 0;
     }
-    inode_index = undelfs_getindex (f);
+    inode_index = undelfs_getindex(f);
     g_free (file);
     g_free (f);
 
@@ -689,26 +607,19 @@ undelfs_lstat (const vfs_path_t * vpath, struct stat *buf)
     return undelfs_stat_int (inode_index, buf);
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static int
-undelfs_fstat (void *vfs_info, struct stat *buf)
+int Undelfs::undelfs_fstat(void* vfs_info, struct stat* buf)
 {
-    undelfs_file *p = static_cast<undelfs_file *>(vfs_info);
+    auto* p = static_cast<undelfs_file *>(vfs_info);
 
     return undelfs_stat_int (p->f_index, buf);
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static int
-undelfs_chdir (const vfs_path_t * vpath)
+int Undelfs::undelfs_chdir(const vfs_path_t* vpath)
 {
-    char *file, *f = NULL;
-    int fd;
+    char *file, *f = nullptr;
 
     undelfs_get_path (vpath, &file, &f);
-    if (file == NULL)
+    if (file == nullptr)
     {
         g_free (f);
         return (-1);
@@ -717,132 +628,52 @@ undelfs_chdir (const vfs_path_t * vpath)
     /* We may use access because ext2 file systems are local */
     /* this could be fixed by making an ext2fs io manager to use */
     /* our vfs, but that is left as an exercise for the reader */
-    fd = open (file, O_RDONLY);
+    int fd = open (file, O_RDONLY);
     if (fd == -1)
     {
         message (D_ERROR, undelfserr, _("Cannot open file \"%s\""), file);
-        g_free (f);
-        g_free (file);
+        g_free(f);
+        g_free(file);
         return -1;
     }
-    close (fd);
-    g_free (f);
-    g_free (file);
+    close(fd);
+    g_free(f);
+    g_free(file);
     return 0;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-/* this has to stay here for now: vfs layer does not know how to emulate it */
-static off_t
-undelfs_lseek (void *vfs_info, off_t offset, int whence)
+off_t Undelfs::undelfs_lseek (void* /*vfs_info*/, off_t /*offset*/, int /*whence*/)
 {
-    (void) vfs_info;
-    (void) offset;
-    (void) whence;
-
     return -1;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static vfsid
-undelfs_getid (const vfs_path_t * vpath)
+vfsid Undelfs::undelfs_getid(const vfs_path_t* vpath)
 {
-    char *fname = NULL, *fsname;
-    gboolean ok;
+    char *fname = nullptr, *fsname;
 
-    undelfs_get_path (vpath, &fsname, &fname);
-    ok = fsname != NULL;
+    undelfs_get_path(vpath, &fsname, &fname);
+    gboolean ok = (fsname != nullptr);
 
-    g_free (fname);
-    g_free (fsname);
+    g_free(fname);
+    g_free(fsname);
 
-    return ok ? (vfsid) fs : NULL;
+    return ok ? (vfsid) fs : nullptr;
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static gboolean
-undelfs_nothingisopen (vfsid id)
+gboolean Undelfs::undelfs_nothingisopen(vfsid /*id*/)
 {
-    (void) id;
-
     return (undelfs_usage == 0);
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
-static void
-undelfs_free (vfsid id)
+void Undelfs::undelfs_free(vfsid /*id*/)
 {
-    (void) id;
-
-    undelfs_shutdown ();
+    undelfs_shutdown();
 }
 
-/* --------------------------------------------------------------------------------------------- */
-
 #ifdef ENABLE_NLS
-static int
-undelfs_init (struct vfs_class *me)
+int Undelfs::undelfs_init(struct vfs_class* me)
 {
-    (void) me;
-
     undelfserr = _(undelfserr);
     return 1;
 }
-#else
-#define undelfs_init NULL
 #endif
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-/**
- * This function overrides com_err() from libcom_err library.
- * It is used in libext2fs to report errors.
- */
-
-void
-com_err (const char *whoami, long err_code, const char *fmt, ...)
-{
-    va_list ap;
-    char *str;
-
-    va_start (ap, fmt);
-    str = g_strdup_vprintf (fmt, ap);
-    va_end (ap);
-
-    message (D_ERROR, _("Ext2lib error"), "%s (%s: %ld)", str, whoami, err_code);
-    g_free (str);
-}
-
-/* --------------------------------------------------------------------------------------------- */
-
-void
-vfs_init_undelfs (void)
-{
-    /* NULLize vfs_s_subclass members */
-    memset (&undelfs_subclass, 0, sizeof (undelfs_subclass));
-
-    vfs_init_class (vfs_undelfs_ops, "undelfs", VFSF_UNKNOWN, "undel");
-    vfs_undelfs_ops->init = undelfs_init;
-    vfs_undelfs_ops->open = undelfs_open;
-    vfs_undelfs_ops->close = undelfs_close;
-    vfs_undelfs_ops->read = undelfs_read;
-    vfs_undelfs_ops->opendir = undelfs_opendir;
-    vfs_undelfs_ops->readdir = undelfs_readdir;
-    vfs_undelfs_ops->closedir = undelfs_closedir;
-    vfs_undelfs_ops->stat = undelfs_stat;
-    vfs_undelfs_ops->lstat = undelfs_lstat;
-    vfs_undelfs_ops->fstat = undelfs_fstat;
-    vfs_undelfs_ops->chdir = undelfs_chdir;
-    vfs_undelfs_ops->lseek = undelfs_lseek;
-    vfs_undelfs_ops->getid = undelfs_getid;
-    vfs_undelfs_ops->nothingisopen = undelfs_nothingisopen;
-    vfs_undelfs_ops->free = undelfs_free;
-    vfs_register_class (vfs_undelfs_ops);
-}
-
-/* --------------------------------------------------------------------------------------------- */

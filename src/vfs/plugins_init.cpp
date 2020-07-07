@@ -73,7 +73,6 @@
 #endif
 
 
-
 void PluginsInit::vfs_plugins_init()
 {
     /* localfs needs to be the first one */
@@ -92,7 +91,7 @@ void PluginsInit::vfs_plugins_init()
     vfs_init_extfs ();
 #endif /* ENABLE_VFS_EXTFS */
 #ifdef ENABLE_VFS_UNDELFS
-    vfs_init_undelfs ();
+    Undelfs::vfs_init_undelfs ();
 #endif /* ENABLE_VFS_UNDELFS */
 
 #ifdef ENABLE_VFS_FTP
