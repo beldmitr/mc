@@ -1,6 +1,7 @@
 #pragma once
 
 #include "lib/vfs/vfs.hpp"        /* vfs_path_t */
+#include "lib/vfs/path.hpp"
 
 /*** typedefs(not structures) and defined constants **********************************************/
 

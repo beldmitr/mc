@@ -308,7 +308,7 @@ main (int argc, char *argv[])
     }
 
     vfs_init ();
-    vfs_plugins_init ();
+    PluginsInit::vfs_plugins_init();
 
     Setup::load_setup();
 

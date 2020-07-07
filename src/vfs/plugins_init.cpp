@@ -32,9 +32,9 @@
  *  Detailed description.
  */
 
-#include "lib/global.hpp"
-
 #include "local/local.hpp"
+
+#include "plugins_init.hpp"
 
 #ifdef ENABLE_VFS_CPIO
 #include "cpio/cpio.hpp"
@@ -72,25 +72,9 @@
 #include "undelfs/undelfs.hpp"
 #endif
 
-#include "plugins_init.hpp"
 
-/*** global variables ****************************************************************************/
 
-/*** file scope macro definitions ****************************************************************/
-
-/*** file scope type declarations ****************************************************************/
-
-/*** file scope variables ************************************************************************/
-
-/*** file scope functions ************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-/* --------------------------------------------------------------------------------------------- */
-/*** public functions ****************************************************************************/
-/* --------------------------------------------------------------------------------------------- */
-
-void
-vfs_plugins_init (void)
+void PluginsInit::vfs_plugins_init()
 {
     /* localfs needs to be the first one */
     vfs_init_localfs ();
