@@ -44,7 +44,12 @@
 
 #include "src/history.hpp"
 
-#include "internal.hpp"
+#include "WView.hpp"
+#include "inlines.hpp"
+#include "lib.hpp"
+#include "move.hpp"
+
+#include "dialogs.hpp"
 
 gboolean Dialogs::mcview_dialog_search(WView* view)
 {

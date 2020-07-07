@@ -42,12 +42,10 @@
    "_cmd".
  */
 
-#include <errno.h>
 #include <stdlib.h>
 
 #include "lib/global.hpp"
 
-#include "lib/tty/tty.hpp"
 #include "lib/tty/key.hpp"        /* is_idle() */
 #include "lib/lock.hpp"           /* lock_file() */
 #include "lib/util.hpp"
@@ -67,7 +65,12 @@
 #include "src/execute.hpp"
 #include "src/keybind-defaults.hpp"
 
-#include "internal.hpp"
+#include "display.hpp"
+#include "move.hpp"
+#include "lib.hpp"
+#include "inlines.hpp"
+
+#include "actions_cmd.hpp"
 
 cb_ret_t ActionsCmd::mcview_callback(Widget* w, Widget* sender, widget_msg_t msg, int parm, void* data)
 {
@@ -555,7 +558,7 @@ void ActionsCmd::mcview_load_next_prev_init(WView* view)
 
 cb_ret_t ActionsCmd::mcview_handle_editkey(WView* view, int key)
 {
-    struct hexedit_change_node *node;
+    Hex::hexedit_change_node *node;
     int byte_val = -1;
 
     /* Has there been a change at this position? */
@@ -603,7 +606,7 @@ cb_ret_t ActionsCmd::mcview_handle_editkey(WView* view, int key)
 
     if (node == nullptr)
     {
-        node = g_new (struct hexedit_change_node, 1);
+        node = g_new (Hex::hexedit_change_node, 1);
         node->offset = view->hex_cursor;
         node->value = byte_val;
         Hex::mcview_enqueue_change (&view->change_list, node);
@@ -620,7 +623,6 @@ cb_ret_t ActionsCmd::mcview_handle_editkey(WView* view, int key)
 void ActionsCmd::mcview_hook(void* v)
 {
     auto* view = static_cast<WView*>(v);
-    WPanel *panel;
 
     /* If the user is busy typing, wait until he finishes to update the
        screen */
@@ -633,6 +635,7 @@ void ActionsCmd::mcview_hook(void* v)
 
     delete_hook (&idle_hook, mcview_hook);
 
+    WPanel *panel;
     if (get_current_type () == view_listing)
         panel = current_panel;
     else if (get_other_type () == view_listing)

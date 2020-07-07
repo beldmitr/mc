@@ -52,11 +52,13 @@
 #include <inttypes.h>           /* uintmax_t */
 #endif
 
-#include "lib/global.hpp"
 #include "lib/tty/tty.hpp"
-#include "internal.hpp"
 
-coord_cache_t* CoordCache::coord_cache_new()
+#include "WView.hpp"
+#include "inlines.hpp"
+#include "coord_cache.hpp"
+
+CoordCache::coord_cache_t* CoordCache::coord_cache_new()
 {
     coord_cache_t *cache = g_new (coord_cache_t, 1);
     cache->size = 0;

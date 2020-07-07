@@ -44,10 +44,15 @@
 
 #include "src/filemanager/layout.hpp"
 #include "src/filemanager/midnight.hpp"   /* the_menubar */
+#include "src/keybind-defaults.hpp"       /* global_keymap_t */
 
-#include "internal.hpp"
+#include "actions_cmd.hpp"
+#include "move.hpp"
+#include "display.hpp"
+#include "inlines.hpp"
+#include "lib.hpp"
+#include "mcviewer.hpp"
 
-/*** global variables ****************************************************************************/
 
 McViewer::mcview_mode_flags_t McViewer::mcview_global_flags = {
     .wrap = TRUE,

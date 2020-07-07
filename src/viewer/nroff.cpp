@@ -42,7 +42,8 @@
 
 #include "src/setup.hpp"          /* option_tab_spacing */
 
-#include "internal.hpp"
+#include "inlines.hpp"
+#include "nroff.hpp"
 
 int Nroff::mcview__get_nroff_real_len (WView* view, off_t start, off_t length)
 {
@@ -77,7 +78,12 @@ int Nroff::mcview__get_nroff_real_len (WView* view, off_t start, off_t length)
     return ret;
 }
 
-mcview_nroff_t* Nroff::mcview_nroff_seq_new_num(WView* view, off_t lc_index)
+Nroff::mcview_nroff_t* Nroff::mcview_nroff_seq_new(WView* view)
+{
+    return mcview_nroff_seq_new_num (view, (off_t) 0);
+}
+
+Nroff::mcview_nroff_t* Nroff::mcview_nroff_seq_new_num(WView* view, off_t lc_index)
 {
     auto* nroff = static_cast<mcview_nroff_t *>(g_try_malloc0 (sizeof (mcview_nroff_t)));
     if (nroff != nullptr)
@@ -89,11 +95,6 @@ mcview_nroff_t* Nroff::mcview_nroff_seq_new_num(WView* view, off_t lc_index)
     return nroff;
 }
 
-mcview_nroff_t* Nroff::mcview_nroff_seq_new(WView* view)
-{
-    return mcview_nroff_seq_new_num (view, (off_t) 0);
-}
-
 void Nroff::mcview_nroff_seq_free(mcview_nroff_t** nroff)
 {
     if (nroff == nullptr || *nroff == nullptr)
@@ -101,7 +102,7 @@ void Nroff::mcview_nroff_seq_free(mcview_nroff_t** nroff)
     MC_PTR_FREE (*nroff);
 }
 
-nroff_type_t Nroff::mcview_nroff_seq_info(mcview_nroff_t* nroff)
+Nroff::nroff_type_t Nroff::mcview_nroff_seq_info(mcview_nroff_t* nroff)
 {
     int next, next2;
 

@@ -144,6 +144,8 @@
    Add wrapping at word boundaries to where wrapping at char boundaries happens now.
  */
 
+
+
 #include "lib/global.hpp"
 #include "lib/tty/tty.hpp"
 #include "lib/skin.hpp"
@@ -154,7 +156,9 @@
 
 #include "src/setup.hpp"          /* option_tab_spacing */
 
-#include "internal.hpp"
+#include "inlines.hpp"
+#include "lib.hpp"
+#include "display.hpp"
 
 // FIXME DB: How to get rid of this macros ?? Let's try to get rid of the whole glib library, using c++ tools instead
 #if GLIB_CHECK_VERSION (2, 30, 0)
@@ -162,6 +166,8 @@
 #else
 #define SPACING_MARK G_UNICODE_COMBINING_MARK
 #endif
+
+#include "ascii.hpp"
 
 void Ascii::mcview_display_text(WView* view)
 {

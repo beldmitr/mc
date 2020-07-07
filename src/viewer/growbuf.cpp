@@ -38,9 +38,11 @@
 #include "lib/global.hpp"
 #include "lib/vfs/vfs.hpp"
 #include "lib/util.hpp"
-#include "lib/widget.hpp"         /* D_NORMAL */
 
-#include "internal.hpp"
+#include "WView.hpp"
+#include "lib.hpp"
+#include "display.hpp"
+#include "growbuf.hpp"
 
 void Growbuf::mcview_growbuf_init(WView* view)
 {
@@ -54,7 +56,7 @@ void Growbuf::mcview_growbuf_done(WView* view)
 {
     view->growbuf_finished = TRUE;
 
-    if (view->datasource == DS_STDIO_PIPE)
+    if (view->datasource == WView::DS_STDIO_PIPE)
     {
         mc_pclose (view->ds_stdio_pipe, nullptr);
         view->ds_stdio_pipe = nullptr;
@@ -119,7 +121,7 @@ void Growbuf::mcview_growbuf_read_until(WView* view, off_t ofs)
 
         bytesfree = VIEW_PAGE_SIZE - view->growbuf_lastindex;
 
-        if (view->datasource == DS_STDIO_PIPE)
+        if (view->datasource == WView::DS_STDIO_PIPE)
         {
             mc_pipe_t *sp = view->ds_stdio_pipe;
             GError *error = nullptr;
@@ -184,7 +186,7 @@ void Growbuf::mcview_growbuf_read_until(WView* view, off_t ofs)
         }
         else
         {
-            g_assert (view->datasource == DS_VFS_PIPE);
+            g_assert (view->datasource == WView::DS_VFS_PIPE);
             do
             {
                 nread = mc_read (view->ds_vfs_pipe, p, bytesfree);

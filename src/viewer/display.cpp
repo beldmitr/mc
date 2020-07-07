@@ -49,7 +49,10 @@
 #include "src/setup.hpp"          /* panels_options */
 #include "src/keybind-defaults.hpp"
 
-#include "internal.hpp"
+#include "lib.hpp"
+#include "WView.hpp"
+#include "inlines.hpp"
+#include "display.hpp"
 
 void Display::mcview_update(WView* view)
 {
@@ -104,7 +107,7 @@ void Display::mcview_display(WView* view)
 
 void Display::mcview_compute_areas(WView* view)
 {
-    struct area view_area;
+    WView::area view_area;
     screen_dimen height, rest, y;
 
     /* The viewer is surrounded by a frame of size view->dpy_frame_size.
@@ -316,7 +319,7 @@ void Display::mcview_set_buttonbar(WView* view)
     {
         if (view->hexedit_mode)
             buttonbar_set_label (b, 2, Q_ ("ButtonBar|View"), keymap, w);
-        else if (view->datasource == DS_FILE)
+        else if (view->datasource == WView::DS_FILE)
             buttonbar_set_label (b, 2, Q_ ("ButtonBar|Edit"), keymap, w);
         else
             buttonbar_set_label (b, 2, "", keymap, WIDGET (view));

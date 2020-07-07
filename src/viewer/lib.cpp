@@ -49,7 +49,10 @@
 #include "src/selcodepage.hpp"
 #endif
 
-#include "internal.hpp"
+#include "actions_cmd.hpp"
+#include "inlines.hpp"
+#include "hex.hpp"
+#include "lib.hpp"
 
 void Lib::mcview_toggle_magic_mode(WView* view)
 {

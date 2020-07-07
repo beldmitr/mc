@@ -47,7 +47,12 @@
 #include "lib/charsets.hpp"
 #endif
 
-#include "internal.hpp"
+#include "WView.hpp"
+#include "inlines.hpp"
+#include "move.hpp"
+#include "display.hpp"
+
+#include "hex.hpp"
 
 void Hex::mcview_display_hex(WView* view)
 {

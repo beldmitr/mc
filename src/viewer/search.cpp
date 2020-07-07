@@ -39,7 +39,11 @@
 
 #include "src/setup.hpp"
 
-#include "internal.hpp"
+#include "move.hpp"
+#include "lib.hpp"
+#include "inlines.hpp"
+#include "display.hpp"
+#include "search.hpp"
 
 mc_search_cbret_t Search::mcview_search_cmd_callback(const void* user_data, std::size_t char_offset, int* current_char)
 {
@@ -70,14 +74,14 @@ mc_search_cbret_t Search::mcview_search_cmd_callback(const void* user_data, std:
         else
             search_cb_char_buffer[0] = (char) view->search_nroff_seq->current_char;
 
-        if (view->search_nroff_seq->type != NROFF_TYPE_NONE)
+        if (view->search_nroff_seq->type != Nroff::NROFF_TYPE_NONE)
         {
             switch (view->search_nroff_seq->type)
             {
-                case NROFF_TYPE_BOLD:
+                case Nroff::NROFF_TYPE_BOLD:
                     view->search_numNeedSkipChar = 1 + view->search_nroff_seq->char_length; /* real char length and 0x8 */
                     break;
-                case NROFF_TYPE_UNDERLINE:
+                case Nroff::NROFF_TYPE_UNDERLINE:
                     view->search_numNeedSkipChar = 2;       /* underline symbol and ox8 */
                     break;
                 default:
@@ -151,9 +155,7 @@ void Search::mcview_do_search(WView* view, off_t want_search_start)
         {
             if (Dialogs::mcview_search_options.backwards)
             {
-                mcview_nroff_t *nroff;
-
-                nroff = Nroff::mcview_nroff_seq_new_num (view, view->search_start);
+                Nroff::mcview_nroff_t *nroff = Nroff::mcview_nroff_seq_new_num (view, view->search_start);
                 if (Nroff::mcview_nroff_seq_prev (nroff) != -1)
                     search_start =
                         -(Nroff::mcview__get_nroff_real_len (view, nroff->index - 1, 2) +

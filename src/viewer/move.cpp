@@ -52,7 +52,10 @@
 
 #include "lib/global.hpp"
 #include "lib/tty/tty.hpp"
-#include "internal.hpp"
+
+#include "lib.hpp"
+#include "inlines.hpp"
+#include "move.hpp"
 
 void Move::mcview_move_up(WView* view, off_t lines)
 {
@@ -255,7 +258,7 @@ void Move::mcview_moveto(WView* view, off_t line, off_t col)
 
 void Move::mcview_coord_to_offset(WView* view, off_t* ret_offset, off_t line, off_t column)
 {
-    coord_cache_entry_t coord;
+    CoordCache::coord_cache_entry_t coord;
 
     coord.cc_line = line;
     coord.cc_column = column;
@@ -266,7 +269,7 @@ void Move::mcview_coord_to_offset(WView* view, off_t* ret_offset, off_t line, of
 
 void Move::mcview_offset_to_coord(WView* view, off_t* ret_line, off_t* ret_column, off_t offset)
 {
-    coord_cache_entry_t coord;
+    CoordCache::coord_cache_entry_t coord;
 
     coord.cc_offset = offset;
     CoordCache::mcview_ccache_lookup (view, &coord, CoordCache::CCACHE_LINECOL);

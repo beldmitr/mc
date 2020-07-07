@@ -1,10 +1,12 @@
 #pragma once
 
-// FIXME DB remove this include
-//#include <limits.h>             /* CHAR_BIT */
+#include "WView.hpp"
 
 #define OFF_T_BITWIDTH  ((unsigned int) (sizeof (off_t) * CHAR_BIT - 1))
 #define OFFSETTYPE_MAX (((off_t) 1 << (OFF_T_BITWIDTH - 1)) - 1)
+
+#include "datasource.hpp"
+#include "growbuf.hpp"
 
 class Inlines
 {
@@ -47,10 +49,11 @@ public:
 
     static gboolean mcview_get_byte_file(WView* view, off_t byte_index, int* retval)
     {
-        g_assert (view->datasource == DS_FILE);
+        g_assert (view->datasource == WView::DS_FILE);
 
         DataSource::mcview_file_load_data(view, byte_index);
-        if (mcview_already_loaded(view->ds_file_offset, byte_index, view->ds_file_datalen)) {
+        if (mcview_already_loaded(view->ds_file_offset, byte_index, view->ds_file_datalen))
+        {
             if (retval)
                 *retval = view->ds_file_data[byte_index - view->ds_file_offset];
             return TRUE;
@@ -62,19 +65,21 @@ public:
 
     static gboolean mcview_get_byte(WView* view, off_t offset, int* retval)
     {
-        switch (view->datasource) {
-            case DS_STDIO_PIPE:
-            case DS_VFS_PIPE:return Growbuf::mcview_get_byte_growing_buffer(view, offset, retval);
-            case DS_FILE:return mcview_get_byte_file(view, offset, retval);
-            case DS_STRING:return DataSource::mcview_get_byte_string(view, offset, retval);
-            case DS_NONE:return DataSource::mcview_get_byte_none(view, offset, retval);
+        switch (view->datasource)
+        {
+            case WView::DS_STDIO_PIPE:
+            case WView::DS_VFS_PIPE:return Growbuf::mcview_get_byte_growing_buffer(view, offset, retval);
+            case WView::DS_FILE:return mcview_get_byte_file(view, offset, retval);
+            case WView::DS_STRING:return DataSource::mcview_get_byte_string(view, offset, retval);
+            case WView::DS_NONE:return DataSource::mcview_get_byte_none(view, offset, retval);
             default:return FALSE;
         }
     }
 
     static gboolean mcview_get_byte_indexed(WView* view, off_t base, off_t ofs, int* retval)
     {
-        if (base <= OFFSETTYPE_MAX - ofs) {
+        if (base <= OFFSETTYPE_MAX - ofs)
+        {
             return mcview_get_byte(view, base + ofs, retval);
         }
         if (retval)
@@ -86,9 +91,9 @@ public:
     {
         int backspaces = 0;
         int c;
-        while (offset >= 2 * backspaces && mcview_get_byte(view, offset - 2 * backspaces, &c)
-            && c == '\b')
+        while (offset >= 2 * backspaces && mcview_get_byte(view, offset - 2 * backspaces, &c) && c == '\b')
             backspaces++;
+
         return backspaces;
     }
 

@@ -162,6 +162,11 @@ typedef enum
 
 /*** structures declarations (and typedefs of structures)*****************************************/
 
+using byte = unsigned char;
+
+/* A width or height on the screen */
+using screen_dimen = unsigned int;
+
 typedef struct
 {
     mc_run_mode_t mc_run_mode;

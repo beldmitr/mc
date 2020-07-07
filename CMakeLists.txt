@@ -32,6 +32,19 @@ file(GLOB SRC
         "src/vfs/tar/*.cpp"
         "src/vfs/undelfs/*.cpp"
         "src/viewer/*.cpp"
+        "src/viewer/actions_cmd.hpp"
+        "src/viewer/ascii.hpp"
+        "src/viewer/coord_cache.hpp"
+        "src/viewer/datasource.hpp"
+        "src/viewer/dialogs.hpp"
+        "src/viewer/display.hpp"
+        "src/viewer/growbuf.hpp"
+        "src/viewer/hex.hpp"
+        "src/viewer/lib.hpp"
+        "src/viewer/move.hpp"
+        "src/viewer/nroff.hpp"
+        "src/viewer/search.hpp"
+        "src/viewer/WView.hpp"
         )
 
 file(GLOB LIB

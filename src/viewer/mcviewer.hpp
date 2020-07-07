@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "lib/global.hpp"
+#include "lib/widget.hpp"
 
 class WView;
 
