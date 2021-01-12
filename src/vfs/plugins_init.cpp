@@ -82,7 +82,7 @@ void PluginsInit::vfs_plugins_init()
     vfs_init_cpiofs ();
 #endif /* ENABLE_VFS_CPIO */
 #ifdef ENABLE_VFS_TAR
-    vfs_init_tarfs ();
+    Tar::vfs_init_tarfs();
 #endif /* ENABLE_VFS_TAR */
 #ifdef ENABLE_VFS_SFS
     vfs_init_sfs ();
